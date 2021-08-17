@@ -1,0 +1,3 @@
+Create own realization of arraylist with methods add, addAtPosition, addAll, remove(position), remove(item), clear(), trimToSize(), toString().
+
+https://m.employees.abcloudz.com/ClientProjects/ClientProjectTaskView?id=585193964&taskId=585426321

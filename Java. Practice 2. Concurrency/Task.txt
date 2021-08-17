@@ -1,0 +1,7 @@
+Create a method for realization Producer-Consumer task using synchronized, wait(), notify():
+
+The producer should produce 10 products.
+The store can hold only 5 products.
+The consumer can buy only products, which are available in store.
+
+https://m.employees.abcloudz.com/ClientProjects/ClientProjectTaskView?id=585193964&taskId=585546644
