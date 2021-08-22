@@ -6,9 +6,9 @@ plugins {
 android {
     signingConfigs {
         release {
-            storeFile file('C:\\Users\\selivanov.i\\keystores\\keystore.jks')
+            storeFile file('\\keystore\\keystore.jks')
             storePassword 'password'
-            keyAlias 'keystore'
+            keyAlias 'key0'
             keyPassword 'password'
         }
     }
@@ -32,6 +32,7 @@ android {
         }
         debug {
             applicationIdSuffix ".debug"
+
         }
     }
 
@@ -42,10 +43,14 @@ android {
             manifestPlaceholders = [appName: APP_NAME_CUSTOMER]
             dimension "version"
             applicationIdSuffix ".customer"
+
+            buildConfigField ("long","SPLASH_TIME","3000")
         }
         abcloudz {
             manifestPlaceholders = [appName: APP_NAME]
             dimension "version"
+
+            buildConfigField ("long", "SPLASH_TIME", "1000")
         }
     }
 

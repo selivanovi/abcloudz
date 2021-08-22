@@ -1,0 +1,4 @@
+#Sun Aug 22 12:49:14 MSK 2021
+base.0=D\:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\build\\intermediates\\dex\\abcloudzRelease\\minifyAbcloudzReleaseWithR8\\classes.dex
+renamed.0=classes.dex
+path.0=classes.dex
