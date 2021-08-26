@@ -1,0 +1,10 @@
+#Sun Aug 22 12:45:46 MSK 2021
+base.2=D\:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\build\\intermediates\\dex\\customerDebug\\mergeProjectDexCustomerDebug\\10\\classes.dex
+path.2=10/classes.dex
+base.1=D\:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\build\\intermediates\\dex\\customerDebug\\mergeProjectDexCustomerDebug\\0\\classes.dex
+path.1=0/classes.dex
+base.0=D\:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\build\\intermediates\\dex\\customerDebug\\mergeExtDexCustomerDebug\\classes.dex
+renamed.2=classes3.dex
+renamed.1=classes2.dex
+renamed.0=classes.dex
+path.0=classes.dex

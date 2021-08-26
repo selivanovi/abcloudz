@@ -1,0 +1,18 @@
+<lint-module
+    format="1"
+    dir="D:\Ilya\ilya_selivanov_android\Android. Module 1. Gradle\app"
+    name=":app"
+    type="APP"
+    maven="ABCloudz:app:"
+    gradle="7.0.0"
+    buildFolder="build"
+    bootClassPath="C:\Users\bulld\AppData\Local\Android\Sdk\platforms\android-30\android.jar;C:\Users\bulld\AppData\Local\Android\Sdk\build-tools\30.0.2\core-lambda-stubs.jar"
+    javaSourceLevel="1.8"
+    compileTarget="android-30">
+  <lintOptions
+      abortOnError="true"
+      absolutePaths="true"
+      checkReleaseBuilds="true"
+      explainIssues="true"/>
+  <variant name="abcloudzRelease"/>
+</lint-module>

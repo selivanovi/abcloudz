@@ -1,0 +1,170 @@
+[
+    {
+        "merged": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\build\\intermediates\\merged_res\\customerDebug\\drawable-hdpi_ic_launcher_background.png.flat",
+        "source": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\build\\generated\\res\\pngs\\customer\\debug\\drawable-hdpi\\ic_launcher_background.png"
+    },
+    {
+        "merged": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\build\\intermediates\\merged_res\\customerDebug\\drawable-hdpi_logo.png.flat",
+        "source": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\build\\generated\\res\\pngs\\customer\\debug\\drawable-hdpi\\logo.png"
+    },
+    {
+        "merged": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\build\\intermediates\\merged_res\\customerDebug\\drawable-mdpi_ic_launcher_background.png.flat",
+        "source": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\build\\generated\\res\\pngs\\customer\\debug\\drawable-mdpi\\ic_launcher_background.png"
+    },
+    {
+        "merged": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\build\\intermediates\\merged_res\\customerDebug\\mipmap-mdpi_ic_launcher_round.png.flat",
+        "source": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\src\\debug\\res\\mipmap-mdpi\\ic_launcher_round.png"
+    },
+    {
+        "merged": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\build\\intermediates\\merged_res\\customerDebug\\drawable-xxhdpi_abcloudz.png.flat",
+        "source": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\build\\generated\\res\\pngs\\customer\\debug\\drawable-xxhdpi\\abcloudz.png"
+    },
+    {
+        "merged": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\build\\intermediates\\merged_res\\customerDebug\\mipmap-xxxhdpi_ic_launcher.png.flat",
+        "source": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\src\\debug\\res\\mipmap-xxxhdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\build\\intermediates\\merged_res\\customerDebug\\mipmap-hdpi_ic_launcher.png.flat",
+        "source": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\src\\debug\\res\\mipmap-hdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\build\\intermediates\\merged_res\\customerDebug\\mipmap-xxxhdpi_ic_launcher_round.png.flat",
+        "source": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\src\\debug\\res\\mipmap-xxxhdpi\\ic_launcher_round.png"
+    },
+    {
+        "merged": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\build\\intermediates\\merged_res\\customerDebug\\drawable_ic_launcher_foreground.xml.flat",
+        "source": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\src\\debug\\res\\drawable\\ic_launcher_foreground.xml"
+    },
+    {
+        "merged": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\build\\intermediates\\merged_res\\customerDebug\\mipmap-xhdpi_ic_launcher_round.png.flat",
+        "source": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\src\\debug\\res\\mipmap-xhdpi\\ic_launcher_round.png"
+    },
+    {
+        "merged": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\build\\intermediates\\merged_res\\customerDebug\\drawable-mdpi_abcloudz.png.flat",
+        "source": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\build\\generated\\res\\pngs\\customer\\debug\\drawable-mdpi\\abcloudz.png"
+    },
+    {
+        "merged": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\build\\intermediates\\merged_res\\customerDebug\\drawable-xxhdpi_ic_launcher_background.png.flat",
+        "source": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\build\\generated\\res\\pngs\\customer\\debug\\drawable-xxhdpi\\ic_launcher_background.png"
+    },
+    {
+        "merged": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\build\\intermediates\\merged_res\\customerDebug\\drawable-xhdpi_ic_launcher_background.png.flat",
+        "source": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\build\\generated\\res\\pngs\\customer\\debug\\drawable-xhdpi\\ic_launcher_background.png"
+    },
+    {
+        "merged": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\build\\intermediates\\merged_res\\customerDebug\\drawable-xhdpi_logo.png.flat",
+        "source": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\build\\generated\\res\\pngs\\customer\\debug\\drawable-xhdpi\\logo.png"
+    },
+    {
+        "merged": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\build\\intermediates\\merged_res\\customerDebug\\drawable-hdpi_abcloudz.png.flat",
+        "source": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\build\\generated\\res\\pngs\\customer\\debug\\drawable-hdpi\\abcloudz.png"
+    },
+    {
+        "merged": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\build\\intermediates\\merged_res\\customerDebug\\drawable_abcloudz_image.png.flat",
+        "source": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\src\\customerDebug\\res\\drawable\\abcloudz_image.png"
+    },
+    {
+        "merged": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\build\\intermediates\\merged_res\\customerDebug\\mipmap-hdpi_ic_launcher_background.png.flat",
+        "source": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\src\\debug\\res\\mipmap-hdpi\\ic_launcher_background.png"
+    },
+    {
+        "merged": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\build\\intermediates\\merged_res\\customerDebug\\drawable-mdpi_logo.png.flat",
+        "source": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\build\\generated\\res\\pngs\\customer\\debug\\drawable-mdpi\\logo.png"
+    },
+    {
+        "merged": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\build\\intermediates\\merged_res\\customerDebug\\drawable-anydpi-v24_abcloudz.xml.flat",
+        "source": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\build\\generated\\res\\pngs\\customer\\debug\\drawable-anydpi-v24\\abcloudz.xml"
+    },
+    {
+        "merged": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\build\\intermediates\\merged_res\\customerDebug\\mipmap-mdpi_ic_launcher.png.flat",
+        "source": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\src\\debug\\res\\mipmap-mdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\build\\intermediates\\merged_res\\customerDebug\\drawable-xxxhdpi_abcloudz.png.flat",
+        "source": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\build\\generated\\res\\pngs\\customer\\debug\\drawable-xxxhdpi\\abcloudz.png"
+    },
+    {
+        "merged": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\build\\intermediates\\merged_res\\customerDebug\\mipmap-xhdpi_ic_launcher.png.flat",
+        "source": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\src\\debug\\res\\mipmap-xhdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\build\\intermediates\\merged_res\\customerDebug\\mipmap-hdpi_ic_launcher_round.png.flat",
+        "source": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\src\\debug\\res\\mipmap-hdpi\\ic_launcher_round.png"
+    },
+    {
+        "merged": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\build\\intermediates\\merged_res\\customerDebug\\drawable-xhdpi_abcloudz.png.flat",
+        "source": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\build\\generated\\res\\pngs\\customer\\debug\\drawable-xhdpi\\abcloudz.png"
+    },
+    {
+        "merged": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\build\\intermediates\\merged_res\\customerDebug\\drawable-ldpi_abcloudz.png.flat",
+        "source": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\build\\generated\\res\\pngs\\customer\\debug\\drawable-ldpi\\abcloudz.png"
+    },
+    {
+        "merged": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\build\\intermediates\\merged_res\\customerDebug\\layout_activity_main.xml.flat",
+        "source": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\src\\debug\\res\\layout\\activity_main.xml"
+    },
+    {
+        "merged": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\build\\intermediates\\merged_res\\customerDebug\\drawable-ldpi_logo.png.flat",
+        "source": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\build\\generated\\res\\pngs\\customer\\debug\\drawable-ldpi\\logo.png"
+    },
+    {
+        "merged": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\build\\intermediates\\merged_res\\customerDebug\\mipmap-xxhdpi_ic_launcher_background.png.flat",
+        "source": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\src\\debug\\res\\mipmap-xxhdpi\\ic_launcher_background.png"
+    },
+    {
+        "merged": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\build\\intermediates\\merged_res\\customerDebug\\drawable-ldpi_ic_launcher_background.png.flat",
+        "source": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\build\\generated\\res\\pngs\\customer\\debug\\drawable-ldpi\\ic_launcher_background.png"
+    },
+    {
+        "merged": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\build\\intermediates\\merged_res\\customerDebug\\drawable-anydpi-v24_ic_launcher_background.xml.flat",
+        "source": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\build\\generated\\res\\pngs\\customer\\debug\\drawable-anydpi-v24\\ic_launcher_background.xml"
+    },
+    {
+        "merged": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\build\\intermediates\\merged_res\\customerDebug\\mipmap-xxxhdpi_ic_launcher_background.png.flat",
+        "source": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\src\\debug\\res\\mipmap-xxxhdpi\\ic_launcher_background.png"
+    },
+    {
+        "merged": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\build\\intermediates\\merged_res\\customerDebug\\drawable-xxxhdpi_logo.png.flat",
+        "source": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\build\\generated\\res\\pngs\\customer\\debug\\drawable-xxxhdpi\\logo.png"
+    },
+    {
+        "merged": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\build\\intermediates\\merged_res\\customerDebug\\mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\src\\debug\\res\\mipmap-anydpi-v26\\ic_launcher.xml"
+    },
+    {
+        "merged": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\build\\intermediates\\merged_res\\customerDebug\\drawable-xxhdpi_logo.png.flat",
+        "source": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\build\\generated\\res\\pngs\\customer\\debug\\drawable-xxhdpi\\logo.png"
+    },
+    {
+        "merged": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\build\\intermediates\\merged_res\\customerDebug\\mipmap-mdpi_ic_launcher_background.png.flat",
+        "source": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\src\\debug\\res\\mipmap-mdpi\\ic_launcher_background.png"
+    },
+    {
+        "merged": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\build\\intermediates\\merged_res\\customerDebug\\mipmap-xxhdpi_ic_launcher.png.flat",
+        "source": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\src\\debug\\res\\mipmap-xxhdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\build\\intermediates\\merged_res\\customerDebug\\layout_splash_screen.xml.flat",
+        "source": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\src\\customerDebug\\res\\layout\\splash_screen.xml"
+    },
+    {
+        "merged": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\build\\intermediates\\merged_res\\customerDebug\\mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\src\\debug\\res\\mipmap-anydpi-v26\\ic_launcher_round.xml"
+    },
+    {
+        "merged": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\build\\intermediates\\merged_res\\customerDebug\\drawable-xxxhdpi_ic_launcher_background.png.flat",
+        "source": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\build\\generated\\res\\pngs\\customer\\debug\\drawable-xxxhdpi\\ic_launcher_background.png"
+    },
+    {
+        "merged": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\build\\intermediates\\merged_res\\customerDebug\\mipmap-xxhdpi_ic_launcher_round.png.flat",
+        "source": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\src\\debug\\res\\mipmap-xxhdpi\\ic_launcher_round.png"
+    },
+    {
+        "merged": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\build\\intermediates\\merged_res\\customerDebug\\drawable-anydpi-v24_logo.xml.flat",
+        "source": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\build\\generated\\res\\pngs\\customer\\debug\\drawable-anydpi-v24\\logo.xml"
+    },
+    {
+        "merged": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\build\\intermediates\\merged_res\\customerDebug\\mipmap-xhdpi_ic_launcher_background.png.flat",
+        "source": "D:\\Ilya\\ilya_selivanov_android\\Android. Module 1. Gradle\\app\\src\\debug\\res\\mipmap-xhdpi\\ic_launcher_background.png"
+    }
+]

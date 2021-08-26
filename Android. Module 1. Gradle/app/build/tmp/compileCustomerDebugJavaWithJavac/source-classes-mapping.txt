@@ -1,0 +1,2 @@
+com/abcloudz/BuildConfig.java
+ com.abcloudz.BuildConfig

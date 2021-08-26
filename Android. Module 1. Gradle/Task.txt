@@ -1,0 +1,16 @@
+Task:
+You should create an application with SplashScreen and MainScreen. MainScreen should contain an ImageView in the center of the screen and TextView on the top.
+Configure gradle build so you have two build flavors: abcloudz and customer and two build types: debug and release.
+All variants should have “com.abcloudz” in applicationId.
+Builds with customer flavor also should have “.customer” suffix added to their applicationId.
+All debug build variants should have suffix “.debug” added to their applicationId and have launcher icon marked with “debug” label.(icon resources you can choose yourself)
+Builds with abcloudz flavor shoud have application name “ABCloudzApp-Test”.
+Builds with customer flavor should have application name “ABCloudzApp-Customer”.
+The ImageView from the MainActivity for debug and release builds should contain different images (it should be implemented via gradle source sets. resources you can choose yourself)
+The TextView from the MainActivity for debug and release builds should contain different text - "debug title" and "release title" (it should be implemented via gradle variables)
+For debug version SplashScreen should be shown for 1 second
+For release version SplashScreen should be shown for a 3 seconds and with progress bar in the center (it should be implemented via gradle source sets and different packages)
+
+It should be possible to install all build variants on the same phone simultaneously.
+
+https://m.employees.abcloudz.com/ClientProjects/ClientProjectTaskView?id=585193964&taskId=585892323
