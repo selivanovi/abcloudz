@@ -26,6 +26,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         buttonSelectPicture.setOnClickListener {
             requestPermission()
+            startActivity(GalleryActivity.newIntent(this))
         }
     }
 

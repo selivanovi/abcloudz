@@ -12,8 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidComponents">
         <activity
-            android:name=".GalleryActivity"
-            android:exported="true" />
+            android:name=".GalleryActivity"/>
         <activity
             android:name=".MainActivity"
             android:exported="true">
