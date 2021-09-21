@@ -4,16 +4,15 @@ import android.Manifest
 import android.content.ContentUris
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.widget.Button
-import android.widget.TextView
-import androidx.activity.result.contract.ActivityResultContracts
+import android.widget.GridLayout
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.androidcomponents.adapters.ImageAdapter
 
 class MainActivity : AppCompatActivity() {
 
