@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.widget.Button
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
@@ -16,12 +17,17 @@ import androidx.core.content.ContextCompat
 
 class MainActivity : AppCompatActivity() {
 
+    private val buttonSelectPicture: Button by lazy {
+        findViewById(R.id.buttonSelectPicture)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        requestPermission()
+        buttonSelectPicture.setOnClickListener {
+            requestPermission()
+        }
     }
-
 
     private fun hasReadExternalStoragePermissions() =
         ActivityCompat.checkSelfPermission(
