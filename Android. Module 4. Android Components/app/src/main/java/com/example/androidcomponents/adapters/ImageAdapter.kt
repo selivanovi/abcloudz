@@ -11,9 +11,9 @@ import com.example.androidcomponents.R
 
 class ImageAdapter : RecyclerView.Adapter<ImageAdapter.ViewHolder>() {
 
-    private val images: ArrayList<Uri> = ArrayList()
+    private val images: ArrayList<String> = ArrayList()
 
-    fun setData(list: List<Uri>) {
+    fun setData(list: ArrayList<String>) {
         images.clear()
         images.addAll(list)
 
@@ -24,8 +24,8 @@ class ImageAdapter : RecyclerView.Adapter<ImageAdapter.ViewHolder>() {
 
         private val image: ImageView = itemView.findViewById(R.id.imageView)
 
-        fun bind(string: Uri) {
-            image.setImageURI(string)
+        fun bind(string: String) {
+            image.setImageURI(Uri.parse(string))
         }
 
     }

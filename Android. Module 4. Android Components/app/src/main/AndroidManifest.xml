@@ -14,9 +14,17 @@
         <service
             android:name=".services.ScanImageService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="false">
 
-        <activity android:name=".GalleryActivity" />
+        </service>
+
+        <activity
+            android:name=".GalleryActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.example.androidcomponents.IMAGES_LOADED"/>
+            </intent-filter>
+        </activity>
         <activity
             android:name=".MainActivity"
             android:exported="true">

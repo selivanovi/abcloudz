@@ -1,20 +1,29 @@
 package com.example.androidcomponents
 
 import android.Manifest
-import android.content.ContentUris
 import android.content.pm.PackageManager
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.MediaStore
 import android.widget.Button
-import android.widget.GridLayout
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidcomponents.adapters.ImageAdapter
+import com.example.androidcomponents.services.ScanImageService
 
 class MainActivity : AppCompatActivity() {
+
+    val requestPermissionLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted: Boolean ->
+            if (isGranted) {
+                startActivity(GalleryActivity.newIntent(this))
+            } else {
+
+            }
+        }
 
     private val buttonSelectPicture: Button by lazy {
         findViewById(R.id.buttonSelectPicture)
@@ -24,8 +33,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         buttonSelectPicture.setOnClickListener {
-            requestPermission()
-            startActivity(GalleryActivity.newIntent(this))
+//            requestPermission()
+            requestPermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
         }
     }
 
