@@ -1,16 +1,11 @@
 package com.example.androidcomponents
 
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
+import android.content.*
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidcomponents.adapters.ImageAdapter
-import com.example.androidcomponents.services.ScanImageService
 
 class GalleryActivity : AppCompatActivity() {
 
@@ -18,44 +13,36 @@ class GalleryActivity : AppCompatActivity() {
 
     private var broadcastReceiver: BroadcastReceiver? = null
 
+    private val serviceBinder: ServiceBinder = ServiceBinder()
+
     private val recyclerView: RecyclerView by lazy {
         findViewById(R.id.imageRecyclerView)
     }
     private val imageAdapter: ImageAdapter = ImageAdapter()
 
 
+    private fun event(list: ArrayList<String>) {
+        imageAdapter.setData(list)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        serviceBinder.setEvent= ::event
+
         setContentView(R.layout.activity_gallery)
-        startService(ScanImageService.newIntent(this))
         createRecyclerView()
-        createReceiver()
     }
 
-    override fun onDestroy() {
-        unregisterReceiver(broadcastReceiver)
-        stopService(ScanImageService.newIntent(this))
-        super.onDestroy()
+    override fun onStart() {
+        serviceBinder.bind(this)
+        super.onStart()
     }
 
-    private fun createReceiver() {
+    override fun onStop() {
+        serviceBinder.unbind(this)
+        super.onStop()
 
-        broadcastReceiver = object : BroadcastReceiver() {
-            override fun onReceive(context: Context?, intent: Intent?) {
-
-                val result = intent?.getStringArrayListExtra(PARAM_RESULT)
-                Log.d(TAG, "Get data: $result")
-                result?.let {
-                    imageAdapter.setData(it)
-                }
-
-            }
-        }
-        val intFilt = IntentFilter(IMAGES_LOADED);
-        // регистрируем (включаем) BroadcastReceiver
-        registerReceiver(broadcastReceiver, intFilt)
-
-        Log.d(TAG, "Create receiver")
     }
 
     private fun createRecyclerView() {

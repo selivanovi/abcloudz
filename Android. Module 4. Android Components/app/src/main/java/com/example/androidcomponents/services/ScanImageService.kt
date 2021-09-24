@@ -5,30 +5,75 @@ import android.content.ContentUris
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Binder
 import android.os.IBinder
 import android.provider.MediaStore
 import android.util.Log
-import com.example.androidcomponents.GalleryActivity
+import com.example.androidcomponents.Producer
+import com.example.androidcomponents.Consumer
+import kotlinx.coroutines.*
 
 class ScanImageService : Service() {
 
-    private val TAG = "ScanImageService"
+    private val TAG = "MyService"
 
-    override fun onBind(p0: Intent?): IBinder?  = null
+    private val consumerAggregator = ConsumerAggregator()
 
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        Log.d(TAG, "Service is starting")
-        startScanning()
-        return START_STICKY
+    override fun onCreate() {
+        Log.d(TAG, "MyService onCreate")
+        super.onCreate()
+    }
+
+    override fun onBind(p0: Intent?): IBinder? {
+        Log.d(TAG, "MyService onBind")
+        return MyBinder();
+    }
+
+    override fun onUnbind(intent: Intent?): Boolean {
+        Log.d(TAG, "MyService onUnbind")
+        return super.onUnbind(intent)
+    }
+
+    override fun onRebind(intent: Intent?) {
+        Log.d(TAG, "MyService onRebind")
+        super.onRebind(intent)
+    }
+
+    override fun onDestroy() {
+        Log.d(TAG, "MyService onDestroy")
+        super.onDestroy()
+    }
+
+    inner class MyBinder : Binder(), Producer {
+        override fun addObserver(consumer: Consumer) {
+            consumerAggregator.consumers.add(consumer)
+        }
+
+        override fun removeObserver(consumer: Consumer) {
+            consumerAggregator.consumers.remove(consumer)
+        }
+
+        override fun scanData() {
+            startScanning()
+        }
     }
 
     private fun startScanning() {
+        var result: ArrayList<String>? = null
         Thread {
-            Log.d(TAG, "Create new thread")
-            val result = getImagePath()
-            sendResult(result)
+                Log.d(TAG, "Create new thread")
+                result = getImagePath()
+            result?.let {
+                CoroutineScope(Dispatchers.Main).launch { sendResult(it) }
+            }
+
         }.start()
+
     }
+
+    fun sendResult(arrayList: ArrayList<String>) =
+                consumerAggregator.resultOnReady(arrayList)
+
 
     private fun getImagePath(): ArrayList<String> {
         val result = arrayListOf<String>()
@@ -47,15 +92,22 @@ class ScanImageService : Service() {
         return result
     }
 
-    private fun sendResult(result: ArrayList<String>) {
-        val intent = Intent(GalleryActivity.IMAGES_LOADED)
-        intent.putStringArrayListExtra(GalleryActivity.PARAM_RESULT, result)
-        sendBroadcast(intent)
-        Log.d(TAG, "Send result: $result")
+    inner class ConsumerAggregator: Consumer {
+
+        val consumers = mutableListOf<Consumer>()
+
+        override fun resultOnReady(list: ArrayList<String>) {
+            consumers.forEach {
+                it.resultOnReady(list)
+            }
+        }
+
     }
 
     companion object {
+
         fun newIntent(context: Context) =
             Intent(context, ScanImageService::class.java)
     }
+
 }

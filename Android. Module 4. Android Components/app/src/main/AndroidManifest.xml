@@ -11,19 +11,25 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidComponents">
+<!--        <service-->
+<!--            android:name=".services.ScanImageService"-->
+<!--            android:enabled="true"-->
+<!--            android:exported="false">-->
+
+<!--        </service>-->
+
         <service
             android:name=".services.ScanImageService"
             android:enabled="true"
             android:exported="false">
-
+            <intent-filter>
+                <action android:name="com.example.androidcomponents.services.MyService"/>
+            </intent-filter>
         </service>
 
         <activity
             android:name=".GalleryActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="com.example.androidcomponents.IMAGES_LOADED"/>
-            </intent-filter>
         </activity>
         <activity
             android:name=".MainActivity"

@@ -1,58 +1,73 @@
 package com.example.androidcomponents
 
 import android.Manifest
-import android.content.pm.PackageManager
+import android.content.Intent
+import android.content.ServiceConnection
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.app.ActivityCompat
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.androidcomponents.adapters.ImageAdapter
-import com.example.androidcomponents.services.ScanImageService
 
 class MainActivity : AppCompatActivity() {
 
-    val requestPermissionLauncher =
+    private val TAG = "MainActivity"
+
+    private val serviceBinder: ServiceBinder = ServiceBinder()
+
+    private lateinit var serviceIntent: Intent
+    private lateinit var serviceConnection: ServiceConnection
+
+    private val buttonSelectPicture: Button by lazy {
+        findViewById<Button>(R.id.buttonSelectPicture)
+    }
+
+    private var producer: Producer? = null
+
+
+    private val consumer = object : Consumer {
+        override fun resultOnReady(list: ArrayList<String>) {
+            buttonSelectPicture.isEnabled = true
+        }
+
+    }
+
+    private val requestPermissionLauncher =
         registerForActivityResult(
             ActivityResultContracts.RequestPermission()
         ) { isGranted: Boolean ->
             if (isGranted) {
-                startActivity(GalleryActivity.newIntent(this))
+                serviceBinder.bind(this)
             } else {
 
             }
         }
 
-    private val buttonSelectPicture: Button by lazy {
-        findViewById(R.id.buttonSelectPicture)
+    private fun event(list: ArrayList<String>) {
+        buttonSelectPicture.isEnabled = true
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+
+
+        buttonSelectPicture.isEnabled= false
+
+        serviceBinder.setEvent = ::event
+
         buttonSelectPicture.setOnClickListener {
-//            requestPermission()
-            requestPermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
+            startActivity(GalleryActivity.newIntent(this))
         }
     }
 
-    private fun hasReadExternalStoragePermissions() =
-        ActivityCompat.checkSelfPermission(
-            this,
-            Manifest.permission.READ_EXTERNAL_STORAGE
-        ) == PackageManager.PERMISSION_GRANTED
+    override fun onStart() {
+        requestPermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
+        super.onStart()
+    }
 
-    private fun requestPermission() {
-        val permission = mutableListOf<String>()
-
-        if(!hasReadExternalStoragePermissions())
-            permission.add(Manifest.permission.READ_EXTERNAL_STORAGE)
-
-
-        if(permission.size != 0)
-            ActivityCompat.requestPermissions(this, permission.toTypedArray(), 0)
-
+    override fun onStop() {
+        serviceBinder.unbind(this)
+        super.onStop()
     }
 }

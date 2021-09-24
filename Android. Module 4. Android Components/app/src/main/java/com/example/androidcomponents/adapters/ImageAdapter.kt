@@ -11,23 +11,13 @@ import com.example.androidcomponents.R
 
 class ImageAdapter : RecyclerView.Adapter<ImageAdapter.ViewHolder>() {
 
-    private val images: ArrayList<String> = ArrayList()
+    private val images = mutableListOf<String>()
 
     fun setData(list: ArrayList<String>) {
         images.clear()
         images.addAll(list)
 
         notifyDataSetChanged()
-    }
-
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-        private val image: ImageView = itemView.findViewById(R.id.imageView)
-
-        fun bind(string: String) {
-            image.setImageURI(Uri.parse(string))
-        }
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
@@ -39,4 +29,13 @@ class ImageAdapter : RecyclerView.Adapter<ImageAdapter.ViewHolder>() {
 
     override fun getItemCount(): Int = images.size
 
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+        private val image: ImageView = itemView.findViewById(R.id.imageView)
+
+        fun bind(string: String) {
+            image.setImageURI(Uri.parse(string))
+        }
+
+    }
 }
