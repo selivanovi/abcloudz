@@ -22,7 +22,8 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        app:menu="@menu/sidebar_menu" />
+        app:menu="@menu/sidebar_menu"
+        android:fitsSystemWindows="true"/>
 
 
 </androidx.drawerlayout.widget.DrawerLayout>
