@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/nav_graph_main.xml">
+    android:id="@+id/nav_graph_main.xml"
+    app:startDestination="@id/homeFragment">
 
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.fragments.HomeFragment"
+        android:label="@string/home" />
+    <fragment
+        android:id="@+id/photoFragment"
+        android:name="com.example.fragments.PhotoFragment"
+        android:label="@string/photo" />
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="com.example.fragments.MapFragment"
+        android:label="@string/map" />
 </navigation>
