@@ -1,11 +1,14 @@
 package com.example.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
@@ -22,13 +25,8 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         val navController =
             (childFragmentManager.findFragmentById(R.id.mainContainerView) as NavHostFragment)
                 .navController
-//        val appBarConfiguration =
-//            AppBarConfiguration(setOf(R.id.homeFragment, R.id.photoFragment, R.id.mapFragment))
         bottomNavigationView.setupWithNavController(navController)
-//        NavigationUI.setupActionBarWithNavController(
-//            activity as AppCompatActivity,
-//            navController,
-//            appBarConfiguration
-//        )
     }
+
+
 }
