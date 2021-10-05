@@ -1,21 +1,23 @@
 package com.example.fragments
 
+import android.Manifest
+import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.widget.Toolbar
+import androidx.core.app.ActivityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity() {
+
 
     private val toolbar: Toolbar by lazy {
         findViewById(R.id.toolbar)
@@ -42,12 +44,12 @@ class MainActivity : AppCompatActivity() {
         AppBarConfiguration(navController.graph, drawerLayout)
     }
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         navigationView.setupWithNavController(navController)
         toolbar.setupWithNavController(navController, appBarConfiguration)
-//        setupActionBarWithNavController(navController, appBarConfiguration)
 
         viewModel.liveData.observe(this, {
 
@@ -60,4 +62,6 @@ class MainActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean =
         navController.navigateUp(appBarConfiguration) ||
                 super.onSupportNavigateUp()
+
+
 }
