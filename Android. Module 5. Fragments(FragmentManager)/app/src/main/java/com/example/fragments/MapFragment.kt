@@ -21,6 +21,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 
 class MapFragment : Fragment(), OnMapReadyCallback {
 
+
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
 
     override fun onCreateView(
@@ -33,17 +34,15 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        activity?.let {
-            val mainViewModel = ViewModelProvider(it).get(MainViewModel::class.java)
-            mainViewModel.changeTitle("Map")
-        }
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+
+        fusedLocationProviderClient =
+            LocationServices.getFusedLocationProviderClient(requireActivity())
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(this)
 
     }
 
-    private fun setLocation(map: GoogleMap){
+    private fun setLocation(map: GoogleMap) {
 
         if (ActivityCompat.checkSelfPermission(
                 requireContext(),
@@ -54,10 +53,9 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             requestPermissions()
-        }
-        else {
+        } else {
             fusedLocationProviderClient.lastLocation.addOnSuccessListener {
-                it?.let{
+                it?.let {
                     Log.d("Map", "Get location $it")
                     val myPosition = LatLng(it.latitude, it.longitude)
                     map.addMarker(MarkerOptions().position(myPosition).title("My position"))
