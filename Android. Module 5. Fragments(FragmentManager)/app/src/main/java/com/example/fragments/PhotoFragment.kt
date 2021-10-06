@@ -10,13 +10,13 @@ import androidx.viewpager2.widget.ViewPager2
 
 class PhotoFragment : Fragment(R.layout.fragment_photo) {
 
-    private val viewModel: MainViewModel by lazy {
-        ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
-    }
+    // private val viewModel: MainViewModel by lazy {
+    //     ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
+    // }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        viewModel.changeTitle("Photo")
+        // viewModel.changeTitle("Photo")
         val viewPager = view.findViewById<ViewPager2>(R.id.viewPager)
         viewPager.adapter = ScreenSlidePagerAdapter(requireActivity())
 

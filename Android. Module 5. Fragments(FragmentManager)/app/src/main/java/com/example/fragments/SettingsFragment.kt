@@ -30,7 +30,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
     private fun configureToolbar(view: View) {
 
-        val toolbar = view.findViewById<Toolbar>(R.id.settingsToolbar)
+        toolbar = view.findViewById<Toolbar>(R.id.settingsToolbar)
         toolbar.navigationIcon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_back)
         toolbar.setNavigationOnClickListener {
             parentFragmentManager.popBackStack()

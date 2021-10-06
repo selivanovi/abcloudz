@@ -7,12 +7,12 @@ import androidx.lifecycle.ViewModelProvider
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
 
-    private val viewModel: MainViewModel by lazy {
-        ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
-    }
+    // private val viewModel: MainViewModel by lazy {
+    //     ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
+    // }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        viewModel.changeTitle("Home")
+        // viewModel.changeTitle("Home")
 
         super.onViewCreated(view, savedInstanceState)
     }

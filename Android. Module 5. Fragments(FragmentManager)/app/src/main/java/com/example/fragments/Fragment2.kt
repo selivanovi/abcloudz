@@ -14,7 +14,7 @@ class Fragment2 : Fragment(R.layout.fragment2) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
+        (parentFragment as SettingsFragment).toolbar.title = "Fragment 2"
         view.findViewById<FloatingActionButton>(R.id.beforeFab2).setOnClickListener {
             parentFragmentManager.popBackStack()
         }

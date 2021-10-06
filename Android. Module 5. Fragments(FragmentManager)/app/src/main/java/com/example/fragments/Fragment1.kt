@@ -14,7 +14,7 @@ class Fragment1 : Fragment(R.layout.fragment1) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        (parentFragment as SettingsFragment).toolbar.title = "Fragment"
+        (parentFragment as SettingsFragment).toolbar.title = "Fragment 1"
         view.findViewById<FloatingActionButton>(R.id.nextFab1).setOnClickListener {
             parentFragmentManager.commit {
                 setReorderingAllowed(true)
