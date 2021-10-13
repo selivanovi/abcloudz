@@ -11,7 +11,7 @@
         android:theme="@style/Theme.Notifications">
 
         <service android:name=".ReplyService"/>
-
+        <receiver android:name=".CancelReceiver"/>
         <activity
             android:name=".MainActivity"
             android:exported="true">
