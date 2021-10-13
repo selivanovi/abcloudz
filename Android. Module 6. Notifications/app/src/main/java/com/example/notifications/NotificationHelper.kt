@@ -10,6 +10,7 @@ import android.graphics.Bitmap
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.RemoteInput
+import androidx.core.content.ContextCompat.getSystemService
 
 
 object NotificationHelper {
@@ -49,16 +50,18 @@ object NotificationHelper {
         text: String,
         smallIcon: Int,
         bitmap: Bitmap,
-        channelId: String
+        channelId: String,
+        groupId: String
     ): Notification {
 
         val replyIntent =
             configureIntent(notificationId, ACTION_REPLY, ReplyService.newIntent(context))
-        val replyPendingIntent = createPendingIntent(context, notificationId, replyIntent)
+        // Witch PendingIntent flag should use int this method?
+        val replyPendingIntent = PendingIntent.getService(context, 0, replyIntent, PendingIntent.FLAG_UPDATE_CURRENT)
 
         val cancelIntent =
             configureIntent(notificationId, ACTION_CANCEL, CancelReceiver.newIntent(context))
-        val cancelPendingIntent = createPendingIntent(context, notificationId, cancelIntent)
+        val cancelPendingIntent = PendingIntent.getBroadcast(context, 0, cancelIntent, PendingIntent.FLAG_UPDATE_CURRENT)
 
         val cancelAction =
             NotificationCompat.Action.Builder(
@@ -93,15 +96,34 @@ object NotificationHelper {
                     .bigPicture(bitmap)
                     .bigLargeIcon(null)
             )
-            .setGroup(MAIN_GROUP)
+            .setGroup(groupId)
             .addAction(replyAction)
             .addAction(cancelAction)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setOngoing(true)
             .build()
     }
 
-    fun createNotificationSecondType() {
+    fun createNotificationSecondType(
+        context: Context,
+        notificationId: Int,
+        title: String,
+        text: String,
+        smallIcon: Int,
+        channelId: String,
+        groupId: String
+    ) {
+        val notification = NotificationCompat.Builder(context, channelId)
+            .setSmallIcon(smallIcon)
+            .setContentTitle(title)
+            .setContentText(text)
+            .setGroup(groupId)
+            .build()
 
+        val notificationManager =
+            context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.notify(notificationId, notification)
+        notificationManager.cancel(notificationId)
     }
 
     fun showNotification(context: Context, notificationId: Int, notification: Notification) {
@@ -116,17 +138,6 @@ object NotificationHelper {
         notificationManager.cancel(notificationId)
     }
 
-    private fun createPendingIntent(
-        context: Context,
-        requestCode: Int,
-        intent: Intent
-    ): PendingIntent =
-        PendingIntent.getBroadcast(
-            context,
-            requestCode,
-            intent,
-            PendingIntent.FLAG_UPDATE_CURRENT
-        )
 
     private fun configureIntent(id: Int, action: String, intent: Intent) =
         intent.apply {
