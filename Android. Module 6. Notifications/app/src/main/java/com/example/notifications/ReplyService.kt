@@ -1,12 +1,10 @@
 package com.example.notifications
 
-import android.app.NotificationManager
 import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.os.IBinder
 import android.util.Log
-import androidx.core.app.NotificationCompat
 import androidx.core.app.RemoteInput
 
 
@@ -15,13 +13,13 @@ class ReplyService : Service() {
     private lateinit var textReply: String
 
     override fun onCreate() {
-        Log.d("MyApp", "OnCreate")
+        Log.d("ReplyService", "OnCreate")
         super.onCreate()
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 
-        Log.d("MyApp", "OnStartCommand")
+        Log.d("ReplyService", "OnStartCommand")
 
         intent?.let {
             Thread {
@@ -37,17 +35,16 @@ class ReplyService : Service() {
             val results = RemoteInput.getResultsFromIntent(intent)
 
             results?.let {
-                textReply = it.getCharSequence(NotificationHelper.KEY_TEXT_REPLY) as String
+                textReply = it.getString(NotificationHelper.KEY_TEXT_REPLY, "")
             }
 
             val itemId = intent.getIntExtra(NotificationHelper.KEY_ITEM_ID, 0)
-
-            val newNotificationId = itemId + 100
+            val titleReply = intent.getStringExtra(NotificationHelper.KEY_TITLE) ?: getString(R.string.replied)
 
             val notification = NotificationHelper.createNotificationSecondType(
                 applicationContext,
-                newNotificationId,
-                getString(R.string.replied),
+                NotificationHelper.REPLY_ID_NOTIFICATIONS,
+                titleReply,
                 textReply,
                 R.drawable.message_icon,
                 NotificationHelper.MAIN_CHANNEL_ID,
@@ -55,12 +52,17 @@ class ReplyService : Service() {
             )
 
             NotificationHelper.cancelNotification(applicationContext, itemId)
-            NotificationHelper.showNotification(applicationContext, newNotificationId, notification)
+            NotificationHelper.showNotification(
+                applicationContext,
+                NotificationHelper.REPLY_ID_NOTIFICATIONS,
+                notification
+            )
+            NotificationHelper.REPLY_ID_NOTIFICATIONS++
         }
     }
 
     override fun onDestroy() {
-        Log.d("MyApp", "onDestroy")
+        Log.d("ReplyService", "onDestroy")
         super.onDestroy()
     }
 
