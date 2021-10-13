@@ -9,4 +9,6 @@
     <string name="main_channel_description">Main description</string>
     <string name="notification_first_title">App notification %d</string>
     <string name="notofication_first_text">Type is fisrt</string>
+    <string name="replied">Replied</string>
+    <string name="notification_second_text">Second type of notifications</string>
 </resources>
