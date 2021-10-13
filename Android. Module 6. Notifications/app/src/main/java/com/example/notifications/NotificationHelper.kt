@@ -17,12 +17,14 @@ object NotificationHelper {
 
     const val KEY_TEXT_REPLY = "key_text_reply"
     const val KEY_ITEM_ID = "item_id"
+    const val KEY_TITLE = "label_id"
 
     const val MAIN_CHANNEL_ID = "main_channel_id"
     const val REPLY_GROUP = "reply_group"
     const val MAIN_GROUP = "main_group"
     const val ACTION_REPLY = "action_reply"
     const val ACTION_CANCEL = "action_reply"
+    var REPLY_ID_NOTIFICATIONS = 100
 
 
     fun createChannel(
@@ -54,14 +56,19 @@ object NotificationHelper {
         groupId: String
     ): Notification {
 
-        val replyIntent =
-            configureIntent(notificationId, ACTION_REPLY, ReplyService.newIntent(context))
+        val replyIntent = ReplyService.newIntent(context).apply {
+            this.action = ACTION_REPLY
+            putExtra(KEY_ITEM_ID, notificationId)
+            putExtra(KEY_TITLE, title)
+        }
         // Witch PendingIntent flag should use int this method?
         val replyPendingIntent =
             PendingIntent.getService(context, 0, replyIntent, PendingIntent.FLAG_UPDATE_CURRENT)
 
-        val cancelIntent =
-            configureIntent(notificationId, ACTION_CANCEL, CancelReceiver.newIntent(context))
+        val cancelIntent = CancelReceiver.newIntent(context).apply {
+            this.action = ACTION_CANCEL
+            putExtra(KEY_ITEM_ID, notificationId)
+        }
         val cancelPendingIntent =
             PendingIntent.getBroadcast(context, 0, cancelIntent, PendingIntent.FLAG_UPDATE_CURRENT)
 
@@ -133,10 +140,4 @@ object NotificationHelper {
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.cancel(notificationId)
     }
-
-    private fun configureIntent(id: Int, action: String, intent: Intent) =
-        intent.apply {
-            this.action = action
-            putExtra(KEY_ITEM_ID, id)
-        }
 }

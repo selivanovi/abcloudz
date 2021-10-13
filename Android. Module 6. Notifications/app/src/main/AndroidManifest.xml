@@ -11,6 +11,7 @@
         android:theme="@style/Theme.Notifications">
 
         <service android:name=".ReplyService"/>
+        <service android:name=".NotificationService"/>
         <receiver android:name=".CancelReceiver"/>
         <activity
             android:name=".MainActivity"
