@@ -57,11 +57,13 @@ object NotificationHelper {
         val replyIntent =
             configureIntent(notificationId, ACTION_REPLY, ReplyService.newIntent(context))
         // Witch PendingIntent flag should use int this method?
-        val replyPendingIntent = PendingIntent.getService(context, 0, replyIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+        val replyPendingIntent =
+            PendingIntent.getService(context, 0, replyIntent, PendingIntent.FLAG_UPDATE_CURRENT)
 
         val cancelIntent =
             configureIntent(notificationId, ACTION_CANCEL, CancelReceiver.newIntent(context))
-        val cancelPendingIntent = PendingIntent.getBroadcast(context, 0, cancelIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+        val cancelPendingIntent =
+            PendingIntent.getBroadcast(context, 0, cancelIntent, PendingIntent.FLAG_UPDATE_CURRENT)
 
         val cancelAction =
             NotificationCompat.Action.Builder(
@@ -112,19 +114,13 @@ object NotificationHelper {
         smallIcon: Int,
         channelId: String,
         groupId: String
-    ) {
-        val notification = NotificationCompat.Builder(context, channelId)
-            .setSmallIcon(smallIcon)
-            .setContentTitle(title)
-            .setContentText(text)
-            .setGroup(groupId)
-            .build()
+    ): Notification = NotificationCompat.Builder(context, channelId)
+        .setSmallIcon(smallIcon)
+        .setContentTitle(title)
+        .setContentText(text)
+        .setGroup(groupId)
+        .build()
 
-        val notificationManager =
-            context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        notificationManager.notify(notificationId, notification)
-        notificationManager.cancel(notificationId)
-    }
 
     fun showNotification(context: Context, notificationId: Int, notification: Notification) {
         val notificationManager =
@@ -138,12 +134,9 @@ object NotificationHelper {
         notificationManager.cancel(notificationId)
     }
 
-
     private fun configureIntent(id: Int, action: String, intent: Intent) =
         intent.apply {
             this.action = action
             putExtra(KEY_ITEM_ID, id)
         }
-
-
 }
