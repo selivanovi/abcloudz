@@ -32,12 +32,13 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         startService(NotificationService.newIntent(applicationContext))
-
+        startService(MyFirebaseService.newIntent(applicationContext))
         super.onStart()
     }
 
     override fun onStop() {
         stopService(NotificationService.newIntent(applicationContext))
+        stopService(MyFirebaseService.newIntent(applicationContext))
         super.onStop()
     }
 }
