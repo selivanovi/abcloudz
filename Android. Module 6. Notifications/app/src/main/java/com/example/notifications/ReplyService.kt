@@ -43,7 +43,6 @@ class ReplyService : Service() {
 
             val notification = NotificationHelper.createNotificationSecondType(
                 applicationContext,
-                NotificationHelper.REPLY_ID_NOTIFICATIONS,
                 titleReply,
                 textReply,
                 R.drawable.message_icon,

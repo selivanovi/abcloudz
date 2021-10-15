@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat.getSystemService
 
 object NotificationHelper {
 
+
     const val KEY_TEXT_REPLY = "key_text_reply"
     const val KEY_ITEM_ID = "item_id"
     const val KEY_TITLE = "label_id"
@@ -22,9 +23,11 @@ object NotificationHelper {
     const val MAIN_CHANNEL_ID = "main_channel_id"
     const val REPLY_GROUP = "reply_group"
     const val MAIN_GROUP = "main_group"
+    const val FIREBASE_GROUP = "firebase_group"
     const val ACTION_REPLY = "action_reply"
     const val ACTION_CANCEL = "action_reply"
     var REPLY_ID_NOTIFICATIONS = 100
+    const val FIREBASE_NOTIFICATION_ID = 200
 
 
     fun createChannel(
@@ -115,7 +118,6 @@ object NotificationHelper {
 
     fun createNotificationSecondType(
         context: Context,
-        notificationId: Int,
         title: String,
         text: String,
         smallIcon: Int,
