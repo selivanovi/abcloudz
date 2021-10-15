@@ -13,6 +13,8 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.app.RemoteInput
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
 
 class MainActivity : AppCompatActivity() {
 
@@ -28,17 +30,30 @@ class MainActivity : AppCompatActivity() {
             importance = NotificationCompat.PRIORITY_MAX
         )
 
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.w("MainActivity", "Fetching FCM registration token failed", task.exception)
+                return@OnCompleteListener
+            }
+
+            // Get new FCM registration token
+            val token = task.result
+
+            // Log
+            Log.d("MainActivity", "Token -> $token")
+        })
+
     }
 
     override fun onStart() {
+        Log.d("MainActivity", "onStart")
         startService(NotificationService.newIntent(applicationContext))
-        startService(MyFirebaseService.newIntent(applicationContext))
         super.onStart()
     }
 
     override fun onStop() {
+        Log.d("MainActivity", "OnStop")
         stopService(NotificationService.newIntent(applicationContext))
-        stopService(MyFirebaseService.newIntent(applicationContext))
         super.onStop()
     }
 }

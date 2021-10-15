@@ -18,7 +18,7 @@ class NotificationService : Service() {
         Log.d("NotificationService", "onStartCommand")
         var quantity = 0
         Thread {
-            while (quantity <= QUANTITY_OF_NOTIFICATIONS) {
+            while (quantity < QUANTITY_OF_NOTIFICATIONS) {
                 sendMessage(applicationContext, quantity)
                 quantity++
                 Thread.sleep(15000)
