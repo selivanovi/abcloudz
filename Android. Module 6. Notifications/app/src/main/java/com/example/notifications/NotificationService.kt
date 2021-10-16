@@ -39,8 +39,8 @@ class NotificationService : Service() {
             text = getString(R.string.notofication_first_text),
             smallIcon = R.drawable.message_icon,
             bitmap = bitmap,
-            NotificationHelper.MAIN_CHANNEL_ID,
-            NotificationHelper.MAIN_GROUP
+            channelId = MAIN_CHANNEL_ID,
+            groupId = MAIN_GROUP
         )
 
         NotificationHelper.showNotification(context, NOTIFICATION_ID, notification)
