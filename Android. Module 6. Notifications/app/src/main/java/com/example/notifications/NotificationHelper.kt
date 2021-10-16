@@ -9,26 +9,24 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Build
 import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.app.RemoteInput
 import androidx.core.content.ContextCompat.getSystemService
 
+const val KEY_TEXT_REPLY = "key_text_reply"
+const val KEY_ITEM_ID = "item_id"
+const val KEY_TITLE = "label_id"
+
+const val MAIN_CHANNEL_ID = "main_channel_id"
+const val REPLY_GROUP = "reply_group"
+const val MAIN_GROUP = "main_group"
+const val FIREBASE_GROUP = "firebase_group"
+const val ACTION_REPLY = "action_reply"
+const val ACTION_CANCEL = "action_reply"
+var REPLY_ID_NOTIFICATIONS = 100
+const val FIREBASE_NOTIFICATION_ID = 200
 
 object NotificationHelper {
-
-
-    const val KEY_TEXT_REPLY = "key_text_reply"
-    const val KEY_ITEM_ID = "item_id"
-    const val KEY_TITLE = "label_id"
-
-    const val MAIN_CHANNEL_ID = "main_channel_id"
-    const val REPLY_GROUP = "reply_group"
-    const val MAIN_GROUP = "main_group"
-    const val FIREBASE_GROUP = "firebase_group"
-    const val ACTION_REPLY = "action_reply"
-    const val ACTION_CANCEL = "action_reply"
-    var REPLY_ID_NOTIFICATIONS = 100
-    const val FIREBASE_NOTIFICATION_ID = 200
-
 
     fun createChannel(
         context: Context,
@@ -64,7 +62,7 @@ object NotificationHelper {
             putExtra(KEY_ITEM_ID, notificationId)
             putExtra(KEY_TITLE, title)
         }
-        // Witch PendingIntent flag should use int this method?
+
         val replyPendingIntent =
             PendingIntent.getService(context, 0, replyIntent, PendingIntent.FLAG_UPDATE_CURRENT)
 

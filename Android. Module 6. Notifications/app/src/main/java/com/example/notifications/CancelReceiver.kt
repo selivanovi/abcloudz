@@ -11,12 +11,11 @@ class CancelReceiver : BroadcastReceiver() {
 
         Log.d("MyApp", "onReceive")
 
-        if (NotificationHelper.ACTION_CANCEL == intent?.action){
-            val itemId = intent.getIntExtra(NotificationHelper.KEY_ITEM_ID, 0)
+        if (ACTION_CANCEL == intent?.action){
+            val itemId = intent?.getIntExtra(KEY_ITEM_ID, 0)
 
             context?.let {
                 NotificationHelper.cancelNotification(it, itemId)
-
             }
         }
     }

@@ -12,56 +12,62 @@ class ReplyService : Service() {
 
     private lateinit var textReply: String
 
+    private lateinit var thread: Thread
+
     override fun onCreate() {
         Log.d("ReplyService", "OnCreate")
         super.onCreate()
     }
 
+
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 
         Log.d("ReplyService", "OnStartCommand")
+        if (ACTION_REPLY == intent?.action) {
 
-        intent?.let {
-            Thread {
-                notify(it)
-            }.start()
-        }
-        stopSelf()
-        return super.onStartCommand(intent, flags, startId)
-    }
-
-    private fun notify(intent: Intent) {
-        if (NotificationHelper.ACTION_REPLY == intent?.action) {
             val results = RemoteInput.getResultsFromIntent(intent)
 
             results?.let {
-                textReply = it.getString(NotificationHelper.KEY_TEXT_REPLY, "")
+                textReply = it.getString(KEY_TEXT_REPLY, "")
             }
 
-            val itemId = intent.getIntExtra(NotificationHelper.KEY_ITEM_ID, 0)
-            val titleReply = intent.getStringExtra(NotificationHelper.KEY_TITLE) ?: getString(R.string.replied)
+            val itemId = intent?.getIntExtra(KEY_ITEM_ID, 0)
+            val titleReply =
+                intent?.getStringExtra(KEY_TITLE) ?: getString(R.string.replied)
 
-            val notification = NotificationHelper.createNotificationSecondType(
-                applicationContext,
-                titleReply,
-                textReply,
-                R.drawable.message_icon,
-                NotificationHelper.MAIN_CHANNEL_ID,
-                NotificationHelper.REPLY_GROUP
-            )
-
-            NotificationHelper.cancelNotification(applicationContext, itemId)
-            NotificationHelper.showNotification(
-                applicationContext,
-                NotificationHelper.REPLY_ID_NOTIFICATIONS,
-                notification
-            )
-            NotificationHelper.REPLY_ID_NOTIFICATIONS++
+            thread = Thread {
+                notify(applicationContext, itemId, titleReply, textReply)
+            }
+            thread.start()
         }
+        return super.onStartCommand(intent, flags, startId)
+    }
+
+    private fun notify(context: Context, itemId: Int, title: String, text: String) {
+
+        val notification = NotificationHelper.createNotificationSecondType(
+            context,
+            title,
+            text,
+            R.drawable.message_icon,
+            MAIN_CHANNEL_ID,
+            REPLY_GROUP
+        )
+
+        NotificationHelper.cancelNotification(context, itemId)
+
+        NotificationHelper.showNotification(
+            context,
+            REPLY_ID_NOTIFICATIONS,
+            notification
+        )
+
+        REPLY_ID_NOTIFICATIONS++
     }
 
     override fun onDestroy() {
         Log.d("ReplyService", "onDestroy")
+        thread.join()
         super.onDestroy()
     }
 
