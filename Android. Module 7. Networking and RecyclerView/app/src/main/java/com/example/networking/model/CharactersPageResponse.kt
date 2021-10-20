@@ -2,7 +2,7 @@ package com.example.networking.model
 
 import com.google.gson.annotations.SerializedName
 
-data class CharactersPageResponseList(
+data class CharactersPageResponse(
     val info: Info =  Info(),
     val results: List<CharacterResponse>
 ) {

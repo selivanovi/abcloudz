@@ -1,6 +1,6 @@
 package com.example.networking.model
 
-data class Character(
+data class CharacterResponse(
     val created: String = "",
     val episode: List<String> = listOf(),
     val gender: String = "",
