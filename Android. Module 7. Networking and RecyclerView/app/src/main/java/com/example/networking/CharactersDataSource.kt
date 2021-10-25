@@ -2,48 +2,34 @@ package com.example.networking
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.example.networking.model.CharacterResponse
-import com.example.networking.model.CharactersPageResponse
+import com.example.networking.mapper.CharacterMapper
+import com.example.networking.model.Character
 import com.example.networking.network.ApiClient
-import retrofit2.Call
-import retrofit2.Response
+
 
 private const val CHARACTERS_STARTING_PAGE = 1
 
 class CharactersDataSource(
     private val apiClient: ApiClient,
-) : PagingSource<Int, CharacterResponse>()
+) : PagingSource<Int, Character>()
 {
-    override fun getRefreshKey(state: PagingState<Int, CharacterResponse>): Int? {
-        TODO("Not yet implemented")
+    override fun getRefreshKey(state: PagingState<Int, Character>): Int? {
+        val anchorPosition = state.anchorPosition ?: return null
+        val anchorPage = state.closestPageToPosition(anchorPosition) ?: return null
+        return  anchorPage.prevKey?.plus(1) ?: anchorPage.nextKey?.minus(1)
     }
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, CharacterResponse> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Character> {
         val page: Int = params.key ?: CHARACTERS_STARTING_PAGE
-        val pageSize: Int = params.loadSize
 
-        val characters = apiClient.getCharactersPage(page)
+        val pageRequest = apiClient.getCharactersPage(page)
+        pageRequest.exception?.let {
+            return LoadResult.Error(it)
+        }
 
-
-        characters.enqueue(object : retrofit2.Callback<CharactersPageResponse>{
-            override fun onResponse(
-                call: Call<CharactersPageResponse>,
-                response: Response<CharactersPageResponse>
-            ) {
-                if (response.isSuccessful) {
-                    val results = checkNotNull(response.body()).results
-                    val nextKey = if (results.size < pageSize) null else page + 1
-                    val prevKey = if (page == 0) null else page - 1
-
-                }
-            }
-
-            override fun onFailure(call: Call<CharactersPageResponse>, t: Throwable) {
-                TODO("Not yet implemented")
-            }
-
-        })
-
-        return
+        val characters = pageRequest.body.results.map { CharacterMapper.getFrom(it)}
+        val nextPageNumber = if(pageRequest.body.info.next != null) page + 1 else null
+        val prevPageNumber = if(page > 1) page - 1 else null
+        return LoadResult.Page(characters, prevPageNumber, nextPageNumber)
     }
 }

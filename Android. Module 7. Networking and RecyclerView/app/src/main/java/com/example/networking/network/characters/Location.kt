@@ -1,4 +1,4 @@
-package com.example.networking.model
+package com.example.networking.network.characters
 
 data class Location(
     val name: String = "",

@@ -1,4 +1,4 @@
-package com.example.networking.model
+package com.example.networking.network.characters
 
 data class CharacterResponse(
     val created: String = "",
@@ -13,4 +13,5 @@ data class CharacterResponse(
     val status: String = "",
     val type: String = "",
     val url: String = ""
-)
+) {
+}

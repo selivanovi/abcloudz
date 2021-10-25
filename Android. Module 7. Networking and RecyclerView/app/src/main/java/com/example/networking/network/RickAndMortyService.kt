@@ -1,14 +1,14 @@
 package com.example.networking.network
 
-import com.example.networking.model.CharactersPageResponse
-import retrofit2.Call
+import com.example.networking.network.characters.CharactersPageResponse
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface RickAndMortyService {
 
     @GET("character/")
-    abstract fun getCharactersPage(
+    suspend fun getCharactersPage(
         @Query("page") pageIndex: Int
-    ): Call<CharactersPageResponse>
+    ): Response<CharactersPageResponse>
 }

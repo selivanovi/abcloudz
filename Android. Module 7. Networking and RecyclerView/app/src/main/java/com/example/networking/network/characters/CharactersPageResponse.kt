@@ -1,6 +1,4 @@
-package com.example.networking.model
-
-import com.google.gson.annotations.SerializedName
+package com.example.networking.network.characters
 
 data class CharactersPageResponse(
     val info: Info =  Info(),
