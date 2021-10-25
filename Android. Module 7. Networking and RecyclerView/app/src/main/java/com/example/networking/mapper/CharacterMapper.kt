@@ -11,7 +11,10 @@ object CharacterMapper {
         Character(
             id = response.id,
             name = response.name,
+            image = response.image,
+            status = response.status,
             location = response.location,
             origin = response.origin,
+            species = response.species
         )
 }

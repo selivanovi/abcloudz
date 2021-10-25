@@ -1,8 +1,10 @@
 package com.example.networking
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
@@ -13,10 +15,22 @@ class CharacterAdapter(diffUtil: DiffUtil.ItemCallback<Character>) : PagingDataA
 
     inner class CharacterViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-        private val nameTextView = view.findViewById<TextView>(R.id.textViewName)
+        private val nameTextView = view.findViewById<TextView>(R.id.nameTextView)
+        private val imageCharacter = view.findViewById<ImageView>(R.id.characterImageView)
+        private val statusTextView = view.findViewById<TextView>(R.id.statusTextView)
+        private val speciesTextView = view.findViewById<TextView>(R.id.speciesTextView)
 
         fun bind(item: Character?) {
-            nameTextView.text = item?.name
+            item?.let { character->
+                nameTextView.text = character.name
+                Log.d("CharacterAdapter", "Name: " + character.name)
+                setImageFromUrl(character.image, imageCharacter)
+                Log.d("CharacterAdapter", "Image: " + character.image)
+                statusTextView.text = character.status
+                Log.d("CharacterAdapter", "Status: " + character.status)
+                speciesTextView.text = character.species
+                Log.d("CharacterAdapter", "Species: " + character.species)
+            }
         }
     }
 
