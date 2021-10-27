@@ -1,5 +1,6 @@
 package com.example.networking.model
 
+import com.example.networking.delegate.DelegateAdapterItem
 import com.example.networking.network.characters.Location
 import com.example.networking.network.characters.Origin
 
@@ -15,5 +16,10 @@ data class Character(
     val status: String = "",
     val type: String = "",
     val url: String = ""
-) {
+) : DelegateAdapterItem {
+
+    override fun id(): Int = id
+
+    override fun compareContent(item: DelegateAdapterItem): Boolean =
+        this == item
 }

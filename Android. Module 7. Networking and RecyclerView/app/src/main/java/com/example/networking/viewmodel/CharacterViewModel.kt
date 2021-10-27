@@ -5,13 +5,14 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.example.networking.CharacterRepository
+import com.example.networking.delegate.DelegateAdapterItem
 import com.example.networking.model.Character
 import com.example.networking.network.NetworkLayer
 import kotlinx.coroutines.flow.Flow
 
 class CharacterViewModel: ViewModel() {
 
-     fun searchCharacter(): Flow<PagingData<Character>> =
+     fun searchCharacter(): Flow<PagingData<DelegateAdapterItem>> =
         CharacterRepository(NetworkLayer.apiService).getCharacters().cachedIn(viewModelScope)
 
 

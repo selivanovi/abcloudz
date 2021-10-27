@@ -2,6 +2,7 @@ package com.example.networking
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import com.example.networking.delegate.DelegateAdapterItem
 import com.example.networking.mapper.CharacterMapper
 import com.example.networking.model.Character
 import com.example.networking.network.ApiClient
@@ -11,15 +12,15 @@ private const val CHARACTERS_STARTING_PAGE = 1
 
 class CharactersDataSource(
     private val apiClient: ApiClient,
-) : PagingSource<Int, Character>()
+) : PagingSource<Int, DelegateAdapterItem>()
 {
-    override fun getRefreshKey(state: PagingState<Int, Character>): Int? {
+    override fun getRefreshKey(state: PagingState<Int, DelegateAdapterItem>): Int? {
         val anchorPosition = state.anchorPosition ?: return null
         val anchorPage = state.closestPageToPosition(anchorPosition) ?: return null
         return  anchorPage.prevKey?.plus(1) ?: anchorPage.nextKey?.minus(1)
     }
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Character> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, DelegateAdapterItem> {
         val page: Int = params.key ?: CHARACTERS_STARTING_PAGE
 
         val pageRequest = apiClient.getCharactersPage(page)
