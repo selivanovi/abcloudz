@@ -2,6 +2,7 @@ package com.example.networking.pagin
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import com.example.networking.CHARACTERS_STARTING_PAGE
 import com.example.networking.StatusOfCharacters
 import com.example.networking.delegate.DelegateAdapterItem
 import com.example.networking.mapper.AliveCharacterMapper
@@ -11,7 +12,6 @@ import com.example.networking.network.ApiClient
 import com.example.networking.network.characters.CharacterResponse
 
 
-private const val CHARACTERS_STARTING_PAGE = 1
 
 class CharactersDataSource(
     private val apiClient: ApiClient,

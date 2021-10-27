@@ -23,21 +23,16 @@ data class SimpleResponse<T>(
 
         fun <T> failure(exception: Exception): SimpleResponse<T> =
             SimpleResponse(
-                status = Status.Success,
+                status = Status.Failure,
                 data = null,
                 exception = exception
             )
     }
 
-    val failed: Boolean
-        get() = this.status == Status.Failure
-
     val isSuccessful: Boolean
-        get() = !failed && this.data?.isSuccessful == true
+        get() = this.data?.isSuccessful == true
 
     val body: T
         get() = this.data!!.body()!!
 
-    val bodyNullable: T?
-        get() = this.data?.body()
 }
