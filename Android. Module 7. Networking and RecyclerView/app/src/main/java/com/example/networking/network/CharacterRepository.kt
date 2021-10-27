@@ -1,11 +1,10 @@
-package com.example.networking
+package com.example.networking.network
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.example.networking.delegate.DelegateAdapterItem
-import com.example.networking.model.Character
-import com.example.networking.network.ApiClient
+import com.example.networking.pagin.CharactersDataSource
 import kotlinx.coroutines.flow.Flow
 
 class CharacterRepository(private val apiClient: ApiClient){

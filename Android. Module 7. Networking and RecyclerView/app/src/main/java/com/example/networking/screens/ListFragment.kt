@@ -1,4 +1,4 @@
-package com.example.networking
+package com.example.networking.screens
 
 
 import android.os.Bundle
@@ -8,6 +8,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.networking.R
 import com.example.networking.delegate.*
 import com.example.networking.viewmodel.CharacterViewModel
 import kotlinx.coroutines.flow.collectLatest
