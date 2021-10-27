@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Notifications</string>
+    <string name="cnannel_name">Channel name</string>
+    <string name="channel_description">Channel description</string>
+    <string name="reply">Reply</string>
+    <string name="remote_input_text">Message</string>
+    <string name="cancel">Cancel</string>
+    <string name="main_channel_name">Main channel</string>
+    <string name="main_channel_description">Main description</string>
+    <string name="notification_first_title">App notification %d</string>
+    <string name="notofication_first_text">Type is fisrt</string>
+    <string name="replied">Replied</string>
+    <string name="notification_second_text">Second type of notifications</string>
+    <string name="title">Tittle</string>
+    <string name="text">Text</string>
+</resources>
