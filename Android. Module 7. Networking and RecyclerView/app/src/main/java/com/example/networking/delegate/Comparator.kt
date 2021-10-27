@@ -1,7 +1,6 @@
 package com.example.networking.delegate
 
 import androidx.recyclerview.widget.DiffUtil
-import com.example.networking.model.Character
 
 class Comparator : DiffUtil.ItemCallback<DelegateAdapterItem>() {
 

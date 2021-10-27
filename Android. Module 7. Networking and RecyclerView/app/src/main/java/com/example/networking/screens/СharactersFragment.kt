@@ -14,14 +14,16 @@ import com.example.networking.viewmodel.CharacterViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class ListFragment : Fragment(R.layout.fragment_list) {
+class СharactersFragment : Fragment(R.layout.fragment_list) {
 
     private val characterViewModel: CharacterViewModel by activityViewModels<CharacterViewModel>()
 
     private val pagingDataAdapter: CharacterPaginDelegateAdapter<DelegateAdapterItem> =
         CharacterPaginDelegateAdapter<DelegateAdapterItem>(
             AdapterDelegateManager(
-                CharacterAdapterItemDelegate<DelegateAdapterItem>(R.layout.item_recyclerview)
+                CharacterAliveAdapterItemDelegate<DelegateAdapterItem>(R.layout.item_alive_recyclerview),
+                CharacterDeadAdapterItemDelegate<DelegateAdapterItem>(R.layout.item_dead_recyclerview),
+                CharacterUnknownAdapterItemDelegate<DelegateAdapterItem>(R.layout.item_unknown_recyclerview),
             ),
             Comparator()
         )

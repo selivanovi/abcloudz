@@ -2,10 +2,13 @@ package com.example.networking.pagin
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import com.example.networking.StatusOfCharacters
 import com.example.networking.delegate.DelegateAdapterItem
-import com.example.networking.mapper.CharacterMapper
-import com.example.networking.model.Character
+import com.example.networking.mapper.AliveCharacterMapper
+import com.example.networking.mapper.DeadCharacterMapper
+import com.example.networking.mapper.UnknownCharacterMapper
 import com.example.networking.network.ApiClient
+import com.example.networking.network.characters.CharacterResponse
 
 
 private const val CHARACTERS_STARTING_PAGE = 1
@@ -28,9 +31,16 @@ class CharactersDataSource(
             return LoadResult.Error(it)
         }
 
-        val characters = pageRequest.body.results.map { CharacterMapper.getFrom(it)}
+        val characters = pageRequest.body.results.map {createCharacter(it)}
         val nextPageNumber = if(pageRequest.body.info.next != null) page + 1 else null
         val prevPageNumber = if(page > 1) page - 1 else null
         return LoadResult.Page(characters, prevPageNumber, nextPageNumber)
     }
+
+    private fun createCharacter(response: CharacterResponse) =
+        when (response.status.uppercase()) {
+            StatusOfCharacters.ALIVE.status.uppercase()  -> AliveCharacterMapper.getFrom(response)
+            StatusOfCharacters.DEAD.status.uppercase()  -> DeadCharacterMapper.getFrom(response)
+            else -> UnknownCharacterMapper.getFrom(response)
+        }
 }

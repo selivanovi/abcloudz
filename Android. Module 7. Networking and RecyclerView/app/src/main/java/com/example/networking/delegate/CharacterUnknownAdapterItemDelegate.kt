@@ -8,17 +8,18 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.networking.R
-import com.example.networking.model.Character
+import com.example.networking.model.AliveCharacter
+import com.example.networking.model.UnknownCharacter
 import com.example.networking.setImageFromUrl
 
-class CharacterAdapterItemDelegate<T>(layoutId: Int): BaseAdapterDelegate<T>(layoutId) {
+class CharacterUnknownAdapterItemDelegate<T>(layoutId: Int): BaseAdapterDelegate<T>(layoutId) {
 
     override fun isForViewType(item: T): Boolean {
-        return item is Character
+        return item is UnknownCharacter
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, item: T) {
-        (holder as CharacterViewHolder).bind(item as Character)
+        (holder as CharacterViewHolder).bind(item as UnknownCharacter)
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup): RecyclerView.ViewHolder {
@@ -31,7 +32,7 @@ class CharacterAdapterItemDelegate<T>(layoutId: Int): BaseAdapterDelegate<T>(lay
         private val statusTextView = view.findViewById<TextView>(R.id.statusTextView)
         private val speciesTextView = view.findViewById<TextView>(R.id.speciesTextView)
 
-        fun bind(item: Character?) {
+        fun bind(item: UnknownCharacter?) {
             item?.let { character->
                 nameTextView.text = character.name
                 Log.d("CharacterAdapter", "Name: " + character.name)
