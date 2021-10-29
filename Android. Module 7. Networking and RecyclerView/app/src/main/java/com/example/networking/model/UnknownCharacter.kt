@@ -3,7 +3,7 @@ package com.example.networking.model
 import com.example.networking.delegate.DelegateAdapterItem
 import com.example.networking.network.characters.Origin
 
-class UnknownCharacter(
+data class UnknownCharacter(
     val id: Int = 0,
     val image: String = "",
     val name: String = "",

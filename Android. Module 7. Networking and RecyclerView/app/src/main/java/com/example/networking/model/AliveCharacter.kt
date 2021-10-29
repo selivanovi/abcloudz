@@ -12,7 +12,7 @@ data class AliveCharacter(
     val species: String = "",
     val status: String = "",
     val episode: List<String> = listOf(),
-    ) : DelegateAdapterItem {
+) : DelegateAdapterItem {
 
     override fun id(): Int = id
 

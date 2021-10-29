@@ -3,7 +3,7 @@ package com.example.networking.model
 import com.example.networking.delegate.DelegateAdapterItem
 
 class Episode(
-    val created: String,
+    val airData: String,
     val episode: String,
     val id: Int,
     val name: String,

@@ -13,7 +13,7 @@ object EpisodeMapper {
         Episode(
             id = response.id,
             name = response.name,
-            episode = response.created,
-            created = response.created
+            episode = response.episode,
+            airData = response.air_date
         )
 }
