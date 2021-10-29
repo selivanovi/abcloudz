@@ -4,6 +4,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.example.networking.delegate.DelegateAdapterItem
+import com.example.networking.model.Character
 import com.example.networking.network.characters.CharacterResponse
 import com.example.networking.network.episodes.EpisodeResponse
 import com.example.networking.pagin.CharactersDataSource
@@ -22,9 +23,21 @@ class SharedRepository(
             pagingSourceFactory = { CharactersDataSource(apiClient) }
         ).flow
 
+    suspend fun getCharacterById(
+        characterOfId: Int
+    ) : CharacterResponse {
+        val request = apiClient.getCharacterById(characterOfId)
+
+        if(!request.isSuccessful){
+            return CharacterResponse()
+        }
+
+        return request.body
+    }
+
 
     suspend fun getEpisodeByIds(
-        characters: CharacterResponse
+        characters: Character
     ): List<EpisodeResponse> {
         val episodes = characters.episode.map {
             it.substring(startIndex = it.lastIndexOf('/') + 1)

@@ -1,5 +1,6 @@
 package com.example.networking.network
 
+import com.example.networking.network.characters.CharacterResponse
 import com.example.networking.network.characters.CharactersPageResponse
 import com.example.networking.network.episodes.EpisodeResponse
 import com.example.networking.network.episodes.ListOfEpisodesResponse
@@ -15,8 +16,14 @@ interface RickAndMortyService {
         @Query("page") pageIndex: Int
     ): Response<CharactersPageResponse>
 
+    @GET("character/{character-id}")
+    suspend fun getCharacterById(
+        @Path("character-id") idOfCharacter: Int
+    ): Response<CharacterResponse>
+
     @GET("episode/{listOfEpisodes}")
     suspend fun getEpisodesPageByIds(
         @Path("listOfEpisodes") listOfEpisode: String
     ): Response<List<EpisodeResponse>>
+
 }

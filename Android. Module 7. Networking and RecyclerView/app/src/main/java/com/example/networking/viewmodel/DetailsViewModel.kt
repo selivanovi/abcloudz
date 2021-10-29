@@ -1,35 +1,41 @@
 package com.example.networking.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.networking.mapper.CharacterMapper
 import com.example.networking.mapper.EpisodeMapper
+import com.example.networking.model.Character
 import com.example.networking.model.Episode
 import com.example.networking.network.NetworkLayer
 import com.example.networking.network.SharedRepository
 import com.example.networking.network.characters.CharacterResponse
 import com.example.networking.network.episodes.EpisodeResponse
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 class DetailsViewModel : ViewModel() {
 
+    fun getCharacterById(
+        id: Int
+    ): Flow<Character> = flow {
 
-    fun getEpisodeById(
-        characterResponse: CharacterResponse
-    ): List<Episode> {
 
-        var episodes: List<Episode>? = null
+        val request = SharedRepository(NetworkLayer.apiService).getCharacterById(id)
 
-        viewModelScope.launch(Dispatchers.IO) {
+        val character = CharacterMapper.getFrom(request)
 
-            val request: Deferred<List<EpisodeResponse>> =
-                async { SharedRepository(NetworkLayer.apiService).getEpisodeByIds(characterResponse) }
+        emit(character)
+    }
 
-            episodes = request.await().map { EpisodeMapper.getFrom(it) }
+    fun getEpisodesByIds(
+        character: Character
+    ): Flow<List<Episode>> = flow {
+        val request = SharedRepository(NetworkLayer.apiService).getEpisodeByIds(character)
+        val episodes = request.map{
+            EpisodeMapper.getFrom(it)
         }
-
-        return episodes ?: emptyList()
+        emit(episodes)
     }
 }

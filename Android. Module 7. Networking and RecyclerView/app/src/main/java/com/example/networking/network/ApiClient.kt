@@ -1,5 +1,6 @@
 package com.example.networking.network
 
+import com.example.networking.network.characters.CharacterResponse
 import com.example.networking.network.characters.CharactersPageResponse
 import com.example.networking.network.episodes.EpisodeResponse
 import com.example.networking.network.episodes.ListOfEpisodesResponse
@@ -11,6 +12,10 @@ class ApiClient(
 
     suspend fun getCharactersPage(pageIndex: Int): SimpleResponse<CharactersPageResponse> =
         safeApiCall { rickAndMortyService.getCharactersPage(pageIndex) }
+
+    suspend fun getCharacterById(idOfCharacter: Int): SimpleResponse<CharacterResponse> =
+        safeApiCall { rickAndMortyService.getCharacterById(idOfCharacter) }
+
 
     suspend fun getEpisodesPageByIds(listOfEpisode: String): SimpleResponse<List<EpisodeResponse>> =
         safeApiCall { rickAndMortyService.getEpisodesPageByIds(listOfEpisode) }
