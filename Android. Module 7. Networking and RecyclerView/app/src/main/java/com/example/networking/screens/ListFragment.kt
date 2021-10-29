@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 
 class ListFragment : Fragment(R.layout.fragment_list) {
 
-    private val characterViewModel: CharacterViewModel by activityViewModels<CharacterViewModel>()
+    private val characterViewModel by activityViewModels<CharacterViewModel>()
 
     private lateinit var pagingDataAdapter: CharacterPaginDelegateAdapter
 
