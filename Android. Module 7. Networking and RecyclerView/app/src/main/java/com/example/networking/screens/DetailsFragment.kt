@@ -5,4 +5,9 @@ import com.example.networking.R
 
 class DetailsFragment : Fragment(R.layout.fragment_details) {
 
+
+
+    companion object {
+        const val ARG_ID = "argument_id"
+    }
 }

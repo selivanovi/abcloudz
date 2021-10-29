@@ -7,8 +7,8 @@
 
     <fragment
         android:id="@+id/listFragment"
-        android:name="com.example.networking.screens.СharactersFragment"
-        android:label="fragment_list"
+        android:name="com.example.networking.screens.ListFragment"
+        android:label="@string/characters"
         tools:layout="@layout/fragment_list" >
         <action
             android:id="@+id/action_listFragment_to_detailsFragment"
@@ -17,6 +17,6 @@
     <fragment
         android:id="@+id/detailsFragment"
         android:name="com.example.networking.screens.DetailsFragment"
-        android:label="fragment_details"
+        android:label="@string/details"
         tools:layout="@layout/fragment_details" />
 </navigation>
