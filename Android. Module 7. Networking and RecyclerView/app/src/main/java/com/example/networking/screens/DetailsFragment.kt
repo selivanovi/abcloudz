@@ -10,6 +10,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.networking.EpisodeLayoutManager
 import com.example.networking.R
 import com.example.networking.delegate.DelegateAdapterItem
 import com.example.networking.model.Character
@@ -55,7 +56,7 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
         val adapter = EpisodesAdapter()
         val recyclerView = view.findViewById<RecyclerView>(R.id.episodesRecyclerView)
         recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL, false)
+        recyclerView.layoutManager = EpisodeLayoutManager()
 
         lifecycleScope.launch {
             detailsViewModel.getEpisodesByIds(character).collect { episodes ->
