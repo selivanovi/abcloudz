@@ -7,7 +7,11 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-class EpisodeLayoutManager() : RecyclerView.LayoutManager() {
+class EpisodeLayoutManager(
+//    context: Context,
+//    @RecyclerView.Orientation orientation: Int,
+//    reverseLayout: Boolean
+) : RecyclerView.LayoutManager() {
 
     override fun generateDefaultLayoutParams(): RecyclerView.LayoutParams =
         RecyclerView.LayoutParams(
@@ -16,7 +20,7 @@ class EpisodeLayoutManager() : RecyclerView.LayoutManager() {
         )
 
     override fun onLayoutChildren(recycler: RecyclerView.Recycler, state: RecyclerView.State) {
-        detachAndScrapAttachedViews(recycler)
+        Log.d(EpisodeLayoutManager.toString(), "onLayoutChildren")
         if (state.itemCount <= 0) return
         fill(recycler, state.itemCount)
     }
@@ -37,38 +41,8 @@ class EpisodeLayoutManager() : RecyclerView.LayoutManager() {
             val decoratedMeasureWidth = getDecoratedMeasuredWidth(view)
             layoutDecorated(view, viewLeft, viewTop, decoratedMeasureWidth, viewHeight + viewTop)
             viewTop = getDecoratedBottom(view)
-            if (viewTop >= height) break
         }
 
-//        val view = recycler.getViewForPosition(0)
-//        addView(view)
-//        val viewHeight = (height * VIEW_WIDTH_PERCENT).toInt()
-//        val widthSpec = View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY)
-//        val heightSpec = View.MeasureSpec.makeMeasureSpec(height, View.MeasureSpec.EXACTLY)
-//        measureChildWithDecorationsAndMargins(view, widthSpec, heightSpec)
-//        layoutDecorated(view, 0, 0, width, viewHeight)
-    }
-
-    private fun fillFirstElement(view: View) {
-
-    }
-
-    private fun fillBottom(view: View) {
-        addView(view)
-        val viewHeight = (height * VIEW_WIDTH_PERCENT).toInt()
-        val widthSpec = View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY)
-        val heightSpec = View.MeasureSpec.makeMeasureSpec(height, View.MeasureSpec.EXACTLY)
-        measureChildWithDecorationsAndMargins(view, widthSpec, heightSpec)
-        layoutDecorated(view, 0, 0, width, viewHeight)
-    }
-
-    private fun fillTop(view: View) {
-        addView(view)
-        val viewHeight = (height * VIEW_WIDTH_PERCENT).toInt()
-        val widthSpec = View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY)
-        val heightSpec = View.MeasureSpec.makeMeasureSpec(height, View.MeasureSpec.EXACTLY)
-        measureChildWithDecorationsAndMargins(view, widthSpec, heightSpec)
-        layoutDecorated(view, 0, 0, width, viewHeight)
     }
 
     private fun measureChildWithDecorationsAndMargins(
@@ -107,18 +81,45 @@ class EpisodeLayoutManager() : RecyclerView.LayoutManager() {
         return spec
     }
 
-    override fun canScrollVertically(): Boolean {
-        return true
-    }
+    override fun canScrollVertically(): Boolean = true
 
     override fun scrollVerticallyBy(
         dy: Int,
         recycler: RecyclerView.Recycler?,
         state: RecyclerView.State?
     ): Int {
-
-        return dy
+        val delta = scrollVerticallyIntertnal(dy)
+        Log.d(EpisodeLayoutManager.toString(), "ChildCount : ${childCount}")
+        offsetChildrenVertical(-delta)
+        return delta
     }
+
+    private fun scrollVerticallyIntertnal(dy: Int): Int =
+        when {
+            childCount == 0 -> 0
+            dy < 0 -> {
+                val firsChild = getChildAt(0)!!
+                if (getDecoratedTop(firsChild) == 0) {
+                    0
+                }
+                else dy
+            }
+            dy > 0 -> {
+                val lastChild = getChildAt(itemCount - 1)!!
+                Log.d(EpisodeLayoutManager.toString(), "Position: ${getPosition(lastChild)}")
+                Log.d(EpisodeLayoutManager.toString(), "Decorate bottom: ${getDecoratedBottom(lastChild)}\t$height")
+
+                if (getDecoratedBottom(lastChild) == height) {
+                    0
+                } else {
+                    Log.d(EpisodeLayoutManager.toString(), "Dy: ${dy}")
+                    dy
+                }
+            }
+            else -> 0
+        }
+
+
 
     companion object {
         const val VIEW_WIDTH_PERCENT: Float = 0.5F

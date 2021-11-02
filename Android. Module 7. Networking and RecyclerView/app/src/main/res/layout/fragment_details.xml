@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="24dp"
+    android:padding="16dp"
     tools:context=".screens.DetailsFragment">
 
     <androidx.cardview.widget.CardView
@@ -53,6 +53,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/originTextView"/>
+        app:layout_constraintTop_toBottomOf="@+id/originTextView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
