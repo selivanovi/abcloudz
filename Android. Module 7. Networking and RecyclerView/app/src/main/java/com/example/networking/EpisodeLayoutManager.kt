@@ -1,17 +1,11 @@
 package com.example.networking
 
-import android.content.Context
 import android.graphics.Rect
 import android.util.Log
 import android.view.View
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-class EpisodeLayoutManager(
-//    context: Context,
-//    @RecyclerView.Orientation orientation: Int,
-//    reverseLayout: Boolean
-) : RecyclerView.LayoutManager() {
+class EpisodeLayoutManager: RecyclerView.LayoutManager() {
 
     override fun generateDefaultLayoutParams(): RecyclerView.LayoutParams =
         RecyclerView.LayoutParams(
@@ -97,29 +91,26 @@ class EpisodeLayoutManager(
     private fun scrollVerticallyIntertnal(dy: Int): Int =
         when {
             childCount == 0 -> 0
+            // Moving content down
             dy < 0 -> {
-                val firsChild = getChildAt(0)!!
-                if (getDecoratedTop(firsChild) == 0) {
-                    0
-                }
-                else dy
-            }
-            dy > 0 -> {
-                val lastChild = getChildAt(itemCount - 1)!!
-                Log.d(EpisodeLayoutManager.toString(), "Position: ${getPosition(lastChild)}")
-                Log.d(EpisodeLayoutManager.toString(), "Decorate bottom: ${getDecoratedBottom(lastChild)}\t$height")
-
-                if (getDecoratedBottom(lastChild) == height) {
+                val lastChild = getChildAt(0)!!
+                if (getDecoratedTop(lastChild) >= 0) {
                     0
                 } else {
-                    Log.d(EpisodeLayoutManager.toString(), "Dy: ${dy}")
+                    dy
+                }
+            }
+            // Moving content up
+            dy > 0 -> {
+                val lastChild = getChildAt(itemCount - 1)!!
+                if (getDecoratedBottom(lastChild) <= height) {
+                    0
+                } else {
                     dy
                 }
             }
             else -> 0
         }
-
-
 
     companion object {
         const val VIEW_WIDTH_PERCENT: Float = 0.5F
