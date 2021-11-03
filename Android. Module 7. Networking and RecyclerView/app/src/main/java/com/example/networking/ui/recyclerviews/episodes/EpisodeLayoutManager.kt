@@ -22,7 +22,6 @@ class EpisodeLayoutManager: RecyclerView.LayoutManager() {
     private fun fill(recycler: RecyclerView.Recycler, itemCount: Int) {
 
         var viewTop = 0
-        var viewLeft = 0
         val viewHeight = (height * VIEW_WIDTH_PERCENT).toInt()
         val widthSpec = View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY)
         val heightSpec = View.MeasureSpec.makeMeasureSpec(height, View.MeasureSpec.EXACTLY)
@@ -33,7 +32,7 @@ class EpisodeLayoutManager: RecyclerView.LayoutManager() {
 
             measureChildWithDecorationsAndMargins(view, widthSpec, heightSpec)
             val decoratedMeasureWidth = getDecoratedMeasuredWidth(view)
-            layoutDecorated(view, viewLeft, viewTop, decoratedMeasureWidth, viewHeight + viewTop)
+            layoutDecorated(view, 0, viewTop, decoratedMeasureWidth, viewHeight + viewTop)
             viewTop = getDecoratedBottom(view)
         }
 
