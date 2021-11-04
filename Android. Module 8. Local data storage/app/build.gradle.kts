@@ -44,5 +44,12 @@ dependencies {
     androidTestImplementation(Dependencies.Test.androidJUnit)
     androidTestImplementation(Dependencies.Test.espresso)
 
+    //NavigationUI
+    implementation(Dependencies.NavigationUI.navigationFragment)
+    implementation(Dependencies.NavigationUI.navigationUI)
+
+    //Room
+
     
+    //Dagger
 }
