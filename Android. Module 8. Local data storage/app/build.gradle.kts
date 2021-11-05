@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.localdatastorage"
-        minSdk = 21
+        minSdk = 28
         targetSdk = 31
         versionCode = 1
         versionName = "1.0"
@@ -21,6 +21,9 @@ android {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile ("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
+    }
+    buildFeatures {
+        viewBinding = true
     }
     compileOptions {
         sourceCompatibility  = JavaVersion.VERSION_1_8
@@ -45,11 +48,11 @@ dependencies {
     androidTestImplementation(Dependencies.Test.espresso)
 
     //NavigationUI
-    implementation(Dependencies.NavigationUI.navigationFragment)
-    implementation(Dependencies.NavigationUI.navigationUI)
+    implementation(Dependencies.NavigationUI.navigationFragmentKtx)
+    implementation(Dependencies.NavigationUI.navigationUIKtx)
 
-    //Room
+    //Biometric
+    implementation(Dependencies.Biometric.biometricKtx)
 
-    
-    //Dagger
+
 }

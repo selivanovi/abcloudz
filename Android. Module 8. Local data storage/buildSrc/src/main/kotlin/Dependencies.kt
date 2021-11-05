@@ -14,8 +14,13 @@ object Dependencies {
     }
 
     object NavigationUI {
-        const val navVersion = "2.3.5"
-        const val navigationFragment = "androidx.navigation:navigation-fragment:$navVersion"
-        const val navigationUI = "androidx.navigation:navigation-fragment:$navVersion"
+        private const val navVersion = "2.3.5"
+        const val navigationFragmentKtx = "androidx.navigation:navigation-fragment-ktx:$navVersion"
+        const val navigationUIKtx = "androidx.navigation:navigation-ui-ktx:$navVersion"
+    }
+
+    object Biometric {
+        private const val biometricVersion = "1.2.0-alpha03"
+        const val biometricKtx = "androidx.biometric:biometric-ktx:$biometricVersion"
     }
 }
