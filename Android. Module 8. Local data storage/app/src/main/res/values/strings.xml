@@ -8,4 +8,7 @@
     <string name="prompt_info_title">Login in this app</string>
     <string name="prompt_info_subtitle">Use your biometric credential</string>
     <string name="prompt_info_cancel">Cancel</string>
+    <string name="biometric_dialog_message">The device supports biometrics, but you haven’t enrolled either their fingerprints or their face.</string>
+    <string name="biometric_dialog_positive_button">Enable</string>
+    <string name="biometric_dialog_negative_button">Cancel</string>
 </resources>
