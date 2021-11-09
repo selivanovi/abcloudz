@@ -1,10 +1,8 @@
 package com.example.localdatastorage.screens
 
-import android.content.Context.MODE_PRIVATE
+import android.app.AlertDialog
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.security.keystore.KeyGenParameterSpec
-import android.security.keystore.KeyProperties
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -15,16 +13,12 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
+import androidx.security.crypto.EncryptedSharedPreferences
+import androidx.security.crypto.MasterKey
 import com.example.localdatastorage.LoginViewModels
 import com.example.localdatastorage.R
 import com.example.localdatastorage.databinding.FragmentLoginBinding
 import com.example.localdatastorage.dialogfragments.BiometricDialogFragment
-import java.nio.charset.Charset
-import java.security.KeyStore
-import javax.crypto.Cipher
-import javax.crypto.KeyGenerator
-import javax.crypto.SecretKey
 
 
 class LogInFragment : Fragment(R.layout.fragment_login) {
@@ -33,9 +27,22 @@ class LogInFragment : Fragment(R.layout.fragment_login) {
     private val binding
         get() = _binding!!
 
-    private val sharedPreferences: SharedPreferences by lazy {
-        requireActivity().getPreferences(MODE_PRIVATE)
+    private val masterKey by lazy {
+        MasterKey.Builder(requireContext(), MasterKey.DEFAULT_MASTER_KEY_ALIAS)
+            .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+            .build()
     }
+
+    private val sharedPreferences: SharedPreferences by lazy {
+        EncryptedSharedPreferences.create(
+            requireContext(),
+            "secret_shared_preferences",
+            masterKey,
+            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+        )
+    }
+
 
     private val loginViewModels: LoginViewModels by viewModels {
         LoginViewModels.Factory(sharedPreferences)
@@ -53,8 +60,6 @@ class LogInFragment : Fragment(R.layout.fragment_login) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "onViewCreated")
-        loginViewModels.putPassword("ilyaafafadfa")
-        loginViewModels.getPassword()
         if (loginViewModels.isFirstLaunch) {
             showScreenLogIn()
         } else {
@@ -78,7 +83,29 @@ class LogInFragment : Fragment(R.layout.fragment_login) {
     private fun showScreenLogIn() {
         with(binding) {
             signupButton.isVisible = false
+            loginButton.setOnClickListener {
+                val email = binding.emailTextField.text!!.toString()
+                val password = binding.passwordTextField.text!!.toString()
+                if (validateEmail(email = email) && validatePassword(password)) {
+                    loginViewModels.putEmail(email)
+                    loginViewModels.putPassword(password)
+                }
+                else {
+                    AlertDialog.Builder(requireContext())
+                        .setTitle(R.string.info_user_error)
+                        .setMessage(R.string.info_user_message)
+                }
+                loginViewModels.putPassword("ilyaafafadfa")
+            }
         }
+    }
+
+    private fun validateEmail(email: String): Boolean {
+        return email.contains("@") && email.contains(".")
+    }
+
+    private fun validatePassword(password: String): Boolean {
+        return password.length >= 8
     }
 
     private fun showBiometricCapability() {
@@ -86,9 +113,10 @@ class LogInFragment : Fragment(R.layout.fragment_login) {
         when (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG or BiometricManager.Authenticators.DEVICE_CREDENTIAL)) {
             BiometricManager.BIOMETRIC_SUCCESS -> {
                 Log.d(TAG, "App can authenticate using biometrics.")
+
                 createBiometricPrompt()
                     .authenticate(
-                        createPromptInfo()
+                        createPromptInfo(),
                     )
             }
             BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE -> {
@@ -125,7 +153,12 @@ class LogInFragment : Fragment(R.layout.fragment_login) {
                 override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
                     super.onAuthenticationSucceeded(result)
                     Log.d(TAG, "Authentication was successful")
-                    findNavController().navigate(R.id.action_logInFragment_to_listFragment)
+                    val email: String = loginViewModels.getEmail()
+                    val password: String = loginViewModels.getPassword()
+                    Log.d(TAG, "Email: $email\tPassword: $password")
+                    binding.emailTextField.setText(email)
+                    binding.passwordTextField.setText(password)
+//                    findNavController().navigate(R.id.action_logInFragment_to_listFragment)
                 }
             }
 

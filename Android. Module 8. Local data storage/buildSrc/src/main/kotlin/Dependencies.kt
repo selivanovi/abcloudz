@@ -20,7 +20,10 @@ object Dependencies {
     }
 
     object Biometric {
-        private const val biometricVersion = "1.2.0-alpha03"
-        const val biometricKtx = "androidx.biometric:biometric-ktx:$biometricVersion"
+        const val biometricKtx = "androidx.biometric:biometric-ktx:1.2.0-alpha03"
+    }
+
+    object Crypto {
+        const val crypto = "androidx.security:security-crypto:1.1.0-alpha03"
     }
 }

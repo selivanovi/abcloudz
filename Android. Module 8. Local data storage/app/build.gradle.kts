@@ -54,5 +54,7 @@ dependencies {
     //Biometric
     implementation(Dependencies.Biometric.biometricKtx)
 
+    //Crypto
+    implementation(Dependencies.Crypto.crypto)
 
 }

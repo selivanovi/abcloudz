@@ -1,18 +1,22 @@
 package com.example.localdatastorage.utils
 
+import android.content.Context
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
 import java.nio.charset.Charset
+import java.security.AccessControlContext
 import java.security.KeyStore
 import javax.crypto.Cipher
 import javax.crypto.KeyGenerator
 import javax.crypto.SecretKey
+import javax.crypto.spec.GCMParameterSpec
+import javax.crypto.spec.IvParameterSpec
 
 private const val ANDROID_KEYSTORE = "AndroidKeyStore"
 private const val SECRET_KEY = "3EM4ILP4&&W0RDk3y"
-private const val KEY_SIZE = 128
-private const val ENCRYPTION_BLOCK_MODE = KeyProperties.BLOCK_MODE_GCM
-private const val ENCRYPTION_PADDING_MODE = KeyProperties.ENCRYPTION_PADDING_NONE
+private const val KEY_SIZE = 256
+private const val ENCRYPTION_BLOCK_MODE = KeyProperties.BLOCK_MODE_CBC
+private const val ENCRYPTION_PADDING_MODE = KeyProperties.ENCRYPTION_PADDING_PKCS7
 private const val ENCRYPTION_ALGORITHM = KeyProperties.KEY_ALGORITHM_AES
 
 object CryptographyUtil {
@@ -24,13 +28,11 @@ object CryptographyUtil {
 
         val paramsBuilder = KeyGenParameterSpec.Builder(
             keyName,
-            KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT
+            KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT,
         ).apply {
             setBlockModes(ENCRYPTION_BLOCK_MODE)
             setEncryptionPaddings(ENCRYPTION_PADDING_MODE)
-            setEncryptionPaddings(ENCRYPTION_PADDING_MODE)
-            setKeySize(KEY_SIZE)
-            setUserAuthenticationRequired(true)
+            setUserAuthenticationRequired(false)
         }
         val keyGenParams = paramsBuilder.build()
         val keyGenerator = KeyGenerator.getInstance(
@@ -41,26 +43,19 @@ object CryptographyUtil {
         return keyGenerator.generateKey()
     }
 
-    fun getInitializedCipher(cipherMode: Int): Cipher {
-        val cipher = getCipher()
-        val secretKey = getSecretKey(SECRET_KEY)
-        cipher.init(cipherMode, secretKey)
+    fun initCipher(context: Context, mode: Int) {
 
-        return cipher
     }
 
     private fun getCipher(): Cipher =
-        Cipher.getInstance(
-            "$ENCRYPTION_ALGORITHM/$ENCRYPTION_BLOCK_MODE/$ENCRYPTION_PADDING_MODE"
-        )
+        Cipher.getInstance("$ENCRYPTION_ALGORITHM/$ENCRYPTION_BLOCK_MODE/$ENCRYPTION_PADDING_MODE")
 
     fun encryptData(plaintext: String, cipher: Cipher): ByteArray {
-        val byteArray = cipher.doFinal(plaintext.toByteArray(Charset.forName("UTF-8")))
-        return byteArray
+        return cipher.doFinal(plaintext.toByteArray(Charset.forName("UTF-8")))
     }
 
     fun decryptData(cipherText: ByteArray, cipher: Cipher): String {
         val plainText = cipher.doFinal(cipherText)
-        return String(plainText, Charset.defaultCharset())
+        return String(plainText, Charset.forName("UTF-8"))
     }
 }

@@ -34,22 +34,12 @@ class LoginViewModels(private val sharedPreferences: SharedPreferences) : ViewMo
     }
 
     fun getPassword(): String {
-        val cipher = CryptographyUtil.getInitializedCipher(Cipher.DECRYPT_MODE)
-        val encryptedPassword =
-            sharedPreferences.getString(PASSWORD_KEY, null) ?: throw NullPointerException()
-        val byteArray = encryptedPassword.toByteArray(Charset.defaultCharset())
-        val decryptedPassword = CryptographyUtil.decryptData(byteArray, cipher)
-        Log.d(TAG, "Decrypted password: $decryptedPassword")
-        return decryptedPassword
+        return sharedPreferences.getString(PASSWORD_KEY, null) ?: throw NullPointerException()
     }
 
     fun putPassword(password: String) {
-        val cipher = CryptographyUtil.getInitializedCipher(Cipher.ENCRYPT_MODE)
-        val byteArray = CryptographyUtil.encryptData(password, cipher)
-        val encryptedPassword = String(byteArray, Charset.defaultCharset())
-        Log.d(TAG, "Encrypted password: $encryptedPassword")
         sharedPreferences.edit {
-            putString(PASSWORD_KEY, encryptedPassword)
+            putString(PASSWORD_KEY, password)
         }
     }
 
