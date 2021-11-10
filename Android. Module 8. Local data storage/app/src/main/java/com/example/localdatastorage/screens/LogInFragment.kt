@@ -7,16 +7,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.biometric.BiometricManager
-import androidx.biometric.BiometricPrompt
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
-import com.example.localdatastorage.LoginViewModels
+import com.example.localdatastorage.viewmodels.LoginViewModel
 import com.example.localdatastorage.MainActivity
 import com.example.localdatastorage.R
 import com.example.localdatastorage.databinding.FragmentLoginBinding
@@ -46,8 +43,8 @@ class LogInFragment : Fragment(R.layout.fragment_login) {
         )
     }
 
-    private val loginViewModels: LoginViewModels by viewModels {
-        LoginViewModels.Factory(sharedPreferences)
+    private val loginViewModels: LoginViewModel by viewModels {
+        LoginViewModel.Factory(sharedPreferences)
     }
 
     override fun onCreateView(

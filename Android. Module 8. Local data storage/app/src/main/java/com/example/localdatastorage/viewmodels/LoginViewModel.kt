@@ -1,13 +1,14 @@
-package com.example.localdatastorage
+package com.example.localdatastorage.viewmodels
 
 import android.content.SharedPreferences
 import androidx.core.content.edit
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.example.localdatastorage.R
 import com.example.localdatastorage.utils.validateEmail
 import com.example.localdatastorage.utils.validatePassword
 
-class LoginViewModels(private val sharedPreferences: SharedPreferences) : ViewModel() {
+class LoginViewModel(private val sharedPreferences: SharedPreferences) : ViewModel() {
 
     val isFirstLaunch: Boolean
         get() =
@@ -51,10 +52,14 @@ class LoginViewModels(private val sharedPreferences: SharedPreferences) : ViewMo
         return sharedPreferences.getBoolean(STATE_OF_FINGERPRINT_KEY, true)
     }
 
+    fun loadDataInDataBase() {
+
+    }
+
     @Suppress("UNCHECKED_CAST")
     class Factory(private val sharedPreferences: SharedPreferences) : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            return LoginViewModels(sharedPreferences) as T
+            return LoginViewModel(sharedPreferences) as T
         }
     }
 

@@ -26,4 +26,8 @@ object Dependencies {
     object Crypto {
         const val crypto = "androidx.security:security-crypto:1.1.0-alpha03"
     }
+
+    object GSON {
+        const val gson = "com.google.code.gson:gson:2.8.9"
+    }
 }

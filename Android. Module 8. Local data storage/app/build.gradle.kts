@@ -57,4 +57,7 @@ dependencies {
     //Crypto
     implementation(Dependencies.Crypto.crypto)
 
+    //GSON
+    implementation(Dependencies.GSON.gson)
+
 }
