@@ -10,7 +10,8 @@
         android:label="LogInFragment" >
         <action
             android:id="@+id/action_logInFragment_to_listFragment"
-            app:destination="@id/listFragment" />
+            app:destination="@id/listFragment"
+            app:popUpTo="@id/main_nav_graph.xml" />
     </fragment>
     <fragment
         android:id="@+id/listFragment"
@@ -18,7 +19,8 @@
         android:label="ListFragment" >
         <action
             android:id="@+id/action_listFragment_to_detailsFragment"
-            app:destination="@id/detailsFragment" />
+            app:destination="@id/detailsFragment"
+            app:launchSingleTop="false" />
     </fragment>
     <fragment
         android:id="@+id/detailsFragment"

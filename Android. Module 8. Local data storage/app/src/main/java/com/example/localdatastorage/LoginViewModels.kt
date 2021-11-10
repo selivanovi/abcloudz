@@ -1,15 +1,11 @@
 package com.example.localdatastorage
 
 import android.content.SharedPreferences
-import android.security.keystore.KeyProperties
-import android.util.Log
-import android.view.Display
 import androidx.core.content.edit
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.localdatastorage.utils.CryptographyUtil
-import java.nio.charset.Charset
-import javax.crypto.Cipher
+import com.example.localdatastorage.utils.validateEmail
+import com.example.localdatastorage.utils.validatePassword
 
 class LoginViewModels(private val sharedPreferences: SharedPreferences) : ViewModel() {
 
@@ -28,6 +24,7 @@ class LoginViewModels(private val sharedPreferences: SharedPreferences) : ViewMo
     }
 
     fun putEmail(email: String) {
+        if (!validateEmail(email)) error(R.string.email_error)
         sharedPreferences.edit {
             putString(EMAIL_KEY, email)
         }
@@ -38,9 +35,20 @@ class LoginViewModels(private val sharedPreferences: SharedPreferences) : ViewMo
     }
 
     fun putPassword(password: String) {
+        if (!validatePassword(password)) error(R.string.password_error)
         sharedPreferences.edit {
             putString(PASSWORD_KEY, password)
         }
+    }
+
+    fun putStateOfFingerPrint(state: Boolean) {
+        sharedPreferences.edit {
+            putBoolean(STATE_OF_FINGERPRINT_KEY, state)
+        }
+    }
+
+    fun getStateOfFingerPrint(): Boolean {
+        return sharedPreferences.getBoolean(STATE_OF_FINGERPRINT_KEY, true)
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -55,6 +63,7 @@ class LoginViewModels(private val sharedPreferences: SharedPreferences) : ViewMo
 
         private const val IS_LAUNCH_FIRST = "isLaunchFirst"
         private const val PASSWORD_KEY = "password_key"
+        private const val STATE_OF_FINGERPRINT_KEY = "finger_print_key"
         private const val EMAIL_KEY = "email_key"
     }
 }

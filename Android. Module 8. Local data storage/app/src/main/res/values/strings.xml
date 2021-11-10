@@ -12,4 +12,8 @@
     <string name="biometric_dialog_positive_button">Enable</string>
     <string name="biometric_dialog_negative_button">Cancel</string>
     <string name="info_user_error">Error</string>
+    <string name="email_error">Please check  email</string>
+    <string name="password_error">Please check passowrd, password must connect 8 symbols</string>
+    <string name="alert_dialog_error">Error</string>
+    <string name="alert_dialog_positive_button">Ok</string>
 </resources>

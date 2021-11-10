@@ -43,8 +43,15 @@ object CryptographyUtil {
         return keyGenerator.generateKey()
     }
 
+    //When we create encryption cipher we should save parameters(for example file) and use this
+    //parameters for create decryption cipher
     fun initCipher(context: Context, mode: Int) {
-
+        if(Cipher.ENCRYPT_MODE == mode) {
+            //todo
+        }
+        if(Cipher.DECRYPT_MODE == mode) {
+            //todo
+        }
     }
 
     private fun getCipher(): Cipher =

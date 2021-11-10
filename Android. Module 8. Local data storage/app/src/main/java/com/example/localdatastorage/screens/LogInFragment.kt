@@ -13,12 +13,15 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import com.example.localdatastorage.LoginViewModels
+import com.example.localdatastorage.MainActivity
 import com.example.localdatastorage.R
 import com.example.localdatastorage.databinding.FragmentLoginBinding
 import com.example.localdatastorage.dialogfragments.BiometricDialogFragment
+import com.example.localdatastorage.utils.BiometricUtil
 
 
 class LogInFragment : Fragment(R.layout.fragment_login) {
@@ -43,7 +46,6 @@ class LogInFragment : Fragment(R.layout.fragment_login) {
         )
     }
 
-
     private val loginViewModels: LoginViewModels by viewModels {
         LoginViewModels.Factory(sharedPreferences)
     }
@@ -60,16 +62,17 @@ class LogInFragment : Fragment(R.layout.fragment_login) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "onViewCreated")
+        (requireActivity() as MainActivity).supportActionBar?.hide()
         if (loginViewModels.isFirstLaunch) {
             showScreenLogIn()
         } else {
             showScreenSignUp()
-            showBiometricCapability()
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
+        (requireActivity() as MainActivity).supportActionBar?.show()
         _binding = null
     }
 
@@ -77,101 +80,70 @@ class LogInFragment : Fragment(R.layout.fragment_login) {
         with(binding) {
             fingerprintCheckBox.isVisible = false
             loginButton.isVisible = false
+            signupButton.setOnClickListener {
+                if (checkEmailAndPassword()) {
+                    findNavController().navigate(R.id.action_logInFragment_to_listFragment)
+                }
+            }
         }
+        if (loginViewModels.getStateOfFingerPrint()) {
+            BiometricUtil.show(this, ::setSucceedAuthentication, ::setErrorAuthentication)
+        }
+    }
+
+    private fun checkEmailAndPassword(): Boolean {
+        val email = binding.emailTextField.text!!.toString()
+        val password = binding.passwordTextField.text!!.toString()
+        val savedEmail = loginViewModels.getEmail()
+        val savedPassword = loginViewModels.getPassword()
+        return email == savedEmail && password == savedPassword
     }
 
     private fun showScreenLogIn() {
         with(binding) {
             signupButton.isVisible = false
+            fingerprintCheckBox.isChecked = true
             loginButton.setOnClickListener {
-                val email = binding.emailTextField.text!!.toString()
-                val password = binding.passwordTextField.text!!.toString()
-                if (validateEmail(email = email) && validatePassword(password)) {
-                    loginViewModels.putEmail(email)
-                    loginViewModels.putPassword(password)
+                if (saveDataInEncryptedSharedPreferences()) {
+                    findNavController().navigate(R.id.action_logInFragment_to_listFragment)
                 }
-                else {
-                    AlertDialog.Builder(requireContext())
-                        .setTitle(R.string.info_user_error)
-                        .setMessage(R.string.info_user_message)
-                }
-                loginViewModels.putPassword("ilyaafafadfa")
             }
         }
     }
 
-    private fun validateEmail(email: String): Boolean {
-        return email.contains("@") && email.contains(".")
-    }
-
-    private fun validatePassword(password: String): Boolean {
-        return password.length >= 8
-    }
-
-    private fun showBiometricCapability() {
-        val biometricManager = BiometricManager.from(requireContext())
-        when (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG or BiometricManager.Authenticators.DEVICE_CREDENTIAL)) {
-            BiometricManager.BIOMETRIC_SUCCESS -> {
-                Log.d(TAG, "App can authenticate using biometrics.")
-
-                createBiometricPrompt()
-                    .authenticate(
-                        createPromptInfo(),
-                    )
-            }
-            BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE -> {
-                Log.e(LogInFragment.TAG, "No biometric features available on this device.")
-            }
-            BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE -> {
-                Log.e(LogInFragment.TAG, "Biometric features are currently unavailable.")
-            }
-            BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED -> {
-                Log.e(LogInFragment.TAG, "Biometric ")
-                val biometricDialog = BiometricDialogFragment()
-                biometricDialog.show(parentFragmentManager, null)
-            }
+    private fun saveDataInEncryptedSharedPreferences(): Boolean {
+        val email = binding.emailTextField.text!!.toString()
+        val password = binding.passwordTextField.text!!.toString()
+        val stateOfFingerPrint = binding.fingerprintCheckBox.isChecked
+        try {
+            loginViewModels.putEmail(email)
+            loginViewModels.putPassword(password)
+            loginViewModels.putStateOfFingerPrint(stateOfFingerPrint)
+        } catch (e: Exception) {
+            AlertDialog.Builder(requireContext())
+                .setTitle(R.string.alert_dialog_error)
+                .setMessage(e.message!!.toInt())
+                .setPositiveButton(R.string.alert_dialog_positive_button) { _, _ -> }
+                .create()
+                .show()
+            return false
         }
+        return true
     }
 
-    private fun createBiometricPrompt(): BiometricPrompt {
-        val executor = ContextCompat.getMainExecutor(requireContext())
+    private fun setSucceedAuthentication() {
+        val email: String = loginViewModels.getEmail()
+        val password: String = loginViewModels.getPassword()
 
-        val callback =
-            object : BiometricPrompt.AuthenticationCallback() {
-                override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
-                    super.onAuthenticationError(errorCode, errString)
-                    Log.d(TAG, "$errorCode :: $errString")
-                    if (errorCode == BiometricPrompt.ERROR_NEGATIVE_BUTTON) {
-                    }
-                }
+        binding.emailTextField.setText(email)
+        binding.passwordTextField.setText(password)
 
-                override fun onAuthenticationFailed() {
-                    super.onAuthenticationFailed()
-                    Log.d(TAG, "Authentication failed for an unknown reason")
-                }
-
-                override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
-                    super.onAuthenticationSucceeded(result)
-                    Log.d(TAG, "Authentication was successful")
-                    val email: String = loginViewModels.getEmail()
-                    val password: String = loginViewModels.getPassword()
-                    Log.d(TAG, "Email: $email\tPassword: $password")
-                    binding.emailTextField.setText(email)
-                    binding.passwordTextField.setText(password)
-//                    findNavController().navigate(R.id.action_logInFragment_to_listFragment)
-                }
-            }
-
-        return BiometricPrompt(this, executor, callback)
+        findNavController().navigate(R.id.action_logInFragment_to_listFragment)
     }
 
-    private fun createPromptInfo(): BiometricPrompt.PromptInfo {
-
-        return BiometricPrompt.PromptInfo.Builder()
-            .setTitle(getString(R.string.prompt_info_title))
-            .setSubtitle(getString(R.string.prompt_info_subtitle))
-            .setNegativeButtonText(getString(R.string.prompt_info_cancel))
-            .build()
+    private fun setErrorAuthentication(){
+        val biometricDialog = BiometricDialogFragment()
+        biometricDialog.show(parentFragmentManager, null)
     }
 
     companion object {

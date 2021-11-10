@@ -7,6 +7,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
+import com.example.localdatastorage.screens.ListFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -16,7 +17,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val appBarConfiguration by lazy {
-        AppBarConfiguration(navController.graph)
+        AppBarConfiguration(setOf(R.id.logInFragment,R.id.listFragment))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
