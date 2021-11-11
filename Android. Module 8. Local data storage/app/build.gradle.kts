@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("kotlin-android")
+    kotlin("kapt")
 }
 
 android {
@@ -59,5 +60,10 @@ dependencies {
 
     //GSON
     implementation(Dependencies.GSON.gson)
+
+    //Room
+    implementation(Dependencies.Room.roomRuntime)
+    implementation(Dependencies.Room.roomKtx)
+    kapt(Dependencies.Room.roomCompiler)
 
 }

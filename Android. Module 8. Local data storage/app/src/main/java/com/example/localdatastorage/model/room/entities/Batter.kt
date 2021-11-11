@@ -1,4 +1,4 @@
-package com.example.localdatastorage.model.entities
+package com.example.localdatastorage.model.room.entities
 
 data class Batter(
     val id: String?,

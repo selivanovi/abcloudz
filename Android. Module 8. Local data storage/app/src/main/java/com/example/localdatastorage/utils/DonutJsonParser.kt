@@ -2,13 +2,10 @@ package com.example.localdatastorage.utils
 
 import android.content.Context
 import android.util.Log
-import com.example.localdatastorage.model.entities.Donut
+import com.example.localdatastorage.model.room.entities.Donut
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import java.io.BufferedInputStream
 import java.io.IOException
-import java.io.InputStream
-import java.nio.charset.Charset
 
 object DonutJsonParser {
 

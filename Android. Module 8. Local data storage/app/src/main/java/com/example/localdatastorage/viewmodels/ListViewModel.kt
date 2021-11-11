@@ -3,7 +3,9 @@ package com.example.localdatastorage.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
-class ListViewModel {
+class ListViewModel(
+//    private val repository: DonutsListRepository
+) {
 
 
 
