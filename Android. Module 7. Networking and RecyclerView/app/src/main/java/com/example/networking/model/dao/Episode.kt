@@ -3,14 +3,16 @@ package com.example.networking.model.dao
 import com.example.networking.ui.delegate.DelegateAdapterItem
 
 class Episode(
-    val airData: String,
-    val episode: String,
-    val id: Int,
-    val name: String,
-): DelegateAdapterItem {
-    override fun id(): Int = id
+    override val id: Int? = null,
+    val airData: String? = null,
+    val episode: String? = null,
+    val name: String? = null,
+) : DelegateAdapterItem {
 
-    override fun compareContent(item: DelegateAdapterItem): Boolean {
-        return this == item
-    }
+    override fun compareContent(item: DelegateAdapterItem): Boolean =
+        if (item is Episode) {
+            item.airData == this.airData &&
+                    item.episode == this.episode &&
+                    item.name == this.name
+        } else false
 }

@@ -1,14 +1,16 @@
 package com.example.networking.model.network
 
+import android.content.res.Resources
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.example.networking.ui.delegate.DelegateAdapterItem
 import com.example.networking.model.dao.Character
-import com.example.networking.model.network.characters.CharacterResponse
-import com.example.networking.model.network.episodes.EpisodeResponse
+import com.example.networking.model.dao.Episode
 import com.example.networking.model.pagin.CharactersDataSource
+import com.example.networking.utils.toDTO
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 class SharedRepository(
     private val apiClient: ApiClient,
@@ -25,31 +27,31 @@ class SharedRepository(
 
     suspend fun getCharacterById(
         characterOfId: Int
-    ) : CharacterResponse {
+    ): Flow<Character?> = flow {
         val request = apiClient.getCharacterById(characterOfId)
 
-        if(!request.isSuccessful){
-            return CharacterResponse()
+        if (!request.isSuccessful) {
+            throw Resources.NotFoundException()
         }
 
-        return request.body
+        emit(request.data?.body().toDTO())
     }
 
 
     suspend fun getEpisodeByIds(
         characters: Character
-    ): List<EpisodeResponse> {
-        val episodes = characters.episode.map {
+    ): Flow<List<Episode>?> = flow {
+        val episodes = characters.episode?.map {
             it.substring(startIndex = it.lastIndexOf('/') + 1)
         }.toString()
 
         val request = apiClient.getEpisodesPageByIds(episodes)
 
-        if (!request.isSuccessful){
-            return emptyList()
+        if (!request.isSuccessful) {
+            throw Resources.NotFoundException()
         }
 
-        return request.body
+        emit(request.data?.body()?.map { it.toDTO() })
     }
 
     companion object {

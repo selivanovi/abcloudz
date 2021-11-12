@@ -10,9 +10,9 @@ object NetworkLayer {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
-    private val rickAndMortyService: RickAndMortyService by lazy {
+    private val rickAndMortyService: RickAndMortyService =
         retrofit.create(RickAndMortyService::class.java)
-    }
+
 
     val apiService = ApiClient(rickAndMortyService)
 }
