@@ -25,4 +25,7 @@ data class SimpleResponse<T>(
     val isSuccessful: Boolean
         get() = this.data?.isSuccessful == true
 
+    val body: T?
+        get() = data?.body()
+
 }

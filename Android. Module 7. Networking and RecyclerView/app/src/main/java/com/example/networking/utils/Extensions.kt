@@ -1,8 +1,7 @@
 package com.example.networking.utils
 
 import androidx.lifecycle.LifecycleCoroutineScope
-import com.example.networking.model.dao.Character
-import com.example.networking.model.dao.Episode
+import com.example.networking.model.dao.*
 import com.example.networking.model.network.characters.CharacterResponse
 import com.example.networking.model.network.episodes.EpisodeResponse
 import kotlinx.coroutines.flow.Flow
@@ -25,8 +24,32 @@ fun CharacterResponse.toDTO(): Character =
         image = this.image
     )
 
-fun <T> Flow<T>.launchWhenStarted(lifecycleScope: LifecycleCoroutineScope) {
-    lifecycleScope.launchWhenStarted {
-        this@launchWhenStarted.collect()
-    }
-}
+fun CharacterResponse.toAliveCharacter(): AliveCharacter =
+    AliveCharacter(
+        id = this.id,
+        name = this.name,
+        image = this.image,
+        status = this.status,
+        origin = this.origin,
+        species = this.species
+    )
+
+fun CharacterResponse.toDeadCharacter(): DeadCharacter =
+    DeadCharacter(
+        id = this.id,
+        name = this.name,
+        image = this.image,
+        status = this.status,
+        origin = this.origin,
+        species = this.species
+    )
+
+fun CharacterResponse.toUnknownCharacter(): UnknownCharacter =
+    UnknownCharacter(
+            id = this.id,
+            name = this.name,
+            image = this.image,
+            status = this.status,
+            origin = this.origin,
+            species = this.species
+        )

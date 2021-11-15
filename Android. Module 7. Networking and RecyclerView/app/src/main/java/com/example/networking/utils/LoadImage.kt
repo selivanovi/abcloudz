@@ -16,14 +16,18 @@ fun getBitmapFromUrl(url: String): Bitmap? =
     }
 
 
-fun setImageFromUrl(url: String, imageView: ImageView) = CoroutineScope(Dispatchers.IO).launch {
-    val bitmapDeferred: Deferred<Bitmap?> = async {  getBitmapFromUrl(url) }
-    withContext(Dispatchers.Main) {
+fun setImageFromUrl(url: String?, imageView: ImageView) = CoroutineScope(Dispatchers.IO).launch {
+    if (url == null) {
         imageView.setImageBitmap(null)
-    }
-    val bitmap = bitmapDeferred.await()
-    withContext(Dispatchers.Main) {
-        imageView.setImageBitmap(bitmap)
-    }
 
+    } else {
+        val bitmapDeferred: Deferred<Bitmap?> = async { getBitmapFromUrl(url) }
+        withContext(Dispatchers.Main) {
+            imageView.setImageBitmap(null)
+        }
+        val bitmap = bitmapDeferred.await()
+        withContext(Dispatchers.Main) {
+            imageView.setImageBitmap(bitmap)
+        }
+    }
 }

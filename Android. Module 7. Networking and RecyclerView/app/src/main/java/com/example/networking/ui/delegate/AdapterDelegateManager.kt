@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.collection.SparseArrayCompat
 import androidx.recyclerview.widget.RecyclerView
 
-class AdapterDelegateManager<T>(vararg delegates: BaseAdapterDelegate<T>) {
+class AdapterDelegateManager<T : Any>(vararg delegates: BaseAdapterDelegate<T>) {
 
     private val _delegates = SparseArrayCompat<BaseAdapterDelegate<T>>()
 

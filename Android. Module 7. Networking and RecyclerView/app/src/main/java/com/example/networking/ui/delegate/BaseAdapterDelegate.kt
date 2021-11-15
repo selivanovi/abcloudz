@@ -4,7 +4,7 @@ import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.RecyclerView
 
-abstract class BaseAdapterDelegate<T>(
+abstract class BaseAdapterDelegate<T : Any>(
     @LayoutRes val layoutId: Int
 ) {
 

@@ -27,31 +27,23 @@ class SharedRepository(
 
     suspend fun getCharacterById(
         characterOfId: Int
-    ): Flow<Character?> = flow {
+    ): Character? {
         val request = apiClient.getCharacterById(characterOfId)
 
-        if (!request.isSuccessful) {
-            throw Resources.NotFoundException()
-        }
-
-        emit(request.data?.body().toDTO())
+        return request.data?.body()?.toDTO()
     }
 
 
     suspend fun getEpisodeByIds(
         characters: Character
-    ): Flow<List<Episode>?> = flow {
+    ): List<Episode>? {
         val episodes = characters.episode?.map {
             it.substring(startIndex = it.lastIndexOf('/') + 1)
         }.toString()
 
         val request = apiClient.getEpisodesPageByIds(episodes)
 
-        if (!request.isSuccessful) {
-            throw Resources.NotFoundException()
-        }
-
-        emit(request.data?.body()?.map { it.toDTO() })
+        return request.data?.body()?.map { it.toDTO() }
     }
 
     companion object {

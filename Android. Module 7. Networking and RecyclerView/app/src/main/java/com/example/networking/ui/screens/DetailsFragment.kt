@@ -7,37 +7,47 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.networking.ui.recyclerviews.episodes.EpisodeLayoutManager
 import com.example.networking.R
 import com.example.networking.model.dao.Character
+import com.example.networking.model.network.NetworkLayer
+import com.example.networking.model.network.SharedRepository
 import com.example.networking.ui.recyclerviews.episodes.EpisodeOffsetItemDecoration
 import com.example.networking.ui.recyclerviews.episodes.EpisodesAdapter
 import com.example.networking.setImageFromUrl
 import com.example.networking.ui.viewmodels.DetailsViewModel
+import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class DetailsFragment : Fragment(R.layout.fragment_details) {
 
-    private val detailsViewModel by activityViewModels<DetailsViewModel>()
+    private val detailsViewModel by viewModels<DetailsViewModel> {
+        DetailsViewModel.Factory(SharedRepository(NetworkLayer.apiService))
+    }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        arguments?.let {
-            val id = it.getInt(ARG_ID)
-            lifecycleScope.launch {
-                detailsViewModel.getCharacterById(id).collect { character ->
-                    createView(view, character)
+        val notNullArguments = arguments ?: throw Exception()
+
+        val id = notNullArguments.getInt(ARG_ID)
+        lifecycleScope.launch {
+            detailsViewModel.getCharacterById(id).consumeEach { character ->
+                character?.let {
+                    createView(view, it)
                     createRecyclerView(view, character)
-                    Log.d("DetailsFragment", "Character: $character")
                 }
+
+                Log.d("DetailsFragment", "Character: $character")
             }
         }
+
     }
 
     private fun createView(view: View, character: Character) {
@@ -47,7 +57,7 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
 
         setImageFromUrl(character.image, characterImageView)
         nameTextView.text = character.name
-        originTextView.text = character.origin.name
+        originTextView.text = character.origin?.name
 
     }
 
@@ -62,8 +72,8 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
         recyclerView.addItemDecoration(EpisodeOffsetItemDecoration(25, 25, 25, 25))
 
         lifecycleScope.launch {
-            detailsViewModel.getEpisodesByIds(character).collect { episodes ->
-                adapter.setData(episodes)
+            detailsViewModel.getEpisodesByIds(character).consumeEach { episodes ->
+                episodes?.let { adapter.setData(it) }
             }
         }
     }

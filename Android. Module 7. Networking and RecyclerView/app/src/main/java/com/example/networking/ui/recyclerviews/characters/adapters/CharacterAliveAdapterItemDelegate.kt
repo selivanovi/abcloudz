@@ -12,7 +12,7 @@ import com.example.networking.model.dao.AliveCharacter
 import com.example.networking.setImageFromUrl
 import com.example.networking.ui.delegate.BaseAdapterDelegate
 
-class CharacterAliveAdapterItemDelegate<T>(layoutId: Int): BaseAdapterDelegate<T>(layoutId) {
+class CharacterAliveAdapterItemDelegate<T : Any>(layoutId: Int) : BaseAdapterDelegate<T>(layoutId) {
 
     override fun isForViewType(item: T): Boolean {
         return item is AliveCharacter
@@ -23,7 +23,9 @@ class CharacterAliveAdapterItemDelegate<T>(layoutId: Int): BaseAdapterDelegate<T
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup): RecyclerView.ViewHolder {
-        return CharacterViewHolder(LayoutInflater.from(viewGroup.context).inflate(layoutId, viewGroup, false))
+        return CharacterViewHolder(
+            LayoutInflater.from(viewGroup.context).inflate(layoutId, viewGroup, false)
+        )
     }
 
     class CharacterViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -32,17 +34,15 @@ class CharacterAliveAdapterItemDelegate<T>(layoutId: Int): BaseAdapterDelegate<T
         private val statusTextView = view.findViewById<TextView>(R.id.statusTextView)
         private val speciesTextView = view.findViewById<TextView>(R.id.speciesTextView)
 
-        fun bind(item: AliveCharacter?) {
-            item?.let { character->
-                nameTextView.text = character.name
-                Log.d("CharacterAliveAdapter", "Name: " + character.name)
-                setImageFromUrl(character.image, imageCharacter)
-                Log.d("CharacterAliveAdapter", "Image: " + character.image)
-                statusTextView.text = character.status
-                Log.d("CharacterAliveAdapter", "Status: " + character.status)
-                speciesTextView.text = character.species
-                Log.d("CharacterAliveAdapter", "Species: " + character.species)
-            }
+        fun bind(item: AliveCharacter) {
+            nameTextView.text = item.name
+            Log.d("CharacterAliveAdapter", "Name: " + item.name)
+            setImageFromUrl(item.image, imageCharacter)
+            Log.d("CharacterAliveAdapter", "Image: " + item.image)
+            statusTextView.text = item.status
+            Log.d("CharacterAliveAdapter", "Status: " + item.status)
+            speciesTextView.text = item.species
+            Log.d("CharacterAliveAdapter", "Species: " + item.species)
         }
     }
 

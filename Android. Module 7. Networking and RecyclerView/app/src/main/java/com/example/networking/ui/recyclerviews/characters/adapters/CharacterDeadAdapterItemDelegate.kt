@@ -10,7 +10,7 @@ import com.example.networking.R
 import com.example.networking.model.dao.DeadCharacter
 import com.example.networking.ui.delegate.BaseAdapterDelegate
 
-class CharacterDeadAdapterItemDelegate<T>(layoutId: Int): BaseAdapterDelegate<T>(layoutId) {
+class CharacterDeadAdapterItemDelegate<T : Any>(layoutId: Int): BaseAdapterDelegate<T>(layoutId) {
 
     override fun isForViewType(item: T): Boolean {
         return item is DeadCharacter
@@ -29,7 +29,7 @@ class CharacterDeadAdapterItemDelegate<T>(layoutId: Int): BaseAdapterDelegate<T>
         private val statusTextView = view.findViewById<TextView>(R.id.statusTextView)
         private val speciesTextView = view.findViewById<TextView>(R.id.speciesTextView)
 
-        fun bind(item: DeadCharacter?) {
+        fun bind(item: DeadCharacter) {
             item?.let { character->
                 nameTextView.text = character.name
                 Log.d("CharacterDeadAdapter", "Name: " + character.name)

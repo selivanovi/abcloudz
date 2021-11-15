@@ -10,7 +10,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.networking.R
-import com.example.networking.ui.delegate.*
+import com.example.networking.ui.delegate.AdapterDelegateManager
+import com.example.networking.ui.delegate.DelegateAdapterItem
 import com.example.networking.ui.recyclerviews.characters.adapters.CharacterAliveAdapterItemDelegate
 import com.example.networking.ui.recyclerviews.characters.adapters.CharacterDeadAdapterItemDelegate
 import com.example.networking.ui.recyclerviews.characters.adapters.CharacterPaginDelegateAdapter
@@ -66,7 +67,7 @@ class ListFragment : Fragment(R.layout.fragment_list) {
         findNavController().navigate(
             R.id.action_listFragment_to_detailsFragment,
             Bundle().apply {
-                putInt(DetailsFragment.ARG_ID, item.id())
+                putInt(DetailsFragment.ARG_ID, item.id!!)
             }
         )
     }

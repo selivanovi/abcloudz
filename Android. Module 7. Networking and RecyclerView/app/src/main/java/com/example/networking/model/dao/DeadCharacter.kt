@@ -4,12 +4,12 @@ import com.example.networking.ui.delegate.DelegateAdapterItem
 import com.example.networking.model.network.characters.Origin
 
 data class DeadCharacter(
-    override val id: Int? = null,
-    val name: String? = null,
-    val origin: Origin? = null,
-    val image: String? = null,
-    val species: String? = null,
-    val status: String? = null,
+    override var id: Int? = null,
+    var name: String? = null,
+    var origin: Origin? = null,
+    var image: String? = null,
+    var species: String? = null,
+    var status: String? = null,
     val episode: List<String>? = null,
 ) : DelegateAdapterItem {
 
