@@ -1,5 +1,6 @@
 package com.example.networking.ui.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -25,11 +26,10 @@ class DetailsViewModel(
 
         if (result.isSuccess) {
             result.getOrNull()?.let { channelCharacters.send(it) }
-            channelError.close()
-        }
-        else {
+            Log.d("DetailsViewModel", "Success: send character")
+        } else {
             channelError.send(result.exceptionOrNull())
-            channelCharacters.close()
+            Log.d("DetailsViewModel", "Error: send error")
         }
     }
 
@@ -39,9 +39,13 @@ class DetailsViewModel(
     ) = viewModelScope.launch(Dispatchers.IO) {
         val result = sharedRepository.getEpisodeByIds(character)
 
-        if (result.isSuccess)
+        if (result.isSuccess) {
             result.getOrNull()?.let { channelEpisodes.send(it) }
-        else channelError.send(result.exceptionOrNull())
+            Log.d("DetailsViewModel", "Success: send episodes")
+        } else {
+            channelError.send(result.exceptionOrNull())
+            Log.d("DetailsViewModel", "Error: send error")
+        }
     }
 
 

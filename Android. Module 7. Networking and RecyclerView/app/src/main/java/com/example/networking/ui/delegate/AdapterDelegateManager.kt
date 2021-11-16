@@ -49,6 +49,5 @@ class AdapterDelegateManager<T : Any>(vararg delegates: BaseAdapterDelegate<T>) 
         }!!
         Log.d("AdapterDelegateManager", "searchKey: ${delegate.javaClass.name}" )
         return delegate
-        throw error("Mo found error")
     }
 }
