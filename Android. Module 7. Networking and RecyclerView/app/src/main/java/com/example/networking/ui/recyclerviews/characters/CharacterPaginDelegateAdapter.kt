@@ -1,4 +1,4 @@
-package com.example.networking.ui.recyclerviews.characters.adapters
+package com.example.networking.ui.recyclerviews.characters
 
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -11,7 +11,6 @@ class CharacterPaginDelegateAdapter(
     diffUtil: DiffUtil.ItemCallback<DelegateAdapterItem>,
     var onClickListener: ((DelegateAdapterItem) -> Unit)? = null
 ) : PagingDelegationAdapter<DelegateAdapterItem>(adapterDelegateManager, diffUtil) {
-
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         super.onBindViewHolder(holder, position)

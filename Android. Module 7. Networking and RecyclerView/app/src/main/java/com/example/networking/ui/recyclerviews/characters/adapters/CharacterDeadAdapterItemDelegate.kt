@@ -7,13 +7,14 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.networking.R
+import com.example.networking.model.dao.AliveCharacter
 import com.example.networking.model.dao.DeadCharacter
 import com.example.networking.ui.delegate.BaseAdapterDelegate
 
 class CharacterDeadAdapterItemDelegate<T : Any>(layoutId: Int): BaseAdapterDelegate<T>(layoutId) {
 
-    override fun isForViewType(item: T): Boolean {
-        return item is DeadCharacter
+    override val map = mutableMapOf<Class<*>, Int>().also {
+        it[DeadCharacter::class.java] = this.hashCode()
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, item: T) {
@@ -29,14 +30,19 @@ class CharacterDeadAdapterItemDelegate<T : Any>(layoutId: Int): BaseAdapterDeleg
         private val statusTextView = view.findViewById<TextView>(R.id.statusTextView)
         private val speciesTextView = view.findViewById<TextView>(R.id.speciesTextView)
 
-        fun bind(item: DeadCharacter) {
-            item?.let { character->
-                nameTextView.text = character.name
-                Log.d("CharacterDeadAdapter", "Name: " + character.name)
-                statusTextView.text = character.status
-                Log.d("CharacterDeadAdapter", "Status: " + character.status)
-                speciesTextView.text = character.species
-                Log.d("CharacterDeadAdapter", "Species: " + character.species)
+        fun bind(item: DeadCharacter?) {
+            if (item != null) {
+                nameTextView.text = item.name
+                Log.d("CharacterDeadAdapter", "Name: " + item.name)
+                statusTextView.text = item.status
+                Log.d("CharacterDeadAdapter", "Status: " + item.status)
+                speciesTextView.text = item.species
+                Log.d("CharacterDeadAdapter", "Species: " + item.species)
+            }
+            else {
+                nameTextView.text = null
+                statusTextView.text = null
+                speciesTextView.text = null
             }
         }
     }

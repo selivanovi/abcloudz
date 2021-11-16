@@ -9,13 +9,14 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.networking.R
 import com.example.networking.model.dao.AliveCharacter
+import com.example.networking.model.dao.DeadCharacter
 import com.example.networking.setImageFromUrl
 import com.example.networking.ui.delegate.BaseAdapterDelegate
 
 class CharacterAliveAdapterItemDelegate<T : Any>(layoutId: Int) : BaseAdapterDelegate<T>(layoutId) {
 
-    override fun isForViewType(item: T): Boolean {
-        return item is AliveCharacter
+    override val map = mutableMapOf<Class<*>, Int>().also {
+        it[AliveCharacter::class.java] = this.hashCode()
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, item: T) {
@@ -34,16 +35,24 @@ class CharacterAliveAdapterItemDelegate<T : Any>(layoutId: Int) : BaseAdapterDel
         private val statusTextView = view.findViewById<TextView>(R.id.statusTextView)
         private val speciesTextView = view.findViewById<TextView>(R.id.speciesTextView)
 
-        fun bind(item: AliveCharacter) {
-            nameTextView.text = item.name
-            Log.d("CharacterAliveAdapter", "Name: " + item.name)
-            setImageFromUrl(item.image, imageCharacter)
-            Log.d("CharacterAliveAdapter", "Image: " + item.image)
-            statusTextView.text = item.status
-            Log.d("CharacterAliveAdapter", "Status: " + item.status)
-            speciesTextView.text = item.species
-            Log.d("CharacterAliveAdapter", "Species: " + item.species)
+
+        fun bind(item: AliveCharacter?) {
+            if (item != null) {
+                nameTextView.text = item.name
+                Log.d("CharacterDeadAdapter", "Name: " + item.name)
+                setImageFromUrl(item.image, imageCharacter)
+                Log.d("CharacterAliveAdapter", "Image: " + item.image)
+                statusTextView.text = item.status
+                Log.d("CharacterDeadAdapter", "Status: " + item.status)
+                speciesTextView.text = item.species
+                Log.d("CharacterDeadAdapter", "Species: " + item.species)
+            }
+            else {
+                nameTextView.text = null
+                setImageFromUrl(null, imageCharacter)
+                statusTextView.text = null
+                speciesTextView.text = null
+            }
         }
     }
-
 }

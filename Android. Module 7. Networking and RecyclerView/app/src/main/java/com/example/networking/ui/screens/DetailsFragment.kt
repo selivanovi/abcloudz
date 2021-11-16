@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -20,15 +21,24 @@ import com.example.networking.ui.recyclerviews.episodes.EpisodeOffsetItemDecorat
 import com.example.networking.ui.recyclerviews.episodes.EpisodesAdapter
 import com.example.networking.setImageFromUrl
 import com.example.networking.ui.viewmodels.DetailsViewModel
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.consumeEach
+import kotlinx.coroutines.channels.receiveOrNull
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 class DetailsFragment : Fragment(R.layout.fragment_details) {
+
 
     private val detailsViewModel by viewModels<DetailsViewModel> {
         DetailsViewModel.Factory(SharedRepository(NetworkLayer.apiService))
     }
+
+    private val character = runBlocking { detailsViewModel.channelCharacters.receive() }
+    private val episode = runBlocking { detailsViewModel.channelEpisodes.receive() }
+    private val error = runBlocking { detailsViewModel.channelError.receive() }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -37,17 +47,22 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
         val notNullArguments = arguments ?: throw Exception()
 
         val id = notNullArguments.getInt(ARG_ID)
-        lifecycleScope.launch {
-            detailsViewModel.getCharacterById(id).consumeEach { character ->
-                character?.let {
-                    createView(view, it)
-                    createRecyclerView(view, character)
-                }
 
-                Log.d("DetailsFragment", "Character: $character")
-            }
+        detailsViewModel.getCharacterById(id)
+
+
+        character.let {
+            createView(view, it)
+            createRecyclerView(view, character)
+            Log.d("DetailsFragment", "Character: $character")
         }
 
+        if (error != null)
+        Toast.makeText(requireContext(), "Ups, something wrong!", Toast.LENGTH_LONG).show()
+    }
+
+    override fun onStart() {
+        super.onStart()
     }
 
     private fun createView(view: View, character: Character) {
@@ -71,11 +86,9 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
 
         recyclerView.addItemDecoration(EpisodeOffsetItemDecoration(25, 25, 25, 25))
 
-        lifecycleScope.launch {
-            detailsViewModel.getEpisodesByIds(character).consumeEach { episodes ->
-                episodes?.let { adapter.setData(it) }
-            }
-        }
+        detailsViewModel.getEpisodesByIds(character)
+
+        adapter.setData(episode)
     }
 
     companion object {

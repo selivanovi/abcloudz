@@ -14,8 +14,9 @@ import com.example.networking.ui.delegate.AdapterDelegateManager
 import com.example.networking.ui.delegate.DelegateAdapterItem
 import com.example.networking.ui.recyclerviews.characters.adapters.CharacterAliveAdapterItemDelegate
 import com.example.networking.ui.recyclerviews.characters.adapters.CharacterDeadAdapterItemDelegate
-import com.example.networking.ui.recyclerviews.characters.adapters.CharacterPaginDelegateAdapter
-import com.example.networking.ui.recyclerviews.characters.CharacterUnknownAdapterItemDelegate
+import com.example.networking.ui.recyclerviews.characters.CharacterPaginDelegateAdapter
+import com.example.networking.ui.recyclerviews.characters.DelegateItemComparator
+import com.example.networking.ui.recyclerviews.characters.adapters.CharacterUnknownAdapterItemDelegate
 import com.example.networking.ui.viewmodels.CharacterViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -34,12 +35,12 @@ class ListFragment : Fragment(R.layout.fragment_list) {
     }
 
     override fun onStart() {
+        super.onStart()
         lifecycleScope.launch {
             characterViewModel.searchCharacter().collectLatest { pagingData ->
                 pagingDataAdapter.submitData(pagingData)
             }
         }
-        super.onStart()
     }
 
 
@@ -51,7 +52,7 @@ class ListFragment : Fragment(R.layout.fragment_list) {
                 CharacterDeadAdapterItemDelegate(R.layout.item_dead_recyclerview),
                 CharacterUnknownAdapterItemDelegate(R.layout.item_unknown_recyclerview),
             ),
-            com.example.networking.ui.recyclerviews.characters.Comparator()
+            DelegateItemComparator()
         )
 
         pagingDataAdapter.onClickListener = ::onItemClickListener

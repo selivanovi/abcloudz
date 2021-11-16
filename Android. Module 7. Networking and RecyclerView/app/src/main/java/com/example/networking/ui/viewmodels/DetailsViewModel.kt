@@ -6,41 +6,44 @@ import androidx.lifecycle.viewModelScope
 import com.example.networking.model.dao.Character
 import com.example.networking.model.dao.Episode
 import com.example.networking.model.network.SharedRepository
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.channels.ReceiveChannel
-import kotlinx.coroutines.channels.produce
 import kotlinx.coroutines.launch
 
 class DetailsViewModel(
     private val sharedRepository: SharedRepository
 ) : ViewModel() {
 
-    private val channelCharacters = Channel<Character?>()
-    private val channelEpisode = Channel<List<Episode>?>()
+    val channelCharacters = Channel<Character>()
+    val channelEpisodes = Channel<List<Episode>>()
+    val channelError = Channel<Throwable?>()
 
     fun getCharacterById(
         id: Int
-    ): Channel<Character?> {
-        viewModelScope.launch(Dispatchers.IO) {
-            val character = sharedRepository.getCharacterById(id)
+    ) = viewModelScope.launch(Dispatchers.IO) {
+        val result = sharedRepository.getCharacterById(id)
 
-            channelCharacters.send(character)
+        if (result.isSuccess) {
+            result.getOrNull()?.let { channelCharacters.send(it) }
+            channelError.close()
         }
-        return channelCharacters
+        else {
+            channelError.send(result.exceptionOrNull())
+            channelCharacters.close()
+        }
     }
+
 
     fun getEpisodesByIds(
         character: Character
-    ): Channel<List<Episode>?> {
-        viewModelScope.launch(Dispatchers.IO) {
-            val episodes = sharedRepository.getEpisodeByIds(character)
+    ) = viewModelScope.launch(Dispatchers.IO) {
+        val result = sharedRepository.getEpisodeByIds(character)
 
-            channelEpisode.send(episodes)
-        }
-        return channelEpisode
+        if (result.isSuccess)
+            result.getOrNull()?.let { channelEpisodes.send(it) }
+        else channelError.send(result.exceptionOrNull())
     }
+
 
     @Suppress("UNCHECKED_CAST")
     class Factory(private val sharedRepository: SharedRepository) : ViewModelProvider.Factory {

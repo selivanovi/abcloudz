@@ -1,6 +1,5 @@
 package com.example.networking.model.network
 
-import android.content.res.Resources
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
@@ -10,7 +9,6 @@ import com.example.networking.model.dao.Episode
 import com.example.networking.model.pagin.CharactersDataSource
 import com.example.networking.utils.toDTO
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 
 class SharedRepository(
     private val apiClient: ApiClient,
@@ -27,23 +25,31 @@ class SharedRepository(
 
     suspend fun getCharacterById(
         characterOfId: Int
-    ): Character? {
+    ): Result<Character?> {
         val request = apiClient.getCharacterById(characterOfId)
 
-        return request.data?.body()?.toDTO()
+        request.exception?.let {
+            return Result.failure(it)
+        }
+
+        return Result.success(request.body?.toDTO())
     }
 
 
     suspend fun getEpisodeByIds(
         characters: Character
-    ): List<Episode>? {
+    ): Result<List<Episode>?> {
         val episodes = characters.episode?.map {
             it.substring(startIndex = it.lastIndexOf('/') + 1)
         }.toString()
 
         val request = apiClient.getEpisodesPageByIds(episodes)
 
-        return request.data?.body()?.map { it.toDTO() }
+        request.exception?.let {
+            return Result.failure(it)
+        }
+
+        return Result.success(request.body?.map { it.toDTO() })
     }
 
     companion object {

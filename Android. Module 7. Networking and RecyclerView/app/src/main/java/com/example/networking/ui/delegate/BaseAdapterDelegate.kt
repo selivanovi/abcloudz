@@ -8,8 +8,7 @@ abstract class BaseAdapterDelegate<T : Any>(
     @LayoutRes val layoutId: Int
 ) {
 
-
-    abstract fun isForViewType(item: T): Boolean
+    abstract val map: Map<Class<*>, Int>
 
     abstract fun onCreateViewHolder(viewGroup: ViewGroup): RecyclerView.ViewHolder
 
