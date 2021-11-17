@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 class AdapterDelegateManager<T : Any>(vararg delegates: BaseAdapterDelegate<T>) {
 
-    private val _delegates = mutableListOf<BaseAdapterDelegate<T>>()
+    private val _delegates = mutableSetOf<BaseAdapterDelegate<T>>()
     private val maps = mutableMapOf<Class<*>, Int>()
 
 
