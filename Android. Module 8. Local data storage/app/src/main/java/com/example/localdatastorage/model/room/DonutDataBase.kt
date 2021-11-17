@@ -7,14 +7,14 @@ import com.example.localdatastorage.model.room.entities.Donut
 import com.example.localdatastorage.model.room.entities.Topping
 
 
-@Database(
-    entities = [
-        Donut::class,
-        Topping::class,
-    ],
-    version = 1
-)
-abstract class DonutDataBase : RoomDatabase() {
-
-    abstract val donutsDao: DonutsDao
-}
+//@Database(
+//    entities = [
+//        Donut::class,
+//        Topping::class,
+//    ],
+//    version = 1
+//)
+//abstract class DonutDataBase : RoomDatabase() {
+//
+//    abstract val donutsDao: DonutsDao
+//}

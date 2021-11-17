@@ -1,10 +1,7 @@
 package com.example.localdatastorage.model.room.entities
 
-import androidx.room.Entity
 
-@Entity
 data class Topping(
-    val id: String?,
+    val id: Int?,
     val type: String?,
-    val donut: Int?
 )
