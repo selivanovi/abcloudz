@@ -7,10 +7,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.networking.R
 import com.example.networking.model.dao.AliveCharacter
-import com.example.networking.model.dao.DeadCharacter
-import com.example.networking.setImageFromUrl
 import com.example.networking.ui.delegate.BaseAdapterDelegate
 
 class CharacterAliveAdapterItemDelegate<T : Any>(layoutId: Int) : BaseAdapterDelegate<T>(layoutId) {
@@ -29,7 +28,7 @@ class CharacterAliveAdapterItemDelegate<T : Any>(layoutId: Int) : BaseAdapterDel
         )
     }
 
-    class CharacterViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    class CharacterViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         private val nameTextView = view.findViewById<TextView>(R.id.nameTextView)
         private val imageCharacter = view.findViewById<ImageView>(R.id.characterImageView)
         private val statusTextView = view.findViewById<TextView>(R.id.statusTextView)
@@ -40,7 +39,11 @@ class CharacterAliveAdapterItemDelegate<T : Any>(layoutId: Int) : BaseAdapterDel
             if (item != null) {
                 nameTextView.text = item.name
                 Log.d("CharacterDeadAdapter", "Name: " + item.name)
-                setImageFromUrl(item.image, imageCharacter)
+                Glide.with(view)
+                    .load(item.image)
+                    .centerCrop()
+                    .placeholder(R.drawable.ic_baseline_image_24)
+                    .into(imageCharacter)
                 Log.d("CharacterAliveAdapter", "Image: " + item.image)
                 statusTextView.text = item.status
                 Log.d("CharacterDeadAdapter", "Status: " + item.status)
@@ -49,7 +52,7 @@ class CharacterAliveAdapterItemDelegate<T : Any>(layoutId: Int) : BaseAdapterDel
             }
             else {
                 nameTextView.text = null
-                setImageFromUrl(null, imageCharacter)
+                imageCharacter.setImageBitmap(null)
                 statusTextView.text = null
                 speciesTextView.text = null
             }

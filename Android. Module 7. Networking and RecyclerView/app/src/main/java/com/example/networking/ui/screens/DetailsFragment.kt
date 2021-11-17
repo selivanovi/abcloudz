@@ -8,9 +8,9 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.networking.ui.recyclerviews.episodes.EpisodeLayoutManager
 import com.example.networking.R
 import com.example.networking.model.dao.Character
@@ -18,7 +18,6 @@ import com.example.networking.model.network.NetworkLayer
 import com.example.networking.model.network.SharedRepository
 import com.example.networking.ui.recyclerviews.episodes.EpisodeOffsetItemDecoration
 import com.example.networking.ui.recyclerviews.episodes.EpisodesAdapter
-import com.example.networking.setImageFromUrl
 import com.example.networking.ui.viewmodels.DetailsViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.consumeEach
@@ -90,7 +89,11 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
         val nameTextView = view.findViewById<TextView>(R.id.nameTextView)
         val originTextView = view.findViewById<TextView>(R.id.originTextView)
 
-        setImageFromUrl(character.image, characterImageView)
+        Glide.with(view)
+            .load(character.image)
+            .centerCrop()
+            .placeholder(R.drawable.ic_baseline_image_24)
+            .into(characterImageView)
         nameTextView.text = character.name
         originTextView.text = character.origin?.name
     }
