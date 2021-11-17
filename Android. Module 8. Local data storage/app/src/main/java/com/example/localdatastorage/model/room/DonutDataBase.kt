@@ -3,18 +3,20 @@ package com.example.localdatastorage.model.room
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.example.localdatastorage.model.room.dao.DonutsDao
-import com.example.localdatastorage.model.room.entities.Donut
-import com.example.localdatastorage.model.room.entities.Topping
+import com.example.localdatastorage.model.room.entities.*
 
 
-//@Database(
-//    entities = [
-//        Donut::class,
-//        Topping::class,
-//    ],
-//    version = 1
-//)
-//abstract class DonutDataBase : RoomDatabase() {
-//
-//    abstract val donutsDao: DonutsDao
-//}
+@Database(
+    entities = [
+        Donut::class,
+        Topping::class,
+        Batter::class,
+        DonutBatterCrossRef::class,
+        DonutToppingCrossRef::class
+    ],
+    version = 1
+)
+abstract class DonutDataBase : RoomDatabase() {
+
+    abstract val donutsDao: DonutsDao
+}

@@ -3,11 +3,8 @@ package com.example.localdatastorage.model.room.entities
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity
-data class Donut(
-    @PrimaryKey(autoGenerate = true)
+@Entity(primaryKeys = ["idDonut", "idBatter"])
+data class DonutBatterCrossRef(
     val idDonut: Int,
-    val name: String?,
-    val ppu: Double?,
-    val type: String?,
+    val idBatter: Int
 )
