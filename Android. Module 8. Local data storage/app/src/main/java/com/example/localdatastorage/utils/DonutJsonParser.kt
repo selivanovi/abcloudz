@@ -2,8 +2,7 @@ package com.example.localdatastorage.utils
 
 import android.content.Context
 import android.util.Log
-import com.example.localdatastorage.model.json.entities.DonutJson
-import com.example.localdatastorage.model.room.entities.Donut
+import com.example.localdatastorage.model.entities.json.DonutJson
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.io.IOException

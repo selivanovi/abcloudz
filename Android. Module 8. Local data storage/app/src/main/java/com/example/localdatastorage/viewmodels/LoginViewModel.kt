@@ -5,10 +5,19 @@ import androidx.core.content.edit
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.localdatastorage.R
-import com.example.localdatastorage.utils.validateEmail
-import com.example.localdatastorage.utils.validatePassword
+import com.example.localdatastorage.model.entities.json.DonutJson
+import com.example.localdatastorage.model.room.DonutDataBase
+import com.example.localdatastorage.model.room.DonutsListRepository
+import com.example.localdatastorage.model.room.entities.*
+import com.example.localdatastorage.utils.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-class LoginViewModel(private val sharedPreferences: SharedPreferences) : ViewModel() {
+class LoginViewModel(
+    private val sharedPreferences: SharedPreferences,
+    private val database: DonutDataBase,
+) : ViewModel() {
 
     val isFirstLaunch: Boolean
         get() =
@@ -52,14 +61,37 @@ class LoginViewModel(private val sharedPreferences: SharedPreferences) : ViewMod
         return sharedPreferences.getBoolean(STATE_OF_FINGERPRINT_KEY, true)
     }
 
-    fun loadDataInDataBase() {
+    fun loadDataInDataBase(donutsJson: List<DonutJson>) {
 
+        val donuts = mutableListOf<Donut>()
+        val toppings = mutableListOf<Topping>()
+        val batters = mutableListOf<Batter>()
+        val donutsAndToppings = mutableListOf<DonutToppingCrossRef>()
+        val donutsAndBatters = mutableListOf<DonutBatterCrossRef>()
+
+        donutsJson.forEach { donutJson ->
+            donuts.add(donutJson.toDTO())
+            toppings.addAll(donutJson.topping.map { it.toDTO() })
+            batters.addAll(donutJson.batters.batter.map { it.toDTO() })
+            donutsAndBatters.addAll(donutJson.toBatterRelation())
+            donutsAndToppings.addAll(donutJson.toToppingRelation())
+        }
+        CoroutineScope(Dispatchers.IO).launch {
+            database.donutsDao.insertBatter(*batters.toTypedArray())
+            database.donutsDao.insertDonut(*donuts.toTypedArray())
+            database.donutsDao.insertTopping(*toppings.toTypedArray())
+            database.donutsDao.insertDonutBatterCrossRef(*donutsAndBatters.toTypedArray())
+            database.donutsDao.insertDonutToppingCrossRef(*donutsAndToppings.toTypedArray())
+        }
     }
 
     @Suppress("UNCHECKED_CAST")
-    class Factory(private val sharedPreferences: SharedPreferences) : ViewModelProvider.Factory {
+    class Factory(
+        private val sharedPreferences: SharedPreferences,
+        private val database: DonutDataBase
+    ) : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            return LoginViewModel(sharedPreferences) as T
+            return LoginViewModel(sharedPreferences, database) as T
         }
     }
 

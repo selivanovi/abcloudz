@@ -12,9 +12,8 @@ class ListFragment : Fragment(R.layout.fragment_list) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        view.findViewById<TextView>(R.id.textView).setOnClickListener {
-            findNavController().navigate(R.id.action_listFragment_to_detailsFragment)
-        }
-        print(DonutJsonParser.pareJson(requireContext(), "JSON 1.txt"))
+//        view.findViewById<TextView>(R.id.textView).setOnClickListener {
+//            findNavController().navigate(R.id.action_listFragment_to_detailsFragment)
+//        }
     }
 }

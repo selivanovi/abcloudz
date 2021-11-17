@@ -1,9 +1,14 @@
 package com.example.localdatastorage.utils
 
-import com.example.localdatastorage.model.json.entities.BatterJson
-import com.example.localdatastorage.model.json.entities.DonutJson
-import com.example.localdatastorage.model.json.entities.ToppingJson
-import com.example.localdatastorage.model.room.entities.*
+import com.example.localdatastorage.model.entities.json.BatterJson
+import com.example.localdatastorage.model.entities.json.DonutJson
+import com.example.localdatastorage.model.entities.json.ToppingJson
+import com.example.localdatastorage.model.entities.ui.DonutUI
+import com.example.localdatastorage.model.room.entities.Donut
+import com.example.localdatastorage.model.room.entities.Batter
+import com.example.localdatastorage.model.room.entities.Topping
+import com.example.localdatastorage.model.room.entities.DonutBatterCrossRef
+import com.example.localdatastorage.model.room.entities.DonutToppingCrossRef
 
 fun DonutJson.toDTO(): Donut =
     Donut(

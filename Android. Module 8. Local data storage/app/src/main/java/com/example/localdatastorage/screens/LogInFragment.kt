@@ -11,6 +11,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.room.Room
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import com.example.localdatastorage.viewmodels.LoginViewModel
@@ -18,7 +19,9 @@ import com.example.localdatastorage.MainActivity
 import com.example.localdatastorage.R
 import com.example.localdatastorage.databinding.FragmentLoginBinding
 import com.example.localdatastorage.dialogfragments.BiometricDialogFragment
+import com.example.localdatastorage.model.room.DonutDataBase
 import com.example.localdatastorage.utils.BiometricUtil
+import com.example.localdatastorage.utils.DonutJsonParser
 
 
 class LogInFragment : Fragment(R.layout.fragment_login) {
@@ -43,8 +46,16 @@ class LogInFragment : Fragment(R.layout.fragment_login) {
         )
     }
 
+    private val dataBase: DonutDataBase by lazy {
+        Room.databaseBuilder(
+            requireContext(),
+            DonutDataBase::class.java, "database-donut"
+        ).build()
+    }
+
+
     private val loginViewModels: LoginViewModel by viewModels {
-        LoginViewModel.Factory(sharedPreferences)
+        LoginViewModel.Factory(sharedPreferences, dataBase)
     }
 
     override fun onCreateView(
@@ -59,9 +70,11 @@ class LogInFragment : Fragment(R.layout.fragment_login) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "onViewCreated")
+        dataBase
         (requireActivity() as MainActivity).supportActionBar?.hide()
         if (loginViewModels.isFirstLaunch) {
             showScreenLogIn()
+
         } else {
             showScreenSignUp()
         }
@@ -102,6 +115,8 @@ class LogInFragment : Fragment(R.layout.fragment_login) {
             fingerprintCheckBox.isChecked = true
             loginButton.setOnClickListener {
                 if (saveDataInEncryptedSharedPreferences()) {
+                    val donutJson = DonutJsonParser.pareJson(requireContext(), "JSON 1.txt")
+                    loginViewModels.loadDataInDataBase(donutJson)
                     findNavController().navigate(R.id.action_logInFragment_to_listFragment)
                 }
             }
@@ -132,7 +147,7 @@ class LogInFragment : Fragment(R.layout.fragment_login) {
         findNavController().navigate(R.id.action_logInFragment_to_listFragment)
     }
 
-    private fun setErrorAuthentication(){
+    private fun setErrorAuthentication() {
         val biometricDialog = BiometricDialogFragment()
         biometricDialog.show(parentFragmentManager, null)
     }
