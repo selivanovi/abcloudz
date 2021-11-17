@@ -129,12 +129,6 @@ class LogInFragment : Fragment(R.layout.fragment_login) {
     }
 
     private fun setSucceedAuthentication() {
-        val email: String = loginViewModels.getEmail()
-        val password: String = loginViewModels.getPassword()
-
-        binding.emailTextField.setText(email)
-        binding.passwordTextField.setText(password)
-
         findNavController().navigate(R.id.action_logInFragment_to_listFragment)
     }
 
