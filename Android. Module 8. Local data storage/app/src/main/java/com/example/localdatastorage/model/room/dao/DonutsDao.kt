@@ -1,9 +1,18 @@
 package com.example.localdatastorage.model.room.dao
 
-import androidx.room.*
-import com.example.localdatastorage.model.room.entities.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.Query
+import androidx.room.Transaction
+import androidx.room.OnConflictStrategy
+import com.example.localdatastorage.model.room.entities.Donut
+import com.example.localdatastorage.model.room.entities.Topping
+import com.example.localdatastorage.model.room.entities.Batter
+import com.example.localdatastorage.model.room.entities.DonutBatterCrossRef
+import com.example.localdatastorage.model.room.entities.DonutToppingCrossRef
 import com.example.localdatastorage.model.room.entities.reletions.DonutWithBatters
 import com.example.localdatastorage.model.room.entities.reletions.DonutWithToppings
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface DonutsDao {
@@ -25,9 +34,9 @@ interface DonutsDao {
 
     @Transaction
     @Query("SELECT * FROM donut WHERE idDonut = (:idDonut)")
-    suspend fun getToppingsOfDonut(idDonut: Int): List<DonutWithBatters>
+    fun getToppingsOfDonut(idDonut: Int): Flow<List<DonutWithBatters>>
 
     @Transaction
     @Query("SELECT * FROM donut WHERE idDonut = (:idDonut)")
-    suspend fun getBattersOfDonut(idDonut: Int): List<DonutWithToppings>
+    fun getBattersOfDonut(idDonut: Int): Flow<List<DonutWithToppings>>
 }
