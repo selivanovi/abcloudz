@@ -34,9 +34,9 @@ interface DonutsDao {
 
     @Transaction
     @Query("SELECT * FROM donut WHERE idDonut = (:idDonut)")
-    fun getToppingsOfDonut(idDonut: Int): Flow<List<DonutWithBatters>>
+    fun getToppingsOfDonut(idDonut: Int): Flow<DonutWithToppings>
 
     @Transaction
     @Query("SELECT * FROM donut WHERE idDonut = (:idDonut)")
-    fun getBattersOfDonut(idDonut: Int): Flow<List<DonutWithToppings>>
+    fun getBattersOfDonut(idDonut: Int): Flow<DonutWithBatters>
 }
