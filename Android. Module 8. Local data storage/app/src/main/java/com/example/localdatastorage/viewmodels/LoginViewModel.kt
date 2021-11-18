@@ -4,19 +4,18 @@ import android.content.SharedPreferences
 import androidx.core.content.edit
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import com.example.localdatastorage.R
 import com.example.localdatastorage.model.entities.json.DonutJson
-import com.example.localdatastorage.model.room.DonutDataBase
-import com.example.localdatastorage.model.room.DonutsListRepository
+import com.example.localdatastorage.model.room.DonutsRepository
 import com.example.localdatastorage.model.room.entities.*
 import com.example.localdatastorage.utils.*
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class LoginViewModel(
     private val sharedPreferences: SharedPreferences,
-    private val database: DonutDataBase,
+    private val donutsRepository: DonutsRepository
 ) : ViewModel() {
 
     val isFirstLaunch: Boolean
@@ -76,22 +75,23 @@ class LoginViewModel(
             donutsAndBatters.addAll(donutJson.toBatterRelation())
             donutsAndToppings.addAll(donutJson.toToppingRelation())
         }
-        CoroutineScope(Dispatchers.IO).launch {
-            database.donutsDao.insertBatter(*batters.toTypedArray())
-            database.donutsDao.insertDonut(*donuts.toTypedArray())
-            database.donutsDao.insertTopping(*toppings.toTypedArray())
-            database.donutsDao.insertDonutBatterCrossRef(*donutsAndBatters.toTypedArray())
-            database.donutsDao.insertDonutToppingCrossRef(*donutsAndToppings.toTypedArray())
+
+        viewModelScope.launch(Dispatchers.IO) {
+            donutsRepository.insertBatter(*batters.toTypedArray())
+            donutsRepository.insertDonut(*donuts.toTypedArray())
+            donutsRepository.insertTopping(*toppings.toTypedArray())
+            donutsRepository.insertDonutBatterCrossRef(*donutsAndBatters.toTypedArray())
+            donutsRepository.insertDonutToppingCrossRef(*donutsAndToppings.toTypedArray())
         }
     }
 
     @Suppress("UNCHECKED_CAST")
     class Factory(
         private val sharedPreferences: SharedPreferences,
-        private val database: DonutDataBase
+        private val donutsRepository: DonutsRepository
     ) : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            return LoginViewModel(sharedPreferences, database) as T
+            return LoginViewModel(sharedPreferences, donutsRepository) as T
         }
     }
 

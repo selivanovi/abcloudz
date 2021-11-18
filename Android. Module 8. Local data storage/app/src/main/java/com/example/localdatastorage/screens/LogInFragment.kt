@@ -20,6 +20,7 @@ import com.example.localdatastorage.R
 import com.example.localdatastorage.databinding.FragmentLoginBinding
 import com.example.localdatastorage.dialogfragments.BiometricDialogFragment
 import com.example.localdatastorage.model.room.DonutDataBase
+import com.example.localdatastorage.model.room.DonutsRepository
 import com.example.localdatastorage.utils.BiometricUtil
 import com.example.localdatastorage.utils.DonutJsonParser
 
@@ -53,9 +54,12 @@ class LogInFragment : Fragment(R.layout.fragment_login) {
         ).build()
     }
 
+    private val repository: DonutsRepository by lazy {
+        DonutsRepository(dataBase.donutsDao)
+    }
 
     private val loginViewModels: LoginViewModel by viewModels {
-        LoginViewModel.Factory(sharedPreferences, dataBase)
+        LoginViewModel.Factory(sharedPreferences, repository)
     }
 
     override fun onCreateView(
