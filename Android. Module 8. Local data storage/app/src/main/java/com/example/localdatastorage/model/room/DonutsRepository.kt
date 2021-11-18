@@ -8,6 +8,7 @@ import com.example.localdatastorage.model.room.entities.Topping
 import com.example.localdatastorage.model.room.entities.reletions.DonutWithBatters
 import com.example.localdatastorage.model.room.entities.reletions.DonutWithToppings
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.onCompletion
 
 
 class DonutsRepository(
@@ -49,5 +50,9 @@ class DonutsRepository(
     fun getToppingsOfDonut(idDonut: Int): Flow<DonutWithToppings> =
         dataBase.donutsDao.getToppingsOfDonut(idDonut)
 
+    fun getDonutsAndBatters(): Flow<List<DonutWithBatters>> =
+        dataBase.donutsDao.getBattersOfDonuts()
 
+    fun getToppingsAndBatters(): Flow<List<DonutWithToppings>> =
+        dataBase.donutsDao.getToppingsOfDonuts()
 }

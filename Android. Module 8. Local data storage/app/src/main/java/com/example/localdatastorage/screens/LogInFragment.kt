@@ -48,10 +48,7 @@ class LogInFragment : Fragment(R.layout.fragment_login) {
     }
 
     private val dataBase: DonutDataBase by lazy {
-        Room.databaseBuilder(
-            requireContext(),
-            DonutDataBase::class.java, "database-donut"
-        ).build()
+        DonutDataBase.getInstance(requireContext())
     }
 
     private val repository: DonutsRepository by lazy {

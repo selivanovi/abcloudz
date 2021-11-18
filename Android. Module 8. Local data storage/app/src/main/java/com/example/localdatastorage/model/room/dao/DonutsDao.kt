@@ -64,5 +64,11 @@ interface DonutsDao {
     @Query("SELECT * FROM donut WHERE idDonut = (:idDonut)")
     fun getBattersOfDonut(idDonut: Int): Flow<DonutWithBatters>
 
+    @Transaction
+    @Query("SELECT * FROM donut")
+    fun getBattersOfDonuts(): Flow<List<DonutWithBatters>>
 
+    @Transaction
+    @Query("SELECT * FROM donut")
+    fun getToppingsOfDonuts(): Flow<List<DonutWithToppings>>
 }
