@@ -55,7 +55,7 @@ class LogInFragment : Fragment(R.layout.fragment_login) {
     }
 
     private val repository: DonutsRepository by lazy {
-        DonutsRepository(dataBase.donutsDao)
+        DonutsRepository(dataBase)
     }
 
     private val loginViewModels: LoginViewModel by viewModels {

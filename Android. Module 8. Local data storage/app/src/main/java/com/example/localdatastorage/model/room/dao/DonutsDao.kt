@@ -18,19 +18,43 @@ import kotlinx.coroutines.flow.Flow
 interface DonutsDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertDonut(vararg donuts: Donut)
+    suspend fun insertDonut(donut: Donut)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertBatter(vararg batter: Batter)
+    suspend fun insertBatter(batter: Batter)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertTopping(vararg topping: Topping)
+    suspend fun insertTopping(topping: Topping)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertDonutBatterCrossRef(vararg crossRef: DonutBatterCrossRef)
+    suspend fun insertDonutBatterCrossRef(crossRef: DonutBatterCrossRef)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertDonutToppingCrossRef(vararg crossRef: DonutToppingCrossRef)
+    suspend fun insertDonutToppingCrossRef(crossRef: DonutToppingCrossRef)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertDonuts(donuts: List<Donut>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertBatters(batters: List<Batter>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertToppings(toppings: List<Topping>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertDonutBatterCrossRefs(crossRefs: List<DonutBatterCrossRef>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertDonutToppingCrossRefs(crossRefs: List<DonutToppingCrossRef>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertDonutsWithBattersAndToppings(
+        donuts: List<Donut>,
+        batters: List<Batter>,
+        toppings: List<Topping>,
+        donutBatterCrossRefs: List<DonutBatterCrossRef>,
+        donutToppingCrossRefs: List<DonutToppingCrossRef>
+    )
 
     @Transaction
     @Query("SELECT * FROM donut WHERE idDonut = (:idDonut)")
@@ -39,4 +63,6 @@ interface DonutsDao {
     @Transaction
     @Query("SELECT * FROM donut WHERE idDonut = (:idDonut)")
     fun getBattersOfDonut(idDonut: Int): Flow<DonutWithBatters>
+
+
 }

@@ -77,11 +77,13 @@ class LoginViewModel(
         }
 
         viewModelScope.launch(Dispatchers.IO) {
-            donutsRepository.insertBatter(*batters.toTypedArray())
-            donutsRepository.insertDonut(*donuts.toTypedArray())
-            donutsRepository.insertTopping(*toppings.toTypedArray())
-            donutsRepository.insertDonutBatterCrossRef(*donutsAndBatters.toTypedArray())
-            donutsRepository.insertDonutToppingCrossRef(*donutsAndToppings.toTypedArray())
+            donutsRepository.insertDonutsWithToppingsAndButters(
+                donuts,
+                batters,
+                toppings,
+                donutsAndBatters,
+                donutsAndToppings
+            )
         }
     }
 
