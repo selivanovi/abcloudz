@@ -53,6 +53,6 @@ class DonutsRepository(
     fun getDonutsAndBatters(): Flow<List<DonutWithBatters>> =
         dataBase.donutsDao.getBattersOfDonuts()
 
-    fun getToppingsAndBatters(): Flow<List<DonutWithToppings>> =
+    fun getDonutsAndToppings(): Flow<List<DonutWithToppings>> =
         dataBase.donutsDao.getToppingsOfDonuts()
 }

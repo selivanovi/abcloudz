@@ -49,3 +49,11 @@ fun DonutJson.toToppingRelation(): List<DonutToppingCrossRef> {
 
     return mutableList
 }
+
+fun Donut.toDonutUI() =
+    DonutUI(
+        id = this.idDonut,
+        name = this.name,
+        ppu = this.ppu.toString(),
+        type = this.type
+    )
