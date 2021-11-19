@@ -10,7 +10,7 @@ import com.example.localdatastorage.R
 import com.example.localdatastorage.model.entities.ui.DonutUI
 
 class ListAdapter(
-    var onLongClickListener: (() -> Unit)? = null
+    var onLongClickListener: ((Int) -> Unit)? = null
 ) : RecyclerView.Adapter<ListAdapter.ListViewHolder>() {
 
     private val _list = mutableListOf<DonutUI>()
@@ -33,12 +33,13 @@ class ListAdapter(
         private val batterTextView = view.findViewById<TextView>(R.id.batterTextView)
         private val toppingTextView = view.findViewById<TextView>(R.id.toppingTextView)
 
+
         fun bind(item: DonutUI) {
             nameTextView.text = item.name
-            ppuTextView.text = item.ppu
-            typeTextView.text = item.type
-            batterTextView.text = item.batter
-            toppingTextView.text = item.topping
+            ppuTextView.text = itemView.resources.getString(R.string.ppu_item_List, item.ppu)
+            typeTextView.text = itemView.resources.getString(R.string.type_item_list, item.type)
+            batterTextView.text = itemView.resources.getString(R.string.batter_item_list, item.batter)
+            toppingTextView.text = itemView.resources.getString(R.string.topping_item_list, item.topping)
         }
 
     }
@@ -54,7 +55,7 @@ class ListAdapter(
 
         onLongClickListener?.let { onLongClickListener ->
             holder.itemView.setOnLongClickListener {
-                onLongClickListener.invoke()
+                onLongClickListener.invoke(_list[position].id)
                 true
             }
         }

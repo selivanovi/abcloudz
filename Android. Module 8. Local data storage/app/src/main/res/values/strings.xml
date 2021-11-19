@@ -16,4 +16,13 @@
     <string name="password_error">Please check passowrd, password must connect 8 symbols</string>
     <string name="alert_dialog_error">Error</string>
     <string name="alert_dialog_positive_button">Ok</string>
+    <string name="type_item_list">Type: %s</string>
+    <string name="batter_item_list">Batter: \n\t %s</string>
+    <string name="topping_item_list">Topping: \n\t %s</string>
+    <string name="ppu_item_List">PPU: %s</string>
+    <string name="name_edit_fragment">Name</string>
+    <string name="ppu_edit_fragment">PPU</string>
+    <string name="type_edit_fragment">Type</string>
+    <string name="ok_edit_fragment">Ok</string>
+    <string name="cancel_edit_fragment">Cancel</string>
 </resources>
