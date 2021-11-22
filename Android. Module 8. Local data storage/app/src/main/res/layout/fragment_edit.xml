@@ -62,30 +62,31 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/typeTextField"
             android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:text="Hello"/>
+            android:layout_height="wrap_content" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
         android:id="@+id/batterTextView"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="TextView"
         app:layout_constraintBottom_toTopOf="@+id/toppingTextView"
+        app:layout_constraintEnd_toEndOf="@+id/typeInputLayout"
         app:layout_constraintStart_toStartOf="@+id/typeInputLayout"
-        app:layout_constraintTop_toBottomOf="@+id/typeInputLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/typeInputLayout"
+        tools:text="Batter" />
 
     <TextView
         android:id="@+id/toppingTextView"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
-        android:text="TextView"
-        app:layout_constraintBottom_toTopOf="@+id/buttonCancel"
+        app:layout_constraintBottom_toTopOf="@+id/buttonOk"
+        app:layout_constraintEnd_toEndOf="@+id/typeInputLayout"
         app:layout_constraintStart_toStartOf="@+id/typeInputLayout"
-        app:layout_constraintTop_toBottomOf="@+id/batterTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/batterTextView"
+        tools:text="Topping" />
 
     <Button
         android:id="@+id/buttonOk"
@@ -93,14 +94,7 @@
         android:layout_height="wrap_content"
         android:text="@string/ok_edit_fragment"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <Button
-        android:id="@+id/buttonCancel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/cancel_edit_fragment"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
