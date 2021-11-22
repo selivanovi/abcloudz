@@ -1,14 +1,13 @@
 package com.example.localdatastorage.model.room
 
+import androidx.room.Query
 import com.example.localdatastorage.model.room.entities.Batter
 import com.example.localdatastorage.model.room.entities.Donut
 import com.example.localdatastorage.model.room.entities.DonutBatterCrossRef
 import com.example.localdatastorage.model.room.entities.DonutToppingCrossRef
 import com.example.localdatastorage.model.room.entities.Topping
-import com.example.localdatastorage.model.room.entities.reletions.DonutWithBatters
-import com.example.localdatastorage.model.room.entities.reletions.DonutWithToppings
+import com.example.localdatastorage.model.room.entities.reletions.DonutWithBattersAndToppings
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.onCompletion
 
 
 class DonutsRepository(
@@ -44,15 +43,18 @@ class DonutsRepository(
     suspend fun insertDonutToppingCrossRefs(donutToppingCrossRefs: List<DonutToppingCrossRef>) =
         dataBase.donutsDao.insertDonutToppingCrossRefs(donutToppingCrossRefs)
 
-    fun getBattersOfDonut(idDonut: Int): Flow<DonutWithBatters> =
-        dataBase.donutsDao.getBattersOfDonut(idDonut)
+    suspend fun getBattersAndToppingsOfDonut(idDonut: Int): DonutWithBattersAndToppings =
+        dataBase.donutsDao.getBattersAndToppingsOfDonut(idDonut)
 
-    fun getToppingsOfDonut(idDonut: Int): Flow<DonutWithToppings> =
-        dataBase.donutsDao.getToppingsOfDonut(idDonut)
+    fun getBattersAndToppingsOfDonuts(): Flow<List<DonutWithBattersAndToppings>> =
+        dataBase.donutsDao.getBattersAndToppingsOfDonuts()
 
-    fun getDonutsAndBatters(): Flow<List<DonutWithBatters>> =
-        dataBase.donutsDao.getBattersOfDonuts()
+    suspend fun deleteDonutBatterCrossRef(idDonut: Int) =
+        dataBase.donutsDao.deleteDonutBatterCrossRef(idDonut)
 
-    fun getDonutsAndToppings(): Flow<List<DonutWithToppings>> =
-        dataBase.donutsDao.getToppingsOfDonuts()
+
+    suspend fun deleteDonutToppingCrossRef(idDonut: Int) =
+        dataBase.donutsDao.deleteDonutToppingCrossRef(idDonut)
+
+
 }

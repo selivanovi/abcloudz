@@ -1,17 +1,12 @@
 package com.example.localdatastorage.model.room.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Transaction
-import androidx.room.OnConflictStrategy
+import androidx.room.*
 import com.example.localdatastorage.model.room.entities.Donut
 import com.example.localdatastorage.model.room.entities.Topping
 import com.example.localdatastorage.model.room.entities.Batter
 import com.example.localdatastorage.model.room.entities.DonutBatterCrossRef
 import com.example.localdatastorage.model.room.entities.DonutToppingCrossRef
-import com.example.localdatastorage.model.room.entities.reletions.DonutWithBatters
-import com.example.localdatastorage.model.room.entities.reletions.DonutWithToppings
+import com.example.localdatastorage.model.room.entities.reletions.DonutWithBattersAndToppings
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -56,19 +51,27 @@ interface DonutsDao {
         donutToppingCrossRefs: List<DonutToppingCrossRef>
     )
 
+    @Query("DELETE FROM donutbattercrossref WHERE idDonut = (:idDonut)")
+    suspend fun deleteDonutBatterCrossRef(idDonut: Int)
+
+    @Query("DELETE FROM donuttoppingcrossref WHERE idDonut = (:idDonut)")
+    suspend fun deleteDonutToppingCrossRef(idDonut: Int)
+
+
     @Transaction
-    @Query("SELECT * FROM donut WHERE idDonut = (:idDonut)")
-    fun getToppingsOfDonut(idDonut: Int): Flow<DonutWithToppings>
+    @Query("SELECT * FROM donutbattercrossref WHERE idDonut = (:idDonut)")
+    suspend fun getDonutBatterCrossRefs(idDonut: Int): List<DonutBatterCrossRef>
+
+    @Transaction
+    @Query("SELECT * FROM donuttoppingcrossref WHERE idDonut = (:idDonut)")
+    suspend fun getDonutToppingCrossRefs(idDonut: Int): List<DonutToppingCrossRef>
 
     @Transaction
     @Query("SELECT * FROM donut WHERE idDonut = (:idDonut)")
-    fun getBattersOfDonut(idDonut: Int): Flow<DonutWithBatters>
+    suspend fun getBattersAndToppingsOfDonut(idDonut: Int): DonutWithBattersAndToppings
 
     @Transaction
     @Query("SELECT * FROM donut")
-    fun getBattersOfDonuts(): Flow<List<DonutWithBatters>>
+    fun getBattersAndToppingsOfDonuts(): Flow<List<DonutWithBattersAndToppings>>
 
-    @Transaction
-    @Query("SELECT * FROM donut")
-    fun getToppingsOfDonuts(): Flow<List<DonutWithToppings>>
 }
