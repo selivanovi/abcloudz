@@ -7,5 +7,5 @@ import androidx.room.PrimaryKey
 data class Batter(
     @PrimaryKey(autoGenerate = true)
     val idBatter: Int,
-    val type: String?
+    val type: String
 )

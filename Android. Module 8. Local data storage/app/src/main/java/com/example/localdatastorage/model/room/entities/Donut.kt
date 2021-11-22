@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 data class Donut(
     @PrimaryKey(autoGenerate = true)
     val idDonut: Int,
-    val name: String?,
-    val ppu: Double?,
-    val type: String?,
+    val name: String,
+    val ppu: Double,
+    val type: String,
 )

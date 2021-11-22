@@ -7,5 +7,5 @@ import androidx.room.PrimaryKey
 data class Topping(
     @PrimaryKey(autoGenerate = true)
     val idTopping: Int,
-    val type: String?,
+    val type: String,
 )
