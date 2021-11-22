@@ -36,10 +36,10 @@ class ListAdapter(
 
         fun bind(item: DonutUI) {
             nameTextView.text = item.name
-            ppuTextView.text = itemView.resources.getString(R.string.ppu_item_List, item.ppu)
+            ppuTextView.text = itemView.resources.getString(R.string.ppu_item_List, item.ppu.toString())
             typeTextView.text = itemView.resources.getString(R.string.type_item_list, item.type)
-            batterTextView.text = itemView.resources.getString(R.string.batter_item_list, item.batter)
-            toppingTextView.text = itemView.resources.getString(R.string.topping_item_list, item.topping)
+            batterTextView.text = itemView.resources.getString(R.string.batter_item_list, item.getBattersString("\n"))
+            toppingTextView.text = itemView.resources.getString(R.string.topping_item_list, item.getToppingsString("\n"))
         }
 
     }
