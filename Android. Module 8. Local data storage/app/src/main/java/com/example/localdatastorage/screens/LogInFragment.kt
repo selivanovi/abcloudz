@@ -150,7 +150,8 @@ class LogInFragment : Fragment(R.layout.fragment_login) {
 
     private fun setErrorAuthentication() {
         val biometricDialog = BiometricDialogFragment()
-        biometricDialog.show(parentFragmentManager, null)
+        biometricDialog.show(childFragmentManager, null)
+        BiometricUtil.show(this, ::setSucceedAuthentication, ::setErrorAuthentication)
     }
 
     companion object {

@@ -1,5 +1,6 @@
 package com.example.localdatastorage.utils
 
+import androidx.lifecycle.LifecycleCoroutineScope
 import com.example.localdatastorage.model.entities.json.BatterJson
 import com.example.localdatastorage.model.entities.json.DonutJson
 import com.example.localdatastorage.model.entities.json.ToppingJson
@@ -9,6 +10,13 @@ import com.example.localdatastorage.model.room.entities.Batter
 import com.example.localdatastorage.model.room.entities.Topping
 import com.example.localdatastorage.model.room.entities.DonutBatterCrossRef
 import com.example.localdatastorage.model.room.entities.DonutToppingCrossRef
+import com.example.localdatastorage.model.room.entities.reletions.DonutWithBattersAndToppings
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.retry
 
 fun DonutJson.toDTO(): Donut =
     Donut(
@@ -50,10 +58,28 @@ fun DonutJson.toToppingRelation(): List<DonutToppingCrossRef> {
     return mutableList
 }
 
-fun Donut.toDonutUI() =
-    DonutUI(
-        id = this.idDonut,
-        name = this.name,
-        ppu = this.ppu.toString(),
-        type = this.type
+fun DonutUI.getDonut(): Donut =
+    Donut(
+        this.id,
+        this.name,
+        this.ppu.toDouble(),
+        this.type
     )
+
+fun DonutWithBattersAndToppings.toDonutUI() =
+    DonutUI(
+        id = this.donut.idDonut,
+        name = this.donut.name,
+        ppu = this.donut.ppu.toString(),
+        type = this.donut.type,
+        batter = this.batter,
+        topping = this.topping
+    )
+
+
+fun <T> Flow<T>.retryIn(scope: CoroutineScope): Job =
+    this.retry { error ->
+        val handler = scope.coroutineContext[CoroutineExceptionHandler.Key]
+        handler?.handleException(scope.coroutineContext, error)
+        true
+    }.launchIn(scope)

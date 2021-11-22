@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.localdatastorage.R
 import com.example.localdatastorage.databinding.FragmentListBinding
@@ -66,6 +67,9 @@ class ListFragment : Fragment(R.layout.fragment_list) {
     }
 
     private fun openEditDialogFragment(id: Int) {
-
+        val bundle = Bundle().apply {
+            putInt(EditFragment.ID_ARG, id)
+        }
+        findNavController().navigate(R.id.action_listFragment_to_editFragment, bundle)
     }
 }
