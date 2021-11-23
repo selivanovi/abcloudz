@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
+import androidx.navigation.fragment.findNavController
 import com.example.localdatastorage.R
 import com.example.localdatastorage.databinding.FragmentEditBinding
 import com.example.localdatastorage.dialogfragments.MultipleChoiceDialogFragment
@@ -20,6 +22,7 @@ import com.example.localdatastorage.utils.retryIn
 import com.example.localdatastorage.viewmodels.EditViewModel
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
 
 class EditFragment : Fragment(R.layout.fragment_edit) {
 
@@ -64,6 +67,8 @@ class EditFragment : Fragment(R.layout.fragment_edit) {
         editViewModel.getDonutUI(idDonut)
     }
 
+
+
     private fun setContent(donutUI: DonutUI) {
         binding.nameTextField.setText(donutUI.name)
         binding.ppuTextField.setText(donutUI.ppu.toString())
@@ -74,6 +79,7 @@ class EditFragment : Fragment(R.layout.fragment_edit) {
         binding.buttonOk.setOnClickListener {
             val donutUI: DonutUI = createNewDonutUI(donutUI)
             editViewModel.saveDonut(donutUI)
+            findNavController().navigateUp()
         }
         binding.batterTextView.setOnClickListener {
             val listBatter = donutUI.batter.map { it.type }
@@ -102,7 +108,8 @@ class EditFragment : Fragment(R.layout.fragment_edit) {
     }
 
     private fun getBatters(donutUI: DonutUI, batterString: String): List<Batter> {
-        val list = batterString.split(",")
+        val list = batterString.split(",").map { it.trim() }
+        Log.d("EditFragment", "$list")
         val batter = mutableListOf<Batter>()
         donutUI.batter.forEach {
             if (it.type in list)
@@ -111,8 +118,8 @@ class EditFragment : Fragment(R.layout.fragment_edit) {
         return batter
     }
 
-    private fun getToppings(donutUI: DonutUI, batterString: String): List<Topping> {
-        val list = batterString.split(",")
+    private fun getToppings(donutUI: DonutUI, toppingString: String): List<Topping> {
+        val list = toppingString.split(",").map { it.trim() }
         val topping = mutableListOf<Topping>()
         donutUI.topping.forEach {
             if (it.type in list)
