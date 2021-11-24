@@ -10,4 +10,5 @@ data class Donut(
     val name: String,
     val ppu: Double,
     val type: String,
+    val allergy: String?
 )

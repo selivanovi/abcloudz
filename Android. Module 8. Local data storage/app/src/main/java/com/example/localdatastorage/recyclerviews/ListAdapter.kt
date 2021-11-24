@@ -32,14 +32,24 @@ class ListAdapter(
         private val typeTextView = view.findViewById<TextView>(R.id.typeTextView)
         private val batterTextView = view.findViewById<TextView>(R.id.batterTextView)
         private val toppingTextView = view.findViewById<TextView>(R.id.toppingTextView)
+        private val allergyTextView = view.findViewById<TextView>(R.id.allergyTextView)
 
 
         fun bind(item: DonutUI) {
             nameTextView.text = item.name
-            ppuTextView.text = itemView.resources.getString(R.string.ppu_item_List, item.ppu.toString())
+            ppuTextView.text =
+                itemView.resources.getString(R.string.ppu_item_List, item.ppu.toString())
             typeTextView.text = itemView.resources.getString(R.string.type_item_list, item.type)
-            batterTextView.text = itemView.resources.getString(R.string.batter_item_list, item.getBattersString("\n"))
-            toppingTextView.text = itemView.resources.getString(R.string.topping_item_list, item.getToppingsString("\n"))
+            batterTextView.text =
+                itemView.resources.getString(R.string.batter_item_list, item.getBattersString("\n"))
+            toppingTextView.text = itemView.resources.getString(
+                R.string.topping_item_list,
+                item.getToppingsString("\n")
+            )
+            allergyTextView.text = itemView.resources.getString(
+                R.string.allergy_item_List,
+                item.allergy ?: itemView.resources.getString(R.string.allergy_null_edit_fragment)
+            )
         }
 
     }

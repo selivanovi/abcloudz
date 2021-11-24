@@ -64,13 +64,15 @@ class EditFragment : Fragment(R.layout.fragment_edit) {
     }
 
 
-
     private fun setContent(donutUI: DonutUI) {
         binding.nameTextField.setText(donutUI.name)
         binding.ppuTextField.setText(donutUI.ppu.toString())
         binding.typeTextField.setText(donutUI.type)
         binding.batterTextView.text = donutUI.getBattersString()
         binding.toppingTextView.text = donutUI.getToppingsString()
+        binding.allergyTextField.setText(
+            donutUI.allergy ?: getString(R.string.allergy_null_edit_fragment)
+        )
 
         binding.buttonOk.setOnClickListener {
             val donutUI: DonutUI = createNewDonutUI(donutUI)
@@ -96,11 +98,14 @@ class EditFragment : Fragment(R.layout.fragment_edit) {
         val name = binding.nameTextField.text.toString()
         val ppu = binding.ppuTextField.text.toString()
         val type = binding.typeTextField.text.toString()
+        val allergy = if (binding.allergyTextField.text.toString()
+                .trim() == getString(R.string.allergy_null_edit_fragment)
+        ) null else binding.allergyTextField.text.toString()
         val batterString = binding.batterTextView.text.toString()
         val toppingString = binding.toppingTextView.text.toString()
         val batter = getBatters(donutUI, batterString)
         val topping = getToppings(donutUI, toppingString)
-        return DonutUI(id, name, ppu,type, batter, topping )
+        return DonutUI(id, name, ppu, type, batter, topping, allergy)
     }
 
     private fun getBatters(donutUI: DonutUI, batterString: String): List<Batter> {

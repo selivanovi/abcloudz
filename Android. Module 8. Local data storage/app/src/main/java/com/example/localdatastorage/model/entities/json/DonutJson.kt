@@ -8,4 +8,5 @@ data class DonutJson(
     val type: String,
     val batters: BattersJson,
     val topping: List<ToppingJson>,
+    val allergy: String?
 )

@@ -24,6 +24,7 @@ fun DonutJson.toDTO(): Donut =
         name = this.name,
         ppu = this.ppu,
         type = this.type,
+        allergy = this.allergy
     )
 
 fun BatterJson.toDTO(): Batter =
@@ -63,7 +64,8 @@ fun DonutUI.getDonut(): Donut =
         this.id,
         this.name,
         this.ppu.toDouble(),
-        this.type
+        this.type,
+        this.allergy
     )
 
 fun DonutWithBattersAndToppings.toDonutUI() =
@@ -73,7 +75,8 @@ fun DonutWithBattersAndToppings.toDonutUI() =
         ppu = this.donut.ppu.toString(),
         type = this.donut.type,
         batter = this.batter,
-        topping = this.topping
+        topping = this.topping,
+        allergy = this.donut.allergy
     )
 
 

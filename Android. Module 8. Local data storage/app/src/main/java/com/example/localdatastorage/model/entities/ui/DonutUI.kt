@@ -10,6 +10,7 @@ data class DonutUI(
     val type: String,
     var batter: List<Batter>,
     var topping: List<Topping>,
+    val allergy: String?,
 ) {
     fun getBattersString(delimiter: String? = null): String {
         val string = batter.map { it.type }

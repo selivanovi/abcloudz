@@ -27,4 +27,7 @@
     <string name="cancel_edit_fragment">Cancel</string>
     <string name="multiple_choice_dialog_title">Select your choice</string>
     <string name="multiple_choice_dialog_positive_button">Ok</string>
+    <string name="allergy_edit_fragment">Allergy</string>
+    <string name="allergy_null_edit_fragment">None</string>
+    <string name="allergy_item_List">Allergy: %s</string>
 </resources>
