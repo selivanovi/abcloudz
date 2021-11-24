@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import com.example.localdatastorage.R
 import com.example.localdatastorage.databinding.FragmentEditBinding
@@ -21,8 +20,6 @@ import com.example.localdatastorage.model.room.entities.Topping
 import com.example.localdatastorage.utils.retryIn
 import com.example.localdatastorage.viewmodels.EditViewModel
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.launch
 
 class EditFragment : Fragment(R.layout.fragment_edit) {
 
@@ -40,7 +37,6 @@ class EditFragment : Fragment(R.layout.fragment_edit) {
 
     private val subscriptionDonutUI by lazy {
         editViewModel.channelDonutUI
-            .receiveAsFlow()
             .onEach {
                 setContent(it)
             }
@@ -108,6 +104,7 @@ class EditFragment : Fragment(R.layout.fragment_edit) {
     }
 
     private fun getBatters(donutUI: DonutUI, batterString: String): List<Batter> {
+        Log.d("EditFragment", "Batter string: $batterString")
         val list = batterString.split(",").map { it.trim() }
         Log.d("EditFragment", "$list")
         val batter = mutableListOf<Batter>()
@@ -115,16 +112,20 @@ class EditFragment : Fragment(R.layout.fragment_edit) {
             if (it.type in list)
                 batter.add(it)
         }
+        Log.d("EditFragment", "$batter")
         return batter
     }
 
     private fun getToppings(donutUI: DonutUI, toppingString: String): List<Topping> {
+        Log.d("EditFragment", "Topping string: $toppingString")
         val list = toppingString.split(",").map { it.trim() }
+        Log.d("EditFragment", "$list")
         val topping = mutableListOf<Topping>()
         donutUI.topping.forEach {
             if (it.type in list)
                 topping.add(it)
         }
+        Log.d("EditFragment", "$topping")
         return topping
     }
 

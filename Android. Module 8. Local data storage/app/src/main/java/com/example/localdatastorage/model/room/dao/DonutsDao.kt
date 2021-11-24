@@ -57,15 +57,6 @@ interface DonutsDao {
     @Query("DELETE FROM donuttoppingcrossref WHERE idDonut = (:idDonut)")
     suspend fun deleteDonutToppingCrossRef(idDonut: Int)
 
-
-    @Transaction
-    @Query("SELECT * FROM donutbattercrossref WHERE idDonut = (:idDonut)")
-    suspend fun getDonutBatterCrossRefs(idDonut: Int): List<DonutBatterCrossRef>
-
-    @Transaction
-    @Query("SELECT * FROM donuttoppingcrossref WHERE idDonut = (:idDonut)")
-    suspend fun getDonutToppingCrossRefs(idDonut: Int): List<DonutToppingCrossRef>
-
     @Transaction
     @Query("SELECT * FROM donut WHERE idDonut = (:idDonut)")
     suspend fun getBattersAndToppingsOfDonut(idDonut: Int): DonutWithBattersAndToppings

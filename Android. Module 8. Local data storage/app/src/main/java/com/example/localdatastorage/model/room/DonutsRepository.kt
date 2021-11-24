@@ -1,6 +1,5 @@
 package com.example.localdatastorage.model.room
 
-import androidx.room.Query
 import com.example.localdatastorage.model.room.entities.Batter
 import com.example.localdatastorage.model.room.entities.Donut
 import com.example.localdatastorage.model.room.entities.DonutBatterCrossRef
@@ -25,18 +24,6 @@ class DonutsRepository(
     suspend fun insertDonut(donut: Donut) =
         dataBase.donutsDao.insertDonut(donut)
 
-    suspend fun insertBatter(batter: Batter) =
-        dataBase.donutsDao.insertBatter(batter)
-
-    suspend fun insertTopping(topping: Topping) =
-        dataBase.donutsDao.insertTopping(topping)
-
-    suspend fun insertDonutBatterCrossRef(donutBatterCrossRef: DonutBatterCrossRef) =
-        dataBase.donutsDao.insertDonutBatterCrossRef(donutBatterCrossRef)
-
-    suspend fun insertDonutToppingCrossRef(donutToppingCrossRef: DonutToppingCrossRef) =
-        dataBase.donutsDao.insertDonutToppingCrossRef(donutToppingCrossRef)
-
     suspend fun insertDonutBatterCrossRefs(donutBatterCrossRefs: List<DonutBatterCrossRef>) =
         dataBase.donutsDao.insertDonutBatterCrossRefs(donutBatterCrossRefs)
 
@@ -55,6 +42,5 @@ class DonutsRepository(
 
     suspend fun deleteDonutToppingCrossRef(idDonut: Int) =
         dataBase.donutsDao.deleteDonutToppingCrossRef(idDonut)
-
 
 }
