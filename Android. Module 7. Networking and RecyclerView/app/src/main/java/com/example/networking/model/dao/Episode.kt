@@ -3,10 +3,10 @@ package com.example.networking.model.dao
 import com.example.networking.ui.delegate.DelegateAdapterItem
 
 class Episode(
-    override val id: Int? = null,
-    val airData: String? = null,
-    val episode: String? = null,
-    val name: String? = null,
+    override val id: Int,
+    val airData: String?,
+    val episode: String?,
+    val name: String?,
 ) : DelegateAdapterItem {
 
     override fun compareContent(item: DelegateAdapterItem): Boolean =
