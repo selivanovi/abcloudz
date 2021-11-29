@@ -1,15 +1,7 @@
 package com.example.camera
 
-import android.content.res.Resources
-import android.graphics.BitmapFactory
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.widget.ImageView
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
-import coil.load
 import com.example.camera.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -18,21 +10,24 @@ class MainActivity : AppCompatActivity() {
         ActivityMainBinding.inflate(layoutInflater)
     }
 
-    private val getContent: ActivityResultLauncher<String> =
-        registerForActivityResult(ActivityResultContracts.GetContent()) { imageUri: Uri? ->
-            binding.imageView.load(imageUri)
-        }
+    private val getImageFromCamera = registerForActivityResult(CameraContract()) {
+        binding.imageView.setImageURI(it)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        setListeners()
+    }
+
+    private fun setListeners() {
         binding.takePhotoButton.setOnClickListener {
-            getContent.launch(MIMETYPE_IMAGES)
+            getImageFromCamera.launch(null)
         }
     }
 
     companion object {
-        private const val MIMETYPE_IMAGES = "image/*"
+
     }
 }
