@@ -129,8 +129,6 @@ class CameraActivity : AppCompatActivity() {
             .setTargetResolution(Size(metrics.widthPixels,metrics.heightPixels))
             .build()
 
-
-
         imageCapture = ImageCapture.Builder()
             .setTargetResolution(Size(metrics.widthPixels,metrics.heightPixels))
             .build()
@@ -138,7 +136,6 @@ class CameraActivity : AppCompatActivity() {
         var cameraSelector: CameraSelector = CameraSelector.Builder()
             .requireLensFacing(CameraSelector.LENS_FACING_BACK)
             .build()
-
 
         preview.setSurfaceProvider(binding.previewView.surfaceProvider)
 
