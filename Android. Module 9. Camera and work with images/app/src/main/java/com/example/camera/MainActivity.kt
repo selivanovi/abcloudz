@@ -1,19 +1,33 @@
 package com.example.camera
 
-import android.content.res.Resources
-import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.widget.ImageView
+import com.example.camera.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
+
+    private val binding: ActivityMainBinding by lazy {
+        ActivityMainBinding.inflate(layoutInflater)
+    }
+
+    private val getImageFromCamera = registerForActivityResult(CameraContract()) {
+        binding.imageView.setImageURI(it)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(binding.root)
 
-        val imageView = findViewById<ImageView>(R.id.imageView)
-        imageView.setImageResource(R.drawable.index)
-        Log.d("MainActivity", "ImageView: width - ${imageView.measuredWidth}, height - ${imageView.measuredHeight}")
+        setListeners()
+    }
+
+    private fun setListeners() {
+        binding.takePhotoButton.setOnClickListener {
+            getImageFromCamera.launch(null)
+        }
+    }
+
+    companion object {
+
     }
 }
