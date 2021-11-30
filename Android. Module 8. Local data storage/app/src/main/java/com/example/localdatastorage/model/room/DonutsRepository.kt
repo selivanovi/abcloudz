@@ -21,6 +21,12 @@ class DonutsRepository(
         donutToppingCrossRefs: List<DonutToppingCrossRef>
     ) = dataBase.donutsDao.insertDonutsWithBattersAndToppings(donuts, batters, toppings, donutBatterCrossRefs, donutToppingCrossRefs)
 
+    suspend fun deleteAndWriteDonutWithBattersAndToppings(
+        donut: Donut,
+        donutBatterCrossRefs: List<DonutBatterCrossRef>,
+        donutToppingCrossRefs: List<DonutToppingCrossRef>
+    ) = dataBase.donutsDao.deleteAndWriteDonutWithBattersAndToppings(donut, donutBatterCrossRefs, donutToppingCrossRefs)
+
     suspend fun insertDonut(donut: Donut) =
         dataBase.donutsDao.insertDonut(donut)
 

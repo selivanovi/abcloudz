@@ -65,4 +65,16 @@ interface DonutsDao {
     @Query("SELECT * FROM donut")
     fun getBattersAndToppingsOfDonuts(): Flow<List<DonutWithBattersAndToppings>>
 
+    @Transaction
+    suspend fun deleteAndWriteDonutWithBattersAndToppings(
+        donut: Donut,
+        donutBatterCrossRefs: List<DonutBatterCrossRef>,
+        donutToppingCrossRefs: List<DonutToppingCrossRef>
+    ) {
+        deleteDonutBatterCrossRef(donut.idDonut)
+        deleteDonutToppingCrossRef(donut.idDonut)
+        insertDonut(donut)
+        insertDonutBatterCrossRefs(donutBatterCrossRefs)
+        insertDonutToppingCrossRefs(donutToppingCrossRefs)
+    }
 }

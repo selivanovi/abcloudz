@@ -48,13 +48,8 @@ class EditViewModel(private val repository: DonutsRepository) : ViewModel() {
             donutUI.topping.map { DonutToppingCrossRef(donutUI.id, it.idTopping) }
 
         CoroutineScope(Dispatchers.IO).launch {
-            repository.deleteDonutBatterCrossRef(donut.idDonut)
-            repository.deleteDonutToppingCrossRef(donut.idDonut)
-            repository.insertDonut(donut)
-            repository.insertDonutBatterCrossRefs(batterCrossRefs)
-            repository.insertDonutToppingCrossRefs(toppingCrossRefs)
+            repository.deleteAndWriteDonutWithBattersAndToppings(donut, batterCrossRefs, toppingCrossRefs)
         }
-
     }
     @Suppress("UNCHECKED_CAST")
     class Factory(
