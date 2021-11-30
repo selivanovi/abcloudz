@@ -7,6 +7,8 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.io.IOException
 
+private val TAG = "DonutJsonParser"
+
 object DonutJsonParser {
 
     fun pareJson(context: Context, fileName: String): List<DonutJson> {
@@ -26,7 +28,7 @@ object DonutJsonParser {
         try {
             jsonString = context.assets.open(fileName).bufferedReader().use { it.readText() }
         } catch (ioException: IOException) {
-            ioException.printStackTrace()
+            Log.e(TAG, ioException.toString())
             return null
         }
         return jsonString
