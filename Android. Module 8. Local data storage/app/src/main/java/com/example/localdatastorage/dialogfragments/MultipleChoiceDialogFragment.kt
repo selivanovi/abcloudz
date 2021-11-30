@@ -8,32 +8,32 @@ import androidx.fragment.app.DialogFragment
 import com.example.localdatastorage.R
 import com.example.localdatastorage.model.entities.ui.DonutUI
 
-class MultipleChoiceDialogFragment(
-    private val list: List<String>,
+class MultipleChoiceDialogFragment : DialogFragment() {
+
+    var list: List<String>? = null
     var onConfirmClickListener: ((List<String>) -> Unit)? = null
-) : DialogFragment() {
 
-    private val selectedItemList = mutableListOf<String>()
-    private val checkedItems: Array<Boolean>
-
-    init {
-        selectedItemList.addAll(list)
-        checkedItems = Array(list.size) { true }
-    }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+
+        val listNotNull = list!!
+        val clickListenerNotNull = onConfirmClickListener!!
+
+        val selectedItemList = mutableListOf<String>(*listNotNull.toTypedArray())
+        val checkedItems: Array<Boolean> = Array(listNotNull.size) { true }
+
         return AlertDialog.Builder(requireContext())
             .setTitle(R.string.multiple_choice_dialog_title)
             .setMultiChoiceItems(
-                list.toTypedArray(), checkedItems.toBooleanArray()
+                listNotNull.toTypedArray(), checkedItems.toBooleanArray()
             ) { dialog, i, b ->
                 if (b) {
-                    selectedItemList.add(list[i])
+                    selectedItemList.add(listNotNull[i])
                 } else {
-                    selectedItemList.remove(list[i])
+                    selectedItemList.remove(listNotNull[i])
                 }
             }.setPositiveButton(R.string.multiple_choice_dialog_positive_button) { _, _ ->
-                onConfirmClickListener?.invoke(selectedItemList)
+                clickListenerNotNull.invoke(selectedItemList)
             }
             .create()
     }

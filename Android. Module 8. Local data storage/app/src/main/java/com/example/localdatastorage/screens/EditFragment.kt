@@ -82,14 +82,19 @@ class EditFragment : Fragment(R.layout.fragment_edit) {
         binding.batterTextView.setOnClickListener {
             val listBatter = donutUI.batter.map { it.type }
             Log.d("EditFragment", "$listBatter")
-            MultipleChoiceDialogFragment(listBatter, ::setBatterTextView)
-                .show(childFragmentManager, null)
+            MultipleChoiceDialogFragment().apply{
+                list = listBatter
+                onConfirmClickListener = ::setBatterTextView
+            }.show(childFragmentManager, null)
         }
         binding.toppingTextView.setOnClickListener {
             val listTopping = donutUI.topping.map { it.type }
             Log.d("EditFragment", "$listTopping")
-            MultipleChoiceDialogFragment(listTopping, ::setToppingTextView)
-                .show(childFragmentManager, null)
+            MultipleChoiceDialogFragment().apply {
+                list = listTopping
+                onConfirmClickListener = ::setToppingTextView
+
+            }.show(childFragmentManager, null)
         }
     }
 
