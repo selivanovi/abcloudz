@@ -26,16 +26,8 @@ class ListFragment : Fragment(R.layout.fragment_list) {
 
     private val listAdapter = ListAdapter()
 
-    private val dataBase: DonutDataBase by lazy {
-        DonutDataBase.getInstance(requireContext())
-    }
-
-    private val repository: DonutsRepository by lazy {
-        DonutsRepository(dataBase)
-    }
-
-    private val listViewModel: ListViewModel by viewModels<ListViewModel> {
-        ListViewModel.Factory(repository)
+    private val listViewModel: ListViewModel by viewModels {
+        ListViewModel.Factory(requireContext())
     }
 
     override fun onCreateView(

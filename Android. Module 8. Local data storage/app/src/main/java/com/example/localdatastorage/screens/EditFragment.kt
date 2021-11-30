@@ -27,14 +27,6 @@ class EditFragment : Fragment(R.layout.fragment_edit) {
     private val binding
         get() = _binding!!
 
-    private val dataBase by lazy {
-        DonutDataBase.getInstance(requireContext())
-    }
-
-    private val repository by lazy {
-        DonutsRepository(dataBase)
-    }
-
     private val subscriptionDonutUI by lazy {
         editViewModel.channelDonutUI
             .onEach {
@@ -43,7 +35,7 @@ class EditFragment : Fragment(R.layout.fragment_edit) {
             .retryIn(lifecycleScope)
     }
 
-    private val editViewModel by viewModels<EditViewModel> { EditViewModel.Factory(repository) }
+    private val editViewModel by viewModels<EditViewModel> { EditViewModel.Factory(requireContext()) }
 
     override fun onCreateView(
         inflater: LayoutInflater,

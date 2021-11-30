@@ -1,12 +1,16 @@
 package com.example.localdatastorage.viewmodels
 
+import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import androidx.security.crypto.EncryptedSharedPreferences
+import androidx.security.crypto.MasterKey
 import com.example.localdatastorage.R
 import com.example.localdatastorage.model.entities.json.DonutJson
+import com.example.localdatastorage.model.room.DonutDataBase
 import com.example.localdatastorage.model.room.DonutsRepository
 import com.example.localdatastorage.model.room.entities.*
 import com.example.localdatastorage.utils.*
@@ -89,9 +93,31 @@ class LoginViewModel(
 
     @Suppress("UNCHECKED_CAST")
     class Factory(
-        private val sharedPreferences: SharedPreferences,
-        private val donutsRepository: DonutsRepository
+        val context: Context
     ) : ViewModelProvider.Factory {
+
+        private val masterKey = MasterKey.Builder(context, MasterKey.DEFAULT_MASTER_KEY_ALIAS)
+            .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+            .build()
+
+
+        private val sharedPreferences: SharedPreferences =
+            EncryptedSharedPreferences.create(
+                context,
+                "secret_shared_preferences",
+                masterKey,
+                EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+            )
+
+        private val dataBase =
+            DonutDataBase.getInstance(context)
+
+
+        private val donutsRepository =
+            DonutsRepository(dataBase)
+
+
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             return LoginViewModel(sharedPreferences, donutsRepository) as T
         }

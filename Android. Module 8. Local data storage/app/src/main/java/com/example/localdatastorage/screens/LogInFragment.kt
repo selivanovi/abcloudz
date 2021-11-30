@@ -31,32 +31,8 @@ class LogInFragment : Fragment(R.layout.fragment_login) {
     private val binding
         get() = _binding!!
 
-    private val masterKey by lazy {
-        MasterKey.Builder(requireContext(), MasterKey.DEFAULT_MASTER_KEY_ALIAS)
-            .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
-            .build()
-    }
-
-    private val sharedPreferences: SharedPreferences by lazy {
-        EncryptedSharedPreferences.create(
-            requireContext(),
-            "secret_shared_preferences",
-            masterKey,
-            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
-        )
-    }
-
-    private val dataBase: DonutDataBase by lazy {
-        DonutDataBase.getInstance(requireContext())
-    }
-
-    private val repository: DonutsRepository by lazy {
-        DonutsRepository(dataBase)
-    }
-
     private val loginViewModels: LoginViewModel by viewModels {
-        LoginViewModel.Factory(sharedPreferences, repository)
+        LoginViewModel.Factory(requireContext())
     }
 
     override fun onCreateView(
@@ -71,7 +47,6 @@ class LogInFragment : Fragment(R.layout.fragment_login) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "onViewCreated")
-        dataBase
         (requireActivity() as MainActivity).supportActionBar?.hide()
         if (loginViewModels.isFirstLaunch) {
             showScreenLogIn()
