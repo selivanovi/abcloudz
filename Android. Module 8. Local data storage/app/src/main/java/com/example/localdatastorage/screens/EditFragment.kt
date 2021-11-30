@@ -109,11 +109,7 @@ class EditFragment : Fragment(R.layout.fragment_edit) {
         Log.d("EditFragment", "Batter string: $batterString")
         val list = batterString.split(",").map { it.trim() }
         Log.d("EditFragment", "$list")
-        val batter = mutableListOf<Batter>()
-        donutUI.batter.forEach {
-            if (it.type in list)
-                batter.add(it)
-        }
+        val batter = donutUI.batter.filter { list.contains(it.type) }
         Log.d("EditFragment", "$batter")
         return batter
     }
@@ -122,11 +118,7 @@ class EditFragment : Fragment(R.layout.fragment_edit) {
         Log.d("EditFragment", "Topping string: $toppingString")
         val list = toppingString.split(",").map { it.trim() }
         Log.d("EditFragment", "$list")
-        val topping = mutableListOf<Topping>()
-        donutUI.topping.forEach {
-            if (it.type in list)
-                topping.add(it)
-        }
+        val topping  = donutUI.topping.filter { list.contains(it.type) }
         Log.d("EditFragment", "$topping")
         return topping
     }
