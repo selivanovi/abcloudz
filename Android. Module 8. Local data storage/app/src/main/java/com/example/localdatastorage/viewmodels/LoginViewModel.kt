@@ -37,7 +37,7 @@ class LoginViewModel(
     }
 
     fun putEmail(email: String) {
-        if (!validateEmail(email)) error(R.string.email_error)
+        if (!email.isValidEmail()) error(R.string.email_error)
         sharedPreferences.edit {
             putString(EMAIL_KEY, email)
         }
@@ -48,7 +48,7 @@ class LoginViewModel(
     }
 
     fun putPassword(password: String) {
-        if (!validatePassword(password)) error(R.string.password_error)
+        if (!password.isValidPassword()) error(R.string.password_error)
         sharedPreferences.edit {
             putString(PASSWORD_KEY, password)
         }

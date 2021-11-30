@@ -1,13 +1,11 @@
 package com.example.localdatastorage.utils
 
+import android.util.Patterns
+
 /**
  * These function validate email and password we using in LoginViewModels
  */
 
-fun validateEmail(email: String): Boolean {
-    return email.contains("@") && email.contains(".")
-}
+fun CharSequence?.isValidEmail() = !isNullOrEmpty() && Patterns.EMAIL_ADDRESS.matcher(this).matches()
 
-fun validatePassword(password: String): Boolean {
-    return password.length >= 8
-}
+fun CharSequence?.isValidPassword() = !isNullOrEmpty() && this.length >= 8
