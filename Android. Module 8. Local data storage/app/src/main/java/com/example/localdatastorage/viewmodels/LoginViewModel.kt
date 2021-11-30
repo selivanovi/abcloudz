@@ -32,8 +32,8 @@ class LoginViewModel(
             } else
                 false
 
-    fun getEmail(): String {
-        return sharedPreferences.getString(EMAIL_KEY, null) ?: throw NullPointerException()
+    fun getEmail(): String? {
+        return sharedPreferences.getString(EMAIL_KEY, null)
     }
 
     fun putEmail(email: String) {
@@ -43,8 +43,8 @@ class LoginViewModel(
         }
     }
 
-    fun getPassword(): String {
-        return sharedPreferences.getString(PASSWORD_KEY, null) ?: throw NullPointerException()
+    fun getPassword(): String? {
+        return sharedPreferences.getString(PASSWORD_KEY, null)
     }
 
     fun putPassword(password: String) {
