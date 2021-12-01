@@ -123,14 +123,11 @@ class CameraActivity : AppCompatActivity() {
     }
 
     private fun bindPreview(cameraProvider: ProcessCameraProvider) {
-        val metrics = applicationContext.resources.displayMetrics
 
         var preview: Preview = Preview.Builder()
-            .setTargetResolution(Size(metrics.widthPixels,metrics.heightPixels))
             .build()
 
         imageCapture = ImageCapture.Builder()
-            .setTargetResolution(Size(metrics.widthPixels,metrics.heightPixels))
             .build()
 
         var cameraSelector: CameraSelector = CameraSelector.Builder()

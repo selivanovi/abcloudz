@@ -5,32 +5,33 @@ import android.graphics.*
 import android.util.AttributeSet
 import android.util.Log
 import android.view.MotionEvent
+import android.view.ScaleGestureDetector
 import androidx.appcompat.widget.AppCompatImageView
 
 class DrawableImageView(context: Context, attrs: AttributeSet) : AppCompatImageView(context, attrs) {
 
     private val _width = 8f
-    private val startPoint = PointF()
     private val actionPoint = PointF()
     private val path = Path()
 
-
     private val paint = Paint().apply {
+        isAntiAlias = true
+        isDither = true
         color = Color.RED
         strokeWidth = _width
         style = Paint.Style.STROKE
         strokeJoin = Paint.Join.ROUND
         strokeCap = Paint.Cap.ROUND
     }
+
     private var bitmap: Bitmap? = null
 
     override fun onDraw(canvas: Canvas?) {
-
+        super.onDraw(canvas)
         canvas?.drawPath(path, paint)
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
-
         var action = ""
         when (event?.action) {
             MotionEvent.ACTION_DOWN -> {
