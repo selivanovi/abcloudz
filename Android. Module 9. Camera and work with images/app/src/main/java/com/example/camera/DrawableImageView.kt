@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import androidx.appcompat.widget.AppCompatImageView
+import kotlinx.android.synthetic.main.activity_main.view.*
 
 class DrawableImageView(context: Context, attrs: AttributeSet) : AppCompatImageView(context, attrs) {
 
@@ -28,7 +29,10 @@ class DrawableImageView(context: Context, attrs: AttributeSet) : AppCompatImageV
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
-        canvas?.drawPath(path, paint)
+        imageView.bitmap?.let {
+            val bitmapCanvas = Canvas(it)
+            bitmapCanvas.drawPath(path, paint)
+        }
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
