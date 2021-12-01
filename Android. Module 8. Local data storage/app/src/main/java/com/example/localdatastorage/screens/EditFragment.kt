@@ -1,7 +1,6 @@
 package com.example.localdatastorage.screens
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,15 +10,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.localdatastorage.R
 import com.example.localdatastorage.databinding.FragmentEditBinding
-import com.example.localdatastorage.dialogfragments.MultipleChoiceDialogFragment
+import com.example.localdatastorage.dialogfragments.BattersDialog
+import com.example.localdatastorage.dialogfragments.ToppingsDialog
 import com.example.localdatastorage.model.entities.ui.DonutUI
-import com.example.localdatastorage.model.room.DonutDataBase
-import com.example.localdatastorage.model.room.DonutsRepository
-import com.example.localdatastorage.model.room.entities.Batter
-import com.example.localdatastorage.model.room.entities.Topping
-import com.example.localdatastorage.utils.retryIn
 import com.example.localdatastorage.viewmodels.EditViewModel
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 class EditFragment : Fragment(R.layout.fragment_edit) {
 
@@ -27,13 +23,7 @@ class EditFragment : Fragment(R.layout.fragment_edit) {
     private val binding
         get() = _binding!!
 
-    private val subscriptionDonutUI by lazy {
-        editViewModel.channelDonutUI
-            .onEach {
-                setContent(it)
-            }
-            .retryIn(lifecycleScope)
-    }
+    private lateinit var donutUI: DonutUI
 
     private val editViewModel by viewModels<EditViewModel> { EditViewModel.Factory(requireContext()) }
 
@@ -51,86 +41,52 @@ class EditFragment : Fragment(R.layout.fragment_edit) {
         val argumentsNotNull = arguments ?: error("Arguments not found")
         val idDonut = argumentsNotNull.getInt(ID_ARG)
 
-        subscriptionDonutUI
-        editViewModel.getDonutUI(idDonut)
+
+        lifecycleScope.launch {
+            editViewModel.getDonutUI(idDonut).collect {
+                donutUI = it
+                setContent(donutUI)
+            }
+        }
+        setClickListeners()
     }
 
-
-    private fun setContent(donutUI: DonutUI) {
-        binding.nameTextField.setText(donutUI.name)
-        binding.ppuTextField.setText(donutUI.ppu.toString())
-        binding.typeTextField.setText(donutUI.type)
-        binding.batterTextView.text = donutUI.getBattersString()
-        binding.toppingTextView.text = donutUI.getToppingsString()
-        binding.allergyTextField.setText(
-            donutUI.allergy ?: getString(R.string.allergy_null_edit_fragment)
-        )
-
+    private fun setClickListeners() {
         binding.buttonOk.setOnClickListener {
-            val donutUI: DonutUI = createNewDonutUI(donutUI)
-            editViewModel.saveDonut(donutUI)
+            val newDonutUI = createNewDonutUI()
+            editViewModel.saveDonut(newDonutUI)
             findNavController().navigateUp()
         }
         binding.batterTextView.setOnClickListener {
-            val listBatter = donutUI.batter.map { it.type }
-            Log.d("EditFragment", "$listBatter")
-            MultipleChoiceDialogFragment().apply{
-                list = listBatter
-                onConfirmClickListener = ::setBatterTextView
-            }.show(childFragmentManager, null)
+            BattersDialog().apply { argument = donutUI }.show(childFragmentManager, null)
         }
         binding.toppingTextView.setOnClickListener {
-            val listTopping = donutUI.topping.map { it.type }
-            Log.d("EditFragment", "$listTopping")
-            MultipleChoiceDialogFragment().apply {
-                list = listTopping
-                onConfirmClickListener = ::setToppingTextView
-
-            }.show(childFragmentManager, null)
+            ToppingsDialog().apply { argument = donutUI }.show(childFragmentManager, null)
         }
     }
 
-    private fun createNewDonutUI(donutUI: DonutUI): DonutUI {
-        val id = donutUI.id
+    private fun createNewDonutUI(): DonutUI {
         val name = binding.nameTextField.text.toString()
         val ppu = binding.ppuTextField.text.toString()
         val type = binding.typeTextField.text.toString()
         val allergy = if (binding.allergyTextField.text.toString()
                 .trim() == getString(R.string.allergy_null_edit_fragment)
         ) null else binding.allergyTextField.text.toString()
-        val batterString = binding.batterTextView.text.toString()
-        val toppingString = binding.toppingTextView.text.toString()
-        val batter = getBatters(donutUI, batterString)
-        val topping = getToppings(donutUI, toppingString)
-        return DonutUI(id, name, ppu, type, batter, topping, allergy)
+
+        return donutUI.copy(name = name, ppu = ppu, type = type, allergy = allergy)
     }
 
-    private fun getBatters(donutUI: DonutUI, batterString: String): List<Batter> {
-        Log.d("EditFragment", "Batter string: $batterString")
-        val list = batterString.split(",").map { it.trim() }
-        Log.d("EditFragment", "$list")
-        val batter = donutUI.batter.filter { list.contains(it.type) }
-        Log.d("EditFragment", "$batter")
-        return batter
+    private fun setContent(donutUI: DonutUI) {
+        binding.nameTextField.setText(donutUI.name)
+        binding.ppuTextField.setText(donutUI.ppu)
+        binding.typeTextField.setText(donutUI.type)
+        binding.allergyTextField.setText(
+            donutUI.allergy ?: getString(R.string.allergy_null_edit_fragment)
+        )
+        binding.batterTextView.text = donutUI.getBattersString()
+        binding.toppingTextView.text = donutUI.getToppingsString()
     }
-
-    private fun getToppings(donutUI: DonutUI, toppingString: String): List<Topping> {
-        Log.d("EditFragment", "Topping string: $toppingString")
-        val list = toppingString.split(",").map { it.trim() }
-        Log.d("EditFragment", "$list")
-        val topping  = donutUI.topping.filter { list.contains(it.type) }
-        Log.d("EditFragment", "$topping")
-        return topping
-    }
-
-    private fun setBatterTextView(list: List<String>) {
-        binding.batterTextView.text = list.toString().removePrefix("[").removeSuffix("]")
-    }
-
-    private fun setToppingTextView(list: List<String>) {
-        binding.toppingTextView.text = list.toString().removePrefix("[").removeSuffix("]")
-    }
-
+    
     companion object {
         const val ID_ARG = "id_argument"
     }

@@ -17,30 +17,19 @@ import com.example.localdatastorage.utils.toDonutUI
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 class EditViewModel(private val repository: DonutsRepository) : ViewModel() {
 
-    private val _channelDonutUI = Channel<DonutUI>()
-    val channelDonutUI = _channelDonutUI.receiveAsFlow()
-
-    /**
-     * Function is getting DonutWithBattersAndToppings before sending
-     * DonutUI to Channel<DonutUI>
-     * */
-    fun getDonutUI(idDonut: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val donutWithBatterAndToppings = repository.getBattersAndToppingsOfDonut(idDonut)
-            _channelDonutUI.send(donutWithBatterAndToppings.toDonutUI())
-        }
+    fun getDonutUI(idDonut: Int): Flow<DonutUI> {
+        val donutWithBatterAndToppings = repository.getBattersAndToppingsOfDonut(idDonut)
+        return donutWithBatterAndToppings.map { it.toDonutUI() }.flowOn(Dispatchers.IO)
     }
 
-    /**
-     * Function is getting Donut, DonutWithBatters and DonutWithToppings from DonutUI
-     * and sending to DataBase data and also updating dependency between Donut - Batters,
-     * Donut - Toppings
-     * */
     fun saveDonut(donutUI: DonutUI) {
         val donut = donutUI.getDonut()
         val batterCrossRefs = donutUI.batter.map { DonutBatterCrossRef(donutUI.id, it.idBatter) }
@@ -48,9 +37,14 @@ class EditViewModel(private val repository: DonutsRepository) : ViewModel() {
             donutUI.topping.map { DonutToppingCrossRef(donutUI.id, it.idTopping) }
 
         CoroutineScope(Dispatchers.IO).launch {
-            repository.deleteAndWriteDonutWithBattersAndToppings(donut, batterCrossRefs, toppingCrossRefs)
+            repository.deleteAndWriteDonutWithBattersAndToppings(
+                donut,
+                batterCrossRefs,
+                toppingCrossRefs
+            )
         }
     }
+
     @Suppress("UNCHECKED_CAST")
     class Factory(
         val context: Context

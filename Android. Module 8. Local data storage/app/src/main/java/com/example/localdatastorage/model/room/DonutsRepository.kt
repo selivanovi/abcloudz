@@ -36,7 +36,7 @@ class DonutsRepository(
     suspend fun insertDonutToppingCrossRefs(donutToppingCrossRefs: List<DonutToppingCrossRef>) =
         dataBase.donutsDao.insertDonutToppingCrossRefs(donutToppingCrossRefs)
 
-    suspend fun getBattersAndToppingsOfDonut(idDonut: Int): DonutWithBattersAndToppings =
+    fun getBattersAndToppingsOfDonut(idDonut: Int): Flow<DonutWithBattersAndToppings> =
         dataBase.donutsDao.getBattersAndToppingsOfDonut(idDonut)
 
     fun getBattersAndToppingsOfDonuts(): Flow<List<DonutWithBattersAndToppings>> =

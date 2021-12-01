@@ -59,7 +59,7 @@ interface DonutsDao {
 
     @Transaction
     @Query("SELECT * FROM donut WHERE idDonut = (:idDonut)")
-    suspend fun getBattersAndToppingsOfDonut(idDonut: Int): DonutWithBattersAndToppings
+    fun getBattersAndToppingsOfDonut(idDonut: Int): Flow<DonutWithBattersAndToppings>
 
     @Transaction
     @Query("SELECT * FROM donut")
