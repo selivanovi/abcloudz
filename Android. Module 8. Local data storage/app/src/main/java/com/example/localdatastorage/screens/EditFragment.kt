@@ -15,6 +15,8 @@ import com.example.localdatastorage.dialogfragments.ToppingsDialog
 import com.example.localdatastorage.model.entities.ui.DonutUI
 import com.example.localdatastorage.viewmodels.EditViewModel
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 class EditFragment : Fragment(R.layout.fragment_edit) {
@@ -41,13 +43,11 @@ class EditFragment : Fragment(R.layout.fragment_edit) {
         val argumentsNotNull = arguments ?: error("Arguments not found")
         val idDonut = argumentsNotNull.getInt(ID_ARG)
 
+        editViewModel.getDonutUI(idDonut).onEach {
+            donutUI = it
+            setContent(donutUI)
+        }.launchIn(lifecycleScope)
 
-        lifecycleScope.launch {
-            editViewModel.getDonutUI(idDonut).collect {
-                donutUI = it
-                setContent(donutUI)
-            }
-        }
         setClickListeners()
     }
 
@@ -58,10 +58,12 @@ class EditFragment : Fragment(R.layout.fragment_edit) {
             findNavController().navigateUp()
         }
         binding.batterTextView.setOnClickListener {
-            BattersDialog().apply { argument = donutUI }.show(childFragmentManager, null)
+            val bundle = Bundle().apply { putInt(BattersDialog.ID_DONUT_ARG, donutUI.id) }
+            BattersDialog().apply { arguments = bundle }.show(childFragmentManager, null)
         }
         binding.toppingTextView.setOnClickListener {
-            ToppingsDialog().apply { argument = donutUI }.show(childFragmentManager, null)
+            val bundle = Bundle().apply { putInt(ToppingsDialog.ID_DONUT_ARG, donutUI.id) }
+            ToppingsDialog().apply { arguments = bundle }.show(childFragmentManager, null)
         }
     }
 
@@ -86,7 +88,7 @@ class EditFragment : Fragment(R.layout.fragment_edit) {
         binding.batterTextView.text = donutUI.getBattersString()
         binding.toppingTextView.text = donutUI.getToppingsString()
     }
-    
+
     companion object {
         const val ID_ARG = "id_argument"
     }

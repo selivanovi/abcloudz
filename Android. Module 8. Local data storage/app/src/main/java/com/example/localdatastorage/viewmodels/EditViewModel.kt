@@ -12,6 +12,7 @@ import com.example.localdatastorage.model.room.DonutDataBase
 import com.example.localdatastorage.model.room.DonutsRepository
 import com.example.localdatastorage.model.room.entities.DonutBatterCrossRef
 import com.example.localdatastorage.model.room.entities.DonutToppingCrossRef
+import com.example.localdatastorage.utils.CoroutineViewModel
 import com.example.localdatastorage.utils.getDonut
 import com.example.localdatastorage.utils.toDonutUI
 import kotlinx.coroutines.CoroutineScope
@@ -21,14 +22,16 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.job
 import kotlinx.coroutines.launch
 
-class EditViewModel(private val repository: DonutsRepository) : ViewModel() {
+class EditViewModel(private val repository: DonutsRepository) : CoroutineViewModel() {
 
-    fun getDonutUI(idDonut: Int): Flow<DonutUI> {
-        val donutWithBatterAndToppings = repository.getBattersAndToppingsOfDonut(idDonut)
-        return donutWithBatterAndToppings.map { it.toDonutUI() }.flowOn(Dispatchers.IO)
-    }
+    fun getDonutUI(idDonut: Int): Flow<DonutUI> =
+        repository.getBattersAndToppingsOfDonut(idDonut)
+            .map { it.toDonutUI() }
+            .flowOn(Dispatchers.IO)
+
 
     fun saveDonut(donutUI: DonutUI) {
         val donut = donutUI.getDonut()
@@ -36,12 +39,19 @@ class EditViewModel(private val repository: DonutsRepository) : ViewModel() {
         val toppingCrossRefs =
             donutUI.topping.map { DonutToppingCrossRef(donutUI.id, it.idTopping) }
 
-        CoroutineScope(Dispatchers.IO).launch {
+        CoroutineScope(coroutineContext).launch {
             repository.deleteAndWriteDonutWithBattersAndToppings(
                 donut,
                 batterCrossRefs,
                 toppingCrossRefs
             )
+        }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        CoroutineScope(coroutineContext).launch {
+            coroutineContext.job.join()
         }
     }
 

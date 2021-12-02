@@ -5,18 +5,30 @@ import android.app.Dialog
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.example.localdatastorage.R
 import com.example.localdatastorage.model.entities.ui.DonutUI
 import com.example.localdatastorage.model.room.entities.Topping
 import com.example.localdatastorage.viewmodels.EditViewModel
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 class ToppingsDialog : DialogFragment() {
 
-    var argument: DonutUI? = null
+    private var argument: DonutUI? = null
 
     private val viewModel: EditViewModel by viewModels {
         EditViewModel.Factory(requireContext())
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val argumentsNotNull = requireArguments()
+        val donutId = argumentsNotNull.getInt(ID_DONUT_ARG)
+        runBlocking {
+            argument = viewModel.getDonutUI(donutId).first()
+        }
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -41,5 +53,8 @@ class ToppingsDialog : DialogFragment() {
                 viewModel.saveDonut(newDonutUI)
             }
             .create()
+    }
+    companion object {
+        const val ID_DONUT_ARG = "idDonut"
     }
 }
