@@ -1,6 +1,7 @@
 package com.example.localdatastorage.screens
 
 import android.app.AlertDialog
+import android.app.Application
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
@@ -9,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.room.Room
@@ -23,6 +25,7 @@ import com.example.localdatastorage.model.room.DonutDataBase
 import com.example.localdatastorage.model.room.DonutsRepository
 import com.example.localdatastorage.utils.BiometricUtil
 import com.example.localdatastorage.utils.DonutJsonParser
+import com.example.localdatastorage.utils.ValidateException
 
 
 class LogInFragment : Fragment(R.layout.fragment_login) {
@@ -32,7 +35,7 @@ class LogInFragment : Fragment(R.layout.fragment_login) {
         get() = _binding!!
 
     private val loginViewModels: LoginViewModel by viewModels {
-        LoginViewModel.Factory(requireContext())
+        LoginViewModel.Factory(requireActivity().application)
     }
 
     override fun onCreateView(
@@ -107,10 +110,10 @@ class LogInFragment : Fragment(R.layout.fragment_login) {
             loginViewModels.putEmail(email)
             loginViewModels.putPassword(password)
             loginViewModels.putStateOfFingerPrint(stateOfFingerPrint)
-        } catch (e: Exception) {
+        } catch (e: ValidateException) {
             AlertDialog.Builder(requireContext())
                 .setTitle(R.string.alert_dialog_error)
-                .setMessage(e.message!!.toInt())
+                .setMessage(e.message)
                 .setPositiveButton(R.string.alert_dialog_positive_button) { _, _ -> }
                 .create()
                 .show()

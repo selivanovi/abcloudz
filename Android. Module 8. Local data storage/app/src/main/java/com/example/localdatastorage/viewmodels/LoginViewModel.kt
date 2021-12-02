@@ -1,8 +1,12 @@
 package com.example.localdatastorage.viewmodels
 
+import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
+import android.content.res.Resources
+import androidx.core.content.ContextCompat
 import androidx.core.content.edit
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -18,9 +22,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class LoginViewModel(
+    application: Application,
     private val sharedPreferences: SharedPreferences,
     private val donutsRepository: DonutsRepository
-) : ViewModel() {
+) : AndroidViewModel(application) {
 
     val isFirstLaunch: Boolean
         get() =
@@ -37,7 +42,11 @@ class LoginViewModel(
     }
 
     fun putEmail(email: String) {
-        if (!email.isValidEmail()) error(R.string.email_error)
+        if (!email.isValidEmail()) throw ValidateException(
+            getApplication<Application>().resources.getString(
+                R.string.email_error
+            )
+        )
         sharedPreferences.edit {
             putString(EMAIL_KEY, email)
         }
@@ -48,7 +57,11 @@ class LoginViewModel(
     }
 
     fun putPassword(password: String) {
-        if (!password.isValidPassword()) error(R.string.password_error)
+        if (!password.isValidPassword()) throw ValidateException(
+            getApplication<Application>().resources.getString(
+                R.string.password_error
+            )
+        )
         sharedPreferences.edit {
             putString(PASSWORD_KEY, password)
         }
@@ -93,17 +106,18 @@ class LoginViewModel(
 
     @Suppress("UNCHECKED_CAST")
     class Factory(
-        val context: Context
+        val application: Application
     ) : ViewModelProvider.Factory {
 
-        private val masterKey = MasterKey.Builder(context, MasterKey.DEFAULT_MASTER_KEY_ALIAS)
-            .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
-            .build()
+        private val masterKey =
+            MasterKey.Builder(application.applicationContext, MasterKey.DEFAULT_MASTER_KEY_ALIAS)
+                .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+                .build()
 
 
         private val sharedPreferences: SharedPreferences =
             EncryptedSharedPreferences.create(
-                context,
+                application.applicationContext,
                 "secret_shared_preferences",
                 masterKey,
                 EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
@@ -111,7 +125,7 @@ class LoginViewModel(
             )
 
         private val dataBase =
-            DonutDataBase.getInstance(context)
+            DonutDataBase.getInstance(application.applicationContext)
 
 
         private val donutsRepository =
@@ -119,7 +133,7 @@ class LoginViewModel(
 
 
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            return LoginViewModel(sharedPreferences, donutsRepository) as T
+            return LoginViewModel(application, sharedPreferences, donutsRepository) as T
         }
     }
 
