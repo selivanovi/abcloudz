@@ -1,5 +1,6 @@
 package com.example.localdatastorage.screens
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,14 +11,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.localdatastorage.R
 import com.example.localdatastorage.databinding.FragmentEditBinding
-import com.example.localdatastorage.dialogfragments.BattersDialog
-import com.example.localdatastorage.dialogfragments.ToppingsDialog
 import com.example.localdatastorage.model.entities.ui.DonutUI
 import com.example.localdatastorage.viewmodels.EditViewModel
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 
 class EditFragment : Fragment(R.layout.fragment_edit) {
 
@@ -58,12 +55,10 @@ class EditFragment : Fragment(R.layout.fragment_edit) {
             findNavController().navigateUp()
         }
         binding.batterTextView.setOnClickListener {
-            val bundle = Bundle().apply { putInt(BattersDialog.ID_DONUT_ARG, donutUI.id) }
-            BattersDialog().apply { arguments = bundle }.show(childFragmentManager, null)
+            createBattersAlertDialog()?.show()
         }
         binding.toppingTextView.setOnClickListener {
-            val bundle = Bundle().apply { putInt(ToppingsDialog.ID_DONUT_ARG, donutUI.id) }
-            ToppingsDialog().apply { arguments = bundle }.show(childFragmentManager, null)
+            createToppingsAlertDialog()?.show()
         }
     }
 
@@ -87,6 +82,52 @@ class EditFragment : Fragment(R.layout.fragment_edit) {
         )
         binding.batterTextView.text = donutUI.getBattersString()
         binding.toppingTextView.text = donutUI.getToppingsString()
+    }
+
+    private fun createToppingsAlertDialog(): AlertDialog? {
+        val toppings = donutUI.topping
+        val selectedItemList = mutableListOf(*toppings.toTypedArray())
+        val stringList = toppings.map { it.type }
+        val checkedItems: Array<Boolean> = Array(toppings.size) { true }
+
+        return AlertDialog.Builder(requireContext())
+            .setTitle(R.string.multiple_choice_dialog_title)
+            .setMultiChoiceItems(
+                stringList.toTypedArray(), checkedItems.toBooleanArray()
+            ) { _, i, b ->
+                if (b) {
+                    selectedItemList.add(toppings[i])
+                } else {
+                    selectedItemList.remove(toppings[i])
+                }
+            }.setPositiveButton(R.string.multiple_choice_dialog_positive_button) { _, _ ->
+                val newDonutUI = donutUI.copy(topping = selectedItemList)
+                editViewModel.saveDonut(newDonutUI)
+            }
+            .create()
+    }
+
+    private fun createBattersAlertDialog(): AlertDialog? {
+        val toppings = donutUI.batter
+        val selectedItemList = mutableListOf(*toppings.toTypedArray())
+        val stringList = toppings.map { it.type }
+        val checkedItems: Array<Boolean> = Array(toppings.size) { true }
+
+        return AlertDialog.Builder(requireContext())
+            .setTitle(R.string.multiple_choice_dialog_title)
+            .setMultiChoiceItems(
+                stringList.toTypedArray(), checkedItems.toBooleanArray()
+            ) { _, i, b ->
+                if (b) {
+                    selectedItemList.add(toppings[i])
+                } else {
+                    selectedItemList.remove(toppings[i])
+                }
+            }.setPositiveButton(R.string.multiple_choice_dialog_positive_button) { _, _ ->
+                val newDonutUI = donutUI.copy(batter = selectedItemList)
+                editViewModel.saveDonut(newDonutUI)
+            }
+            .create()
     }
 
     companion object {
