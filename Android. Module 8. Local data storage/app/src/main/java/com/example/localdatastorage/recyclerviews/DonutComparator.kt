@@ -22,6 +22,9 @@ class DonutComparator(
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
         val oldUser = oldList[oldItemPosition]
         val newUser = newList[newItemPosition]
-        return oldUser == newUser
+        return oldUser.name == newUser.name && oldUser.type == newUser.type &&
+                oldUser.ppu == newUser.ppu && oldUser.allergy == newUser.allergy &&
+                newUser.getBattersString("\n") == oldUser.getBattersString("\n") &&
+                newUser.getToppingsString("\n") == oldUser.getToppingsString("\n")
     }
 }
