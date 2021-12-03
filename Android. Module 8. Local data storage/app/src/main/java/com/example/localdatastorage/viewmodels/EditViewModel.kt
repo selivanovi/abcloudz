@@ -10,8 +10,10 @@ import androidx.security.crypto.MasterKey
 import com.example.localdatastorage.model.entities.ui.DonutUI
 import com.example.localdatastorage.model.room.DonutDataBase
 import com.example.localdatastorage.model.room.DonutsRepository
+import com.example.localdatastorage.model.room.entities.Batter
 import com.example.localdatastorage.model.room.entities.DonutBatterCrossRef
 import com.example.localdatastorage.model.room.entities.DonutToppingCrossRef
+import com.example.localdatastorage.model.room.entities.Topping
 import com.example.localdatastorage.utils.CoroutineViewModel
 import com.example.localdatastorage.utils.getDonut
 import com.example.localdatastorage.utils.toDonutUI
@@ -27,11 +29,14 @@ import kotlinx.coroutines.launch
 
 class EditViewModel(private val repository: DonutsRepository) : CoroutineViewModel() {
 
+    fun createDonutWithBatter(donutUI: DonutUI, list: List<Batter>) = donutUI.copy(batter = list)
+
+    fun createDonutWithTopping(donutUI: DonutUI, list: List<Topping>) = donutUI.copy(topping = list)
+
     fun getDonutUI(idDonut: Int): Flow<DonutUI> =
         repository.getBattersAndToppingsOfDonut(idDonut)
             .map { it.toDonutUI() }
             .flowOn(Dispatchers.IO)
-
 
     fun saveDonut(donutUI: DonutUI) {
         val donut = donutUI.getDonut()

@@ -101,7 +101,7 @@ class EditFragment : Fragment(R.layout.fragment_edit) {
                     selectedItemList.remove(toppings[i])
                 }
             }.setPositiveButton(R.string.multiple_choice_dialog_positive_button) { _, _ ->
-                val newDonutUI = donutUI.copy(topping = selectedItemList)
+                val newDonutUI = editViewModel.createDonutWithTopping(donutUI, selectedItemList)
                 editViewModel.saveDonut(newDonutUI)
             }
             .create()
@@ -124,7 +124,7 @@ class EditFragment : Fragment(R.layout.fragment_edit) {
                     selectedItemList.remove(toppings[i])
                 }
             }.setPositiveButton(R.string.multiple_choice_dialog_positive_button) { _, _ ->
-                val newDonutUI = donutUI.copy(batter = selectedItemList)
+                val newDonutUI = editViewModel.createDonutWithBatter(donutUI, selectedItemList)
                 editViewModel.saveDonut(newDonutUI)
             }
             .create()
