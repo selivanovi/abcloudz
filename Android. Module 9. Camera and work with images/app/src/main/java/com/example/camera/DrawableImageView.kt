@@ -2,6 +2,8 @@ package com.example.camera
 
 import android.content.Context
 import android.graphics.*
+import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.util.AttributeSet
 import android.util.Log
 import android.view.MotionEvent
@@ -9,13 +11,21 @@ import android.view.ScaleGestureDetector
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.graphics.values
 import kotlinx.android.synthetic.main.activity_main.view.*
+import kotlinx.android.synthetic.main.photo_fragment.view.*
 
 class DrawableImageView(context: Context, attrs: AttributeSet) :
     AppCompatImageView(context, attrs) {
 
-    private val _width = 8f
+    private var colorPen: Int = DEFAULT_COLOR_PEN
+    private var sizePen: Float = DEFAULT_SIZE_PEN
+
     private val actionPoint = PointF()
-    private val pathLine = Path()
+
+    private val pens = mutableListOf<Pen>().apply {
+        add(Pen(colorPen, sizePen))
+    }
+
+    private val stickers = mutableListOf<Bitmap>()
 
     private val scaleGestureListener =
         object : ScaleGestureDetector.SimpleOnScaleGestureListener() {
@@ -32,61 +42,59 @@ class DrawableImageView(context: Context, attrs: AttributeSet) :
     var isDrawable = false
     val isAddableStickers = false
 
-    private val paint = Paint().apply {
-        isAntiAlias = true
-        isDither = true
-        color = Color.RED
-        strokeWidth = _width
-        style = Paint.Style.STROKE
-        strokeJoin = Paint.Join.ROUND
-        strokeCap = Paint.Cap.ROUND
-    }
-
     private var bitmap: DrawableItem? = null
 
     override fun onDraw(canvas: Canvas?) {
+        Log.d(
+            TAG,
+            "Bitmap: ${bitmap?.width} ${bitmap?.height} ${imageView.width} ${imageView.height}"
+        )
         super.onDraw(canvas)
-        if (isDrawable) {
-            canvas?.drawPath(pathLine, paint)
+        bitmap = createDrawableItem()
+        bitmap?.let { it ->
+            val rect = RectF(
+                it.coordinate.x,
+                it.coordinate.y,
+                it.coordinate.x + it.width,
+                it.coordinate.y + bitmap!!.height
+            )
+            canvas?.clipRect(rect)
+            if (isDrawable) {
+                Log.d(TAG, "Pens size: ${pens.size}")
+                pens.forEach { pen ->
+                    canvas?.drawPath(pen.path, pen.paint)
+                }
+                stickers.forEach {
+                    canvas?.drawBitmap(it, 0F, 0F, null)
+                }
+            }
         }
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
-
+        if (!isDrawable) return false
         var action = ""
-        val bitmap = bitmap!!
         when (event?.action) {
             MotionEvent.ACTION_DOWN -> {
                 action = "ACTION_DOWN"
 
                 actionPoint.x = event.x
                 actionPoint.y = event.y
-
-                if (actionPoint.x > bitmap.coordinate.x && actionPoint.x < bitmap.coordinate.x + height &&
-                    actionPoint.y > bitmap.coordinate.y && actionPoint.y < bitmap.coordinate.y + width
-                )
-                    pathLine.moveTo(event.x, event.y)
+                pens.add(Pen(colorPen, sizePen))
+                pens.last().path.moveTo(event.x, event.y)
             }
             MotionEvent.ACTION_MOVE -> {
                 action = "ACTION_MOVE"
 
                 actionPoint.x = event.x
                 actionPoint.y = event.y
-                if (actionPoint.x > bitmap.coordinate.x && actionPoint.x < bitmap.coordinate.x + height &&
-                    actionPoint.y > bitmap.coordinate.y && actionPoint.y < bitmap.coordinate.y + width
-                )
-                    pathLine.lineTo(event.x, event.y)
+                pens.last().path.lineTo(event.x, event.y)
             }
             MotionEvent.ACTION_UP -> {
                 action = "ACTION_UP"
                 actionPoint.x = event.x
                 actionPoint.y = event.y
-                if (actionPoint.x > bitmap.coordinate.x && actionPoint.x < bitmap.coordinate.x + height &&
-                    actionPoint.y > bitmap.coordinate.y && actionPoint.y < bitmap.coordinate.y + width
-                )
-                    pathLine.lineTo(event.x, event.y)
-
-
+                pens.last().path.lineTo(event.x, event.y)
             }
         }
 
@@ -96,19 +104,46 @@ class DrawableImageView(context: Context, attrs: AttributeSet) :
         return true
     }
 
-    override fun setImageUri(uri: Uri?) {
+    fun createDrawableItem(): DrawableItem? {
+        if(drawable == null) return null
         val valuesMatrix = imageMatrix.values()
         val point = PointF(valuesMatrix[Matrix.MTRANS_X], valuesMatrix[Matrix.MTRANS_Y])
-        bitmap = DrawableItem(
+        return DrawableItem(
             coordinate = point,
-            width = drawable.intrinsicWidth.toFloat(),
-            height = drawable.intrinsicHeight.toFloat()
+            width =  drawable.intrinsicWidth * valuesMatrix[Matrix.MSCALE_X],
+            height = drawable.intrinsicHeight * valuesMatrix[Matrix.MSCALE_Y]
         )
+    }
+
+    fun getBitmap(): Drawable {
+        return imageView.drawable
+    }
+
+    fun setColor(color: Int) {
+        colorPen = color
+        Log.d(TAG, "Color: $color")
+    }
+
+    fun removeDrawable(): Boolean {
+        return if (pens.size != 0) {
+            pens.removeLast()
+            invalidate()
+            true
+        } else
+            false
+    }
+
+    fun addEmoji(idDrawable: Int) {
+        val bitmap = BitmapFactory.decodeResource(resources, idDrawable)
+        stickers.add(bitmap)
         Log.d(TAG, "Bitmap: $bitmap")
-        super.setImageUri(uri)
+        invalidate()
     }
 
     companion object {
         private const val TAG = "DrawableImageView"
+        private const val DEFAULT_SIZE_PEN = 10F
+        private const val DEFAULT_COLOR_PEN = Color.WHITE
+
     }
 }

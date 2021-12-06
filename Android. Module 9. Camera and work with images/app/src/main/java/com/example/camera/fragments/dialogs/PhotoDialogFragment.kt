@@ -1,12 +1,15 @@
-package com.example.camera
+package com.example.camera.fragments.dialogs
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
+import com.example.camera.PhotoFragmentListener
+import com.example.camera.R
 
 class PhotoDialogFragment : DialogFragment() {
 
@@ -22,18 +25,22 @@ class PhotoDialogFragment : DialogFragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if(requireActivity() is PhotoFragmentListener)
-            listener = requireActivity() as PhotoFragmentListener
+        Log.d(TAG, "$parentFragment")
+        if(parentFragment is PhotoFragmentListener) {
+            listener = parentFragment as PhotoFragmentListener
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         view.findViewById<TextView>(R.id.filesTextView).setOnClickListener {
             listener?.onClickFiles()
+            Log.d(TAG, "onClickFiles")
             dismiss()
         }
         view.findViewById<TextView>(R.id.cameraTextView).setOnClickListener {
             listener?.onClickCamera()
+            Log.d(TAG, "onClickCamera")
             dismiss()
         }
     }
@@ -41,5 +48,9 @@ class PhotoDialogFragment : DialogFragment() {
     override fun onDetach() {
         super.onDetach()
         listener = null
+    }
+
+    companion object {
+        private const val TAG = "PhotoDialogFragment"
     }
 }
