@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.appcompat.widget.AppCompatImageView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/itemEmoji"
+    android:layout_width="100dp"
+    android:layout_height="100dp"
+    tools:srcCompat="@drawable/file_76969916">
+
+</androidx.appcompat.widget.AppCompatImageView>
