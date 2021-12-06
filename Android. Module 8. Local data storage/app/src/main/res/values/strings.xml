@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">LocalDataStorage</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="question_about_fingerprint">Do you want use fingerprint?</string>
+    <string name="login">Log in</string>
+    <string name="signup">Sign up</string>
+    <string name="prompt_info_title">Login in this app</string>
+    <string name="prompt_info_subtitle">Use your biometric credential</string>
+    <string name="prompt_info_cancel">Cancel</string>
+    <string name="biometric_dialog_message">The device supports biometrics, but you haven’t enrolled either their fingerprints or their face.</string>
+    <string name="biometric_dialog_positive_button">Enable</string>
+    <string name="biometric_dialog_negative_button">Cancel</string>
+    <string name="info_user_error">Error</string>
+    <string name="email_error">Please check  email</string>
+    <string name="password_error">Please check passowrd, password must connect 8 symbols</string>
+    <string name="alert_dialog_error">Error</string>
+    <string name="alert_dialog_positive_button">Ok</string>
+    <string name="type_item_list">Type: %s</string>
+    <string name="batter_item_list">Batter: \n\t%s</string>
+    <string name="topping_item_list">Topping: \n\t%s</string>
+    <string name="ppu_item_List">PPU: %s</string>
+    <string name="name_edit_fragment">Name</string>
+    <string name="ppu_edit_fragment">PPU</string>
+    <string name="type_edit_fragment">Type</string>
+    <string name="ok_edit_fragment">Ok</string>
+    <string name="cancel_edit_fragment">Cancel</string>
+    <string name="multiple_choice_dialog_title">Select your choice</string>
+    <string name="multiple_choice_dialog_positive_button">Ok</string>
+    <string name="allergy_edit_fragment">Allergy</string>
+    <string name="allergy_null_edit_fragment">None</string>
+    <string name="allergy_item_List">Allergy: %s</string>
+</resources>
