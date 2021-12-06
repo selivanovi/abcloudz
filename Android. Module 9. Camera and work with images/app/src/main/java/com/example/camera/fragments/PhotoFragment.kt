@@ -50,6 +50,8 @@ class PhotoFragment : Fragment(), PhotoFragmentListener, MenuFragmentListener,
         binding.doneImageView.setOnClickListener {
             binding.undoImageView.isVisible = false
             binding.doneImageView.isVisible = false
+            imageView.isDrawable = false
+            imageView.isAddableStickers = false
             childFragmentManager.beginTransaction()
                 .replace(R.id.photoFragmentContainer, MenuFragment())
                 .commit()
@@ -94,6 +96,9 @@ class PhotoFragment : Fragment(), PhotoFragmentListener, MenuFragmentListener,
     override fun showEmojiDialog() {
         childFragmentManager.beginTransaction()
             .replace(R.id.photoFragmentContainer, EmojisFragment()).commit()
+        imageView.isAddableStickers = true
+        binding.undoImageView.isVisible = true
+        binding.doneImageView.isVisible = true
     }
 
     override fun showDrawableFragment() {
