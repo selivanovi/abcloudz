@@ -1,4 +1,4 @@
-package com.example.camera
+package com.example.camera.activities.contracts
 
 import android.content.Context
 import android.content.Intent
@@ -6,6 +6,7 @@ import android.net.Uri
 import android.util.Log
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.core.net.toUri
+import com.example.camera.activities.CameraActivity
 
 class CameraContract : ActivityResultContract<Unit, Uri?>() {
     override fun createIntent(context: Context, input: Unit?): Intent {

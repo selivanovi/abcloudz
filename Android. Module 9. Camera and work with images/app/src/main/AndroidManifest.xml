@@ -17,7 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Camera">
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,7 +26,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".CameraActivity"
+            android:name=".activities.CameraActivity"
             android:exported="true">
 
         </activity>

@@ -1,4 +1,4 @@
-package com.example.camera
+package com.example.camera.activities
 
 import android.Manifest
 import android.content.Context
@@ -6,18 +6,14 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.util.Log
-import android.util.Size
-import android.view.MotionEvent
-import android.view.ScaleGestureDetector
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.camera.camera2.internal.compat.workaround.TargetAspectRatio.RATIO_16_9
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.example.camera.R
 import com.example.camera.databinding.ActivityCameraBinding
 import java.io.File
 import java.text.SimpleDateFormat
