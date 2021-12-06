@@ -1,6 +1,6 @@
 package com.example.camera.fragments
 
-import android.net.Uri
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,7 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import com.example.camera.ImagePicker
+import com.example.camera.ImagePickerCamera
+import com.example.camera.ImagePickerFiles
 import com.example.camera.PhotoFragmentListener
 import com.example.camera.R
 import com.example.camera.activities.contracts.CameraContract
@@ -59,21 +60,28 @@ class PhotoFragment : Fragment(), PhotoFragmentListener, MenuFragmentListener,
     }
 
     private val getImageFromCamera by lazy {
-        requireActivity().registerForActivityResult(CameraContract()) {
-            binding.imageView.setImageURI(it)
-        }
+        ImagePickerCamera(
+            requireActivity().activityResultRegistry,
+            this
+        ) { binding.imageView.setImageURI(it) }
     }
 
-    private val getImageFromFiles: ImagePicker by lazy {
-        ImagePicker(
+    private val getImageFromFiles: ImagePickerFiles by lazy {
+        ImagePickerFiles(
             requireActivity().activityResultRegistry,
-            requireActivity()
+            this
         ) { binding.imageView.setImageURI(it) }
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        getImageFromCamera
+        getImageFromFiles
     }
 
     override fun onClickCamera() {
         Log.d(TAG, "onClickCamera")
-        getImageFromCamera.launch(null)
+        getImageFromCamera.pickImage()
     }
 
     override fun onClickFiles() {
