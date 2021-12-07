@@ -74,7 +74,7 @@ class PhotoFragment : Fragment(), PhotoFragmentListener, MenuFragmentListener,
             requireActivity().activityResultRegistry,
             this
         ) {
-            binding.imageView.setImageURI(it)
+            setImageView(it)
         }
     }
 
@@ -84,7 +84,6 @@ class PhotoFragment : Fragment(), PhotoFragmentListener, MenuFragmentListener,
             this
         ) {
             setImageView(it)
-
         }
     }
 
@@ -113,8 +112,18 @@ class PhotoFragment : Fragment(), PhotoFragmentListener, MenuFragmentListener,
     }
 
     override fun showFilterFragment() {
+
+        val bitmap = (binding.imageView.drawable as BitmapDrawable).bitmap
+
+        val bundle  = Bundle().apply {
+            putParcelable(FilterFragment.BITMAP_ARG, bitmap)
+        }
+        val filterFragment = FilterFragment().apply {
+            arguments = bundle
+        }
+
         childFragmentManager.beginTransaction()
-            .replace(R.id.photoFragmentContainer, FilterFragment()).commit()
+            .replace(R.id.photoFragmentContainer, filterFragment).commit()
     }
 
     override fun showEmojiDialog() {
@@ -155,7 +164,7 @@ class PhotoFragment : Fragment(), PhotoFragmentListener, MenuFragmentListener,
         imageView.addEmoji(idDrawable)
     }
 
-    override fun pickFilteredBitmap(bitmap: Bitmap) {
-
+    override fun pickFilteredBitmap(filter: Filter) {
+        binding.imageView.setColorFilter(filter.color, filter.mode)
     }
 }

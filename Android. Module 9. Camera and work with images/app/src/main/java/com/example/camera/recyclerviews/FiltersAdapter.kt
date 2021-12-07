@@ -7,15 +7,14 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.camera.CircleDrawable
+import com.example.camera.Filter
 import com.example.camera.R
 
-class FiltersAdapter(val onClickListener: (Bitmap) -> Unit) : RecyclerView.Adapter<FiltersAdapter.ViewHolder>() {
+class FiltersAdapter(val onClickListener: (Filter) -> Unit, var bitmap: Bitmap?) : RecyclerView.Adapter<FiltersAdapter.ViewHolder>() {
 
-    private var currentPosition: CircleDrawable? = null
+    private val filtersList = mutableListOf<Filter>()
 
-    private val filtersList = mutableListOf<Bitmap>()
-
-    fun setData(list: List<Bitmap>) {
+    fun setData(list: List<Filter>) {
         with(filtersList) {
             clear()
             addAll(list)
@@ -25,7 +24,7 @@ class FiltersAdapter(val onClickListener: (Bitmap) -> Unit) : RecyclerView.Adapt
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.item_emoji, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.filter_item, parent, false)
         )
     }
 
@@ -33,6 +32,7 @@ class FiltersAdapter(val onClickListener: (Bitmap) -> Unit) : RecyclerView.Adapt
         holder.bind(filtersList[position])
 
     }
+
     override fun getItemCount(): Int {
         return filtersList.size
     }
@@ -40,10 +40,12 @@ class FiltersAdapter(val onClickListener: (Bitmap) -> Unit) : RecyclerView.Adapt
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val imageView: ImageView = view.findViewById<ImageView>(R.id.filterItem)
 
-        fun bind(item: Bitmap) {
-            imageView.setImageBitmap(item)
+        fun bind(item: Filter) {
+            imageView.setImageBitmap(bitmap)
+            imageView.setColorFilter(item.color, item.mode)
             imageView.setOnClickListener {
-
+                onClickListener(item)
             }
         }
     }
+}

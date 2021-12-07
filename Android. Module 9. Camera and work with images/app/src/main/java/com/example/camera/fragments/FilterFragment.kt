@@ -8,24 +8,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
-import com.example.camera.PhotoViewModel
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.camera.Filter
 import com.example.camera.databinding.FiltersFragmentBinding
-import com.example.camera.databinding.MenuFragmentBinding
+import com.example.camera.filters
 import com.example.camera.fragments.listeners.FiltersFragmentListener
-import com.example.camera.fragments.listeners.MenuFragmentListener
 import com.example.camera.recyclerviews.FiltersAdapter
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 
 class FilterFragment : Fragment() {
 
     private var selectItem: ImageView? = null
 
-    private val viewModel: PhotoViewModel by viewModels()
 
-    private val filtersAdapter = FiltersAdapter()
+    private val filtersAdapter = FiltersAdapter(::pickBitmap, null)
 
     private var _binding: FiltersFragmentBinding? = null
     private val binding
@@ -40,14 +35,12 @@ class FilterFragment : Fragment() {
         }
     }
 
-    private val subscribeFilters by lazy {
-        viewModel.bitmapsChannel.onEach {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-        }
-    }
-
-    private fun pickBitmap(bitMap: Bitmap) {
-        listener?.pickFilteredBitmap(bitMap)
+        val arguments = requireArguments()
+        val bitmap = arguments.getParcelable<Bitmap>(BITMAP_ARG)!!
+        filtersAdapter.bitmap = bitmap
     }
 
     override fun onCreateView(
@@ -57,5 +50,26 @@ class FilterFragment : Fragment() {
     ): View {
         _binding = FiltersFragmentBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        setRecyclerView()
+    }
+
+    private fun setRecyclerView() {
+        val linearLayoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        binding.emojisRecyclerView.layoutManager = linearLayoutManager
+        binding.emojisRecyclerView.adapter = filtersAdapter.apply { setData(filters) }
+    }
+
+    private fun pickBitmap(filter: Filter) {
+        listener?.pickFilteredBitmap(filter)
+    }
+
+    companion object {
+        const val BITMAP_ARG = "bitmapArg"
     }
 }

@@ -5,5 +5,5 @@ import com.example.camera.Filter
 
 interface FiltersFragmentListener {
 
-    fun pickFilteredBitmap(bitmap: Bitmap)
+    fun pickFilteredBitmap(filter: Filter)
 }
