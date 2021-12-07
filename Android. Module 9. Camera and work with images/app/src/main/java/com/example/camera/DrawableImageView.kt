@@ -2,6 +2,7 @@ package com.example.camera
 
 import android.content.Context
 import android.graphics.*
+import android.graphics.drawable.BitmapDrawable
 import android.util.AttributeSet
 import android.util.Log
 import android.view.MotionEvent
@@ -9,6 +10,7 @@ import android.view.ScaleGestureDetector
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.graphics.values
 import kotlinx.android.synthetic.main.photo_fragment.view.*
+
 
 class DrawableImageView(context: Context, attrs: AttributeSet) :
     AppCompatImageView(context, attrs) {
@@ -33,25 +35,10 @@ class DrawableImageView(context: Context, attrs: AttributeSet) :
                 if (stickers.size != 0) {
                     val sticker = stickers.last()
                     sticker.canMove = false
+                    val scaleX = detector.scaleFactor * sticker.matrix.values()[Matrix.MSCALE_X]
+                    val scaleY = detector.scaleFactor * sticker.matrix.values()[Matrix.MSCALE_Y]
 
-                    val matrix = Matrix()
-                    matrix.postScale(
-                        detector.scaleFactor * sticker.matrix.values()[Matrix.MSCALE_X],
-                        detector.scaleFactor * sticker.matrix.values()[Matrix.MSCALE_Y]
-                    )
-
-                    val resizedSticker = Bitmap.createBitmap(
-                        sticker.bitmapOrg,
-                        0,
-                        0,
-                        sticker.bitmapOrg.width,
-                        sticker.bitmapOrg.height,
-                        matrix,
-                        true
-                    )
-
-                    sticker.bitmap = resizedSticker
-                    sticker.matrix = matrix
+                    resizedSticker(sticker, scaleX, scaleY)
                 }
                 invalidate()
                 return true
@@ -78,7 +65,6 @@ class DrawableImageView(context: Context, attrs: AttributeSet) :
     private var bitmap: DrawableItem? = null
 
     override fun onDraw(canvas: Canvas?) {
-
         super.onDraw(canvas)
         bitmap = createDrawableItem()
         Log.d(
@@ -110,7 +96,6 @@ class DrawableImageView(context: Context, attrs: AttributeSet) :
                     null
                 )
             }
-
         }
     }
 
@@ -170,6 +155,27 @@ class DrawableImageView(context: Context, attrs: AttributeSet) :
         return true
     }
 
+    private fun resizedSticker(sticker: Sticker, scaleX: Float, scaleY: Float) {
+        val matrix = Matrix()
+        matrix.setScale(
+            scaleX,
+            scaleY
+        )
+
+        val resizedSticker = Bitmap.createBitmap(
+            sticker.bitmapOrg,
+            0,
+            0,
+            sticker.bitmapOrg.width,
+            sticker.bitmapOrg.height,
+            matrix,
+            true
+        )
+
+        sticker.bitmap = resizedSticker
+        sticker.matrix = matrix
+    }
+
     private fun createDrawableItem(): DrawableItem? {
         if (drawable == null) return null
         val valuesMatrix = imageMatrix.values()
@@ -179,6 +185,37 @@ class DrawableImageView(context: Context, attrs: AttributeSet) :
             width = drawable.intrinsicWidth * valuesMatrix[Matrix.MSCALE_X],
             height = drawable.intrinsicHeight * valuesMatrix[Matrix.MSCALE_Y]
         )
+    }
+
+    fun getSavedBitmap(): Bitmap {
+        val conf = Bitmap.Config.ARGB_8888
+        val savingBitmap = Bitmap.createBitmap((drawable as BitmapDrawable).bitmap, 0,0, drawable.intrinsicWidth, drawable.intrinsicHeight).copy(conf, true)
+        val canvas = Canvas(savingBitmap)
+        val scaleX = 1/(imageMatrix.values()[Matrix.MSCALE_X])
+        val scaleY = 1/(imageMatrix.values()[Matrix.MSCALE_Y])
+        val translateX = (-bitmap!!.coordinate.x)*scaleX
+        val translateY = (-bitmap!!.coordinate.y)*scaleY
+        val matrix = Matrix()
+        matrix.postScale(scaleX, scaleY)
+        matrix.postTranslate(translateX, translateY)
+
+
+
+        pens.forEach { pen ->
+            pen.path.transform(matrix)
+            pen.paint.strokeWidth *= scaleX
+            canvas.drawPath(pen.path, pen.paint)
+        }
+        stickers.forEach {
+            resizedSticker(it, scaleX*it.matrix.values()[Matrix.MSCALE_X], scaleY*it.matrix.values()[Matrix.MSCALE_Y])
+            canvas.drawBitmap(
+                it.bitmap,
+                it.x*scaleX + translateX,
+                it.y*scaleY + translateY,
+                null
+            )
+        }
+        return savingBitmap
     }
 
     fun setColor(color: Int) {
@@ -229,7 +266,7 @@ class DrawableImageView(context: Context, attrs: AttributeSet) :
         invalidate()
     }
 
-    fun clear(){
+    fun clear() {
         stickers.clear()
         pens.clear()
     }

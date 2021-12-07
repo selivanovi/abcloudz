@@ -62,6 +62,10 @@ class MenuFragment : Fragment() {
             selectItem(it)
             listener?.showDrawableFragment()
         }
+        savingButton.setOnClickListener {
+            selectItem(it)
+            listener?.saveBitmap()
+        }
     }
 
     private fun selectItem(view: View) {

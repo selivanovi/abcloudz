@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.camera.CircleDrawable
 import com.example.camera.Filter
 import com.example.camera.R
 
@@ -24,7 +23,7 @@ class FiltersAdapter(val onClickListener: (Filter) -> Unit, var bitmap: Bitmap?)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.filter_item, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.item_filter, parent, false)
         )
     }
 

@@ -37,6 +37,7 @@ class PhotoFragment : Fragment(), PhotoFragmentListener, MenuFragmentListener,
     private val binding
         get() = _binding!!
 
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -121,7 +122,7 @@ class PhotoFragment : Fragment(), PhotoFragmentListener, MenuFragmentListener,
         val filterFragment = FilterFragment().apply {
             arguments = bundle
         }
-
+        binding.doneImageView.isVisible = true
         childFragmentManager.beginTransaction()
             .replace(R.id.photoFragmentContainer, filterFragment).commit()
     }
@@ -144,7 +145,9 @@ class PhotoFragment : Fragment(), PhotoFragmentListener, MenuFragmentListener,
     }
 
     override fun saveBitmap() {
-
+        val bitmap = imageView.getSavedBitmap()
+        imageView.setImageBitmap(bitmap)
+        imageView.clear()
     }
 
     override fun pickColor(color: Int) {
