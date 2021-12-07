@@ -2,16 +2,12 @@ package com.example.camera
 
 import android.content.Context
 import android.graphics.*
-import android.graphics.drawable.BitmapDrawable
-import android.net.Uri
 import android.util.AttributeSet
 import android.util.Log
-import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.graphics.values
-import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlinx.android.synthetic.main.photo_fragment.view.*
 
 class DrawableImageView(context: Context, attrs: AttributeSet) :
@@ -233,8 +229,9 @@ class DrawableImageView(context: Context, attrs: AttributeSet) :
         invalidate()
     }
 
-    private fun createResizedSticker(sticker: Sticker) {
-
+    fun clear(){
+        stickers.clear()
+        pens.clear()
     }
 
     companion object {

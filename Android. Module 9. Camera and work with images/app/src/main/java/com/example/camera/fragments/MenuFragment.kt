@@ -52,6 +52,7 @@ class MenuFragment : Fragment() {
         }
         addFilterButton.setOnClickListener {
             selectItem(it)
+            listener?.showFilterFragment()
         }
         addEmojiButton.setOnClickListener {
             selectItem(it)

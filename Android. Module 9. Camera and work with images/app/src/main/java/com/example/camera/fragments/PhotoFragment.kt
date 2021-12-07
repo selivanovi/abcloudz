@@ -1,6 +1,11 @@
 package com.example.camera.fragments
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.CornerPathEffect
+import android.graphics.drawable.BitmapDrawable
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,20 +13,25 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import com.example.camera.ImagePickerCamera
-import com.example.camera.ImagePickerFiles
-import com.example.camera.PhotoFragmentListener
-import com.example.camera.R
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.get
+import com.example.camera.*
 import com.example.camera.activities.contracts.CameraContract
 import com.example.camera.databinding.PhotoFragmentBinding
 import com.example.camera.fragments.dialogs.PhotoDialogFragment
 import com.example.camera.fragments.listeners.DrawableFragmentListener
 import com.example.camera.fragments.listeners.EmojisFragmentListener
+import com.example.camera.fragments.listeners.FiltersFragmentListener
 import com.example.camera.fragments.listeners.MenuFragmentListener
 import kotlinx.android.synthetic.main.photo_fragment.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class PhotoFragment : Fragment(), PhotoFragmentListener, MenuFragmentListener,
-    DrawableFragmentListener, EmojisFragmentListener {
+    DrawableFragmentListener, EmojisFragmentListener, FiltersFragmentListener {
 
     private var _binding: PhotoFragmentBinding? = null
     private val binding
@@ -63,14 +73,19 @@ class PhotoFragment : Fragment(), PhotoFragmentListener, MenuFragmentListener,
         ImagePickerCamera(
             requireActivity().activityResultRegistry,
             this
-        ) { binding.imageView.setImageURI(it) }
+        ) {
+            binding.imageView.setImageURI(it)
+        }
     }
 
     private val getImageFromFiles: ImagePickerFiles by lazy {
         ImagePickerFiles(
             requireActivity().activityResultRegistry,
             this
-        ) { binding.imageView.setImageURI(it) }
+        ) {
+            setImageView(it)
+
+        }
     }
 
     override fun onAttach(context: Context) {
@@ -98,7 +113,8 @@ class PhotoFragment : Fragment(), PhotoFragmentListener, MenuFragmentListener,
     }
 
     override fun showFilterFragment() {
-        TODO("Not yet implemented")
+        childFragmentManager.beginTransaction()
+            .replace(R.id.photoFragmentContainer, FilterFragment()).commit()
     }
 
     override fun showEmojiDialog() {
@@ -130,7 +146,16 @@ class PhotoFragment : Fragment(), PhotoFragmentListener, MenuFragmentListener,
         TODO("Not yet implemented")
     }
 
+    private fun setImageView(it: Uri?) {
+        binding.imageView.clear()
+        binding.imageView.setImageURI(it)
+    }
+
     override fun addEmojis(idDrawable: Int) {
         imageView.addEmoji(idDrawable)
+    }
+
+    override fun pickFilteredBitmap(bitmap: Bitmap) {
+
     }
 }
