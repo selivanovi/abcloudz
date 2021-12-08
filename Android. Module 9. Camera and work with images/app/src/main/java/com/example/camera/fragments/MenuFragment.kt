@@ -3,20 +3,31 @@ package com.example.camera.fragments
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModel
+import androidx.navigation.fragment.findNavController
+import com.example.camera.Filter
+import com.example.camera.ImagePickerCamera
+import com.example.camera.ImagePickerFiles
 import com.example.camera.R
 import com.example.camera.databinding.MenuFragmentBinding
-import com.example.camera.fragments.listeners.MenuFragmentListener
+import com.example.camera.fragments.dialogs.PhotoDialogFragment
+import com.example.camera.fragments.listeners.*
+import com.example.camera.viewmodels.DrawableViewModel
 import kotlinx.android.synthetic.main.menu_fragment.*
 
-class MenuFragment : Fragment() {
+class MenuFragment : Fragment(), PhotoProviderFragmentListener, DrawableFragmentListener,
+    FiltersFragmentListener, EmojisFragmentListener {
 
-    private var selectItem: ImageView? = null
+    private val viewModel by activityViewModels<DrawableViewModel>()
 
     private var _binding: MenuFragmentBinding? = null
     private val binding
@@ -24,11 +35,33 @@ class MenuFragment : Fragment() {
 
     private var listener: MenuFragmentListener? = null
 
+    private val getImageFromCamera by lazy {
+        ImagePickerCamera(
+            requireActivity().activityResultRegistry,
+            this
+        ) {
+            viewModel.emitImageUri(it)
+        }
+    }
+
+    private val getImageFromFiles: ImagePickerFiles by lazy {
+        ImagePickerFiles(
+            requireActivity().activityResultRegistry,
+            this
+        ) {
+            viewModel.emitImageUri(it)
+        }
+    }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (parentFragment is MenuFragmentListener) {
-            listener = parentFragment as MenuFragmentListener
+        Log.d(TAG, "Parent: ${requireParentFragment().requireParentFragment()}")
+        if (requireParentFragment().requireParentFragment() is MenuFragmentListener) {
+            Log.d(TAG, "onAttach")
+            listener = requireParentFragment().requireParentFragment() as MenuFragmentListener
         }
+        getImageFromFiles
+        getImageFromCamera
     }
 
     override fun onCreateView(
@@ -47,30 +80,49 @@ class MenuFragment : Fragment() {
 
     private fun setListeners() {
         takePhotoButton.setOnClickListener {
-            selectItem(it)
-            listener?.showPhotoDialog()
+            PhotoDialogFragment().show(childFragmentManager, null)
         }
         addFilterButton.setOnClickListener {
-            selectItem(it)
-            listener?.showFilterFragment()
+            findNavController().navigate(R.id.action_menuFragment_to_filterFragment)
         }
         addEmojiButton.setOnClickListener {
-            selectItem(it)
-            listener?.showEmojiDialog()
+            findNavController().navigate(R.id.action_menuFragment_to_emojisFragment)
         }
         drawLineButton.setOnClickListener {
-            selectItem(it)
-            listener?.showDrawableFragment()
+            findNavController().navigate(R.id.action_menuFragment_to_drawableFragment)
         }
         savingButton.setOnClickListener {
-            selectItem(it)
-            listener?.saveBitmap()
+            //
         }
     }
 
-    private fun selectItem(view: View) {
-        selectItem?.setColorFilter(Color.WHITE)
-        selectItem = view as ImageView
-        selectItem?.setColorFilter(ContextCompat.getColor(requireContext(), R.color.yellow_dark))
+    override fun onClickCamera() {
+        Log.d(TAG, "onClickCamera")
+        getImageFromCamera.pickImage()
+    }
+
+    override fun onClickFiles() {
+        Log.d(TAG, "onClickFiles")
+        getImageFromFiles.pickImage()
+    }
+
+    override fun pickColor(color: Int) {
+        listener?.setColor(color)
+    }
+
+    override fun pickSize(size: Float) {
+        //todo
+    }
+
+    override fun addEmojis(idDrawable: Int) {
+        listener?.addEmoji(idDrawable)
+    }
+
+    override fun pickFilteredBitmap(filter: Filter) {
+        //
+    }
+
+    companion object {
+        private const val TAG = "MenuFragment"
     }
 }

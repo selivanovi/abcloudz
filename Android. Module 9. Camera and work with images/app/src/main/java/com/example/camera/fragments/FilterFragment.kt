@@ -8,17 +8,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.camera.Filter
 import com.example.camera.databinding.FiltersFragmentBinding
 import com.example.camera.filters
 import com.example.camera.fragments.listeners.FiltersFragmentListener
 import com.example.camera.recyclerviews.FiltersAdapter
+import com.example.camera.viewmodels.DrawableViewModel
+import jp.co.cyberagent.android.gpuimage.filter.GPUImageFilter
 
 class FilterFragment : Fragment() {
 
     private var selectItem: ImageView? = null
 
+    private val viewModel by activityViewModels<DrawableViewModel>()
 
     private val filtersAdapter = FiltersAdapter(::pickBitmap, null)
 
@@ -26,21 +30,9 @@ class FilterFragment : Fragment() {
     private val binding
         get() = _binding!!
 
-    private var listener: FiltersFragmentListener? = null
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (parentFragment is FiltersFragmentListener) {
-            listener = parentFragment as FiltersFragmentListener
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        val arguments = requireArguments()
-        val bitmap = arguments.getParcelable<Bitmap>(BITMAP_ARG)!!
-        filtersAdapter.bitmap = bitmap
     }
 
     override fun onCreateView(
@@ -62,11 +54,11 @@ class FilterFragment : Fragment() {
         val linearLayoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.emojisRecyclerView.layoutManager = linearLayoutManager
-        binding.emojisRecyclerView.adapter = filtersAdapter.apply { setData(filters) }
+        binding.emojisRecyclerView.adapter = filtersAdapter.apply { setData(viewModel.getFilters()) }
     }
 
-    private fun pickBitmap(filter: Filter) {
-        listener?.pickFilteredBitmap(filter)
+    private fun pickBitmap(filter: GPUImageFilter) {
+//        listener?.pickFilteredBitmap(filter)
     }
 
     companion object {

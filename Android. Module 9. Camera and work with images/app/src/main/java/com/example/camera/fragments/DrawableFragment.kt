@@ -7,31 +7,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
-import com.example.camera.DrawableImageView
 import com.example.camera.R
 import com.example.camera.databinding.DrawableFragmentBinding
 import com.example.camera.fragments.listeners.DrawableFragmentListener
 import com.example.camera.recyclerviews.ColorsAdapter
+import com.example.camera.viewmodels.DrawableViewModel
 
 class DrawableFragment : Fragment() {
+
+    private val viewModel by activityViewModels<DrawableViewModel>()
 
     private val adapter = ColorsAdapter(::pickColor)
 
     private var _binding: DrawableFragmentBinding? = null
     private val binding
         get() = _binding!!
-
-    private var listener: DrawableFragmentListener? = null
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        Log.d(TAG, "Bitmap: $parentFragment")
-        if (parentFragment is DrawableFragmentListener) {
-            listener = parentFragment as DrawableFragmentListener
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,16 +39,12 @@ class DrawableFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setRecyclerView()
-        setListeners()
     }
 
     private fun pickColor(color: Int) {
         Log.d(TAG, "pickColor")
-        listener?.pickColor(color)
-    }
-
-    private fun setListeners() {
-
+        viewModel.emitDrawable(true)
+        viewModel.emitColor(color)
     }
 
     private fun setRecyclerView() {
@@ -69,7 +59,7 @@ class DrawableFragment : Fragment() {
     }
 
     companion object {
-        private const val TAG = "DrawableImageView"
+        private const val TAG = "DrawableFragment"
 
     }
 }
