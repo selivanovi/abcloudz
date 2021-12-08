@@ -8,12 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
-import com.example.camera.PhotoFragmentListener
+import com.example.camera.fragments.listeners.PhotoProviderFragmentListener
 import com.example.camera.R
 
 class PhotoDialogFragment : DialogFragment() {
 
-    private var listener: PhotoFragmentListener? = null
+    private var listener: PhotoProviderFragmentListener? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -26,8 +26,8 @@ class PhotoDialogFragment : DialogFragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         Log.d(TAG, "$parentFragment")
-        if(parentFragment is PhotoFragmentListener) {
-            listener = parentFragment as PhotoFragmentListener
+        if(parentFragment is PhotoProviderFragmentListener) {
+            listener = parentFragment as PhotoProviderFragmentListener
         }
     }
 

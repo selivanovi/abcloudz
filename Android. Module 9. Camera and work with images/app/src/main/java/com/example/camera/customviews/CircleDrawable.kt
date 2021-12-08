@@ -1,4 +1,4 @@
-package com.example.camera
+package com.example.camera.customviews
 
 import android.graphics.*
 import android.graphics.drawable.Drawable

@@ -1,13 +1,11 @@
 package com.example.camera.recyclerviews
 
-import android.content.DialogInterface
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.camera.CircleDrawable
+import com.example.camera.customviews.CircleDrawable
 import com.example.camera.R
 
 class EmojisAdapter(val onClickListener: (Int) -> Unit) : RecyclerView.Adapter<EmojisAdapter.ViewHolder>() {

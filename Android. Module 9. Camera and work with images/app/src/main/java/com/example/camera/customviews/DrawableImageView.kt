@@ -1,4 +1,4 @@
-package com.example.camera
+package com.example.camera.customviews
 
 import android.content.Context
 import android.graphics.*
@@ -9,6 +9,9 @@ import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.graphics.values
+import com.example.camera.customviews.helpers.DrawableItem
+import com.example.camera.customviews.helpers.Pen
+import com.example.camera.customviews.helpers.Sticker
 import kotlinx.android.synthetic.main.photo_fragment.view.*
 
 

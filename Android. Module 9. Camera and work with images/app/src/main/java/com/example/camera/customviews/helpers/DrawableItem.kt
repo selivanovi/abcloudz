@@ -1,4 +1,4 @@
-package com.example.camera
+package com.example.camera.customviews.helpers
 
 import android.graphics.PointF
 
