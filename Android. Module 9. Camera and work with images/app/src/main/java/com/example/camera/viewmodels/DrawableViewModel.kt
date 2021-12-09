@@ -1,28 +1,26 @@
 package com.example.camera.viewmodels
 
-import android.R.attr
 import android.graphics.Bitmap
 import android.net.Uri
 import jp.co.cyberagent.android.gpuimage.GPUImage
 import jp.co.cyberagent.android.gpuimage.filter.*
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.launch
-import java.net.URI
-import android.provider.MediaStore
 
-import android.R.attr.data
 import android.app.Application
-import android.content.Context
+import android.content.ContentValues
 import android.graphics.BitmapFactory
 import androidx.lifecycle.*
-import java.io.InputStream
-import androidx.test.core.app.ApplicationProvider.getApplicationContext
 
-import android.content.ContextWrapper
-import com.example.camera.activities.CameraActivity
+import android.os.Build
+import android.os.Environment
+import android.provider.MediaStore
+import android.util.Log
+import androidx.annotation.RequiresApi
+import com.example.camera.Constants
+import com.example.camera.R
 import java.io.File
+import java.io.FileOutputStream
 import java.io.IOException
+import java.io.OutputStream
 import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
@@ -36,16 +34,16 @@ class DrawableViewModel(context: Application) : AndroidViewModel(context) {
     val channelDrawable: LiveData<Boolean> = _channelDrawable
 
     private val _channelColor = MutableLiveData<Int>()
-    val channelColor: LiveData<Int>  = _channelColor
+    val channelColor: LiveData<Int> = _channelColor
 
     private val _channelImageBitmap = MutableLiveData<Bitmap?>()
-    val channelImageBitmap: LiveData<Bitmap?>  = _channelImageBitmap
+    val channelImageBitmap: LiveData<Bitmap?> = _channelImageBitmap
 
     private val _channelEmoji = MutableLiveData<Int>()
-    val channelEmoji: LiveData<Int>  = _channelEmoji
+    val channelEmoji: LiveData<Int> = _channelEmoji
 
     private val _channelAddable = MutableLiveData<Boolean>()
-    val channelAddable: LiveData<Boolean>  = _channelAddable
+    val channelAddable: LiveData<Boolean> = _channelAddable
 
     fun emitColor(color: Int) {
         _channelColor.value = color
@@ -67,7 +65,7 @@ class DrawableViewModel(context: Application) : AndroidViewModel(context) {
         _channelAddable.value = boolean
     }
 
-    fun emitOriginalBitmap(){
+    fun emitOriginalBitmap() {
         _channelImageBitmap.value = originalBitmap
     }
 
@@ -141,28 +139,51 @@ class DrawableViewModel(context: Application) : AndroidViewModel(context) {
         return filters
     }
 
-    private fun saveToInternalStorage(bitmapImage: Bitmap): String? {
-        val cw = ContextWrapper(cw)
-        // path to /data/data/yourapp/app_data/imageDir
-        val photoFile = File(
-            outputDirectory,
-            SimpleDateFormat(CameraActivity.FILENAME_FORMAT, Locale.US)
-                .format(System.currentTimeMillis()) + "-edit.jpg"
-        )
-        var fos: FileOutputStream? = null
-        try {
-            fos = FileOutputStream(mypath)
-            // Use the compress method on the BitMap object to write image to the OutputStream
-            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        } finally {
-            try {
-                fos.close()
-            } catch (e: IOException) {
-                e.printStackTrace()
+    fun saveBitmapToStorage(bitmap: Bitmap) {
+        val context = getApplication<Application>()
+        //Generating a file name
+        val filename = "${System.currentTimeMillis()}.jpg"
+
+        //Output stream
+        var fos: OutputStream? = null
+
+        //For devices running android >= Q
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            //getting the contentResolver
+            context.contentResolver?.also { resolver ->
+
+                //Content resolver will process the contentvalues
+                val contentValues = ContentValues().apply {
+
+                    //putting file information in content values
+                    put(MediaStore.MediaColumns.DISPLAY_NAME, filename)
+                    put(MediaStore.MediaColumns.MIME_TYPE, "image/jpg")
+                    put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES)
+                }
+
+                //Inserting the contentValues to contentResolver and getting the Uri
+                val imageUri: Uri? =
+                    resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+
+                //Opening an outputstream with the Uri that we got
+                fos = imageUri?.let { resolver.openOutputStream(it) }
             }
+        } else {
+            //These for devices running on android < Q
+            //So I don't think an explanation is needed here
+            val imagesDir =
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+            val image = File(imagesDir, filename)
+            fos = FileOutputStream(image)
+        }
+
+        fos?.use {
+            //Finally writing the bitmap to the output stream that we opened
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, it)
         }
     }
 
+    companion object {
+        private const val TAG = "DrawableViewModel"
+    }
 }

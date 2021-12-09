@@ -13,6 +13,7 @@ import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.example.camera.Constants
 import com.example.camera.R
 import com.example.camera.databinding.ActivityCameraBinding
 import java.io.File
@@ -81,7 +82,7 @@ class CameraActivity : AppCompatActivity() {
 
         val photoFile = File(
             outputDirectory,
-            SimpleDateFormat(FILENAME_FORMAT, Locale.US)
+            SimpleDateFormat(Constants.FILENAME_FORMAT, Locale.US)
                 .format(System.currentTimeMillis()) + ".jpg"
         )
 
@@ -153,7 +154,8 @@ class CameraActivity : AppCompatActivity() {
     }
 
     private fun getOutputDirectory(): File {
-        val mediaDir = externalMediaDirs.firstOrNull()?.let {
+        val mediaDir = externalMediaDirs.lastOrNull()?.let {
+            Log.d("CameraActivity", it.absolutePath)
             File(it, resources.getString(R.string.app_name)).apply { mkdirs() }
         }
         return if (mediaDir != null && mediaDir.exists())
@@ -162,7 +164,6 @@ class CameraActivity : AppCompatActivity() {
 
     companion object {
         private const val TAG = "CameraActivity"
-        private const val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS"
         private const val REQUEST_CODE_PERMISSIONS = 7
         const val RESULT_SUCCESSFUL = "result_successful".length
         const val IMAGE_URI = "image_uri"
