@@ -54,16 +54,9 @@ class DrawableImageView(context: Context, attrs: AttributeSet) :
     )
 
     var isDrawable = false
-        set(value) {
-            field = value
-            if (value) isAddableStickers = false
-        }
 
     var isAddableStickers = false
-        set(value) {
-            field = value
-            if (value) isDrawable = false
-        }
+
 
     private var bitmap: DrawableItem? = null
 
@@ -226,10 +219,15 @@ class DrawableImageView(context: Context, attrs: AttributeSet) :
         Log.d(TAG, "Color: $color")
     }
 
-    fun removeDrawable() {
-        if (isDrawable && pens.size != 0) {
+    fun removeDraw() {
+        if (pens.size != 0) {
             pens.removeLast()
-        } else if (isAddableStickers && stickers.size != 0) {
+        }
+        invalidate()
+    }
+
+    fun removeEmoji() {
+        if (stickers.size != 0) {
             stickers.removeLast()
         }
         invalidate()

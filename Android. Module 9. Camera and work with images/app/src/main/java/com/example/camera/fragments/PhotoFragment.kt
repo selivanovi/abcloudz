@@ -1,23 +1,16 @@
 package com.example.camera.fragments
 
-import android.graphics.Bitmap
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import com.example.camera.databinding.PhotoFragmentBinding
-import com.example.camera.fragments.listeners.MenuFragmentListener
+import com.example.camera.fragments.listeners.PhotoFragmentListener
 import com.example.camera.viewmodels.DrawableViewModel
-import kotlinx.android.synthetic.main.photo_fragment.view.*
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 
-class PhotoFragment : Fragment() {
+class PhotoFragment : Fragment(), PhotoFragmentListener {
 
     private val viewModel by activityViewModels<DrawableViewModel>()
 
@@ -25,22 +18,34 @@ class PhotoFragment : Fragment() {
     private val binding
         get() = _binding!!
 
-    private val subscribeImageUri by lazy {
-        viewModel.channelImageURI.onEach {
-            binding.imageView.setImageURI(it)
-        }.launchIn(lifecycleScope)
+    private val observeAddable by lazy {
+        viewModel.channelAddable.observe(this, {
+            binding.imageView.isAddableStickers = it
+        })
     }
 
-    private val subscribeColor by lazy {
-        viewModel.channelColor.onEach {
+    private val observeImageUri by lazy {
+        viewModel.channelImageBitmap.observe(this, {
+            binding.imageView.setImageBitmap(it)
+        })
+    }
+
+    private val observeColor by lazy {
+        viewModel.channelColor.observe(this, {
             binding.imageView.setColor(it)
-        }.launchIn(lifecycleScope)
+        })
     }
 
-    private val subscribeDrawable by lazy {
-        viewModel.channelDrawable.onEach {
+    private val observeDrawable by lazy {
+        viewModel.channelDrawable.observe(this, {
             binding.imageView.isDrawable = it
-        }.launchIn(lifecycleScope)
+        })
+    }
+
+    private val observeEmoji by lazy {
+        viewModel.channelEmoji.observe(this, {
+            binding.imageView.addEmoji(it)
+        })
     }
 
     override fun onCreateView(
@@ -54,9 +59,27 @@ class PhotoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        subscribeImageUri
-        subscribeColor
-        subscribeDrawable
+        observeImageUri
+        observeColor
+        observeEmoji
+        observeDrawable
+        observeAddable
+    }
+
+    override fun clear() {
+        binding.imageView.clear()
+    }
+
+    override fun save() {
+        TODO("Not yet implemented")
+    }
+
+    override fun removeDraw() {
+        binding.imageView.removeDraw()
+    }
+
+    override fun removeEmoji() {
+        binding.imageView.removeEmoji()
     }
 
     companion object {

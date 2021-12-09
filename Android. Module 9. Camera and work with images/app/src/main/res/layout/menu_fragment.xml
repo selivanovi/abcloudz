@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="bottom"
     android:padding="24dp"
     tools:background="@color/black">
 
@@ -37,6 +39,7 @@
             android:contentDescription="@string/add_filter"
             android:padding="8dp"
             android:src="@drawable/ic_pencil"
+            android:visibility="visible"
             app:tint="@android:color/white" />
     </FrameLayout>
 
@@ -54,6 +57,7 @@
             android:contentDescription="@string/add_filter"
             android:padding="8dp"
             android:src="@drawable/ic_emoji"
+            android:visibility="visible"
             app:tint="@android:color/white" />
     </FrameLayout>
 
@@ -71,6 +75,7 @@
             android:contentDescription="@string/add_filter"
             android:padding="8dp"
             android:src="@drawable/ic_photo_filter"
+            android:visibility="visible"
             app:tint="@android:color/white" />
     </FrameLayout>
 
@@ -87,6 +92,7 @@
             android:background="@drawable/shape_oval"
             android:padding="8dp"
             android:src="@drawable/ic_arrow_downward"
+            android:visibility="visible"
             app:tint="@android:color/white" />
     </FrameLayout>
 

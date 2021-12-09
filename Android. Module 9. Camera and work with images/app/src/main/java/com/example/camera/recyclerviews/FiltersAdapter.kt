@@ -2,6 +2,7 @@ package com.example.camera.recyclerviews
 
 import android.graphics.Bitmap
 import android.net.Uri
+import android.opengl.GLSurfaceView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,11 +14,11 @@ import jp.co.cyberagent.android.gpuimage.GPUImage
 import jp.co.cyberagent.android.gpuimage.GPUImageView
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageFilter
 
-class FiltersAdapter(val onClickListener: (GPUImageFilter) -> Unit, var bitmap: Uri?) : RecyclerView.Adapter<FiltersAdapter.ViewHolder>() {
+class FiltersAdapter(val onClickListener: (Bitmap) -> Unit, var bitmap: Bitmap?) : RecyclerView.Adapter<FiltersAdapter.ViewHolder>() {
 
-    private val filtersList = mutableListOf<GPUImageFilter>()
+    private val filtersList = mutableListOf<Bitmap>()
 
-    fun setData(list: List<GPUImageFilter>) {
+    fun setData(list: List<Bitmap>) {
         with(filtersList) {
             clear()
             addAll(list)
@@ -41,11 +42,11 @@ class FiltersAdapter(val onClickListener: (GPUImageFilter) -> Unit, var bitmap: 
     }
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val imageView = view.findViewById<GPUImageView>(R.id.filterItem)
+        val imageView = view.findViewById<ImageView>(R.id.filterItem)
 
-        fun bind(item: GPUImageFilter) {
-            imageView.setImage(bitmap)
-            imageView.filter = item
+        fun bind(item: Bitmap) {
+
+            imageView.setImageBitmap(item)
             imageView.setOnClickListener {
                 onClickListener(item)
             }
