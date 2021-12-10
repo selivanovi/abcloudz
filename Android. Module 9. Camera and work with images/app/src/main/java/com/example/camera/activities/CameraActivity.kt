@@ -26,8 +26,12 @@ class CameraActivity : AppCompatActivity() {
 
     private var imageCapture: ImageCapture? = null
 
-    private lateinit var outputDirectory: File
-    private lateinit var cameraExecutor: ExecutorService
+    private val outputDirectory: File by lazy {
+        getDirectory()
+    }
+    private val cameraExecutor: ExecutorService by lazy {
+        Executors.newSingleThreadExecutor()
+    }
 
     private val binding: ActivityCameraBinding by lazy {
         ActivityCameraBinding.inflate(layoutInflater)
@@ -46,14 +50,10 @@ class CameraActivity : AppCompatActivity() {
         binding.takePhotoButton.setOnClickListener {
             takePhoto()
         }
-
-        outputDirectory = getOutputDirectory()
-
-        cameraExecutor = Executors.newSingleThreadExecutor()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onStop() {
+        super.onStop()
         cameraExecutor.shutdown()
     }
 
@@ -153,7 +153,7 @@ class CameraActivity : AppCompatActivity() {
         ContextCompat.checkSelfPermission(baseContext, it) == PackageManager.PERMISSION_GRANTED
     }
 
-    private fun getOutputDirectory(): File {
+    private fun getDirectory(): File {
         val mediaDir = externalMediaDirs.lastOrNull()?.let {
             Log.d("CameraActivity", it.absolutePath)
             File(it, resources.getString(R.string.app_name)).apply { mkdirs() }
