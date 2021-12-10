@@ -38,10 +38,10 @@ class MenuFragment : Fragment(), PhotoProviderFragmentListener {
 
     private val observeImageUri by lazy {
         viewModel.channelImageBitmap.observe(this, {
-            if (it != null)
-                setVisibleForButton(true)
-            else
+            if (it == null)
                 setVisibleForButton(false)
+            else
+                setVisibleForButton(true)
         })
     }
 
@@ -132,12 +132,12 @@ class MenuFragment : Fragment(), PhotoProviderFragmentListener {
         getImageFromFiles.pickImage()
     }
 
-    private fun setVisibleForButton(boolean: Boolean) {
+    private fun setVisibleForButton(isVisible: Boolean) {
         with(binding) {
-            drawLineButton.isVisible = boolean
-            addEmojiButton.isVisible = boolean
-            addFilterButton.isVisible = boolean
-            savingButton.isVisible = boolean
+            drawLineButton.isVisible = isVisible
+            addEmojiButton.isVisible = isVisible
+            addFilterButton.isVisible = isVisible
+            savingButton.isVisible = isVisible
         }
     }
 
@@ -146,10 +146,8 @@ class MenuFragment : Fragment(), PhotoProviderFragmentListener {
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
-        if (requestCode == REQUEST_CODE_PERMISSIONS) {
-            if (allPermissionsGranted()) {
-                listener?.save()
-            }
+        if (requestCode == REQUEST_CODE_PERMISSIONS && allPermissionsGranted()) {
+            listener?.save()
         }
     }
 
