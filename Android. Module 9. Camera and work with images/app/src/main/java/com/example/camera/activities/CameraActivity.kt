@@ -29,9 +29,6 @@ class CameraActivity : AppCompatActivity() {
     private val outputDirectory: File by lazy {
         getDirectory()
     }
-    private val cameraExecutor: ExecutorService by lazy {
-        Executors.newSingleThreadExecutor()
-    }
 
     private val binding: ActivityCameraBinding by lazy {
         ActivityCameraBinding.inflate(layoutInflater)
@@ -50,11 +47,6 @@ class CameraActivity : AppCompatActivity() {
         binding.takePhotoButton.setOnClickListener {
             takePhoto()
         }
-    }
-
-    override fun onStop() {
-        super.onStop()
-        cameraExecutor.shutdown()
     }
 
     override fun onRequestPermissionsResult(
