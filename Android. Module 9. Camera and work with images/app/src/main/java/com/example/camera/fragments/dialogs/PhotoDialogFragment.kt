@@ -15,20 +15,20 @@ class PhotoDialogFragment : DialogFragment() {
 
     private var listener: PhotoProviderFragmentListener? = null
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.photo_dialog, container)
-    }
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
         Log.d(TAG, "$parentFragment")
         if(parentFragment is PhotoProviderFragmentListener) {
             listener = parentFragment as PhotoProviderFragmentListener
         }
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.photo_dialog, container)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
