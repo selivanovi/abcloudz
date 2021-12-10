@@ -34,7 +34,7 @@ class FiltersAdapter(val onClickListener: (Bitmap) -> Unit, var bitmap: Bitmap?)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(filtersList[position])
+        holder.imageView.setImageBitmap(filtersList[position])
         holder.imageView.setOnClickListener {
             onClickListener(filtersList[position])
         }
@@ -46,10 +46,5 @@ class FiltersAdapter(val onClickListener: (Bitmap) -> Unit, var bitmap: Bitmap?)
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val imageView = view.findViewById<ImageView>(R.id.filterItem)
-
-        fun bind(item: Bitmap) {
-
-            imageView.setImageBitmap(item)
-        }
     }
 }

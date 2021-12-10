@@ -29,7 +29,7 @@ class EmojisAdapter(val onClickListener: (Int) -> Unit) : RecyclerView.Adapter<E
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(emojisList[position])
+        holder.imageView.setImageResource(emojisList[position])
         holder.imageView.setOnClickListener {
             onClickListener(emojisList[position])
         }
@@ -39,10 +39,6 @@ class EmojisAdapter(val onClickListener: (Int) -> Unit) : RecyclerView.Adapter<E
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val imageView: ImageView = view.findViewById<ImageView>(R.id.itemEmoji)
-
-        fun bind(item: Int) {
-            imageView.setImageResource(item)
-        }
+        val imageView: ImageView = view.findViewById(R.id.itemEmoji)
     }
 }
