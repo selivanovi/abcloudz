@@ -31,14 +31,23 @@ class ColorsAdapter(val onClickListener: (Int) -> Unit) : RecyclerView.Adapter<C
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(colorList[position])
+        holder.imageView.setOnClickListener {
+            currentPosition?.let {
+                it.strokeWidth = 5F
+            }
+            currentPosition = holder.drawableItem
+            holder.drawableItem.strokeWidth = 10F
+
+            onClickListener(colorList[position])
+        }
 
     }
     override fun getItemCount(): Int {
         return colorList.size
     }
 
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        private val drawableItem = CircleDrawable()
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val drawableItem = CircleDrawable()
         val imageView: ImageView = view.findViewById<ImageView>(R.id.colorItem)
 
         fun bind(item: Int) {
@@ -46,16 +55,6 @@ class ColorsAdapter(val onClickListener: (Int) -> Unit) : RecyclerView.Adapter<C
             drawableItem.strokeColor = Color.WHITE
             drawableItem.strokeWidth = 5F
             imageView.setImageDrawable(drawableItem)
-
-            imageView.setOnClickListener {
-                currentPosition?.let {
-                    it.strokeWidth = 5F
-                }
-                currentPosition = drawableItem
-                drawableItem.strokeWidth = 10F
-
-                onClickListener(item)
-            }
         }
 
 

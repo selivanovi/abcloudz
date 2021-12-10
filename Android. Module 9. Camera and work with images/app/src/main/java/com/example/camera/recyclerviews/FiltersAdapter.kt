@@ -14,7 +14,8 @@ import jp.co.cyberagent.android.gpuimage.GPUImage
 import jp.co.cyberagent.android.gpuimage.GPUImageView
 import jp.co.cyberagent.android.gpuimage.filter.GPUImageFilter
 
-class FiltersAdapter(val onClickListener: (Bitmap) -> Unit, var bitmap: Bitmap?) : RecyclerView.Adapter<FiltersAdapter.ViewHolder>() {
+class FiltersAdapter(val onClickListener: (Bitmap) -> Unit, var bitmap: Bitmap?) :
+    RecyclerView.Adapter<FiltersAdapter.ViewHolder>() {
 
     private val filtersList = mutableListOf<Bitmap>()
 
@@ -34,7 +35,9 @@ class FiltersAdapter(val onClickListener: (Bitmap) -> Unit, var bitmap: Bitmap?)
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(filtersList[position])
-
+        holder.imageView.setOnClickListener {
+            onClickListener(filtersList[position])
+        }
     }
 
     override fun getItemCount(): Int {
@@ -47,9 +50,6 @@ class FiltersAdapter(val onClickListener: (Bitmap) -> Unit, var bitmap: Bitmap?)
         fun bind(item: Bitmap) {
 
             imageView.setImageBitmap(item)
-            imageView.setOnClickListener {
-                onClickListener(item)
-            }
         }
     }
 }
