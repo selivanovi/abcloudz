@@ -14,7 +14,7 @@ class CameraContract : ActivityResultContract<Unit, Uri?>() {
     }
 
     override fun parseResult(resultCode: Int, intent: Intent?): Uri? {
-        if (intent == null) return null
+        intent ?: return null
         if (resultCode != CameraActivity.RESULT_SUCCESSFUL) return null
 
         val uri = intent.getStringExtra(CameraActivity.IMAGE_URI)?.toUri()
