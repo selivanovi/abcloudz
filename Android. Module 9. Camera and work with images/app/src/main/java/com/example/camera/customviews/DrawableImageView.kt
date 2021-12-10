@@ -62,7 +62,6 @@ class DrawableImageView(context: Context, attrs: AttributeSet) :
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
-        bitmap = createDrawableItem()
         Log.d(
             TAG,
             "Bitmap: ${bitmap?.width} ${bitmap?.height} ${imageView.width} ${imageView.height}"
@@ -149,6 +148,11 @@ class DrawableImageView(context: Context, attrs: AttributeSet) :
         }
         invalidate()
         return true
+    }
+
+    override fun setImageBitmap(bm: Bitmap?) {
+        super.setImageBitmap(bm)
+        bitmap = createDrawableItem()
     }
 
     private fun resizedSticker(sticker: Sticker, scaleX: Float, scaleY: Float) {
