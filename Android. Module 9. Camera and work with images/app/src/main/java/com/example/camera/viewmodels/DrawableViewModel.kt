@@ -30,7 +30,7 @@ class DrawableViewModel(context: Application) : AndroidViewModel(context) {
     private val _channelColor = MutableLiveData<Int>()
     val channelColor: LiveData<Int> = _channelColor
 
-    private val _channelImageBitmap = MutableLiveData<Bitmap?>()
+    private val _channelImageBitmap = MutableLiveData<Bitmap?>(null)
     val channelImageBitmap: LiveData<Bitmap?> = _channelImageBitmap
 
     private val _channelEmoji = MutableLiveData<Int>()
