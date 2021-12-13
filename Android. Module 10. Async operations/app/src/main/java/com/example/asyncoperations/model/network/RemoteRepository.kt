@@ -1,8 +1,8 @@
 package com.example.networking.model.network
 
-import com.example.networking.model.dao.Character
-import com.example.networking.model.dao.Episode
-import com.example.networking.utils.toDTO
+import com.example.asyncoperations.model.ui.CharacterUI
+import com.example.asyncoperations.model.ui.EpisodeUI
+import com.example.asyncoperations.utils.toUI
 
 class RemoteRepository(
     private val apiClient: ApiClient,
@@ -15,21 +15,21 @@ class RemoteRepository(
 
     suspend fun getCharacterById(
         characterOfId: Int
-    ): Result<Character?> {
+    ): Result<CharacterUI?> {
         val request = apiClient.getCharacterById(characterOfId)
 
         request.exception?.let {
             return Result.failure(it)
         }
 
-        return Result.success(request.body?.toDTO())
+        return Result.success(request.body?.toUI())
     }
 
 
     suspend fun getEpisodeByIds(
-        characters: Character
-    ): Result<List<Episode>?> {
-        val episodes = characters.episode?.map {
+        character: CharacterUI
+    ): Result<List<EpisodeUI>?> {
+        val episodes = character.episode?.map {
             it.substring(startIndex = it.lastIndexOf('/') + 1)
         }.toString()
 
@@ -39,7 +39,7 @@ class RemoteRepository(
             return Result.failure(it)
         }
 
-        return Result.success(request.body?.map { it.toDTO() })
+        return Result.success(request.body?.map { it.toUI() })
     }
 
     companion object {
