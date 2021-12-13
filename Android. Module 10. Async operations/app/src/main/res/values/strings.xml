@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">AsyncOperations</string>
+    <string name="character">Image of character</string>
+    <string name="separator">-</string>
 </resources>
