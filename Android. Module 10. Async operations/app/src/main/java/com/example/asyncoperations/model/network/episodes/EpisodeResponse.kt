@@ -1,4 +1,4 @@
-package com.example.networking.model.network.episodes
+package com.example.asyncoperations.model.network.episodes
 
 data class EpisodeResponse(
     val air_date: String?,

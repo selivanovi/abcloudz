@@ -7,5 +7,4 @@ data class CharacterUI(
     val name: String?,
     val species: String?,
     val status: String?,
-    val episode: List<String>?
 )

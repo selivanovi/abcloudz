@@ -1,10 +1,12 @@
 package com.example.asyncoperations.model.room.dao
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import com.example.asyncoperations.model.room.entities.Character
-import com.example.asyncoperations.model.room.entities.CharacterEpisodesCrossRef
 import com.example.asyncoperations.model.room.entities.Episode
-import com.example.asyncoperations.model.room.relations.CharacterWithEpisodes
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CharacterDao {
@@ -12,26 +14,17 @@ interface CharacterDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCharacters(characters: List<Character>)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertCharacterEpisodeCrossRefs(crossRefs: List<CharacterEpisodesCrossRef>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertEpisodes(episodes: List<Episode>)
 
-    @Transaction
-    suspend fun insertCharacterWithEpisodes(
-        episodes: List<Episode>,
-        crossRefs: List<CharacterEpisodesCrossRef>
-    ) {
-        insertEpisodes(episodes)
-        insertCharacterEpisodeCrossRefs(crossRefs)
-    }
 
     @Query("SELECT * FROM character")
-    suspend fun getCharacters(): List<Character>
+    fun getCharacters(): Flow<List<Character>>
 
-    @Query("SELECT * FROM character WHERE idCharacter = (:idCharacter)")
-    suspend fun getCharacterWithEpisodes(idCharacter: Int): CharacterEpisodesCrossRef
+    @Query("SELECT * FROM episode")
+    fun getEpisodes(): Flow<List<Episode>>
+
 
     @Query("DELETE FROM character")
     suspend fun deleteCharacters()
@@ -39,13 +32,5 @@ interface CharacterDao {
     @Query("DELETE FROM episode")
     suspend fun deleteEpisodes()
 
-    @Query("DELETE FROM characterepisodescrossref")
-    suspend fun deleteCharacterEpisodeCrossRef()
 
-    @Transaction
-    suspend fun deleteAll() {
-        deleteCharacters()
-        deleteEpisodes()
-        deleteCharacterEpisodeCrossRef()
-    }
 }

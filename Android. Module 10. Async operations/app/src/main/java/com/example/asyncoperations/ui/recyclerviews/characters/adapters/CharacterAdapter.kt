@@ -1,9 +1,9 @@
 package com.example.asyncoperations.ui.recyclerviews.characters.adapters
 
-import android.content.DialogInterface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
@@ -12,9 +12,9 @@ import com.bumptech.glide.Glide
 import com.example.asyncoperations.R
 import com.example.asyncoperations.model.ui.CharacterUI
 import com.example.asyncoperations.utils.CharacterComparator
-import com.example.networking.StatusOfCharacters
+import com.example.asyncoperations.utils.StatusOfCharacters
 
-class CharacterAdapter(val onClickListener: (Int) -> Unit) :
+class CharacterAdapter() :
     RecyclerView.Adapter<CharacterAdapter.CharacterViewHolder>() {
 
     var characterList = mutableListOf<CharacterUI>()
@@ -30,12 +30,12 @@ class CharacterAdapter(val onClickListener: (Int) -> Unit) :
     }
 
 
-    class CharacterViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
+    class CharacterViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
         private val imageView = view.findViewById<ImageView>(R.id.characterImageView)
         private val nameTextView = view.findViewById<TextView>(R.id.nameTextView)
-        private val indicatorLayout = view.findViewById<TextView>(R.id.indicatorLayout)
+        private val indicatorLayout = view.findViewById<FrameLayout>(R.id.indicatorLayout)
         private val statusTextView = view.findViewById<TextView>(R.id.statusTextView)
-        private val speciesTextView = view.findViewById<TextView>(R.id.statusTextView)
+        private val speciesTextView = view.findViewById<TextView>(R.id.speciesTextView)
 
 
         fun bind(item: CharacterUI) {
@@ -66,14 +66,11 @@ class CharacterAdapter(val onClickListener: (Int) -> Unit) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         CharacterViewHolder(
             LayoutInflater.from(parent.context)
-                .inflate(R.layout.episode_item_recyclerview, parent, false)
+                .inflate(R.layout.item_recyclerview, parent, false)
         )
 
     override fun onBindViewHolder(holder: CharacterViewHolder, position: Int) {
         holder.bind(characterList[position])
-        holder.itemView.setOnClickListener {
-            onClickListener(characterList[position].idCharacter)
-        }
     }
 
     override fun getItemCount(): Int = characterList.size

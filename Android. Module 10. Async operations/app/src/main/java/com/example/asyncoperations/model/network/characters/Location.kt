@@ -1,4 +1,4 @@
-package com.example.networking.model.network.characters
+package com.example.asyncoperations.model.network.characters
 
 class Location(
     val name: String?,

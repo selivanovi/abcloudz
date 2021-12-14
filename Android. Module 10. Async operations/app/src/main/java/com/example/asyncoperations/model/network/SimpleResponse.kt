@@ -1,4 +1,4 @@
-package com.example.networking.model.network
+package com.example.asyncoperations.model.network
 
 import retrofit2.Response
 import java.lang.Exception

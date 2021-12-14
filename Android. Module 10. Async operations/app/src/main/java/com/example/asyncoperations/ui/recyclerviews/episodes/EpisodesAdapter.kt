@@ -1,12 +1,12 @@
-package com.example.networking.ui.recyclerviews.episodes
+package com.example.asyncoperations.ui.recyclerviews.episodes
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.networking.R
-import com.example.networking.model.dao.Episode
+import com.example.asyncoperations.R
+import com.example.asyncoperations.model.room.entities.Episode
 
 class EpisodesAdapter : RecyclerView.Adapter<EpisodesAdapter.EpisodeViewHolder>() {
     private var data = mutableListOf<Episode>()
@@ -27,7 +27,7 @@ class EpisodesAdapter : RecyclerView.Adapter<EpisodesAdapter.EpisodeViewHolder>(
 
         fun bind(episode: Episode) {
             nameTextView.text = episode.name
-            dateTextView.text = episode.airData
+            dateTextView.text = episode.airDate
             episodeTextView.text = episode.episode
         }
 

@@ -1,24 +1,21 @@
-package com.example.networking.model.network
+package com.example.asyncoperations.model.network
 
-import com.example.networking.model.network.characters.CharacterResponse
-import com.example.networking.model.network.episodes.EpisodeResponse
+import com.example.asyncoperations.model.network.characters.CharacterResponse
+import com.example.asyncoperations.model.network.episodes.EpisodeResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
-import retrofit2.http.Query
 
 interface RickAndMortyService {
 
-
-
-    @GET("character/{character-id}")
-    suspend fun getCharacterById(
-        @Path("character-id") idOfCharacter: Int
-    ): Response<CharacterResponse>
+    @GET("character/{listOfCharacters}")
+    suspend fun getCharactersByIds(
+        @Path("listOfCharacters") listOfCharacters: String
+    ): Response<List<CharacterResponse>>
 
     @GET("episode/{listOfEpisodes}")
-    suspend fun getEpisodesPageByIds(
-        @Path("listOfEpisodes") listOfEpisode: String
+    suspend fun getEpisodesByIds(
+        @Path("listOfEpisodes") listOfEpisodes: String
     ): Response<List<EpisodeResponse>>
 
 }

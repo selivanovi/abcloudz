@@ -5,14 +5,13 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.asyncoperations.model.room.dao.CharacterDao
-import com.example.asyncoperations.model.room.entities.CharacterEpisodesCrossRef
 import com.example.asyncoperations.model.room.entities.Episode
+import com.example.asyncoperations.model.room.entities.Character
 
 @Database(
     entities = [
         Character::class,
         Episode::class,
-        CharacterEpisodesCrossRef::class
     ],
     version = 1,
 )

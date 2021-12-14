@@ -1,19 +1,19 @@
-package com.example.networking.model.network
+package com.example.asyncoperations.model.network
 
-import com.example.networking.model.network.characters.CharacterResponse
-import com.example.networking.model.network.episodes.EpisodeResponse
+import com.example.asyncoperations.model.RemoteDataSource
+import com.example.asyncoperations.model.network.characters.CharacterResponse
+import com.example.asyncoperations.model.network.episodes.EpisodeResponse
 import retrofit2.Response
 
 class ApiClient(
     private val rickAndMortyService: RickAndMortyService
-) {
+) : RemoteDataSource {
 
-    suspend fun getCharacterById(idOfCharacter: Int): SimpleResponse<CharacterResponse> =
-        safeApiCall { rickAndMortyService.getCharacterById(idOfCharacter) }
+    override suspend fun getCharactersByIds(listOfCharacters: String): SimpleResponse<List<CharacterResponse>> =
+        safeApiCall { rickAndMortyService.getCharactersByIds(listOfCharacters) }
 
-
-    suspend fun getEpisodesPageByIds(listOfEpisode: String): SimpleResponse<List<EpisodeResponse>> =
-        safeApiCall { rickAndMortyService.getEpisodesPageByIds(listOfEpisode) }
+    override suspend fun getEpisodesPageByIds(listOfEpisode: String): SimpleResponse<List<EpisodeResponse>> =
+        safeApiCall { rickAndMortyService.getEpisodesByIds(listOfEpisode) }
 
     private inline fun <T> safeApiCall(apiCall: () -> Response<T>) =
         try {

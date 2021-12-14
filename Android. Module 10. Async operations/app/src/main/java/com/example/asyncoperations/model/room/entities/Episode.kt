@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 data class Episode(
     @PrimaryKey
     val idEpisode: Int,
-    val airData: String?,
+    val airDate: String?,
     val episode: String?,
     val name: String?,
 )

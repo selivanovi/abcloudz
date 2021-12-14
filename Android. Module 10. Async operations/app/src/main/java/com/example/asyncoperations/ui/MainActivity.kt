@@ -1,34 +1,42 @@
-package com.example.networking.ui
+package com.example.asyncoperations.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
-import com.example.networking.R
+import androidx.viewpager2.widget.ViewPager2
+import com.example.asyncoperations.R
+import com.google.android.material.tabs.TabLayout
 
 class MainActivity : AppCompatActivity() {
-
-    private val navController: NavController by lazy {
-        (supportFragmentManager.findFragmentById(R.id.main_fragment_container) as NavHostFragment)
-            .navController
-    }
-
-    private val appBarConfiguration: AppBarConfiguration by lazy {
-        AppBarConfiguration(navController.graph)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        setupActionBarWithNavController(navController, appBarConfiguration)
-    }
+        val tabLayout: TabLayout = findViewById(R.id.tabLayout)
+        val viewPager: ViewPager2 = findViewById(R.id.viewPager)
+        val adapter = FragmentAdapter(this)
 
-    override fun onSupportNavigateUp(): Boolean {
-        return navController.navigateUp(appBarConfiguration) || super.onNavigateUp()
+        viewPager.adapter = adapter
+
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                viewPager.currentItem = tab.position
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+            }
+        })
+
+        viewPager.registerOnPageChangeCallback(object  : ViewPager2.OnPageChangeCallback(){
+
+            override fun onPageSelected(position: Int) {
+                tabLayout.selectTab(tabLayout.getTabAt(position))
+            }
+        })
+
     }
 }
 
