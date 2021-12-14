@@ -4,19 +4,28 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.asyncoperations.R
 import com.example.asyncoperations.model.room.entities.Episode
+import com.example.asyncoperations.model.ui.CharacterUI
+import com.example.asyncoperations.model.ui.EpisodeUI
+import com.example.asyncoperations.utils.CharacterComparator
+import com.example.asyncoperations.utils.EpisodesComparator
 
 class EpisodesAdapter : RecyclerView.Adapter<EpisodesAdapter.EpisodeViewHolder>() {
-    private var data = mutableListOf<Episode>()
+    private var data = mutableListOf<EpisodeUI>()
 
-    fun setData(list: List<Episode>) {
-        data.clear()
-        data.addAll(list)
-
-        notifyDataSetChanged()
+    fun setData(list: List<EpisodeUI>) {
+        val diffUtil = EpisodesComparator(data, list)
+        val diffResult = DiffUtil.calculateDiff(diffUtil)
+        with(data) {
+            clear()
+            addAll(list)
+        }
+        diffResult.dispatchUpdatesTo(this)
     }
+
 
     class EpisodeViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
@@ -25,7 +34,7 @@ class EpisodesAdapter : RecyclerView.Adapter<EpisodesAdapter.EpisodeViewHolder>(
         private val episodeTextView = view.findViewById<TextView>(R.id.episodeTextView)
 
 
-        fun bind(episode: Episode) {
+        fun bind(episode: EpisodeUI) {
             nameTextView.text = episode.name
             dateTextView.text = episode.airDate
             episodeTextView.text = episode.episode

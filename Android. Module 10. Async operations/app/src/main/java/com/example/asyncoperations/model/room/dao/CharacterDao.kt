@@ -1,9 +1,6 @@
 package com.example.asyncoperations.model.room.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.example.asyncoperations.model.room.entities.Character
 import com.example.asyncoperations.model.room.entities.Episode
 import kotlinx.coroutines.flow.Flow
@@ -32,5 +29,10 @@ interface CharacterDao {
     @Query("DELETE FROM episode")
     suspend fun deleteEpisodes()
 
+    @Transaction
+    suspend fun updateEpisodes(episodes: List<Episode>) {
+        deleteEpisodes()
+        insertEpisodes(episodes)
+    }
 
 }

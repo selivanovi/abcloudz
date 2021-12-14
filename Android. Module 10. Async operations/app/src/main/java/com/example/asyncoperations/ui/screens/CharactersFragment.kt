@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 
-class ListFragment : Fragment(R.layout.fragment_list) {
+class CharactersFragment : Fragment(R.layout.fragment_list) {
 
     private val characterViewModel by viewModels<CharacterViewModel> {
         CharacterViewModel.Factory(requireContext())

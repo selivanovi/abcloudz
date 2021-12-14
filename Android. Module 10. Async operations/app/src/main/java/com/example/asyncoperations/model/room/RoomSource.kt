@@ -23,15 +23,15 @@ class RoomSource(
     }
 
     override suspend fun deleteEpisodes() {
-        dao.getEpisodes()
+        dao.deleteEpisodes()
     }
 
     override suspend fun insertCharacters(characters: List<Character>) {
         dao.insertCharacters(characters)
     }
 
-    override suspend fun insertEpisodes(episodes: List<Episode>) {
-        dao.insertEpisodes(episodes)
+    override suspend fun updateEpisodes(episodes: List<Episode>) {
+        dao.updateEpisodes(episodes)
     }
 
 

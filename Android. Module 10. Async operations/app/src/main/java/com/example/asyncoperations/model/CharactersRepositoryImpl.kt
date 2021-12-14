@@ -31,6 +31,6 @@ class CharactersRepositoryImpl(
     }
 
     companion object {
-        private val CHARACTERS_IDS = Array(100) { i -> i }.contentToString()
+        private val CHARACTERS_IDS = Array(50) { i -> i }.contentToString()
     }
 }

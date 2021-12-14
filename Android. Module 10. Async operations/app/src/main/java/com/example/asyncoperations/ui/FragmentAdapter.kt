@@ -4,8 +4,8 @@ import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.example.asyncoperations.ui.screens.DetailsFragment
-import com.example.asyncoperations.ui.screens.ListFragment
+import com.example.asyncoperations.ui.screens.EpisodesFragment
+import com.example.asyncoperations.ui.screens.CharactersFragment
 
 class FragmentAdapter(context: FragmentActivity) : FragmentStateAdapter(context) {
 
@@ -17,8 +17,8 @@ class FragmentAdapter(context: FragmentActivity) : FragmentStateAdapter(context)
         Log.d("FragmentAdapter", "createFragment: $position")
 
         when(position) {
-            0 -> return ListFragment()
-            1 -> return DetailsFragment()
+            0 -> return CharactersFragment()
+            1 -> return EpisodesFragment()
         }
         throw NullPointerException()
     }

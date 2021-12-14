@@ -11,5 +11,5 @@ interface LocalDataSource {
     suspend fun deleteCharacters()
     suspend fun deleteEpisodes()
     suspend fun insertCharacters(characters: List<Character>)
-    suspend fun insertEpisodes(episodes: List<Episode>)
+    suspend fun updateEpisodes(episodes: List<Episode>)
 }
