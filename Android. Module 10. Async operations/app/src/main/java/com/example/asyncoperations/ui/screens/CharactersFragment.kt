@@ -14,6 +14,7 @@ import com.example.asyncoperations.ui.recyclerviews.characters.adapters.Characte
 import com.example.asyncoperations.ui.viewmodels.CharacterViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.receiveAsFlow
 
 
 class CharactersFragment : Fragment(R.layout.fragment_list) {
@@ -24,23 +25,17 @@ class CharactersFragment : Fragment(R.layout.fragment_list) {
 
     private val characterAdapter = CharacterAdapter()
 
-    private val characterObserver by lazy {
-        characterViewModel.channelCharacters.onEach {
-            characterAdapter.setData(it)
-        }.launchIn(lifecycleScope)
-    }
-
-    private val errorObserver by lazy {
-        characterViewModel.channelError.onEach {
-            showErrorAlertDialog(it)
-        }.launchIn(lifecycleScope)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d("ListFragment", "onViewCreated")
-        characterObserver
-        errorObserver
+
+        characterViewModel.channelCharacters.onEach {
+            characterAdapter.setData(it)
+        }.launchIn(lifecycleScope)
+
+        characterViewModel.channelError.receiveAsFlow().onEach {
+            showErrorAlertDialog(it)
+        }.launchIn(lifecycleScope)
         createRecyclerView(view)
     }
 

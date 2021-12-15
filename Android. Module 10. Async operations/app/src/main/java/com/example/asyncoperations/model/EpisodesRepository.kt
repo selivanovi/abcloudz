@@ -7,5 +7,5 @@ import kotlinx.coroutines.flow.Flow
 interface EpisodesRepository  {
 
     fun observeEpisodes(): Flow<List<EpisodeUI>>
-    suspend fun updateEpisodes(): Exception?
+    suspend fun updateEpisodes()
 }

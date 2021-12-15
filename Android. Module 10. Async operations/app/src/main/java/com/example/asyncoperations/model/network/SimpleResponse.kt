@@ -8,6 +8,13 @@ data class SimpleResponse<T>(
     val exception: Exception?
 ) {
 
+    val isSuccessful: Boolean
+        get() = this.data?.isSuccessful == true
+
+    val body: T?
+        get() = data?.body()
+
+
     companion object {
         fun <T> success(data: Response<T>): SimpleResponse<T> =
             SimpleResponse(
@@ -21,11 +28,4 @@ data class SimpleResponse<T>(
                 exception = exception
             )
     }
-
-    val isSuccessful: Boolean
-        get() = this.data?.isSuccessful == true
-
-    val body: T?
-        get() = data?.body()
-
 }

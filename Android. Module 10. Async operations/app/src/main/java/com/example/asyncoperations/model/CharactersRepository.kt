@@ -6,5 +6,5 @@ import kotlinx.coroutines.flow.Flow
 interface CharactersRepository  {
 
     fun observeCharacter(): Flow<List<CharacterUI>>
-    suspend fun updateCharacter(): Exception?
+    suspend fun updateCharacter()
 }

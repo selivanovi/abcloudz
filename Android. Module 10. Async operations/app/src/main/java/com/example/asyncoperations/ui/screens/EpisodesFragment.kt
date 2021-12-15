@@ -14,6 +14,7 @@ import com.example.asyncoperations.ui.viewmodels.EpisodesViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.receiveAsFlow
 
 class EpisodesFragment : Fragment(R.layout.fragment_details) {
 
@@ -23,22 +24,14 @@ class EpisodesFragment : Fragment(R.layout.fragment_details) {
         EpisodesViewModel.Factory(requireContext())
     }
 
-    private val episodesObserver by lazy {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         episodesViewModel.channelCharacters.onEach {
             episodesAdapter.setData(it)
         }.launchIn(lifecycleScope)
-    }
-
-    private val errorObserver by lazy {
-        episodesViewModel.channelError.onEach {
+        episodesViewModel.channelError.receiveAsFlow().onEach {
             showErrorAlertDialog(it)
         }.launchIn(lifecycleScope)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        episodesObserver
-        errorObserver
         setRecyclerView(view)
     }
 

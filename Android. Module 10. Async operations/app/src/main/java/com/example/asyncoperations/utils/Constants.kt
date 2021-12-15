@@ -1,5 +1,5 @@
 package com.example.asyncoperations.utils
 
 object Constants {
-    const val CHARACTERS_STARTING_PAGE = 1
+    const val CONNECTION_ERROR = "Connection error, please check internet connection"
 }

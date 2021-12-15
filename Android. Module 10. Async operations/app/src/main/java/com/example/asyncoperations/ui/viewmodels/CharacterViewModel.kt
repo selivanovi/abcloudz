@@ -10,24 +10,23 @@ import com.example.asyncoperations.model.network.NetworkLayer
 import com.example.asyncoperations.model.room.CharacterDataBase
 import com.example.asyncoperations.model.room.RoomSource
 import com.example.asyncoperations.model.ui.CharacterUI
+import com.example.asyncoperations.ui.base.BaseViewModel
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import java.lang.Exception
 
-class CharacterViewModel(private val repository: CharactersRepository): ViewModel() {
+class CharacterViewModel(private val repository: CharactersRepository) : BaseViewModel() {
 
-    private val _channelError = Channel<Throwable>()
-    val channelError = _channelError.receiveAsFlow()
 
     val channelCharacters = repository.observeCharacter().also { it.launchIn(viewModelScope) }
         get() {
-            viewModelScope.launch(Dispatchers.IO) {
-                val exception = repository.updateCharacter()
-                exception?.let {
-                    _channelError.send(it)
-                }
+            launch {
+                repository.updateCharacter()
             }
             return field
         }
