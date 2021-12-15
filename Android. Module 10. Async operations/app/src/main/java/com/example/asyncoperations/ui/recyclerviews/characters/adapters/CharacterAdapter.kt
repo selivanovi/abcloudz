@@ -17,7 +17,7 @@ import com.example.asyncoperations.utils.StatusOfCharacters
 class CharacterAdapter() :
     RecyclerView.Adapter<CharacterAdapter.CharacterViewHolder>() {
 
-    var characterList = mutableListOf<CharacterUI>()
+    private val characterList = mutableListOf<CharacterUI>()
 
     fun setData(list: List<CharacterUI>) {
         val diffUtil = CharacterComparator(characterList, list)

@@ -14,7 +14,7 @@ import com.example.asyncoperations.utils.CharacterComparator
 import com.example.asyncoperations.utils.EpisodesComparator
 
 class EpisodesAdapter : RecyclerView.Adapter<EpisodesAdapter.EpisodeViewHolder>() {
-    private var data = mutableListOf<EpisodeUI>()
+    private val data = mutableListOf<EpisodeUI>()
 
     fun setData(list: List<EpisodeUI>) {
         val diffUtil = EpisodesComparator(data, list)
