@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 @Entity
 data class Episode(
     @PrimaryKey
-    val idEpisode: Int,
+    val idEpisode: Long,
     val airDate: String?,
     val episode: String?,
     val name: String?,

@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 @Entity
 data class Character(
     @PrimaryKey
-    val idCharacter: Int,
+    val idCharacter: Long,
     val image: String?,
     val name: String?,
     val species: String?,

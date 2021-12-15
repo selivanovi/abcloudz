@@ -12,7 +12,7 @@ fun EpisodeResponse.toUI() =
         idEpisode = this.id,
         name = this.name,
         episode = this.episode,
-        airDate = this.air_date
+        airDate = this.airDate
     )
 
 fun CharacterResponse.toUI() =
@@ -29,7 +29,7 @@ fun EpisodeResponse.toDTO() =
         idEpisode = this.id,
         name = this.name,
         episode = this.episode,
-        airDate = this.air_date
+        airDate = this.airDate
     )
 
 fun CharacterResponse.toDTO() =

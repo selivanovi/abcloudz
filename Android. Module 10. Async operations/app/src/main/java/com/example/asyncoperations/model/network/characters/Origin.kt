@@ -1,6 +1,6 @@
 package com.example.asyncoperations.model.network.characters
 
-class Origin(
+data class Origin(
     val name: String?,
     val url: String?
 )
