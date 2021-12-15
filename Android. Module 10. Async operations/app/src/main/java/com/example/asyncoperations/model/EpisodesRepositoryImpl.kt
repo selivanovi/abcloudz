@@ -6,9 +6,12 @@ import com.example.asyncoperations.model.network.episodes.EpisodeResponse
 import com.example.asyncoperations.model.ui.EpisodeUI
 import com.example.asyncoperations.utils.toDTO
 import com.example.asyncoperations.utils.toUI
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import java.lang.Exception
 import kotlin.coroutines.coroutineContext
 
@@ -31,7 +34,9 @@ class EpisodesRepositoryImpl(
                 request.exception?.let {
                     exception = it
                 }
-                insertEpisodes(request)
+                request.body?.let {
+                    insertEpisodes(it)
+                }
                 Log.d("CharactersRepository", "First")
 
             }
@@ -40,7 +45,9 @@ class EpisodesRepositoryImpl(
                 request.exception?.let {
                     exception = it
                 }
-                insertEpisodes(request)
+                request.body?.let {
+                    insertEpisodes(it)
+                }
                 Log.d("CharactersRepository", "Second")
 
             }
@@ -49,7 +56,9 @@ class EpisodesRepositoryImpl(
                 request.exception?.let {
                     exception = it
                 }
-                insertEpisodes(request)
+                request.body?.let {
+                    insertEpisodes(it)
+                }
                 Log.d("CharactersRepository", "Third")
 
             }
@@ -58,15 +67,10 @@ class EpisodesRepositoryImpl(
     }
 
 
-
-    private suspend fun insertEpisodes(request: SimpleResponse<List<EpisodeResponse>>){
-        request.body?.let { list ->
-            delay(100)
-            localSource.updateEpisodes(list.map { it.toDTO() })
+    private suspend fun insertEpisodes(episodes: List<EpisodeResponse>){
+            localSource.updateEpisodes(episodes.map { it.toDTO() })
             job.cancelChildren()
-        }
     }
-
 
     companion object {
         private val FIRST_EPISODES_IDS = Array(10) { i -> i }.contentToString()
