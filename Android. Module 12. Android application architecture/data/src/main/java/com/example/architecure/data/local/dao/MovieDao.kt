@@ -19,7 +19,7 @@ interface MovieDao {
     fun getMovies(): Flow<List<Movie>>
 
     @Query("SELECT * FROM movie WHERE id = :movieId")
-    fun getMovie(movieId: Int): Flow<Movie>
+    fun getMovie(movieId: Long): Flow<Movie>
 
     @Query("DELETE FROM movie")
     suspend fun deleteMovies()

@@ -45,6 +45,12 @@ dependencies {
     implementation project(path: ':domain')
     implementation project(path: ':data')
 
+    //Retrofit
+    def retrofit_version = '2.9.0'
+
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+
     //Dagger2
     def dagger_version = '2.28.3'
 

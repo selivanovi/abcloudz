@@ -5,7 +5,7 @@ import com.example.architecure.data.local.dao.MovieDao
 import com.example.architecure.data.local.entity.Movie
 import kotlinx.coroutines.flow.Flow
 
-class RoomSource(
+class RoomSource (
     private val movieDao: MovieDao,
 ) : LocalDataSource {
 
@@ -13,7 +13,7 @@ class RoomSource(
         movieDao.getMovies()
 
 
-    override fun getMovieById(movieId: Int): Flow<Movie> =
+    override fun getMovieById(movieId: Long): Flow<Movie> =
         movieDao.getMovie(movieId)
 
     override suspend fun refreshMovies(movies: List<Movie>) =

@@ -8,7 +8,7 @@ class GetLocalMoviesUseCase(
     private val movieRepository: MovieRepository
 ) {
 
-     suspend fun execute(): Flow<List<MovieDomain>> =
+     fun execute(): Flow<List<MovieDomain>> =
         movieRepository.getLocalMovies()
 
 }

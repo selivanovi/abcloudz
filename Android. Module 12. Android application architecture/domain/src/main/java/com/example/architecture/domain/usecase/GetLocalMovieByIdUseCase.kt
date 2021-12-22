@@ -8,7 +8,7 @@ class GetLocalMovieByIdUseCase(
     private val movieRepository: MovieRepository
 ) {
 
-    suspend fun execute(movieId: Int): Flow<MovieDomain> {
+    fun execute(movieId: Long): Flow<MovieDomain> {
         return movieRepository.getLocalMovieById(movieId)
     }
 }

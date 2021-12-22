@@ -22,10 +22,10 @@ class MovieRepositoryImpl(
     override suspend fun getRemoteMovieById(movieId: String): MovieDomain? =
         remoteDataSource.getMovieById(movieId)?.toDomain()
 
-    override suspend fun getLocalMovies(): Flow<List<MovieDomain>> =
+    override fun getLocalMovies(): Flow<List<MovieDomain>> =
         localDataSource.getMovies().map { list -> list.map { it.toDomain() } }
 
-    override suspend fun getLocalMovieById(movieId: Int): Flow<MovieDomain> =
+    override fun getLocalMovieById(movieId: Long): Flow<MovieDomain> =
         localDataSource.getMovieById(movieId).map { it.toDomain() }
 
     override suspend fun refreshMovies(movies: List<MovieDomain>) =
