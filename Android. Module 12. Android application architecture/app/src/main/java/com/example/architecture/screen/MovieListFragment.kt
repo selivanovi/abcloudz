@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.architecture.recyclerview.MovieAdapter
 import com.example.architecture.R
@@ -37,7 +38,7 @@ class MovieListFragment : Fragment(R.layout.fragment_movie_list) {
 
     private fun createRecyclerView(view: View) {
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
-        val layoutManger = GridLayoutManager(requireContext(), 2)
+        val layoutManger = GridLayoutManager(context, 2)
         recyclerView.layoutManager = layoutManger
         recyclerView.adapter = movieAdapter
     }
