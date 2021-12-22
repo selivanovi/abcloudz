@@ -15,24 +15,12 @@ class MovieRepositoryImpl(
     private val localDataSource: LocalDataSource
 ) : MovieRepository {
 
-    override suspend fun getRemoteMovies(): Result<List<MovieDomain>?> =
-        when (val resource = remoteDataSource.getMovies()) {
-            is Resource.Success -> {
-                val mappedList = resource.data?.map { it.toDomain() }
-                Result.success(mappedList)
-            }
-            is Resource.Error -> Result.failure(resource.throwable!!)
-        }
+    override suspend fun getRemoteMovies(): List<MovieDomain>? =
+        remoteDataSource.getMovies()?.map{ it.toDomain() }
 
 
-    override suspend fun getRemoteMovieById(movieId: String): Result<MovieDomain?> =
-        when (val resource = remoteDataSource.getMovieById(movieId)) {
-            is Resource.Success -> {
-                val data = resource.data?.toDomain()
-                Result.success(data)
-            }
-            is Resource.Error -> Result.failure(resource.throwable!!)
-        }
+    override suspend fun getRemoteMovieById(movieId: String): MovieDomain? =
+        remoteDataSource.getMovieById(movieId)?.toDomain()
 
     override suspend fun getLocalMovies(): Flow<List<MovieDomain>> =
         localDataSource.getMovies().map { list -> list.map { it.toDomain() } }

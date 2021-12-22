@@ -9,12 +9,7 @@ class GetRemoteMoviesUseCase(
     private val movieRepository: MovieRepository
 ) {
 
-    suspend fun execute(): List<MovieDomain>? {
-        val result = movieRepository.getRemoteMovies()
+    suspend fun execute(): List<MovieDomain>? =
+        movieRepository.getRemoteMovies()
 
-        if (result.isSuccess) {
-            return result.getOrNull()
-        }
-        else throw LoadingError(Constants.ERROR_MESSAGE)
-    }
 }

@@ -4,22 +4,13 @@ import com.example.architecure.data.RemoteDataSource
 import com.example.architecure.data.remote.entity.MovieResponse
 import retrofit2.Response
 
-class ApiClient (
-    val movieService: MovieService
+class ApiClient(
+    private val movieService: MovieService
 ) : RemoteDataSource {
 
-    override suspend fun getMovies(): Resource<List<MovieResponse>> =
-        safeApiCall { movieService.getMovies() }
+    override suspend fun getMovies(): List<MovieResponse>? =
+        movieService.getMovies().body()
 
-    override suspend fun getMovieById(movieId: String): Resource<MovieResponse> =
-        safeApiCall { movieService.getMovieById(movieId) }
-
-    private inline fun <T> safeApiCall(function: () -> Response<T>) =
-       try {
-           val response = function()
-           Resource.Success(response.body())
-       } catch (e: Exception) {
-           Resource.Error(e)
-       }
-
+    override suspend fun getMovieById(movieId: String): MovieResponse? =
+        movieService.getMovieById(movieId).body()
 }

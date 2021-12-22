@@ -9,14 +9,7 @@ class GetRemoteMovieByIdUseCase(
     private val movieRepository: MovieRepository
 ) {
 
-    suspend fun execute(movieId: Int): MovieDomain? {
+    suspend fun execute(movieId: Int): MovieDomain? =
+        movieRepository.getRemoteMovieById(movieId.toString())
 
-            val result = movieRepository.getRemoteMovieById(movieId.toString())
-
-            if (result.isSuccess) {
-                return result.getOrNull()
-            }
-            else throw LoadingError(Constants.ERROR_MESSAGE)
-
-    }
 }

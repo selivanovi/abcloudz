@@ -5,6 +5,6 @@ import com.example.architecure.data.remote.Resource
 
 interface RemoteDataSource {
 
-    suspend fun getMovies(): Resource<List<MovieResponse>>
-    suspend fun getMovieById(movieId: String): Resource<MovieResponse>
+    suspend fun getMovies(): List<MovieResponse>?
+    suspend fun getMovieById(movieId: String): MovieResponse?
 }
