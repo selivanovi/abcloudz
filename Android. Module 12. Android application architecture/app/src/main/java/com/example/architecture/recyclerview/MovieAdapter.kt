@@ -30,7 +30,7 @@ class MovieAdapter(val onClick: (Long) -> Unit) : RecyclerView.Adapter<MovieAdap
     }
 
     override fun getItemCount(): Int {
-        TODO("Not yet implemented")
+        return movies.size
     }
 
 

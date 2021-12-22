@@ -11,7 +11,6 @@ import kotlinx.coroutines.launch
 class MovieListViewModel(
     private val localMoviesUseCase: GetLocalMoviesUseCase,
     private val cacheController: MovieCacheController,
-
 ) : BaseViewModel() {
 
     val channelMovie = localMoviesUseCase.execute().also { it.launchIn(viewModelScope) }

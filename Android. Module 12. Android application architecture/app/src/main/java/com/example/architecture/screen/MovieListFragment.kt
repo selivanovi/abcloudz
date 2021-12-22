@@ -1,15 +1,16 @@
 package com.example.architecture.screen
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.architecture.recyclerview.MovieAdapter
 import com.example.architecture.R
+import com.example.architecture.app.appComponent
 import com.example.architecture.retryIn
 import com.example.architecture.viewmodel.MovieListViewModel
 import kotlinx.coroutines.flow.onEach
@@ -19,13 +20,18 @@ import javax.inject.Inject
 class MovieListFragment : Fragment(R.layout.fragment_movie_list) {
 
     private val movieAdapter = MovieAdapter(::goToDetails)
-    private val viewModel by viewModels<MovieListViewModel>()
+
+    @Inject
+    lateinit var viewModel: MovieListViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        requireContext().appComponent.inject(this)
         viewModel.channelMovie.onEach {
+            Log.d("MovieListFragment", it.toString())
             movieAdapter.setData(it)
         }.retryIn(lifecycleScope)
+
         createRecyclerView(view)
     }
 

@@ -17,21 +17,4 @@ import com.example.architecure.data.local.entity.Movie
 abstract class AppDataBase : RoomDatabase() {
 
     abstract val movieDao: MovieDao
-
-    companion object {
-        @Volatile
-        private var INSTANCE: AppDataBase? = null
-
-        fun getInstance(context: Context): AppDataBase {
-            synchronized(this) {
-                return INSTANCE ?: Room.databaseBuilder(
-                    context.applicationContext,
-                    AppDataBase::class.java,
-                    "database-character"
-                ).build().also {
-                    INSTANCE = it
-                }
-            }
-        }
-    }
 }
