@@ -2,11 +2,14 @@ package com.example.architecture.domain.usecase
 
 import com.example.architecture.domain.entity.MovieDomain
 import com.example.architecture.domain.repostitory.MovieRepository
+import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class RefreshLocalUseCase(
+class GetMovieByIdUseCase @Inject constructor(
     private val movieRepository: MovieRepository
 ) {
 
-    suspend fun execute(movies: List<MovieDomain>) =
-        movieRepository.refreshMovies(movies)
+    fun execute(movieId: Long): Flow<MovieDomain> {
+        return movieRepository.observeMovieById(movieId)
+    }
 }

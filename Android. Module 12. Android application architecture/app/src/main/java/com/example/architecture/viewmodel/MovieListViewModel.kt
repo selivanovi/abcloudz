@@ -1,32 +1,22 @@
 package com.example.architecture.viewmodel
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
-import com.example.architecture.domain.MovieCacheController
-import com.example.architecture.domain.usecase.*
-import kotlinx.coroutines.flow.launchIn
+import com.example.architecture.domain.entity.MovieDomain
+import com.example.architecture.domain.usecase.GetMoviesUseCase
+import com.example.architecture.domain.usecase.RefreshMoviesUseCase
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MovieListViewModel(
-    private val localMoviesUseCase: GetLocalMoviesUseCase,
-    private val cacheController: MovieCacheController,
+class MovieListViewModel @Inject constructor(
+    private val moviesUseCase: GetMoviesUseCase,
+    private val refreshLocalUseCase: RefreshMoviesUseCase
 ) : BaseViewModel() {
 
-    val channelMovie = localMoviesUseCase.execute().also { it.launchIn(viewModelScope) }
-        get() {
-            launch {
-                cacheController.refreshMovies()
-            }
-            return field
-        }
 
-    class Factory(
-        private val localMoviesUseCase: GetLocalMoviesUseCase,
-        private val cacheController: MovieCacheController
-    ) : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            return MovieListViewModel(localMoviesUseCase, cacheController) as T
+    fun observeMovie(): Flow<List<MovieDomain>> = moviesUseCase.execute()
+
+    fun updateMovie() =
+        launch {
+            refreshLocalUseCase.execute()
         }
-    }
 }

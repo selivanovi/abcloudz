@@ -13,13 +13,15 @@ open class BaseViewModel : ViewModel(), CoroutineScope {
 
     val channelError = Channel<Throwable>()
 
-    private val exceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable -> handleException(throwable) }
+    private val exceptionHandler =
+        CoroutineExceptionHandler { _, throwable -> handleException(throwable) }
+
+    override val coroutineContext: CoroutineContext =
+        viewModelScope.coroutineContext + exceptionHandler + Dispatchers.IO
 
     private fun handleException(throwable: Throwable) {
         launch {
             channelError.send(throwable)
         }
     }
-
-    override val coroutineContext: CoroutineContext = viewModelScope.coroutineContext + exceptionHandler + Dispatchers.IO
 }

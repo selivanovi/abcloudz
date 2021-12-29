@@ -52,5 +52,8 @@ dependencies {
     kapt "androidx.room:room-compiler:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
 
-   implementation project(path: ':domain')
+    //Dagger2 - Inject
+    implementation 'javax.inject:javax.inject:1'
+
+    implementation project(path: ':domain')
 }

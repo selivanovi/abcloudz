@@ -12,21 +12,18 @@ import dagger.Module
 @Module
 interface AppBindModule {
 
-    @Suppress("FunctionName")
     @Binds
-    fun bindMovieRepositoryImpl_to_MovieRepository(
+    fun bindMovieRepositoryImplToMovieRepository(
         movieRepositoryImpl: MovieRepositoryImpl
     ): MovieRepository
 
-    @Suppress("FunctionName")
     @Binds
-    fun bindMovieRoomSource_to_LocalDataSource(
+    fun bindMovieRoomSourceToLocalDataSource(
         roomSource: RoomSource
     ): LocalDataSource
 
-    @Suppress("FunctionName")
     @Binds
-    fun bindMovieApiClient_to_RemoteDataSource(
+    fun bindMovieApiClientToRemoteDataSource(
         apiClient: ApiClient
     ): RemoteDataSource
 }

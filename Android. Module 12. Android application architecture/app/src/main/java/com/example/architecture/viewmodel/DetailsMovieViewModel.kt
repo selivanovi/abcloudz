@@ -3,26 +3,16 @@ package com.example.architecture.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.architecture.domain.MovieCacheController
-import com.example.architecture.domain.entity.MovieDomain
-import com.example.architecture.domain.usecase.GetLocalMovieByIdUseCase
-import com.example.architecture.domain.usecase.GetLocalMoviesUseCase
-import kotlinx.coroutines.flow.Flow
+import com.example.architecture.domain.usecase.GetMovieByIdUseCase
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.launchIn
+import javax.inject.Inject
 
-class DetailsMovieViewModel(
-    private val localMovieByIdUseCase: GetLocalMovieByIdUseCase
+class DetailsMovieViewModel @Inject constructor(
+    private val localMovieByIdUseCase: GetMovieByIdUseCase
 ) : BaseViewModel() {
 
-    fun loadMovieById(movieId: Long) =
-        localMovieByIdUseCase.execute(movieId)
+    fun observeMovieById(movieId: Long) =
+        localMovieByIdUseCase.execute(movieId).apply { launchIn(viewModelScope) }
 
-    class Factory(
-        private val localMovieByIdUseCase: GetLocalMovieByIdUseCase,
-        private val cacheController: MovieCacheController
-    ) : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            return DetailsMovieViewModel(localMovieByIdUseCase) as T
-        }
-    }
 }

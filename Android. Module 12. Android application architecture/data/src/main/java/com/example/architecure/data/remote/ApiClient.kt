@@ -4,8 +4,9 @@ import android.util.Log
 import com.example.architecure.data.Constants
 import com.example.architecure.data.RemoteDataSource
 import com.example.architecure.data.remote.entity.MovieResponse
+import javax.inject.Inject
 
-class ApiClient(
+class ApiClient @Inject constructor(
     private val movieService: MovieService
 ) : RemoteDataSource {
 

@@ -13,6 +13,15 @@ fun MovieResponse.toDomain() =
         posterPath = posterPath
     )
 
+fun MovieResponse.toData() =
+    Movie(
+        id = id,
+        title = title,
+        originalLanguage = originalLanguage,
+        releaseDate = releaseDate,
+        posterPath = posterPath
+    )
+
 fun Movie.toDomain() =
     MovieDomain(
         id = id,
