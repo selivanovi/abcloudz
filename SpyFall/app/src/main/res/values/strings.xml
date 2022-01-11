@@ -2,4 +2,8 @@
     <string name="app_name">SpyFall</string>
     <string name="spy">Spy</string>
     <string name="fall">Fall</string>
+    <string name="title1_enter_name_screen">What is</string>
+    <string name="title2_enter_name_screen">Your name?</string>
+    <string name="text1_enter_name_screen">To start the game or go to the menu, please enter your name</string>
+    <string name="button_enter_name_screen">Confirm</string>
 </resources>
