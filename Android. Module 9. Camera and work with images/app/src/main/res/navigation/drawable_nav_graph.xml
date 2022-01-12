@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawable_nav_graph"
+    app:startDestination="@id/menuFragment">
+
+    <fragment
+        android:id="@+id/drawableFragment"
+        android:name="com.example.camera.fragments.DrawableFragment"
+        android:label="DrawableFragment" />
+    <fragment
+        android:id="@+id/filterFragment"
+        android:name="com.example.camera.fragments.FilterFragment"
+        android:label="FilterFragment" />
+    <fragment
+        android:id="@+id/menuFragment"
+        android:name="com.example.camera.fragments.MenuFragment"
+        android:label="MenuFragment" >
+        <action
+            android:id="@+id/action_menuFragment_to_drawableFragment"
+            app:destination="@id/drawableFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+        <action
+            android:id="@+id/action_menuFragment_to_filterFragment"
+            app:destination="@id/filterFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+        <action
+            android:id="@+id/action_menuFragment_to_emojisFragment"
+            app:destination="@id/emojisFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+    </fragment>
+    <fragment
+        android:id="@+id/emojisFragment"
+        android:name="com.example.camera.fragments.EmojisFragment"
+        android:label="EmojisFragment" />
+</navigation>

@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Camera</string>
+    <string name="take_photo">Take photo</string>
+    <string name="add_filter">Add filter</string>
+    <string name="title_photo_dialog_fragment">Chose photo by</string>
+    <string name="camera_photo_dialog_fragment">Camera</string>
+    <string name="files_photo_dialog_fragment">Files</string>
+</resources>
