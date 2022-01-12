@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">AsyncOperations</string>
+    <string name="character">Image of character</string>
+    <string name="separator">-</string>
+    <string name="characters">Characters</string>
+    <string name="episodes">Episodes</string>
+    <string name="title_error_alert_dialog">Error</string>
+    <string name="ok">Ok</string>
+    <string name="error_load">Error loading, please check conntection</string>
+</resources>
