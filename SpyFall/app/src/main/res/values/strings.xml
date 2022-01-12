@@ -22,5 +22,10 @@
     <string name="buttonContinue">Continue</string>
     <string name="buttonCool">Cool, let is go</string>
     <string name="buttonGoOut">Go out</string>
+    <string name="titleMenu">Menu</string>
+    <string name="menuCreateGame">Create game</string>
+    <string name="menuAbout">About</string>
+    <string name="menuRules">Rules</string>
+    <string name="menuGoOut">Go out</string>
 
 </resources>

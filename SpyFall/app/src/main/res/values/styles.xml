@@ -28,7 +28,6 @@
         <item name="android:fontFamily">@font/mont_regular</item>
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/gray</item>
-        <item name="outlineWidth">1dp</item>
         <item name="android:lineSpacingMultiplier">2</item>
     </style>
 
@@ -43,5 +42,10 @@
         <item name="android:paddingEnd">20dp</item>
         <item name="android:paddingTop">36dp</item>
         <item name="android:paddingBottom">36dp</item>
+    </style>
+
+    <style name="Menu">
+        <item name="android:fontFamily">@font/mont_semibold</item>
+        <item name="android:textSize">16sp</item>
     </style>
 </resources>
