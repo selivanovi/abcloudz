@@ -10,13 +10,17 @@
     <string name="titlePlay">Play</string>
     <string name="titleAbout">About</string>
     <string name="titleGame">Game</string>
+    <string name="titleHelloThere">Hello There!</string>
 
     <!--  Texts  -->
     <string name="textStartGame">To start the game or go to the menu, please enter your name</string>
     <string name="textHowToPlay">Quisque tincidunt bibendum imperdiet. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc eu consequat quam, id auctor purus. Sed aliquet tempor sapien at ultrices. Pellentesque non porttitor magna. Nunc laoreet efficitur dolor, at tempor tellus ultricies nec. Sed ligula lorem, tempor vel risus sit amet, lacinia molestie odio.  Vivamus placerat justo at mauris consequat, sit amet consequat magna maximus. Cras faucibus ante ut libero posuere dictum.</string>
     <string name="textAboutGame">Praesent nisl sem, euismod id cursus eu, fringilla a nibh. Donec pellentesque elit nisl, nec tincidunt nulla dapibus in. Phasellus odio erat, finibus vel arcu quis, pharetra ultricies metus. Curabitur vitae nisl ac lectus vehicula ultrices. Etiam euismod lectus lectus, in tempus.</string>
+    <string name="textQuiteDialog">Do you really want to quit the game?</string>
+
     <!--  Buttons  -->
-    <string name="buttonConfirm">Confirm</string>
+    <string name="buttonContinue">Continue</string>
     <string name="buttonCool">Cool, let is go</string>
+    <string name="buttonGoOut">Go out</string>
 
 </resources>
