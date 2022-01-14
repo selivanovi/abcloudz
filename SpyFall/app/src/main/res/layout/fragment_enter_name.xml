@@ -20,14 +20,14 @@
             android:src="@drawable/menu" />
 
         <com.example.spyfall.screen.customview.OutlineTextView
-            style="@style/OutlineTitle"
+            style="@style/Text.OutlineTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="58dp"
             android:text="@string/titleWhatIs" />
 
         <TextView
-            style="@style/Title"
+            style="@style/Text.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/titleYourName" />
@@ -50,7 +50,8 @@
 
         <Button
             android:id="@+id/buttonConfirm"
-            style="@style/ButtonText"
+            style="@style/FillButton"
+            android:textAppearance="@style/FillButtonText"
             android:layout_width="match_parent"
             android:layout_height="54dp"
             android:layout_marginTop="28dp"

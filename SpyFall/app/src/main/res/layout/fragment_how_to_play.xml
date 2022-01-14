@@ -33,14 +33,14 @@
 
 
         <com.example.spyfall.screen.customview.OutlineTextView
-            style="@style/OutlineTitle"
+            style="@style/Text.OutlineTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="48dp"
             android:text="@string/titleHowTo" />
 
         <TextView
-            style="@style/Title"
+            style="@style/Text.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/titlePlay" />
@@ -55,7 +55,8 @@
 
         <Button
             android:id="@+id/buttonCool"
-            style="@style/ButtonText"
+            style="@style/FillButton"
+            android:textAppearance="@style/FillButtonText"
             android:layout_width="match_parent"
             android:layout_height="54dp"
             android:layout_marginTop="28dp"

@@ -17,14 +17,14 @@
             android:text="@string/spy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/OutlineTitle.Splash" />
+            style="@style/Text.Title.Splash" />
 
         <com.example.spyfall.screen.customview.OutlineTextView
             android:id="@+id/fallTextView"
             android:text="@string/fall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/Title.Splash" />
+            style="@style/Text.OutlineTitle.Splash" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
 </FrameLayout>

@@ -3,4 +3,9 @@
     <dimen name="corner_radius_main_container">24dp</dimen>
     <dimen name="elevation_main_container">24dp</dimen>
     <dimen name="menu_item_padding">40dp</dimen>
+
+    <dimen name="button_height">56dp</dimen>
+    <dimen name="button_radius">32dp</dimen>
+    <dimen name="button_border_weight">1dp</dimen>
+    <dimen name="corner_radius_swipe">8dp</dimen>
 </resources>

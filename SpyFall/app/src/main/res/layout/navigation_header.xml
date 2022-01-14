@@ -15,14 +15,14 @@
         android:layout_gravity="end"/>
 
     <com.example.spyfall.screen.customview.OutlineTextView
-        style="@style/OutlineTitle"
+        style="@style/Text.OutlineTitle.Splash"
         android:layout_marginTop="216dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/titleGame" />
 
     <TextView
-        style="@style/Title"
+        style="@style/Text.Title.Splash"
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -38,21 +38,22 @@
 
         <Button
             android:id="@+id/buttonGoOut"
-            style="@style/ButtonText"
+            style="@style/FillButton"
+            android:textAppearance="@style/FillButtonText"
             android:layout_width="match_parent"
             android:layout_height="46dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="52dp"
-            android:text="@string/buttonGoOut"
             android:background="@drawable/rounded_button"
+            android:text="@string/buttonGoOut"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/textView"
-            style="@style/Title"
+            style="@style/Text.Title"
             android:textSize="24sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

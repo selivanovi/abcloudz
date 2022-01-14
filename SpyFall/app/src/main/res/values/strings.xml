@@ -27,5 +27,13 @@
     <string name="menuAbout">About</string>
     <string name="menuRules">Rules</string>
     <string name="menuGoOut">Go out</string>
+    <string name="description_open_drawer_layout">Open drawer layout</string>
+    <string name="description_close_drawer_layout">Close drawer layout</string>
+    <string name="buttonVote">Vote</string>
+    <string name="buttonLocation">Location</string>
+    <string name="infoImageSwipeText">"Swipe left to see the whole picture"</string>
+    <string name="titleLocation">%s</string>
+    <string name="textPause">Pause</string>
+    <string name="description_location_image_view">Image location</string>
 
 </resources>

@@ -3,8 +3,9 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="blue">#FF282E79</color>
+    <color name="lightBlue">#FF313A9E</color>
     <color name="blueAlpha">#66282E79</color>
     <color name="gray">#B3242A39</color>
-    <color name="lightGray">#FFF5F6FA</color>
-
+    <color name="drawerColorGray">#FFF5F6FA</color>
+    <color name="lightGray">#FFD9DCEB</color>
 </resources>
