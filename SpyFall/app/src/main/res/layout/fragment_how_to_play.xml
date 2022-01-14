@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include layout="@layout/background_login_view" />
+    <include layout="@layout/background_info_view" />
 
     <LinearLayout
         style="@style/Layout"
@@ -49,7 +49,7 @@
             style="@style/Text"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="48dp"
             android:layout_weight="1"
             android:text="@string/textHowToPlay" />
 
