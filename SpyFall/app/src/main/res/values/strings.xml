@@ -4,36 +4,45 @@
     <string name="fall">Fall</string>
 
     <!--  Titles  -->
-    <string name="titleWhatIs">What is</string>
+    <string name="titleWhatIs">What\'s</string>
     <string name="titleYourName">Your name?</string>
     <string name="titleHowTo">How to</string>
     <string name="titlePlay">Play</string>
     <string name="titleAbout">About</string>
     <string name="titleGame">Game</string>
     <string name="titleHelloThere">Hello There!</string>
+    <string name="titleLocation">%s</string>
+    <string name="titleMenu">Menu</string>
 
     <!--  Texts  -->
     <string name="textStartGame">To start the game or go to the menu, please enter your name</string>
     <string name="textHowToPlay">Quisque tincidunt bibendum imperdiet. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc eu consequat quam, id auctor purus. Sed aliquet tempor sapien at ultrices. Pellentesque non porttitor magna. Nunc laoreet efficitur dolor, at tempor tellus ultricies nec. Sed ligula lorem, tempor vel risus sit amet, lacinia molestie odio.  Vivamus placerat justo at mauris consequat, sit amet consequat magna maximus. Cras faucibus ante ut libero posuere dictum.</string>
     <string name="textAboutGame">Praesent nisl sem, euismod id cursus eu, fringilla a nibh. Donec pellentesque elit nisl, nec tincidunt nulla dapibus in. Phasellus odio erat, finibus vel arcu quis, pharetra ultricies metus. Curabitur vitae nisl ac lectus vehicula ultrices. Etiam euismod lectus lectus, in tempus.</string>
     <string name="textQuiteDialog">Do you really want to quit the game?</string>
+    <string name="textPause">Pause</string>
+    <string name="textInfoImageSwipe">"Swipe left to see the whole picture"</string>
 
     <!--  Buttons  -->
     <string name="buttonContinue">Continue</string>
     <string name="buttonCool">Cool, let is go</string>
     <string name="buttonGoOut">Go out</string>
-    <string name="titleMenu">Menu</string>
+    <string name="buttonVote">Vote</string>
+    <string name="buttonLocation">Location</string>
+
+    <!--  ItemsMenu  -->
     <string name="menuCreateGame">Create game</string>
     <string name="menuAbout">About</string>
     <string name="menuRules">Rules</string>
     <string name="menuGoOut">Go out</string>
+
+
+    <!--  Descriptions  -->
     <string name="description_open_drawer_layout">Open drawer layout</string>
     <string name="description_close_drawer_layout">Close drawer layout</string>
-    <string name="buttonVote">Vote</string>
-    <string name="buttonLocation">Location</string>
-    <string name="infoImageSwipeText">"Swipe left to see the whole picture"</string>
-    <string name="titleLocation">%s</string>
-    <string name="textPause">Pause</string>
     <string name="description_location_image_view">Image location</string>
+    <string name="titlePlayerName">%s</string>
+    <string name="textWelcomeToTheGame">Welcome to the game</string>
+    <string name="buttonJoinGame">Join game</string>
+    <string name="buttonCreateGame">Create game</string>
 
 </resources>
