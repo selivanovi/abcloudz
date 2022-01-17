@@ -44,5 +44,6 @@
     <string name="textWelcomeToTheGame">Welcome to the game</string>
     <string name="buttonJoinGame">Join game</string>
     <string name="buttonCreateGame">Create game</string>
+    <string name="textPleaseWait">Please wait until everyone joins</string>
 
 </resources>

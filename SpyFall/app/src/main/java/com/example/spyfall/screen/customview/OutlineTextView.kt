@@ -9,7 +9,7 @@ import androidx.appcompat.widget.AppCompatTextView
 import com.example.spyfall.R
 
 
-class OutlineTextView : AppCompatTextView {
+class OutlineTextView(context: Context, attrs: AttributeSet?) : AppCompatTextView(context, attrs) {
 
     private val defaultOutlineWidth = 0F
     private var isDrawing: Boolean = false
@@ -17,11 +17,8 @@ class OutlineTextView : AppCompatTextView {
     private var outlineColor: Int = 0
     private var outlineWidth: Float = 0.toFloat()
 
-    constructor(context: Context) : this(context, null)
 
-    constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
-
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
+   init {
         if (attrs != null) {
             val a = context.obtainStyledAttributes(attrs, R.styleable.OutlineTextView)
             outlineColor = a.getColor(R.styleable.OutlineTextView_outlineColor, currentTextColor)

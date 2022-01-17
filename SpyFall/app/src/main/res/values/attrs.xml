@@ -5,4 +5,13 @@
         <attr name="outlineColor" format="color" />
         <attr name="outlineWidth" format="dimension" />
     </declare-styleable>
+
+    <declare-styleable name="DottedHorizontalProgressBar">
+        <attr name="color" format="color" />
+        <attr name="count" format="integer" />
+        <attr name="timeout" format="integer" />
+        <attr name="minDotRadius" format="dimension" />
+        <attr name="maxDotRadius" format="dimension" />
+        <attr name="dotStep" format="dimension" />
+    </declare-styleable>
 </resources>

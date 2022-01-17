@@ -15,7 +15,7 @@
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/mainFragmentContainerView"
-            android:name="com.example.spyfall.screen.RoleFragment"
+            android:name="com.example.spyfall.screen.StartGameScreen"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -34,8 +34,7 @@
         android:background="@color/drawerColorGray"
         app:headerLayout="@layout/navigation_header"
         app:menu="@menu/navigation_menu"
-        app:itemTextAppearance="@style/Menu"
-        app:itemTextColor="@drawable/menu_text_color"
+        style="@style/NavigationView.Menu"
         app:itemHorizontalPadding="40dp"
         android:fitsSystemWindows="true"
       />
