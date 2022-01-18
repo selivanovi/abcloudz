@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="8dp"
+
+    android:background="@drawable/rounded_item_view">
+
+    <TextView
+        android:id="@+id/itemPlayer"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginStart="20dp"
+        android:textAppearance="@style/Text.Item"
+        android:text="Player"
+        android:gravity="center_vertical" />
+</FrameLayout>
