@@ -11,7 +11,7 @@
     <string name="titleAbout">About</string>
     <string name="titleGame">Game</string>
     <string name="titleHelloThere">Hello There!</string>
-    <string name="titleLocation">%s</string>
+    <string name="titleLocation">Location</string>
     <string name="titleMenu">Menu</string>
 
     <!--  Texts  -->
@@ -24,7 +24,7 @@
 
     <!--  Buttons  -->
     <string name="buttonContinue">Continue</string>
-    <string name="buttonCool">Cool, let is go</string>
+    <string name="buttonCool">Cool, let\'s go</string>
     <string name="buttonGoOut">Go out</string>
     <string name="buttonVote">Vote</string>
     <string name="buttonLocation">Location</string>
@@ -44,6 +44,24 @@
     <string name="textWelcomeToTheGame">Welcome to the game</string>
     <string name="buttonJoinGame">Join game</string>
     <string name="buttonCreateGame">Create game</string>
-    <string name="textPleaseWait">Please wait until everyone joins</string>
+    <string name="textPleaseWaitEveryone">Please wait until everyone joins</string>
+    <string name="buttonPlay">Play</string>
+    <string name="textPleaseWaitPlayers">Waiting for players</string>
+    <string name="titleWhoIs">Who\'s</string>
+    <string name="titleTheSpy">The spy?</string>
+    <string name="textChooseThePerson">Choose the person you consider\n to be a spy</string>
+    <string name="measure_of_time">minutes</string>
+    <string name="buttonInvite">Invite players</string>
+    <string name="textCopyLink">Сopy the link and share it</string>
+    <string name="textEnterGameId">Enter Game ID</string>
+    <string name="buttonNextCard">Naxt card</string>
+    <string name="buttonMainMenu">Main menu</string>
+    <string name="titleCall">Call</string>
+    <string name="textLocation">Please announsce assumptions\nabout the location</string>
+    <string name="titleIsTheLocation">Is the location</string>
+    <string name="titleCorrectly">Correctly?</string>
+    <string name="textWaitLocation">Please wait until the spy\nsays location</string>
+    <string name="buttonCorrectly">Correctly</string>
+    <string name="buttonNo">No</string>
 
 </resources>
