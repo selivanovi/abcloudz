@@ -9,4 +9,5 @@
     <dimen name="button_border_weight">1dp</dimen>
     <dimen name="corner_radius_swipe">8dp</dimen>
     <dimen name="corner_radius_fragment">24dp</dimen>
+    <dimen name="corner_radius_item">8dp</dimen>
 </resources>
