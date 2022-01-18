@@ -6,6 +6,9 @@
     <color name="lightBlue">#FF313A9E</color>
     <color name="blueAlpha">#66282E79</color>
     <color name="gray">#B3242A39</color>
+
     <color name="drawerColorGray">#FFF5F6FA</color>
     <color name="lightGray">#FFD9DCEB</color>
+    <color name="darkBlue">#FF242A39</color>
+    <color name="transparent">#00FFFFFF</color>
 </resources>
