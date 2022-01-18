@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <style name="Text.Item">
+        <item name="android:fontFamily">@font/opensans_regular</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/darkBlue</item>
+    </style>
+
     <style name="Text.Title">
         <item name="android:fontFamily">@font/opensans_bold</item>
         <item name="android:textSize">46sp</item>
@@ -23,14 +29,12 @@
         <item name="android:textSize">44sp</item>
     </style>
 
-
-
     <style name="Text" parent="TextAppearance.AppCompat">
 
         <item name="android:fontFamily">@font/opensans_regular</item>
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/gray</item>
-        <item name="android:lineSpacingMultiplier">2</item>
+        <item name="android:lineSpacingExtra">2sp</item>
     </style>
 
     <style name="Text.AccentedText" parent="TextAppearance.AppCompat">
@@ -69,10 +73,21 @@
     <style name="OutlineButton" parent="Widget.AppCompat.Button">
         <item name="android:background">@drawable/background_outline_button</item>
         <item name="android:layout_height">@dimen/button_height</item>
+        <item name="android:clipChildren">false</item>
+        <item name="android:clipToPadding">false</item>
+
     </style>
 
     <style name="FillButton" parent="Widget.AppCompat.Button">
         <item name="android:background">@drawable/background_button</item>
         <item name="android:layout_height">@dimen/button_height</item>
+        <item name="android:clipChildren">false</item>
+        <item name="android:clipToPadding">false</item>
+
     </style>
+
+    <style name="DefaultNumberPicker" parent="Theme.AppCompat">
+        <item name="colorControlNormal">@color/transparent</item>
+    </style>
+
 </resources>
