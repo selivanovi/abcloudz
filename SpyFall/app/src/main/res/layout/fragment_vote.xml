@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/background_vote_view" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="20dp"
+            android:paddingTop="36dp"
+            android:paddingEnd="20dp">
+
+            <ImageView
+                android:id="@+id/menu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:src="@drawable/menu" />
+
+        </FrameLayout>
+
+        <com.example.spyfall.screen.customview.OutlineTextView
+            style="@style/Text.OutlineTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="56dp"
+            android:paddingStart="20dp"
+            android:text="@string/titleWhoIs" />
+
+        <TextView
+            style="@style/Text.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="20dp"
+            android:text="@string/titleTheSpy" />
+
+        <TextView
+            style="@style/Text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:text="@string/textChooseThePerson" />
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/startGameContainerView"
+            android:name="com.example.spyfall.screen.view.ListVoteView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="54dp"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+</FrameLayout>
