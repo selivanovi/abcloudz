@@ -42,6 +42,7 @@
     <string name="description_location_image_view">Image location</string>
     <string name="titlePlayerName">%s</string>
     <string name="textWelcomeToTheGame">Welcome to the game</string>
+    <string name="textWelcomeToTheGameWithId">Welcome to the game: %s</string>
     <string name="buttonJoinGame">Join game</string>
     <string name="buttonCreateGame">Create game</string>
     <string name="textPleaseWaitEveryone">Please wait until everyone joins</string>
@@ -63,5 +64,8 @@
     <string name="textWaitLocation">Please wait until the spy\nsays location</string>
     <string name="buttonCorrectly">Correctly</string>
     <string name="buttonNo">No</string>
+    <string name="buttonPlayers">Players</string>
+    <string name="buttonDuration">Card duration</string>
+    <string name="buttonCardDuration">Card duration</string>
 
 </resources>
