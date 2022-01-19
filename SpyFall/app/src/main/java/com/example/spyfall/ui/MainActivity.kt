@@ -1,15 +1,15 @@
-package com.example.spyfall
+package com.example.spyfall.ui
 
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.core.view.forEach
 import androidx.drawerlayout.widget.DrawerLayout
-import com.example.spyfall.dialog.QuiteDialog
+import com.example.spyfall.R
+import com.example.spyfall.ui.dialog.QuiteDialog
 import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity() {

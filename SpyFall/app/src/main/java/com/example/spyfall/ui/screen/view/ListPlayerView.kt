@@ -1,4 +1,4 @@
-package com.example.spyfall.screen.view
+package com.example.spyfall.ui.screen.view
 
 import androidx.fragment.app.Fragment
 import com.example.spyfall.R

@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/joinGameView"
-        android:name="com.example.spyfall.screen.view.JoinGameView"
+        android:name="com.example.spyfall.ui.screen.view.JoinGameView"
         android:label="JoinGameView" >
         <action
             android:id="@+id/action_joinGameView_to_waitingGameView"
@@ -14,7 +14,7 @@
     </fragment>
     <fragment
         android:id="@+id/waitingGameView"
-        android:name="com.example.spyfall.screen.view.WaitingGameView"
+        android:name="com.example.spyfall.ui.screen.view.WaitingGameView"
         android:label="WaitingGameView" >
         <action
             android:id="@+id/action_waitingGameView_to_listPlayerView"
@@ -22,10 +22,10 @@
     </fragment>
     <fragment
         android:id="@+id/listPlayerView"
-        android:name="com.example.spyfall.screen.view.ListPlayerView"
+        android:name="com.example.spyfall.ui.screen.view.ListPlayerView"
         android:label="ListPlayerView" />
     <fragment
         android:id="@+id/linkView"
-        android:name="com.example.spyfall.screen.view.LinkView"
+        android:name="com.example.spyfall.ui.screen.view.LinkView"
         android:label="LinkView" />
 </navigation>

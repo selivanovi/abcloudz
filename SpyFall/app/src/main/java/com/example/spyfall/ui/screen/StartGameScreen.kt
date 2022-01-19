@@ -1,15 +1,12 @@
-package com.example.spyfall.screen
+package com.example.spyfall.ui.screen
 
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Button
 import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
 import com.example.spyfall.R
-import com.google.android.material.button.MaterialButton
 
 class StartGameScreen : Fragment(R.layout.fragment_start_game) {
 

@@ -1,4 +1,4 @@
-package com.example.spyfall.dialog
+package com.example.spyfall.ui.dialog
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable

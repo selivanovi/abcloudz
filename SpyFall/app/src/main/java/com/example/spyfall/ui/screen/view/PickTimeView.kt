@@ -1,4 +1,4 @@
-package com.example.spyfall.screen.view
+package com.example.spyfall.ui.screen.view
 
 import android.content.res.Resources
 import android.graphics.Color

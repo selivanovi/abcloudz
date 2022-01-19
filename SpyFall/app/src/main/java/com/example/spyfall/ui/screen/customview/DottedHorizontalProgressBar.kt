@@ -1,4 +1,4 @@
-package com.example.spyfall.screen.customview
+package com.example.spyfall.ui.screen.customview
 
 import android.animation.Animator
 import android.animation.ValueAnimator

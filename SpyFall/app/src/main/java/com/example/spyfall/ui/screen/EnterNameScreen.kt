@@ -1,16 +1,12 @@
-package com.example.spyfall.screen
+package com.example.spyfall.ui.screen
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
-import android.widget.ImageView
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.example.spyfall.MainActivity
 import com.example.spyfall.R
 
 class EnterNameScreen : Fragment(R.layout.fragment_enter_name) {

@@ -26,7 +26,7 @@
 
         </FrameLayout>
 
-        <com.example.spyfall.screen.customview.OutlineTextView
+        <com.example.spyfall.ui.screen.customview.OutlineTextView
             style="@style/Text.OutlineTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -52,7 +52,7 @@
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/startGameContainerView"
-            android:name="com.example.spyfall.screen.view.ListVoteView"
+            android:name="com.example.spyfall.ui.screen.view.ListVoteView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="54dp"
