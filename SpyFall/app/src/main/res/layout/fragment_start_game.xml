@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:layout_height="match_parent">
 
     <include layout="@layout/background_start_game_view" />
 
@@ -35,11 +36,11 @@
         </FrameLayout>
 
         <TextView
-            android:paddingStart="20dp"
             style="@style/Text.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="48dp"
+            android:paddingStart="20dp"
             android:text="@string/titlePlayerName" />
 
         <TextView
@@ -79,11 +80,13 @@
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/startGameContainerView"
-            android:name="com.example.spyfall.screen.view.JoinGameView"
+            android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="24dp"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            app:defaultNavHost="true"
+            app:navGraph="@navigation/start_game_nav_graph" />
     </LinearLayout>
 
 </FrameLayout>
