@@ -7,7 +7,7 @@ import android.widget.Button
 import androidx.fragment.app.Fragment
 import com.example.spyfall.R
 
-class ResultFragment : Fragment(R.layout.fragment_result) {
+class RoleScreen : Fragment(R.layout.fragment_role) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

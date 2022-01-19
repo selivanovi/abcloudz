@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/create_game_nav_graph"
+    app:startDestination="@id/invitePlayerView">
+
+    <fragment
+        android:id="@+id/invitePlayerView"
+        android:name="com.example.spyfall.screen.view.InvitePlayerView"
+        android:label="InvitePlayerView" />
+    <fragment
+        android:id="@+id/pickTimeView"
+        android:name="com.example.spyfall.screen.view.PickTimeView"
+        android:label="PickTimeView" />
+</navigation>

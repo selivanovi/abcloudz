@@ -12,11 +12,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:padding="20dp"
         android:background="@drawable/rounded_edittext"
         android:backgroundTint="@color/lightGray"
-        android:inputType="numberSigned"
-        android:paddingStart="12dp"
+        android:inputType="number"
+        android:padding="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

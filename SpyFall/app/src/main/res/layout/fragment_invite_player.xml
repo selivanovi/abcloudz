@@ -1,77 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:clipChildren="false"
-    android:clipToPadding="false"
-    android:padding="20dp"
-    android:background="@drawable/rounded_background_fragment">
+    android:layout_height="match_parent">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/inviteButton"
-        android:layout_width="0dp"
-        android:layout_height="60dp"
-        android:backgroundTint="@color/lightGray"
-        app:cornerRadius="8dp"
-        app:iconTint="@color/darkBlue"
-        style="@style/Text.Item"
-        app:icon="@drawable/plus"
-        app:iconGravity="textStart"
-        android:text="@string/buttonInvite"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+    <include layout="@layout/background_start_game_view" />
 
-    </com.google.android.material.button.MaterialButton>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/playersRecyclerView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/textView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/inviteButton"
-        tools:itemCount="8"
-        tools:listitem="@layout/item_recyclerview_player">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="20dp"
+            android:paddingTop="36dp"
+            android:paddingEnd="20dp">
 
-    </androidx.recyclerview.widget.RecyclerView>
+            <ImageView
+                android:id="@+id/back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:src="@drawable/back" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
-        android:text="@string/textPleaseWaitEveryone"
-        android:textAppearance="@style/Text.AccentedText"
-        app:layout_constraintBottom_toTopOf="@+id/dottedHorizontalProgressBar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+            <ImageView
+                android:id="@+id/menu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:src="@drawable/menu" />
 
-    <com.example.spyfall.screen.customview.DottedHorizontalProgressBar
-        android:id="@+id/dottedHorizontalProgressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        app:color="@color/blue"
-        app:layout_constraintBottom_toTopOf="@id/buttonPlay"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:maxDotRadius="5px"
-        app:minDotRadius="3px"
-        tools:layout_editor_absoluteY="629dp" />
+        </FrameLayout>
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/buttonPlay"
-        style="@style/FillButton"
-        android:layout_width="0dp"
-        android:layout_height="60dp"
-        android:text="@string/buttonPlay"
-        android:textAppearance="@style/FillButtonText"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            style="@style/Text.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="48dp"
+            android:paddingStart="20dp"
+            android:text="@string/titlePlayerName" />
+
+        <TextView
+            style="@style/Text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:text="@string/textWelcomeToTheGameWithId" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="64dp"
+            android:orientation="horizontal"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp">
+
+            <com.google.android.material.button.MaterialButton
+                app:backgroundTint="@null"
+                style="@style/OutlineButton"
+                android:id="@+id/buttonPlayers"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_marginEnd="5dp"
+                app:icon="@drawable/player"
+                app:iconGravity="textStart"
+                app:iconTint="@drawable/icon_tint"
+                android:layout_weight="1"
+                android:text="@string/buttonPlayers"
+                android:textColor="@drawable/color_text_outline_button" />
+
+            <com.google.android.material.button.MaterialButton
+                app:backgroundTint="@null"
+                style="@style/OutlineButton"
+                android:id="@+id/buttonCardDuration"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                app:icon="@drawable/time"
+                app:iconGravity="textStart"
+                app:iconTint="@drawable/icon_tint"
+                android:layout_marginStart="5dp"
+                android:layout_weight="1"
+                android:text="@string/buttonCardDuration"
+                android:textColor="@drawable/color_text_outline_button" />
+
+        </LinearLayout>
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/startGameContainerView"
+            android:name="com.example.spyfall.screen.view.InvitePlayerView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="24dp"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+</FrameLayout>

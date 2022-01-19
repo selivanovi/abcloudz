@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_nav_graph"
+    app:startDestination="@id/splashScreen">
+
+    <fragment
+        android:id="@+id/splashScreen"
+        android:name="com.example.spyfall.screen.SplashScreen"
+        android:label="SplashScreen" >
+        <action
+            android:id="@+id/action_splashScreen_to_enterNameScreen"
+            app:destination="@id/enterNameScreen" />
+    </fragment>
+    <fragment
+        android:id="@+id/enterNameScreen"
+        android:name="com.example.spyfall.screen.EnterNameScreen"
+        android:label="EnterNameScreen" >
+        <action
+            android:id="@+id/action_enterNameScreen_to_startGameScreen"
+            app:destination="@id/startGameScreen" />
+    </fragment>
+    <fragment
+        android:id="@+id/startGameScreen"
+        android:name="com.example.spyfall.screen.StartGameScreen"
+        android:label="StartGameScreen" >
+        <action
+            android:id="@+id/action_startGameScreen_to_invitePlayerScreen"
+            app:destination="@id/invitePlayerScreen" />
+        <action
+            android:id="@+id/action_startGameScreen_to_roleScreen"
+            app:destination="@id/roleScreen" />
+    </fragment>
+    <fragment
+        android:id="@+id/roleScreen"
+        android:name="com.example.spyfall.screen.RoleScreen"
+        android:label="RoleScreen" >
+        <action
+            android:id="@+id/action_roleScreen_to_voteScreen"
+            app:destination="@id/voteScreen" />
+        <action
+            android:id="@+id/action_roleScreen_to_checkLocationScreen"
+            app:destination="@id/checkLocationScreen" />
+        <action
+            android:id="@+id/action_roleScreen_to_callLocationScreen"
+            app:destination="@id/callLocationScreen" />
+    </fragment>
+    <fragment
+        android:id="@+id/voteScreen"
+        android:name="com.example.spyfall.screen.VoteScreen"
+        android:label="VoteScreen" >
+        <action
+            android:id="@+id/action_voteScreen_to_resultScreen"
+            app:destination="@id/resultScreen" />
+    </fragment>
+    <fragment
+        android:id="@+id/resultScreen"
+        android:name="com.example.spyfall.screen.ResultScreen"
+        android:label="ResultScreen" />
+    <fragment
+        android:id="@+id/invitePlayerScreen"
+        android:name="com.example.spyfall.screen.InvitePlayerScreen"
+        android:label="InvitePlayerScreen" >
+        <action
+            android:id="@+id/action_invitePlayerScreen_to_voteScreen"
+            app:destination="@id/voteScreen" />
+    </fragment>
+    <fragment
+        android:id="@+id/callLocationScreen"
+        android:name="com.example.spyfall.screen.CallLocationScreen"
+        android:label="CallLocationScreen" >
+        <action
+            android:id="@+id/action_callLocationScreen_to_resultScreen"
+            app:destination="@id/resultScreen" />
+    </fragment>
+    <fragment
+        android:id="@+id/checkLocationScreen"
+        android:name="com.example.spyfall.screen.CheckLocationScreen"
+        android:label="CheckLocationScreen" >
+        <action
+            android:id="@+id/action_checkLocationScreen_to_resultScreen"
+            app:destination="@id/resultScreen" />
+    </fragment>
+</navigation>

@@ -15,7 +15,9 @@
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/mainFragmentContainerView"
-            android:name="com.example.spyfall.screen.CheckLocationScreen"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            app:defaultNavHost="true"
+            app:navGraph="@navigation/main_nav_graph"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_constraintBottom_toBottomOf="parent"
