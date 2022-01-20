@@ -10,7 +10,12 @@
         android:label="SplashScreen" >
         <action
             android:id="@+id/action_splashScreen_to_enterNameScreen"
-            app:destination="@id/enterNameScreen" />
+            app:destination="@id/enterNameScreen"
+            app:popUpTo="@id/main_nav_graph" />
+        <action
+            android:id="@+id/action_splashScreen_to_startGameScreen"
+            app:destination="@id/startGameScreen"
+            app:popUpTo="@id/main_nav_graph" />
     </fragment>
     <fragment
         android:id="@+id/enterNameScreen"
@@ -18,7 +23,8 @@
         android:label="EnterNameScreen" >
         <action
             android:id="@+id/action_enterNameScreen_to_startGameScreen"
-            app:destination="@id/startGameScreen" />
+            app:destination="@id/startGameScreen"
+            app:popUpTo="@id/main_nav_graph" />
     </fragment>
     <fragment
         android:id="@+id/startGameScreen"

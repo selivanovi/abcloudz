@@ -2,7 +2,7 @@ package com.example.spyfall.app.di
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.example.spyfall.data.local.SharedPreferencesStorage
+import com.google.firebase.database.FirebaseDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -12,14 +12,15 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-interface DataModule {
-
-//    @Provides
-//    @Singleton
-//    fun provideSharedPreferencesStorage(sharedPreferences: SharedPreferences): SharedPreferencesStorage =
-//        SharedPreferencesStorage(sharedPreferences)
+class DataModule {
 
     @Provides
+    @Singleton
+    fun provideFirebaseDatabase(): FirebaseDatabase =
+        FirebaseDatabase.getInstance()
+
+    @Provides
+    @Singleton
     fun provideSharedPreferences(@ApplicationContext context: Context): SharedPreferences =
-        context.getSharedPreferences(null, Context.MODE_PRIVATE)
+        context.getSharedPreferences("SharedPreferences", Context.MODE_PRIVATE)
 }

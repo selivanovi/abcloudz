@@ -1,4 +1,4 @@
-package com.example.spyfall.domain.utils
+package com.example.spyfall.data.utils
 
 class InvalidNameException(message: String) : Exception(message){
 }

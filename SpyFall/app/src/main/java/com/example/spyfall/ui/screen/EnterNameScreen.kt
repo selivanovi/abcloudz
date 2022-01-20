@@ -6,14 +6,37 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.spyfall.R
+import com.example.spyfall.ui.viewmodel.SetNameViewModel
+import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
+@AndroidEntryPoint
 class EnterNameScreen : Fragment(R.layout.fragment_enter_name) {
+
+    private val viewModel: SetNameViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel.errorChannel.onEach {
+            Snackbar.make(view, it.message.toString(), Snackbar.LENGTH_LONG).show()
+        }.launchIn(lifecycleScope)
+
+        viewModel.successAuthorizationChannel.onEach {
+            findNavController().navigate(R.id.action_enterNameScreen_to_startGameScreen)
+        }.launchIn(lifecycleScope)
+
+
+        createButtons(view)
+    }
+
+    private fun createButtons(view: View) {
         val confirmButton = view.findViewById<Button>(R.id.buttonConfirm)
         val nameEditText = view.findViewById<EditText>(R.id.nameEditText)
 
@@ -26,8 +49,7 @@ class EnterNameScreen : Fragment(R.layout.fragment_enter_name) {
         confirmButton.apply {
             isEnabled = false
             setOnClickListener {
-
-                findNavController().navigate(R.id.action_enterNameScreen_to_startGameScreen)
+                viewModel.logIn(nameEditText.text.toString())
             }
         }
     }

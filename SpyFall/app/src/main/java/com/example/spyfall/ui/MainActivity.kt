@@ -11,7 +11,9 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.example.spyfall.R
 import com.example.spyfall.ui.dialog.QuiteDialog
 import com.google.android.material.navigation.NavigationView
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private val drawerLayout by lazy {
