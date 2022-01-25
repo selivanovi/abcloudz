@@ -2,19 +2,27 @@ package com.example.spyfall.ui
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.core.view.forEach
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.activityViewModels
+import androidx.navigation.findNavController
 import com.example.spyfall.R
+import com.example.spyfall.ui.dialog.DialogListener
 import com.example.spyfall.ui.dialog.QuiteDialog
+import com.example.spyfall.ui.viewmodel.SetNameViewModel
 import com.google.android.material.navigation.NavigationView
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), DialogListener {
+
+    private val viewModel: SetNameViewModel by viewModels()
 
     private val drawerLayout by lazy {
         findViewById<DrawerLayout>(R.id.drawerLayout)
@@ -31,8 +39,6 @@ class MainActivity : AppCompatActivity() {
         createDrawerLayout()
 
         createNavigationView()
-
-
     }
 
     private fun createDrawerLayout() {
@@ -108,5 +114,14 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         private const val END_SCALE = 0.7f
+    }
+
+    override fun logOut() {
+        Log.d("MainActivity", "Log Out")
+        viewModel.logOut()
+
+        val navController = findNavController(R.id.mainFragmentContainerView)
+        navController.navigate(R.id.enterNameScreen)
+        moveDrawableLayout()
     }
 }
