@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.core.view.forEach
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import com.example.spyfall.R
 import com.example.spyfall.ui.dialog.DialogListener
@@ -34,6 +33,8 @@ class MainActivity : AppCompatActivity(), DialogListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        Log.d("MainActivity", "onCreate")
         setContentView(R.layout.activity_main)
 
         createDrawerLayout()

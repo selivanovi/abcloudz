@@ -1,6 +1,8 @@
 package com.example.spyfall.app.di
 
 
+import com.example.spyfall.data.repository.GameRepository
+import com.example.spyfall.data.repository.GameRepositoryImpl
 import com.example.spyfall.data.repository.UserRepositoryImpl
 import com.example.spyfall.data.repository.UserRepository
 import dagger.Binds
@@ -16,4 +18,9 @@ interface BindModule {
     fun bindUserRepositoryImplToUserRepository(
         userRepositoryImpl: UserRepositoryImpl
     ) : UserRepository
+
+    @Binds
+    fun bindGameRepositoryImplToGameRepository(
+        gameRepositoryImpl: GameRepositoryImpl
+    ) : GameRepository
 }
