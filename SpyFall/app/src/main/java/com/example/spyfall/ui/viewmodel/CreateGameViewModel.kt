@@ -5,6 +5,7 @@ import com.example.spyfall.data.entity.GameStatus
 import com.example.spyfall.data.entity.Player
 import com.example.spyfall.data.repository.GameRepository
 import com.example.spyfall.data.repository.UserRepository
+import com.example.spyfall.utils.toPlayer
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -16,9 +17,10 @@ class CreateGameViewModel @Inject constructor(
 ) : BaseViewModel() {
 
     fun createGame(): String {
-        val player = Player(name = userRepository.getUserName()!!, status = null)
+        val user = userRepository.getUser()!!
+        val player = user.toPlayer()
         val game = Game(
-            host = player.name,
+            host = player.playerID,
             players = listOf(
                 player
             ),

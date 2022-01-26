@@ -2,6 +2,7 @@ package com.example.spyfall.data.repository
 
 import android.content.SharedPreferences
 import androidx.core.content.edit
+import com.example.spyfall.data.entity.User
 import com.example.spyfall.data.utils.Constants
 import com.example.spyfall.data.utils.GetDataException
 import com.example.spyfall.data.utils.InvalidNameException
@@ -19,16 +20,17 @@ class UserRepositoryImpl @Inject constructor(
     private val sharedPreferences: SharedPreferences
 ) : UserRepository {
 
-    override suspend fun addUserName(name: String) = callbackFlow<Result<Unit?>> {
+    override suspend fun addUser(user: User) = callbackFlow<Result<Unit?>> {
 
         val valueEventListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val users = snapshot.children.map { it.getValue(String::class.java) }
-                if (!users.contains(name)) {
+                if (!users.contains(user.name)) {
                     sharedPreferences.edit {
-                        putString(KEY_USER_NAME, name)
+                        putString(KEY_USER_ID, user.userId)
+                        putString(KEY_USER_NAME, user.name)
                     }
-                    firebaseDatabase.reference.child(USER_REFERENCES).child(name).setValue(name)
+                    firebaseDatabase.reference.child(USER_REFERENCES).child(user.userId).setValue(user.name)
                     this@callbackFlow.trySendBlocking(Result.success(Unit))
                 } else {
                     this@callbackFlow.trySendBlocking(Result.failure(InvalidNameException(Constants.INVALID_NAME_EXCEPTION)))
@@ -50,17 +52,25 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getUserName(): String? =
-        sharedPreferences.getString(KEY_USER_NAME, null)
+    override fun getUser(): User? {
+        val userID = sharedPreferences.getString(KEY_USER_ID, null)
+        val name = sharedPreferences.getString(KEY_USER_NAME, null)
+        if (userID != null && name != null) {
+            return User(userID, name)
+        }
+        return null
+    }
 
-    override suspend fun deleteName(name: String) {
-        sharedPreferences.edit{
+    override suspend fun deleteUser(user: User) {
+        sharedPreferences.edit {
+            putString(KEY_USER_ID, null)
             putString(KEY_USER_NAME, null)
         }
-        firebaseDatabase.reference.child(USER_REFERENCES).child(name).setValue(null)
+        firebaseDatabase.reference.child(USER_REFERENCES).child(user.userId).setValue(null)
     }
 
     companion object {
+        private const val KEY_USER_ID = "key_user_id"
         private const val KEY_USER_NAME = "key_user_name"
         private const val USER_REFERENCES = "users"
     }

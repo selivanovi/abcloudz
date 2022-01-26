@@ -22,7 +22,7 @@ class SplashScreen : Fragment(R.layout.fragment_splash) {
         super.onStart()
         lifecycleScope.launchWhenStarted {
             delay(1000)
-            if (viewModel.getName()?.isNotEmpty() == true) {
+            if (viewModel.getUser() != null) {
                 findNavController().navigate(R.id.action_splashScreen_to_startGameScreen)
             }else {
                 findNavController().navigate(R.id.action_splashScreen_to_enterNameScreen)

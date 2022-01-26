@@ -1,6 +1,7 @@
 package com.example.spyfall.ui.viewmodel
 
 import android.util.Log
+import com.example.spyfall.data.entity.User
 import com.example.spyfall.data.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -18,8 +19,9 @@ class SetNameViewModel @Inject constructor(
     val successAuthorizationChannel = successAuthorizationMutableChannel.receiveAsFlow()
 
     fun logIn(name: String) {
+        val user = User(name = name)
         launch {
-            userRepository.addUserName(name).collect {
+            userRepository.addUser(user).collect {
                 when {
                     it.isSuccess -> {
                         successAuthorizationMutableChannel.send(Unit)
@@ -34,18 +36,18 @@ class SetNameViewModel @Inject constructor(
         }
     }
 
-    fun getName(): String? {
-        Log.d("SetNameViewModel", userRepository.getUserName().toString())
-        return userRepository.getUserName()
+    fun getUser(): User? {
+        Log.d("SetNameViewModel", userRepository.getUser().toString())
+        return userRepository.getUser()
     }
 
     fun logOut() {
 
-        val name = getName()
+        val user = userRepository.getUser()
 
-        name?.let {
+        user?.let {
             launch {
-                userRepository.deleteName(it)
+                userRepository.deleteUser(it)
             }
         }
     }
