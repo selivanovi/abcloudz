@@ -1,8 +1,8 @@
 package com.example.spyfall.ui.viewmodel
 
 import android.util.Log
-import com.example.spyfall.data.entity.User
-import com.example.spyfall.data.repository.UserRepository
+import com.example.spyfall.domain.entity.User
+import com.example.spyfall.domain.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.collect

@@ -2,10 +2,11 @@ package com.example.spyfall.data.repository
 
 import android.content.SharedPreferences
 import androidx.core.content.edit
-import com.example.spyfall.data.entity.User
+import com.example.spyfall.domain.entity.User
 import com.example.spyfall.data.utils.Constants
 import com.example.spyfall.data.utils.GetDataException
 import com.example.spyfall.data.utils.InvalidNameException
+import com.example.spyfall.domain.repository.UserRepository
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase

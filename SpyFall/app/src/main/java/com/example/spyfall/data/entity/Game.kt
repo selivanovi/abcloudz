@@ -1,10 +1,19 @@
 package com.example.spyfall.data.entity
 
-import com.example.spyfall.utils.generateRandomID
 
-data class Game(
-    val gameID: String = generateRandomID() ,
-    val host: String?,
-    val status: GameStatus?,
-    val players: List<Player>?
-)
+class Game {
+
+    val host: String?
+    val status: GameStatus?
+
+    constructor() {
+        host = null
+        status = null
+    }
+
+
+    constructor(host: String, status: GameStatus) {
+        this.host = host
+        this.status = status
+    }
+}

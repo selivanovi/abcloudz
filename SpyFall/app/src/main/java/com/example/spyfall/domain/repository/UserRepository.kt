@@ -1,6 +1,6 @@
-package com.example.spyfall.data.repository
+package com.example.spyfall.domain.repository
 
-import com.example.spyfall.data.entity.User
+import com.example.spyfall.domain.entity.User
 import kotlinx.coroutines.flow.Flow
 
 interface UserRepository {

@@ -1,12 +1,14 @@
 package com.example.spyfall.data.repository
 
-import android.content.SharedPreferences
-import androidx.core.content.edit
+import android.util.Log
 import com.example.spyfall.data.entity.Game
+import com.example.spyfall.data.entity.GameStatus
 import com.example.spyfall.data.entity.Player
 import com.example.spyfall.data.utils.Constants
 import com.example.spyfall.data.utils.GetDataException
-import com.example.spyfall.data.utils.InvalidNameException
+import com.example.spyfall.domain.entity.PlayerDomain
+import com.example.spyfall.domain.repository.GameRepository
+import com.example.spyfall.utils.toPlayer
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -19,41 +21,52 @@ import javax.inject.Inject
 
 class GameRepositoryImpl @Inject constructor(
     private val firebaseDatabase: FirebaseDatabase,
-    private val sharedPreferences: SharedPreferences
 ) : GameRepository {
 
-    override suspend fun addGame(game: Game) {
-        firebaseDatabase.reference.child(GAMES_KEY_REFERENCES).child(game.gameID).apply {
-            child("host").setValue(game.host)
-            child("status").setValue(game.status)
-            game.players?.forEach { player ->
-                addPlayerToGame(gameID = game.gameID, player = player)
-            }
+    override suspend fun addGame(gameId: String, host: String, gameStatus: GameStatus) {
+
+        val game = Game(host = host, status = gameStatus)
+
+        firebaseDatabase.reference.child(GAMES_KEY_REFERENCES).child(gameId).apply {
+            setValue(game)
         }
     }
 
-    override suspend fun addPlayerToGame(gameID: String, player: Player) {
-        firebaseDatabase.reference.child(GAMES_KEY_REFERENCES).child(gameID)
+    override suspend fun addPlayerToGame(
+        gameId: String,
+        playerDomain: PlayerDomain
+    ) {
+        Log.d("GameRepository", playerDomain.toString())
+
+        val player = playerDomain.toPlayer()
+
+        firebaseDatabase.reference.child(GAMES_KEY_REFERENCES).child(gameId)
             .child(PLAYERS_KEY_REFERENCES)
-            .child(player.playerID).apply {
-                child("name").setValue(player.name)
-                child("status").setValue(player.status)
+            .child(playerDomain.playerId).apply {
+                setValue(player)
             }
+    }
+
+
+    override suspend fun setRolesForPlayersInGame(gameId: String) {
+        TODO("Not yet implemented")
     }
 
     override suspend fun deleteGame() {
         TODO("Not yet implemented")
     }
 
-    override fun getCurrentGameId(): String? =
-        sharedPreferences.getString(KEY_CURRENT_GAME, null)
-
-
-    override fun getPlayersFromGame(gameID: String): Flow<Result<List<Player>>> = callbackFlow {
+    override fun observePlayersFromGame(gameId: String): Flow<Result<List<PlayerDomain>>> = callbackFlow {
 
         val valueEventListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val players = snapshot.children.map { it.getValue(Player::class.java) }
+                val players = snapshot.children.map {
+                    val key = it.key
+                    val player = it.getValue(Player::class.java)
+                    if (key != null && player != null){
+                        return@map PlayerDomain(key, player.name, player.status, player.role)
+                    } else return@map null
+                }
                 this@callbackFlow.trySendBlocking(Result.success(players.filterNotNull()))
             }
 
@@ -63,14 +76,46 @@ class GameRepositoryImpl @Inject constructor(
 
         }
 
-        firebaseDatabase.reference.child(GAMES_KEY_REFERENCES).child(gameID).child(
+        firebaseDatabase.reference.child(GAMES_KEY_REFERENCES).child(gameId).child(
+            PLAYERS_KEY_REFERENCES
+        ).addValueEventListener(
+            valueEventListener
+        )
+
+        awaitClose {
+            firebaseDatabase.reference.child(GAMES_KEY_REFERENCES).child(gameId).child(
+                PLAYERS_KEY_REFERENCES
+            ).removeEventListener(valueEventListener)
+        }
+    }
+
+    override fun getPlayersFromGame(gameId: String): Flow<Result<List<PlayerDomain>>>  = callbackFlow {
+        val valueEventListener = object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val players = snapshot.children.map {
+                    val key = it.key
+                    val player = it.getValue(Player::class.java)
+                    if (key != null && player != null){
+                        return@map PlayerDomain(key, player.name, player.status, player.role)
+                    } else return@map null
+                }
+                this@callbackFlow.trySendBlocking(Result.success(players.filterNotNull()))
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                this@callbackFlow.trySendBlocking(Result.failure(GetDataException(Constants.GET_DATA_EXCEPTION)))
+            }
+
+        }
+
+        firebaseDatabase.reference.child(GAMES_KEY_REFERENCES).child(gameId).child(
             PLAYERS_KEY_REFERENCES
         ).addListenerForSingleValueEvent(
             valueEventListener
         )
 
         awaitClose {
-            firebaseDatabase.reference.child(GAMES_KEY_REFERENCES).child(gameID).child(
+            firebaseDatabase.reference.child(GAMES_KEY_REFERENCES).child(gameId).child(
                 PLAYERS_KEY_REFERENCES
             ).removeEventListener(valueEventListener)
         }

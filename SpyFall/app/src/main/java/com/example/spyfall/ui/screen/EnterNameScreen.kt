@@ -6,7 +6,7 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.spyfall.R
@@ -19,17 +19,22 @@ import kotlinx.coroutines.flow.onEach
 @AndroidEntryPoint
 class EnterNameScreen : Fragment(R.layout.fragment_enter_name) {
 
-    private val viewModel: SetNameViewModel by activityViewModels()
+    private val viewModel: SetNameViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewModel.getUser()?.let {
+            findNavController().navigate(R.id.action_enterNameScreen_to_startGameScreen, StartGameScreen.getInstance(it))
+        }
 
         viewModel.errorChannel.onEach {
             Snackbar.make(view, it.message.toString(), Snackbar.LENGTH_LONG).show()
         }.launchIn(lifecycleScope)
 
         viewModel.successAuthorizationChannel.onEach {
-            findNavController().navigate(R.id.action_enterNameScreen_to_startGameScreen)
+            findNavController().navigate(R.id.action_enterNameScreen_to_startGameScreen,
+                viewModel.getUser()?.let { user -> StartGameScreen.getInstance(user) })
         }.launchIn(lifecycleScope)
 
 

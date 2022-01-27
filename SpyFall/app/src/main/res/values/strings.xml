@@ -67,5 +67,10 @@
     <string name="buttonPlayers">Players</string>
     <string name="buttonDuration">Card duration</string>
     <string name="buttonCardDuration">Card duration</string>
+    <string name="beach">Beach</string>
+    <string name="supermarket">Supermarket</string>
+    <string name="lighthouse">Lighthouse</string>
+    <string name="office">Office</string>
+    <string name="railway_carriage">Railway carriage</string>
 
 </resources>

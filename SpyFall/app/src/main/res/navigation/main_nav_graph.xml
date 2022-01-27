@@ -12,10 +12,6 @@
             android:id="@+id/action_splashScreen_to_enterNameScreen"
             app:destination="@id/enterNameScreen"
             app:popUpTo="@id/main_nav_graph" />
-        <action
-            android:id="@+id/action_splashScreen_to_startGameScreen"
-            app:destination="@id/startGameScreen"
-            app:popUpTo="@id/main_nav_graph" />
     </fragment>
     <fragment
         android:id="@+id/enterNameScreen"
@@ -68,8 +64,8 @@
         android:name="com.example.spyfall.ui.screen.InvitePlayerScreen"
         android:label="InvitePlayerScreen" >
         <action
-            android:id="@+id/action_invitePlayerScreen_to_voteScreen"
-            app:destination="@id/voteScreen" />
+            android:id="@+id/action_invitePlayerScreen_to_roleScreen"
+            app:destination="@id/roleScreen" />
     </fragment>
     <fragment
         android:id="@+id/callLocationScreen"

@@ -16,17 +16,12 @@ import kotlinx.coroutines.delay
 @AndroidEntryPoint
 class SplashScreen : Fragment(R.layout.fragment_splash) {
 
-    private val viewModel: SetNameViewModel by activityViewModels()
 
     override fun onStart() {
         super.onStart()
         lifecycleScope.launchWhenStarted {
             delay(1000)
-            if (viewModel.getUser() != null) {
-                findNavController().navigate(R.id.action_splashScreen_to_startGameScreen)
-            }else {
-                findNavController().navigate(R.id.action_splashScreen_to_enterNameScreen)
-            }
+            findNavController().navigate(R.id.action_splashScreen_to_enterNameScreen)
         }
     }
 }
