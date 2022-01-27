@@ -24,7 +24,7 @@ class LinkView : Fragment(R.layout.fragment_link_view) {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-            Log.d("LinkView", "Attach to ${requireActivity()}")
+        Log.d("LinkView", "Attach to ${requireActivity()}")
     }
 
     override fun onCreateView(
@@ -41,12 +41,14 @@ class LinkView : Fragment(R.layout.fragment_link_view) {
 
         Log.d("LinkView", "onViewCreated")
 
+        val bundle = Bundle().putString
+
+        view.findViewById<TextView>(R.id.textViewGameId).text = viewModel.generateGameId()
+
         view.findViewById<Button>(R.id.buttonCool).setOnClickListener {
             requireParentFragment().requireParentFragment().findNavController()
-                .navigate(R.id.action_startGameScreen_to_invitePlayerScreen)
+                .navigate(R.id.action_startGameScreen_to_invitePlayerScreen, )
         }
-
-        view.findViewById<TextView>(R.id.textViewGameId).text = viewModel.createGame()
     }
 
     override fun onStart() {
