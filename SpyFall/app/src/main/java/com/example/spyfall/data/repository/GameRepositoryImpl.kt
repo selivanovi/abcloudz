@@ -6,8 +6,10 @@ import com.example.spyfall.data.entity.GameStatus
 import com.example.spyfall.data.entity.Player
 import com.example.spyfall.data.utils.Constants
 import com.example.spyfall.data.utils.GetDataException
+import com.example.spyfall.domain.entity.GameDomain
 import com.example.spyfall.domain.entity.PlayerDomain
 import com.example.spyfall.domain.repository.GameRepository
+import com.example.spyfall.utils.toGameDomain
 import com.example.spyfall.utils.toPlayer
 import com.example.spyfall.utils.toPlayerDomain
 import com.google.firebase.database.DataSnapshot
@@ -38,6 +40,33 @@ class GameRepositoryImpl @Inject constructor(
             setValue(game)
         }
     }
+
+    override suspend fun getGame(gameId: String): GameDomain =
+        suspendCancellableCoroutine { continuation ->
+            val db = firebaseDatabase.reference
+                .child(GAMES_KEY_REFERENCES)
+                .child(gameId)
+
+            val listener = object : ValueEventListener {
+                override fun onCancelled(error: DatabaseError) {
+
+                    continuation.resumeWithException(GetDataException(Constants.GET_DATA_EXCEPTION))
+                }
+
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    try {
+                        val game = snapshot.toGameDomain()
+                        game?.let {
+                            continuation.resume(it)
+                        }
+                    } catch (exception: Exception) {
+                        continuation.resumeWithException(exception)
+                    }
+                }
+            }
+            continuation.invokeOnCancellation { db.removeEventListener(listener) }
+            db.addListenerForSingleValueEvent(listener)
+        }
 
     override suspend fun addPlayerToGame(
         gameId: String,
@@ -131,6 +160,10 @@ class GameRepositoryImpl @Inject constructor(
             db.addListenerForSingleValueEvent(listener)
         }
 
+    override suspend fun setTimeForGames(gameId: String, time: Int) {
+        firebaseDatabase.reference.child(GAMES_KEY_REFERENCES).child(gameId).child("time")
+            .setValue(time)
+    }
 
 
     companion object {
