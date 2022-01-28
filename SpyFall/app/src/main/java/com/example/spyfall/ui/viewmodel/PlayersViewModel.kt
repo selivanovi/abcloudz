@@ -22,11 +22,10 @@ class PlayersViewModel @Inject constructor(
     val playersChannel = playersMutableChannel.receiveAsFlow()
 
     fun observePlayersFromGame(gameId: String) {
-        gameRepository.observePlayersFromGame(gameId).onEach {
+        gameRepository.getObservePlayersFromGame(gameId).onEach {
             when {
                 it.isSuccess -> {
                     it.getOrNull()?.let { players ->
-
                         playersMutableChannel.send(players)
                     }
                 }

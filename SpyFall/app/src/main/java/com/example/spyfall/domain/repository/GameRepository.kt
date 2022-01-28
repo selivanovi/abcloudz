@@ -15,7 +15,7 @@ interface GameRepository {
 
     suspend fun deleteGame()
 
-    fun observePlayersFromGame(gameID: String) : Flow<Result<List<PlayerDomain>>>
+    fun getObservePlayersFromGame(gameId: String) : Flow<Result<List<PlayerDomain>>>
 
-    fun getPlayersFromGame(gameId: String) : Flow<Result<List<PlayerDomain>>>
+    suspend fun getPlayersFromGame(gameId: String) : List<PlayerDomain>
 }

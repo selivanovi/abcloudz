@@ -37,6 +37,10 @@ class PlayersAdapter : RecyclerView.Adapter<PlayersAdapter.PlayerViewHolder>() {
             holder.frameLayout.background =
                 holder.itemView.resources.getDrawable(R.drawable.rounded_green_item_view, null)
         }
+        else {
+            holder.frameLayout.background =
+                holder.itemView.resources.getDrawable(R.drawable.rounded_item_view, null)
+        }
     }
 
     override fun getItemCount(): Int =

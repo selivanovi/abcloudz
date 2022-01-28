@@ -71,7 +71,7 @@ class InvitePlayerScreen : Fragment(R.layout.fragment_invite_player), StartGameL
     override fun startGame() {
         findNavController().navigate(
             R.id.roleScreen,
-            RoleScreen.getInstance(gameId, true)
+            RoleScreen.getInstance(gameId, user,true)
         )
     }
 
