@@ -7,5 +7,7 @@ data class PlayerDomain(
     val playerId: String,
     val name: String?,
     val status: PlayerStatus?,
-    var role: Role?
+    var role: Role?,
+    val vote: String? = null
+
 )

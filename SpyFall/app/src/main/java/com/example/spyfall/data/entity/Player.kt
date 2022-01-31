@@ -5,5 +5,6 @@ data class Player(
     val name: String? = null,
     val status: PlayerStatus? = null,
     val role: Role? = null,
+    val vote: String? = null
 )
 

@@ -51,7 +51,7 @@
             android:text="@string/textChooseThePerson" />
 
         <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/startGameContainerView"
+            android:id="@+id/voteContainerView"
             android:name="com.example.spyfall.ui.screen.view.ListVoteView"
             android:layout_width="match_parent"
             android:layout_height="0dp"

@@ -40,6 +40,8 @@ class RoleScreen : Fragment(R.layout.fragment_role) {
         requireArguments().getBoolean(KEY_IS_HOST)
     }
 
+    private var isSpy: Boolean = false
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -62,11 +64,17 @@ class RoleScreen : Fragment(R.layout.fragment_role) {
                         locationTextView.text = resources.getString(role.string)
                         if (role != Role.SPY) {
                             locationButton.isEnabled = false
+                        } else {
+                            isSpy = true
                         }
                     }
                 }
                 if (player.status == PlayerStatus.VOTE) {
-                        findNavController().navigate(R.id.voteScreen)
+                    viewModel.pauseCountDownTimer()
+                    findNavController().navigate(
+                        R.id.voteScreen,
+                        VoteScreen.getInstance(gameId, isSpy, false)
+                    )
                 }
                 if (player.status == PlayerStatus.LOCATION) {
 

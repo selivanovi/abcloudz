@@ -22,6 +22,10 @@ class RoleViewModel @Inject constructor(
 
     var isHost = false
 
+    private var countDownTimer: CountDownTimer? = null
+
+    private var currentTime: Long = 0
+
     private val playersMutableChannel = Channel<List<PlayerDomain>>()
     val playersChannel = playersMutableChannel.receiveAsFlow()
 
@@ -60,20 +64,33 @@ class RoleViewModel @Inject constructor(
         }
     }
 
-    fun startCountDownTimer(gameId: String) {
-       launch {
-           var duration = gameRepository.getDurationForGames(gameId)
-           Log.d("RoleViewModel", "Get duration")
-           if (duration != 0) {
-               duration *= 60
+    fun pauseCountDownTimer(){
+        countDownTimer?.cancel()
+    }
 
-               for (i in duration downTo 0) {
-                   timeMutableChannel.send(i.toLong())
-                   delay(1000)
-               }
-               timeMutableChannel.send(null)
-           }
-       }
+
+    fun startCountDownTimer(gameId: String) {
+        launch {
+            var duration = gameRepository.getDurationForGames(gameId)
+
+            duration *= 60000
+            countDownTimer = object : CountDownTimer(duration.toLong(), 1000) {
+                override fun onTick(millisUntilFinished: Long) {
+                    currentTime = millisUntilFinished
+                    launch {
+                        timeMutableChannel.send(millisUntilFinished)
+                    }
+                }
+
+                override fun onFinish() {
+                    launch {
+                        timeMutableChannel.send(null)
+                    }
+                }
+
+            }.apply { start() }
+
+        }
     }
 
     private suspend fun setRoleForPLayersInGame(gameId: String, players: List<PlayerDomain>) {
