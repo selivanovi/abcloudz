@@ -1,8 +1,6 @@
-package com.example.spyfall.ui.screen.view
+package com.example.spyfall.ui.viewmodel
 
-import com.example.spyfall.data.repository.GameRepositoryImpl
 import com.example.spyfall.domain.repository.GameRepository
-import com.example.spyfall.ui.viewmodel.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface GameRepository {
 
-    suspend fun addGame(gameId: String, host: String, gameStatus: GameStatus)
+    suspend fun addGame(gameDomain: GameDomain)
 
     suspend fun getGame(gameId: String) : GameDomain
 
@@ -17,11 +17,17 @@ interface GameRepository {
 
     suspend fun setRolesForPlayersInGame(gameId: String)
 
-    suspend fun deleteGame()
+    suspend fun deleteGame(gameId: String)
 
     fun getObservePlayersFromGame(gameId: String) : Flow<Result<List<PlayerDomain>>>
 
     suspend fun getPlayersFromGame(gameId: String) : List<PlayerDomain>
 
     suspend fun setTimeForGames(gameId: String, time: Int)
+
+    suspend fun getDurationForGames(gameId: String): Int
+
+    suspend fun setStatusForPlayerInGame(gameId: String, playerId: String, status: PlayerStatus)
+
+    suspend fun setStatusForGame(gameId: String, status: GameStatus)
 }

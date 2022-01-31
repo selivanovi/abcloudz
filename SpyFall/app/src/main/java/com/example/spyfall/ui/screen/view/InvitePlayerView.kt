@@ -32,7 +32,7 @@ class InvitePlayerView : Fragment(R.layout.fragment_invite_player_view) {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         val parent = requireParentFragment().requireParentFragment()
-        if(parent is StartGameListener){
+        if (parent is StartGameListener) {
             startGameListener = parent
         }
     }
@@ -45,7 +45,7 @@ class InvitePlayerView : Fragment(R.layout.fragment_invite_player_view) {
             setOnClickListener {
                 val gameId = parentViewModel.gameId
                 val user = parentViewModel.user
-                if (gameId != null && user != null ) {
+                if (gameId != null && user != null) {
                     viewModel.setPlayerPlayInGame(gameId, user.userId, user.name)
                 }
             }
@@ -56,10 +56,10 @@ class InvitePlayerView : Fragment(R.layout.fragment_invite_player_view) {
         }
 
         viewModel.playersChannel.onEach {
-            if(it.all { player ->  player.status == PlayerStatus.PLAY}) {
+            if (it.all { player -> player.status == PlayerStatus.PLAY }) {
                 startGameListener?.startGame()
             }
-            if(it.size >= Constants.MIN_NUMBER_PLAYERS) {
+            if (it.size >= Constants.MIN_NUMBER_PLAYERS) {
                 buttonPlay.isEnabled = true
             }
             adapter.setData(it)
@@ -72,6 +72,7 @@ class InvitePlayerView : Fragment(R.layout.fragment_invite_player_view) {
         val recyclerView = view.findViewById<RecyclerView>(R.id.playersRecyclerView)
 
         recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
+        recyclerView.layoutManager =
+            LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
     }
 }

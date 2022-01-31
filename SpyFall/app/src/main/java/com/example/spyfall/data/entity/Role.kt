@@ -11,6 +11,6 @@ enum class Role(@StringRes val string: Int, @DrawableRes val drawable: Int) {
     BEACH(R.string.beach, R.drawable.image_beach),
     SUPERMARKET(R.string.supermarket, R.drawable.image_supermarket),
     LIGHTHOUSE(R.string.lighthouse, R.drawable.image_lighthouse),
-    OFFICE(R.string.office, R.drawable.image_supermarket),
+    OFFICE(R.string.office, R.drawable.image_office),
     RAILWAY_CARRIAGE(R.string.railway_carriage, R.drawable.image_railway_carriage)
 }

@@ -72,5 +72,6 @@
     <string name="lighthouse">Lighthouse</string>
     <string name="office">Office</string>
     <string name="railway_carriage">Railway carriage</string>
+    <string name="no_limit">No limit</string>
 
 </resources>
