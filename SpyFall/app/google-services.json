@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "691511557167",
+    "firebase_url": "https://spyfall-df7f0-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "spyfall-df7f0",
+    "storage_bucket": "spyfall-df7f0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:691511557167:android:297745193c74b854289ada",
+        "android_client_info": {
+          "package_name": "com.example.spyfall"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "691511557167-dgdhbd4m4v2k3kp0k87o88idi599e8e0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBD1wzHJP1c65pIIFJIPZAblz25KGEZntE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "691511557167-dgdhbd4m4v2k3kp0k87o88idi599e8e0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
