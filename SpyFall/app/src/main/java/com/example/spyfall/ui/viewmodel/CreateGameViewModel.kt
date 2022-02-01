@@ -30,7 +30,7 @@ class CreateGameViewModel @Inject constructor(
 
         launch {
             gameRepository.addGame(gameDomain)
-            gameRepository.addPlayerToGame(gameId, user.toPlayerDomain())
+            gameRepository.addPlayerToGame(user.toPlayerDomain())
         }
         this.gameId = gameId
         this.user = user

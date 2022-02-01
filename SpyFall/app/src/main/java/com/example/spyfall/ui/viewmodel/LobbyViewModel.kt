@@ -1,0 +1,63 @@
+package com.example.spyfall.ui.viewmodel
+
+import androidx.lifecycle.viewModelScope
+import com.example.spyfall.data.entity.PlayerStatus
+import com.example.spyfall.data.utils.Constants
+import com.example.spyfall.domain.entity.PlayerDomain
+import com.example.spyfall.domain.repository.GameRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
+import javax.inject.Inject
+
+@HiltViewModel
+class LobbyViewModel @Inject constructor(
+    private val gameRepository: GameRepository
+) : BaseViewModel() {
+
+    private val lobbyStateMutableChannel = Channel<LobbyState>()
+    val lobbyState = lobbyStateMutableChannel.receiveAsFlow()
+
+    private val playersMutableChannel = Channel<List<PlayerDomain>>()
+    val playersChannel = playersMutableChannel.receiveAsFlow()
+
+    fun observePlayersFromGame() {
+
+
+        gameRepository.observePlayersFromGame().onEach { result ->
+            result.onSuccess { players ->
+
+                playersMutableChannel.send(players)
+
+                if (players.all { player -> player.status == PlayerStatus.PLAY }) {
+                    if (players.size >= Constants.MIN_NUMBER_PLAYERS){
+                        lobbyStateMutableChannel.send(PlayState)
+                    }
+                    else lobbyStateMutableChannel.send(WaitState)
+                }
+
+            }
+            result.onFailure { throwable -> errorMutableChannel.send(throwable) }
+        }.launchIn(viewModelScope)
+    }
+
+    fun setStatusPlayForPlayerInGame() {
+
+        val currentPlayer = gameRepository.currentPlayer!!
+
+        val playerDomain = currentPlayer.copy(status = PlayerStatus.PLAY)
+        launch {
+            gameRepository.addPlayerToGame(playerDomain)
+        }
+    }
+}
+
+sealed class LobbyState
+
+object PlayState : LobbyState()
+
+object WaitState : LobbyState()
+

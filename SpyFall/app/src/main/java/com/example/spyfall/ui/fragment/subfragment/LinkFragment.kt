@@ -12,13 +12,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.spyfall.R
 import com.example.spyfall.ui.fragment.listener.CreateGameListener
-import com.example.spyfall.ui.viewmodel.CreateGameIdViewModel
+import com.example.spyfall.ui.viewmodel.LinkViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class LinkFragment : Fragment(R.layout.fragment_link_view) {
 
-    private val viewModel: CreateGameIdViewModel by viewModels()
+    private val viewModel: LinkViewModel by viewModels()
     private var createGameListener: CreateGameListener? = null
 
     override fun onAttach(context: Context) {

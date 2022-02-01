@@ -1,8 +1,8 @@
 package com.example.spyfall.ui.viewmodel
 
-import android.os.CountDownTimer
 import android.util.Log
 import androidx.lifecycle.viewModelScope
+import com.example.spyfall.data.entity.GameStatus
 import com.example.spyfall.data.entity.PlayerStatus
 import com.example.spyfall.data.entity.Role
 import com.example.spyfall.domain.entity.PlayerDomain
@@ -20,80 +20,73 @@ class RoleViewModel @Inject constructor(
     private val gameRepository: GameRepository
 ) : BaseViewModel() {
 
-    var isHost = false
+    private val isHost: Boolean
+        get() = gameRepository.currentGame == null
 
-    private var countDownTimer: CountDownTimer? = null
+    private val isSpy: Boolean
+        get() = gameRepository.currentPlayer?.role == Role.SPY
 
-    private var currentTime: Long = 0
+    private val roleStateMutableChannel = Channel<RoleState>()
+    val roleStateChannel = roleStateMutableChannel.receiveAsFlow()
 
-    private val playersMutableChannel = Channel<List<PlayerDomain>>()
-    val playersChannel = playersMutableChannel.receiveAsFlow()
 
     private val timeMutableChannel = Channel<Long?>()
     val timeChannel = timeMutableChannel.receiveAsFlow()
 
-    fun observePLayersInGame(gameId: String) {
-        gameRepository.getObservePlayersFromGame(gameId).onEach {
-            when {
-                it.isSuccess -> {
-                    it.getOrNull()?.let { players ->
-                        playersMutableChannel.send(players)
-                    }
+    fun observeGame() {
+        gameRepository.observeGame().onEach { result ->
+            result.onSuccess { game ->
+                if (game.status == GameStatus.VOTE || game.status == GameStatus.GAME_OVER) {
+                    if (isSpy) {
+                        roleStateMutableChannel.send(RoleState.VoteSpyState)
+                    } else roleStateMutableChannel.send(RoleState.VotePlayerState)
                 }
-                it.isFailure -> {
-                    it.exceptionOrNull()?.let { throwable ->
-                        throw throwable
-                    }
+                if (game.status == GameStatus.LOCATION) {
+                    if (isSpy) {
+                        roleStateMutableChannel.send(RoleState.LocationPlayerState)
+                    } else roleStateMutableChannel.send(RoleState.LocationSpyState)
                 }
             }
+            result.onFailure { throwable ->
+                errorMutableChannel.send(throwable)
+            }
+
         }.launchIn(viewModelScope)
     }
 
-    fun setRolesInGame(gameId: String) {
+    fun observeRoleOfCurrentPlayer() {
+        gameRepository.observeCurrentPlayer().onEach { result ->
+            result.onSuccess { player ->
+
+                val role = player.role
+
+                if (role != null) {
+                    roleStateMutableChannel.send(RoleState.SetRoleState(role = role))
+                }
+            }
+            result.onFailure { throwable ->
+                errorMutableChannel.send(throwable)
+            }
+
+        }.launchIn(viewModelScope)
+    }
+
+    fun setRolesInGame() {
         if (!isHost) return
         launch {
-            val players = gameRepository.getPlayersFromGame(gameId)
+            val players = gameRepository.getPlayersFromGame()
             Log.d("RoleViewModel", "Get players from firebase")
-            setRoleForPLayersInGame(gameId, players)
+            setRoleForPLayersInGame(players)
         }
     }
 
-    fun setStatusForPLayerInGame(gameId: String, playerId: String, status: PlayerStatus) {
+    fun setStatusForСurrentPlayerInGame(status: PlayerStatus) {
         launch {
-            gameRepository.setStatusForPlayerInGame(gameId, playerId, status)
+            gameRepository.setStatusForCurrentPlayerInGame(status)
         }
     }
 
-    fun pauseCountDownTimer(){
-        countDownTimer?.cancel()
-    }
-
-
-    fun startCountDownTimer(gameId: String) {
-        launch {
-            var duration = gameRepository.getDurationForGames(gameId)
-
-            duration *= 60000
-            countDownTimer = object : CountDownTimer(duration.toLong(), 1000) {
-                override fun onTick(millisUntilFinished: Long) {
-                    currentTime = millisUntilFinished
-                    launch {
-                        timeMutableChannel.send(millisUntilFinished)
-                    }
-                }
-
-                override fun onFinish() {
-                    launch {
-                        timeMutableChannel.send(null)
-                    }
-                }
-
-            }.apply { start() }
-
-        }
-    }
-
-    private suspend fun setRoleForPLayersInGame(gameId: String, players: List<PlayerDomain>) {
+    private suspend fun setRoleForPLayersInGame(players: List<PlayerDomain>) {
         if (players.all { it.role != null }) return
 
         players.random().role = Role.SPY
@@ -104,8 +97,17 @@ class RoleViewModel @Inject constructor(
             if (player.role == null) {
                 player.role = role
             }
-            gameRepository.addPlayerToGame(gameId, player)
+            gameRepository.updatePlayerInGame(player)
         }
     }
 
+}
+
+sealed class RoleState {
+
+    object VoteSpyState : RoleState()
+    object VotePlayerState : RoleState()
+    object LocationSpyState : RoleState()
+    object LocationPlayerState : RoleState()
+    class SetRoleState(val role: Role) : RoleState()
 }

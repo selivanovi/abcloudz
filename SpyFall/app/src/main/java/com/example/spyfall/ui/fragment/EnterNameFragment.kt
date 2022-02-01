@@ -25,7 +25,7 @@ class EnterNameFragment : Fragment(R.layout.fragment_enter_name) {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.getUser()?.let {
-            findNavController().navigate(R.id.action_enterNameFragment_to_startGameFragment, StartGameFragment.getInstance(it))
+            findNavController().navigate(R.id.action_enterNameFragment_to_startGameFragment, StartGameFragment.getBundle(it))
         }
 
         viewModel.errorChannel.onEach {
@@ -34,7 +34,7 @@ class EnterNameFragment : Fragment(R.layout.fragment_enter_name) {
 
         viewModel.successAuthorizationChannel.onEach {
             findNavController().navigate(R.id.action_enterNameFragment_to_startGameFragment,
-                viewModel.getUser()?.let { user -> StartGameFragment.getInstance(user) })
+                viewModel.getUser()?.let { user -> StartGameFragment.getBundle(user) })
         }.launchIn(lifecycleScope)
 
 

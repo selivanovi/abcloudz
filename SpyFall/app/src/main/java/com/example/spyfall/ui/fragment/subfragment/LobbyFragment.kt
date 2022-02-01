@@ -2,7 +2,6 @@ package com.example.spyfall.ui.fragment.subfragment
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.Fragment
@@ -11,21 +10,21 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.spyfall.R
-import com.example.spyfall.data.entity.PlayerStatus
-import com.example.spyfall.data.utils.Constants
 import com.example.spyfall.ui.fragment.listener.StartGameListener
 import com.example.spyfall.ui.fragment.recyclerview.PlayersAdapter
 import com.example.spyfall.ui.viewmodel.CreateGameViewModel
-import com.example.spyfall.ui.viewmodel.PlayersViewModel
+import com.example.spyfall.ui.viewmodel.LobbyViewModel
+import com.example.spyfall.ui.viewmodel.PlayState
+import com.example.spyfall.ui.viewmodel.WaitState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
-class InvitePlayerFragment : Fragment(R.layout.fragment_invite_player_view) {
+class LobbyFragment : Fragment(R.layout.fragment_invite_player_view) {
 
     private val parentViewModel: CreateGameViewModel by viewModels(ownerProducer = { requireParentFragment().requireParentFragment() })
-    private val viewModel: PlayersViewModel by viewModels()
+    private val viewModel: LobbyViewModel by viewModels()
 
     private val adapter = PlayersAdapter()
     private var startGameListener: StartGameListener? = null
@@ -44,27 +43,24 @@ class InvitePlayerFragment : Fragment(R.layout.fragment_invite_player_view) {
         val buttonPlay = view.findViewById<AppCompatButton>(R.id.buttonPlay).apply {
             isEnabled = false
             setOnClickListener {
-                val gameId = parentViewModel.gameId
-                val user = parentViewModel.user
-                if (gameId != null && user != null) {
-                    viewModel.setPlayerPlayInGame(gameId, user.userId, user.name)
-                }
+                viewModel.setStatusPlayForPlayerInGame()
             }
         }
 
-        parentViewModel.gameId?.let {
-            viewModel.observePlayersFromGame(it)
-        }
+        viewModel.observePlayersFromGame()
 
         viewModel.playersChannel.onEach {
-            Log.d("InvitePlayerView", "$it")
-            if (it.all { player -> player.status == PlayerStatus.PLAY }) {
-                startGameListener?.startGame()
-            }
-            if (it.size >= Constants.MIN_NUMBER_PLAYERS) {
-                buttonPlay.isEnabled = true
-            }
             adapter.setData(it)
+        }.launchIn(lifecycleScope)
+
+        viewModel.lobbyState.onEach { state ->
+           when(state) {
+               is PlayState -> {
+                   startGameListener?.startGame()
+                   buttonPlay.isEnabled = true
+               }
+               is WaitState -> buttonPlay.isEnabled = false
+           }
         }.launchIn(lifecycleScope)
 
         createRecyclerView(view)

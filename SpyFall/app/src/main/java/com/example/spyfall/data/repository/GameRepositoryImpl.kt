@@ -15,14 +15,18 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.channels.trySendBlocking
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.tasks.await
 import java.lang.Exception
 import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
 class GameRepositoryImpl @Inject constructor(
-    private val firebaseDatabase: FirebaseDatabase,
+    private val firebaseDatabase: FirebaseDatabase
 ) : GameRepository {
+
+    override var currentPlayer: PlayerDomain? = null
+    override var currentGame: GameDomain? = null
 
     private val gameReferences: (gameId: String) -> DatabaseReference = { gameId ->
         firebaseDatabase.reference.child(GAMES_KEY_REFERENCES).child(gameId)
@@ -33,6 +37,10 @@ class GameRepositoryImpl @Inject constructor(
         }
 
     override suspend fun addGame(gameDomain: GameDomain) {
+
+        currentGame = gameDomain
+
+        Log.d("GameRepository", "$currentGame")
 
         gameReferences(gameDomain.gameId).setValue(gameDomain.toGame())
     }
@@ -62,27 +70,68 @@ class GameRepositoryImpl @Inject constructor(
             db.addListenerForSingleValueEvent(listener)
         }
 
+    override fun observeGame(): Flow<Result<GameDomain>> =
+        callbackFlow {
+
+            val valueEventListener = object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val game = snapshot.toGameDomain()!!
+                    this@callbackFlow.trySendBlocking(Result.success(game))
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    this@callbackFlow.trySendBlocking(
+                        Result.failure(
+                            GetDataException(Constants.GET_DATA_EXCEPTION)
+                        )
+                    )
+                }
+            }
+
+            firebaseDatabase.reference.child(GAMES_KEY_REFERENCES).child(currentGame!!.gameId)
+                .addValueEventListener(
+                    valueEventListener
+                )
+
+            awaitClose {
+                firebaseDatabase.reference.child(GAMES_KEY_REFERENCES).child(currentGame!!.gameId)
+                    .removeEventListener(valueEventListener)
+            }
+        }
+
+
     override suspend fun addPlayerToGame(
-        gameId: String,
         playerDomain: PlayerDomain
     ) {
-        Log.d("GameRepository", playerDomain.toString())
+
+
+        currentPlayer = playerDomain
+
+        Log.d("GameRepository", currentPlayer.toString())
+
 
         val player = playerDomain.toPlayer()
 
-        playerReferences(gameId, playerDomain.playerId).setValue(player)
+        playerReferences(currentPlayer!!.playerId, playerDomain.playerId).setValue(player)
+    }
+
+    override suspend fun updatePlayerInGame(playerDomain: PlayerDomain) {
+        if (currentPlayer?.playerId == playerDomain.playerId) {
+            currentPlayer = playerDomain
+        }
+
+        val player = playerDomain.toPlayer()
+
+        playerReferences(currentGame!!.gameId, playerDomain.playerId).setValue(player)
     }
 
 
-    override suspend fun setRolesForPlayersInGame(gameId: String) {
-        TODO("Not yet implemented")
+    override suspend fun deleteGame() {
+        gameReferences(currentGame!!.gameId).setValue(null)
+        currentGame = null
     }
 
-    override suspend fun deleteGame(gameId: String) {
-        gameReferences(gameId).setValue(null)
-    }
-
-    override fun getObservePlayersFromGame(gameId: String): Flow<Result<List<PlayerDomain>>> =
+    override fun observePlayersFromGame(): Flow<Result<List<PlayerDomain>>> =
         callbackFlow {
 
             val valueEventListener = object : ValueEventListener {
@@ -102,64 +151,86 @@ class GameRepositoryImpl @Inject constructor(
                 }
             }
 
-            firebaseDatabase.reference.child(GAMES_KEY_REFERENCES).child(gameId).child(
-                PLAYERS_KEY_REFERENCES
-            ).addValueEventListener(
+            firebaseDatabase.reference.child(GAMES_KEY_REFERENCES).child(currentGame!!.gameId)
+                .child(
+                    PLAYERS_KEY_REFERENCES
+                ).addValueEventListener(
                 valueEventListener
             )
 
             awaitClose {
-                firebaseDatabase.reference.child(GAMES_KEY_REFERENCES).child(gameId).child(
-                    PLAYERS_KEY_REFERENCES
-                ).removeEventListener(valueEventListener)
+                firebaseDatabase.reference.child(GAMES_KEY_REFERENCES).child(currentGame!!.gameId)
+                    .child(
+                        PLAYERS_KEY_REFERENCES
+                    ).removeEventListener(valueEventListener)
             }
         }
 
-//    override suspend fun getPlayersFromGame(gameId: String): List<PlayerDomain> =
-//        suspendCancellableCoroutine { coroutine ->
-//            firebaseDatabase.reference
-//                .child(GAMES_KEY_REFERENCES)
-//                .child(gameId).child(PLAYERS_KEY_REFERENCES).get()
-//                .addOnSuccessListener { dataShapshot ->
-//                    val players = dataShapshot.children.mapNotNull { it.toPlayerDomain() }
-//                    coroutine.resume(players)
-//                }
-//                .addOnFailureListener {
-//                    coroutine.resumeWithException(GetDataException(Constants.GET_DATA_EXCEPTION))
-//                }
-//        }
+    override fun observeCurrentPlayer(): Flow<Result<PlayerDomain>> =
+        callbackFlow {
 
-    override suspend fun getPlayersFromGame(gameId: String): List<PlayerDomain> {
-        val db = gameReferences(gameId).child(PLAYERS_KEY_REFERENCES)
-        return db.awaitsSingle()!!.children.mapNotNull { it.toPlayerDomain() }
+            val valueEventListener = object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val player = snapshot.toPlayerDomain()!!
+                    this@callbackFlow.trySendBlocking(Result.success(player))
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    this@callbackFlow.trySendBlocking(
+                        Result.failure(
+                            GetDataException(Constants.GET_DATA_EXCEPTION)
+                        )
+                    )
+                }
+            }
+
+            firebaseDatabase.reference.child(GAMES_KEY_REFERENCES).child(currentGame!!.gameId)
+                .child(
+                    PLAYERS_KEY_REFERENCES
+                ).child(currentPlayer!!.playerId).addValueEventListener(
+                valueEventListener
+            )
+
+            awaitClose {
+                firebaseDatabase.reference.child(GAMES_KEY_REFERENCES).child(currentGame!!.gameId)
+                    .child(
+                        PLAYERS_KEY_REFERENCES
+                    ).child(currentPlayer!!.playerId).removeEventListener(valueEventListener)
+            }
+        }
+
+
+    override suspend fun getPlayersFromGame(): List<PlayerDomain> {
+        val db = gameReferences(currentGame!!.gameId).child(PLAYERS_KEY_REFERENCES)
+        return db.get().await().children.mapNotNull { it.toPlayerDomain() }
     }
 
-    override suspend fun setTimeForGames(gameId: String, time: Int) {
+    override suspend fun setTimeForGames(time: Int) {
         firebaseDatabase.reference
             .child(GAMES_KEY_REFERENCES)
-            .child(gameId)
+            .child(currentGame!!.gameId)
             .child(DURATION_KEY_REFERENCES).setValue(time)
     }
 
-    override suspend fun getDurationForGames(gameId: String): Int {
-        return gameReferences(gameId).awaitsSingle()!!.child(DURATION_KEY_REFERENCES)
+    override suspend fun getDurationForGames(): Int {
+        return gameReferences(currentGame!!.gameId).get().await().child(DURATION_KEY_REFERENCES)
             .getValue(Int::class.java)!!
     }
 
-    override suspend fun setStatusForPlayerInGame(
-        gameId: String,
-        playerId: String,
+    override suspend fun setStatusForCurrentPlayerInGame(
         status: PlayerStatus
     ) {
-        playerReferences(gameId, playerId).child(STATUS_KEY_REFERENCES).setValue(status)
+        playerReferences(
+            currentGame!!.gameId,
+            currentPlayer!!.playerId
+        ).child(STATUS_KEY_REFERENCES).setValue(status)
     }
 
-    override suspend fun setStatusForGame(gameId: String, status: GameStatus) {
-        gameReferences(gameId).child(STATUS_KEY_REFERENCES).setValue(status)
+    override suspend fun setStatusForGame(status: GameStatus) {
+        gameReferences(currentGame!!.gameId).child(STATUS_KEY_REFERENCES).setValue(status)
     }
 
     companion object {
-        private const val KEY_CURRENT_GAME = "key_current_game"
         private const val GAMES_KEY_REFERENCES = "games"
         private const val PLAYERS_KEY_REFERENCES = "players"
         private const val DURATION_KEY_REFERENCES = "duration"

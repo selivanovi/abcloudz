@@ -2,11 +2,14 @@ package com.example.spyfall.ui.fragment
 
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.example.spyfall.R
@@ -29,8 +32,14 @@ class InvitePlayerFragment : Fragment(R.layout.fragment_invite_player), StartGam
         requireArguments().getString(KEY_GAME_ID)!!
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.createGame(gameId, user)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         view.findViewById<TextView>(R.id.nameTextView).text = user.name
         view.findViewById<TextView>(R.id.gameIdTextView).text =
             resources.getString(R.string.textWelcomeToTheGameWithId, gameId)
@@ -39,10 +48,20 @@ class InvitePlayerFragment : Fragment(R.layout.fragment_invite_player), StartGam
             childFragmentManager.findFragmentById(R.id.createGameContainerView) as NavHostFragment
         val childNavController = childNavHost.navController
 
+        view.findViewById<TextView>(R.id.nameTextView).text = user.name
+
+        createButtons(view, childNavController)
+    }
+
+    override fun startGame() {
+        findNavController().navigate(
+            R.id.roleFragment
+        )
+    }
+
+    private fun createButtons(view: View, childNavController: NavController) {
         val buttonPlayers = view.findViewById<MaterialButton>(R.id.buttonPlayers)
         val buttonCardDuration = view.findViewById<AppCompatButton>(R.id.buttonCardDuration)
-
-        view.findViewById<TextView>(R.id.nameTextView).text = user.name
 
         buttonPlayers.isActivated = true
         childNavController.navigate(R.id.invitePlayerView)
@@ -64,15 +83,6 @@ class InvitePlayerFragment : Fragment(R.layout.fragment_invite_player), StartGam
                 buttonPlayers.isActivated = false
             }
         }
-
-        viewModel.createGame(gameId, user)
-    }
-
-    override fun startGame() {
-        findNavController().navigate(
-            R.id.roleFragment,
-            RoleFragment.getInstance(gameId, user,true)
-        )
     }
 
     companion object {
@@ -80,9 +90,9 @@ class InvitePlayerFragment : Fragment(R.layout.fragment_invite_player), StartGam
         private const val TAG = "InvitePLayerFragment"
 
         private const val KEY_GAME_ID = "key_game_id"
-        private const val KEY_USER = "key_game"
+        private const val KEY_USER = "key_user"
 
-        fun getInstance(user: User, gameId: String): Bundle {
+        fun getBundle(user: User, gameId: String): Bundle {
             return Bundle().apply {
                 putSerializable(KEY_USER, user)
                 putString(KEY_GAME_ID, gameId)

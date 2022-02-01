@@ -18,7 +18,6 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class PickTimeFragment : Fragment(R.layout.fragment_pick_time) {
 
-    private val parentViewModel: CreateGameViewModel by viewModels(ownerProducer = { requireParentFragment().requireParentFragment() })
     private val viewModel: TimeViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -29,7 +28,7 @@ class PickTimeFragment : Fragment(R.layout.fragment_pick_time) {
 
         buttonPlay.setOnClickListener {
             val value = timePicker.value
-            parentViewModel.gameId?.let { gameId -> viewModel.setTimeForGame(gameId, times[value]) }
+            viewModel.setTimeForGame(times[value])
         }
 
 

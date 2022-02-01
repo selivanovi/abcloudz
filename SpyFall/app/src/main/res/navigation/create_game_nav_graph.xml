@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/invitePlayerView"
-        android:name="com.example.spyfall.ui.fragment.subfragment.InvitePlayerFragment"
+        android:name="com.example.spyfall.ui.fragment.subfragment.LobbyFragment"
         android:label="InvitePlayerView" />
     <fragment
         android:id="@+id/pickTimeView"

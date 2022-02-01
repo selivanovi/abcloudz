@@ -10,9 +10,9 @@ class TimeViewModel @Inject constructor(
     private val gameRepository: GameRepository
 ) : BaseViewModel() {
 
-    fun setTimeForGame(gameId: String, time: Int) {
+    fun setTimeForGame(time: Int) {
         launch {
-            gameRepository.setTimeForGames(gameId, time)
+            gameRepository.setTimeForGames(time)
         }
     }
 }

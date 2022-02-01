@@ -9,25 +9,33 @@ import kotlinx.coroutines.flow.Flow
 
 interface GameRepository {
 
+    val currentGame: GameDomain?
+    val currentPlayer: PlayerDomain?
+
     suspend fun addGame(gameDomain: GameDomain)
 
     suspend fun getGame(gameId: String) : GameDomain
 
-    suspend fun addPlayerToGame(gameId: String, playerDomain: PlayerDomain)
+    fun observeGame() : Flow<Result<GameDomain>>
 
-    suspend fun setRolesForPlayersInGame(gameId: String)
+    suspend fun deleteGame()
 
-    suspend fun deleteGame(gameId: String)
+    suspend fun addPlayerToGame(playerDomain: PlayerDomain)
 
-    fun getObservePlayersFromGame(gameId: String) : Flow<Result<List<PlayerDomain>>>
+    suspend fun updatePlayerInGame(playerDomain: PlayerDomain)
 
-    suspend fun getPlayersFromGame(gameId: String) : List<PlayerDomain>
+    suspend fun setStatusForCurrentPlayerInGame(status: PlayerStatus)
 
-    suspend fun setTimeForGames(gameId: String, time: Int)
+    fun observePlayersFromGame() : Flow<Result<List<PlayerDomain>>>
 
-    suspend fun getDurationForGames(gameId: String): Int
+    fun observeCurrentPlayer() : Flow<Result<PlayerDomain>>
 
-    suspend fun setStatusForPlayerInGame(gameId: String, playerId: String, status: PlayerStatus)
+    suspend fun getPlayersFromGame() : List<PlayerDomain>
 
-    suspend fun setStatusForGame(gameId: String, status: GameStatus)
+    suspend fun setTimeForGames(time: Int)
+
+    suspend fun getDurationForGames(): Int
+
+
+    suspend fun setStatusForGame(status: GameStatus)
 }

@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.example.spyfall.R
@@ -14,7 +15,6 @@ import com.example.spyfall.ui.fragment.listener.CreateGameListener
 
 class StartGameFragment : Fragment(R.layout.fragment_start_game), CreateGameListener {
 
-
     private val user: User by lazy {
         requireArguments().getSerializable(KEY_USER)!! as User
     }
@@ -22,18 +22,22 @@ class StartGameFragment : Fragment(R.layout.fragment_start_game), CreateGameList
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         val childNavHost =
             childFragmentManager.findFragmentById(R.id.startGameContainerView) as NavHostFragment
         val childNavController = childNavHost.navController
 
-        val joinButton = view.findViewById<AppCompatButton>(R.id.buttonJoinGame)
-        val createGameButton = view.findViewById<AppCompatButton>(R.id.buttonCreateGame)
+        childNavController.navigate(R.id.joinGameView)
 
         view.findViewById<TextView>(R.id.nameTextView).text = user.name
 
+        createButtons(view, childNavController)
+    }
+
+    private fun createButtons(view: View, childNavController: NavController) {
+        val joinButton = view.findViewById<AppCompatButton>(R.id.buttonJoinGame)
+        val createGameButton = view.findViewById<AppCompatButton>(R.id.buttonCreateGame)
+
         joinButton.isActivated = true
-        childNavController.navigate(R.id.joinGameView)
 
         joinButton.setOnClickListener {
             if (!joinButton.isActivated) {
@@ -52,18 +56,17 @@ class StartGameFragment : Fragment(R.layout.fragment_start_game), CreateGameList
                 joinButton.isActivated = false
             }
         }
-
     }
 
     override fun createGame(gameId: String) {
-        findNavController().navigate(R.id.action_startGameFragment_to_invitePlayerFragment, InvitePlayerFragment.getInstance(user, gameId))
+        findNavController().navigate(R.id.action_startGameFragment_to_invitePlayerFragment, InvitePlayerFragment.getBundle(user, gameId))
     }
 
     companion object {
         private const val TAG = "StartGameFragment"
         private const val KEY_USER = "key_user"
 
-        fun getInstance(user: User): Bundle {
+        fun getBundle(user: User): Bundle {
             return Bundle().apply {
                 putSerializable(KEY_USER, user)
             }

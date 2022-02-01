@@ -13,7 +13,7 @@ import kotlin.coroutines.CoroutineContext
 
 abstract class BaseViewModel : ViewModel(), CoroutineScope {
 
-    private val errorMutableChannel = Channel<Throwable>()
+    protected val errorMutableChannel = Channel<Throwable>()
     val errorChannel = errorMutableChannel.receiveAsFlow()
 
     private val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
