@@ -2,12 +2,16 @@ package com.example.spyfall.ui.screen
 
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.*
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
+import androidx.fragment.app.viewModels
 import com.example.spyfall.R
-import com.example.spyfall.domain.entity.User
 import com.example.spyfall.ui.screen.view.WaitingGameView
+import com.example.spyfall.ui.viewmodel.GameContinueState
 import com.example.spyfall.ui.viewmodel.VoteViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.receiveAsFlow
 
 @AndroidEntryPoint
 class VoteScreen : Fragment(R.layout.fragment_vote) {
@@ -37,6 +41,7 @@ class VoteScreen : Fragment(R.layout.fragment_vote) {
         }
 
         viewModel.observeVotePlayersInGame(gameId = gameId, isFinished)
+        viewModel.observeVotePlayersInGameNew(gameId, isFinished)
     }
 
     companion object {

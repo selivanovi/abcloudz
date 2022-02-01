@@ -17,14 +17,44 @@ class VoteViewModel @Inject constructor(
     private val gameRepository: GameRepository
 ) : BaseViewModel() {
 
-
     private val playerMutableChannel = Channel<List<PlayerDomain>>()
-    val playerChannel = playerMutableChannel.receiveAsFlow()
+    // val playerChannel = playerMutableChannel.receiveAsFlow()
 
     val playersChannel = Channel<List<PlayerDomain>>()
 
     private val resultMutableVoteChannel = Channel<Role?>()
     val resultVoteChannel = resultMutableVoteChannel.receiveAsFlow()
+
+    val voteStateChannel = Channel<VoteState>()
+
+    val currentPlayerId = "1"
+
+    fun observeVotePlayersInGameNew(gameId: String, isFinished: Boolean) {
+        gameRepository.getObservePlayersFromGame(gameId).onEach { result ->
+            result.onSuccess { players ->
+                playersChannel.trySend(players)
+                val spy = players.find { it.role == Role.SPY } ?: return@onEach
+                val playersWithoutSpy = players.filter { it.role != Role.SPY }
+                val currentPlayer = players.find { it.playerId == currentPlayerId } ?: return@onEach
+
+                if (currentPlayer.vote == null) {
+                    voteStateChannel.trySend(WaitCurrentPlayerState)
+                } else {
+                    if (playersWithoutSpy.all { it.vote != null }) {
+                        if (playersWithoutSpy.all { player -> player.vote == spy.name }) {
+                            voteStateChannel.trySend(SpyLostState)
+                        } else {
+                            if (isFinished) voteStateChannel.send(SpyWonState)
+                            else voteStateChannel.send(GameContinueState)
+                        }
+                    } else {
+                        voteStateChannel.trySend(WaitOtherPlayersState)
+                    }
+                }
+            }
+            result.onFailure { throw it }
+        }.launchIn(viewModelScope)
+    }
 
     fun observeVotePlayersInGame(gameId: String, isFinished: Boolean) {
         gameRepository.getObservePlayersFromGame(gameId).onEach {
@@ -47,10 +77,10 @@ class VoteViewModel @Inject constructor(
                         spy?.let { spyNotNull ->
                             if (playersWithoutSpy.all { player -> player.vote != null }) {
                                 if (playersWithoutSpy.all { player -> player.vote == spyNotNull.name }) {
-                                        resultMutableVoteChannel.send(playersWithoutSpy.first().role)
+                                    resultMutableVoteChannel.send(playersWithoutSpy.first().role)
                                 } else {
-                                        if (isFinished) resultMutableVoteChannel.send(Role.SPY)
-                                        else resultMutableVoteChannel.send(null)
+                                    if (isFinished) resultMutableVoteChannel.send(Role.SPY)
+                                    else resultMutableVoteChannel.send(null)
                                 }
                             }
                         }
@@ -65,3 +95,11 @@ class VoteViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 }
+
+sealed class VoteState
+
+object WaitCurrentPlayerState : VoteState()
+object WaitOtherPlayersState : VoteState()
+object SpyLostState : VoteState()
+object SpyWonState : VoteState()
+object GameContinueState : VoteState()
