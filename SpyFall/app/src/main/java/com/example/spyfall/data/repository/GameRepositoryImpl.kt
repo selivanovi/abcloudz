@@ -95,7 +95,7 @@ class GameRepositoryImpl @Inject constructor(
 
                 override fun onCancelled(error: DatabaseError) {
                     this@callbackFlow.trySendBlocking(
-                        Result.failure<List<PlayerDomain>>(
+                        Result.failure(
                             GetDataException(Constants.GET_DATA_EXCEPTION)
                         )
                     )

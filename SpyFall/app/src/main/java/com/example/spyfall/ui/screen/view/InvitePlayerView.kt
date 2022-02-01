@@ -2,6 +2,7 @@ package com.example.spyfall.ui.screen.view
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.Fragment
@@ -56,6 +57,7 @@ class InvitePlayerView : Fragment(R.layout.fragment_invite_player_view) {
         }
 
         viewModel.playersChannel.onEach {
+            Log.d("InvitePlayerView", "$it")
             if (it.all { player -> player.status == PlayerStatus.PLAY }) {
                 startGameListener?.startGame()
             }

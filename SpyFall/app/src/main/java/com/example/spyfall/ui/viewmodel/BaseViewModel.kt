@@ -1,5 +1,6 @@
 package com.example.spyfall.ui.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -24,6 +25,7 @@ abstract class BaseViewModel : ViewModel(), CoroutineScope {
 
 
     private fun handleError(throwable: Throwable) {
+        Log.e("BaseViewModel", throwable.toString())
         launch {
             errorMutableChannel.send(throwable)
         }
