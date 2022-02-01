@@ -1,4 +1,4 @@
-package com.example.spyfall.ui.screen.view
+package com.example.spyfall.ui.fragment.subfragment
 
 import android.content.Context
 import android.os.Bundle
@@ -13,8 +13,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.spyfall.R
 import com.example.spyfall.data.entity.PlayerStatus
 import com.example.spyfall.data.utils.Constants
-import com.example.spyfall.ui.screen.listener.StartGameListener
-import com.example.spyfall.ui.screen.recyclerview.PlayersAdapter
+import com.example.spyfall.ui.fragment.listener.StartGameListener
+import com.example.spyfall.ui.fragment.recyclerview.PlayersAdapter
 import com.example.spyfall.ui.viewmodel.CreateGameViewModel
 import com.example.spyfall.ui.viewmodel.PlayersViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -22,7 +22,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
-class InvitePlayerView : Fragment(R.layout.fragment_invite_player_view) {
+class InvitePlayerFragment : Fragment(R.layout.fragment_invite_player_view) {
 
     private val parentViewModel: CreateGameViewModel by viewModels(ownerProducer = { requireParentFragment().requireParentFragment() })
     private val viewModel: PlayersViewModel by viewModels()

@@ -12,14 +12,14 @@
         android:layout_gravity="center_vertical|center_horizontal"
         android:orientation="vertical">
 
-        <com.example.spyfall.ui.screen.customview.OutlineTextView
+        <com.example.spyfall.ui.fragment.customview.OutlineTextView
             android:id="@+id/spyTextView"
             android:text="@string/spy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/Text.Title.Splash" />
 
-        <com.example.spyfall.ui.screen.customview.OutlineTextView
+        <com.example.spyfall.ui.fragment.customview.OutlineTextView
             android:id="@+id/fallTextView"
             android:text="@string/fall"
             android:layout_width="wrap_content"

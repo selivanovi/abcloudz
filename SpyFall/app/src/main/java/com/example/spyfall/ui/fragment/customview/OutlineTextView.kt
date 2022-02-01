@@ -1,4 +1,4 @@
-package com.example.spyfall.ui.screen.customview
+package com.example.spyfall.ui.fragment.customview
 
 import android.content.Context
 import android.graphics.Canvas

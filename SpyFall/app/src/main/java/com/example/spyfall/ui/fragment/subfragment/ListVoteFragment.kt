@@ -1,4 +1,4 @@
-package com.example.spyfall.ui.screen.view
+package com.example.spyfall.ui.fragment.subfragment
 
 import android.os.Bundle
 import android.util.Log
@@ -9,7 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.spyfall.R
-import com.example.spyfall.ui.screen.recyclerview.VotesAdapter
+import com.example.spyfall.ui.fragment.recyclerview.VotesAdapter
 import com.example.spyfall.ui.viewmodel.VoteViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 
 @AndroidEntryPoint
-class ListVoteView : Fragment(R.layout.fragment_list_vote) {
+class ListVoteFragment : Fragment(R.layout.fragment_list_vote) {
 
     private val parentViewModel: VoteViewModel by viewModels(ownerProducer = { requireParentFragment() })
 

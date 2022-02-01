@@ -6,10 +6,10 @@
 
     <fragment
         android:id="@+id/invitePlayerView"
-        android:name="com.example.spyfall.ui.screen.view.InvitePlayerView"
+        android:name="com.example.spyfall.ui.fragment.subfragment.InvitePlayerFragment"
         android:label="InvitePlayerView" />
     <fragment
         android:id="@+id/pickTimeView"
-        android:name="com.example.spyfall.ui.screen.view.PickTimeView"
+        android:name="com.example.spyfall.ui.fragment.subfragment.PickTimeFragment"
         android:label="PickTimeView" />
 </navigation>

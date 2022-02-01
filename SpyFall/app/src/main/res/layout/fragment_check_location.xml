@@ -18,7 +18,7 @@
             android:layout_gravity="right"
             android:src="@drawable/menu" />
 
-        <com.example.spyfall.ui.screen.customview.OutlineTextView
+        <com.example.spyfall.ui.fragment.customview.OutlineTextView
             style="@style/Text.OutlineTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

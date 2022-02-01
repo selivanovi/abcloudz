@@ -1,4 +1,4 @@
-package com.example.spyfall.ui.screen
+package com.example.spyfall.ui.fragment
 
 import android.os.Bundle
 import android.view.View
@@ -6,15 +6,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
 import com.example.spyfall.R
-import com.example.spyfall.ui.screen.view.WaitingGameView
-import com.example.spyfall.ui.viewmodel.GameContinueState
+import com.example.spyfall.ui.fragment.subfragment.WaitingGameFragment
 import com.example.spyfall.ui.viewmodel.VoteViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.receiveAsFlow
 
 @AndroidEntryPoint
-class VoteScreen : Fragment(R.layout.fragment_vote) {
+class VoteFragment : Fragment(R.layout.fragment_vote) {
 
     private val viewModel: VoteViewModel by viewModels()
 
@@ -36,7 +33,7 @@ class VoteScreen : Fragment(R.layout.fragment_vote) {
 
         if (isSpy) {
             childFragmentManager.commit {
-                replace(R.id.voteContainerView, WaitingGameView())
+                replace(R.id.voteContainerView, WaitingGameFragment())
             }
         }
 

@@ -1,13 +1,12 @@
-package com.example.spyfall.ui.screen
+package com.example.spyfall.ui.fragment
 
-import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import androidx.fragment.app.Fragment
 import com.example.spyfall.R
 
-class ResultScreen : Fragment(R.layout.fragment_result) {
+class ResultFragment : Fragment(R.layout.fragment_result) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

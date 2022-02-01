@@ -122,7 +122,7 @@ class MainActivity : AppCompatActivity(), DialogListener {
         viewModel.logOut()
 
         val navController = findNavController(R.id.mainFragmentContainerView)
-        navController.navigate(R.id.enterNameScreen)
+        navController.navigate(R.id.enterNameFragment)
         moveDrawableLayout()
     }
 }

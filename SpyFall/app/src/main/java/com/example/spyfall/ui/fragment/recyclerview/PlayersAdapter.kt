@@ -1,4 +1,4 @@
-package com.example.spyfall.ui.screen.recyclerview
+package com.example.spyfall.ui.fragment.recyclerview
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,7 +7,6 @@ import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.spyfall.R
-import com.example.spyfall.data.entity.Player
 import com.example.spyfall.data.entity.PlayerStatus
 import com.example.spyfall.domain.entity.PlayerDomain
 

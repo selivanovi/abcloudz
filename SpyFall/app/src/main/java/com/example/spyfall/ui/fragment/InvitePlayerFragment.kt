@@ -1,4 +1,4 @@
-package com.example.spyfall.ui.screen
+package com.example.spyfall.ui.fragment
 
 import android.os.Bundle
 import android.util.Log
@@ -11,13 +11,13 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.example.spyfall.R
 import com.example.spyfall.domain.entity.User
-import com.example.spyfall.ui.screen.listener.StartGameListener
+import com.example.spyfall.ui.fragment.listener.StartGameListener
 import com.example.spyfall.ui.viewmodel.CreateGameViewModel
 import com.google.android.material.button.MaterialButton
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class InvitePlayerScreen : Fragment(R.layout.fragment_invite_player), StartGameListener {
+class InvitePlayerFragment : Fragment(R.layout.fragment_invite_player), StartGameListener {
 
     private val viewModel: CreateGameViewModel by viewModels()
 
@@ -70,14 +70,14 @@ class InvitePlayerScreen : Fragment(R.layout.fragment_invite_player), StartGameL
 
     override fun startGame() {
         findNavController().navigate(
-            R.id.roleScreen,
-            RoleScreen.getInstance(gameId, user,true)
+            R.id.roleFragment,
+            RoleFragment.getInstance(gameId, user,true)
         )
     }
 
     companion object {
 
-        private const val TAG = "InvitePLayerScreen"
+        private const val TAG = "InvitePLayerFragment"
 
         private const val KEY_GAME_ID = "key_game_id"
         private const val KEY_USER = "key_game"

@@ -1,4 +1,4 @@
-package com.example.spyfall.ui.screen.listener
+package com.example.spyfall.ui.fragment.listener
 
 interface StartGameListener {
 

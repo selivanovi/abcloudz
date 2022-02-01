@@ -32,7 +32,7 @@
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginBottom="4dp"/>
 
-    <com.example.spyfall.ui.screen.customview.DottedHorizontalProgressBar
+    <com.example.spyfall.ui.fragment.customview.DottedHorizontalProgressBar
         android:id="@+id/dottedHorizontalProgressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

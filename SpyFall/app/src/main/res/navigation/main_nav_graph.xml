@@ -2,85 +2,85 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_nav_graph"
-    app:startDestination="@id/splashScreen">
+    app:startDestination="@id/splashFragment">
 
     <fragment
-        android:id="@+id/splashScreen"
-        android:name="com.example.spyfall.ui.screen.SplashScreen"
-        android:label="SplashScreen" >
+        android:id="@+id/splashFragment"
+        android:name="com.example.spyfall.ui.fragment.SplashFragment"
+        android:label="SplashFragment" >
         <action
-            android:id="@+id/action_splashScreen_to_enterNameScreen"
-            app:destination="@id/enterNameScreen"
+            android:id="@+id/action_splashFragment_to_enterNameFragment"
+            app:destination="@id/enterNameFragment"
             app:popUpTo="@id/main_nav_graph" />
     </fragment>
     <fragment
-        android:id="@+id/enterNameScreen"
-        android:name="com.example.spyfall.ui.screen.EnterNameScreen"
-        android:label="EnterNameScreen" >
+        android:id="@+id/enterNameFragment"
+        android:name="com.example.spyfall.ui.fragment.EnterNameFragment"
+        android:label="EnterNameFragment" >
         <action
-            android:id="@+id/action_enterNameScreen_to_startGameScreen"
-            app:destination="@id/startGameScreen"
+            android:id="@+id/action_enterNameFragment_to_startGameFragment"
+            app:destination="@id/startGameFragment"
             app:popUpTo="@id/main_nav_graph" />
     </fragment>
     <fragment
-        android:id="@+id/startGameScreen"
-        android:name="com.example.spyfall.ui.screen.StartGameScreen"
-        android:label="StartGameScreen" >
+        android:id="@+id/startGameFragment"
+        android:name="com.example.spyfall.ui.fragment.StartGameFragment"
+        android:label="StartGameFragment" >
         <action
-            android:id="@+id/action_startGameScreen_to_invitePlayerScreen"
-            app:destination="@id/invitePlayerScreen" />
+            android:id="@+id/action_startGameFragment_to_invitePlayerFragment"
+            app:destination="@id/invitePlayerFragment" />
         <action
-            android:id="@+id/action_startGameScreen_to_roleScreen"
-            app:destination="@id/roleScreen" />
+            android:id="@+id/action_startGameFragment_to_roleFragment"
+            app:destination="@id/roleFragment" />
     </fragment>
     <fragment
-        android:id="@+id/voteScreen"
-        android:name="com.example.spyfall.ui.screen.VoteScreen"
-        android:label="VoteScreen" >
+        android:id="@+id/voteFragment"
+        android:name="com.example.spyfall.ui.fragment.VoteFragment"
+        android:label="VoteFragment" >
         <action
-            android:id="@+id/action_voteScreen_to_resultScreen"
-            app:destination="@id/resultScreen" />
+            android:id="@+id/action_voteFragment_to_resultFragment"
+            app:destination="@id/resultFragment" />
     </fragment>
     <fragment
-        android:id="@+id/invitePlayerScreen"
-        android:name="com.example.spyfall.ui.screen.InvitePlayerScreen"
-        android:label="InvitePlayerScreen" >
+        android:id="@+id/invitePlayerFragment"
+        android:name="com.example.spyfall.ui.fragment.InvitePlayerFragment"
+        android:label="InvitePlayerFragment" >
         <action
-            android:id="@+id/action_invitePlayerScreen_to_roleScreen"
-            app:destination="@id/roleScreen" />
+            android:id="@+id/action_invitePlayerFragment_to_roleFragment"
+            app:destination="@id/roleFragment" />
     </fragment>
     <fragment
-        android:id="@+id/roleScreen"
-        android:name="com.example.spyfall.ui.screen.RoleScreen"
-        android:label="RoleScreen" >
+        android:id="@+id/roleFragment"
+        android:name="com.example.spyfall.ui.fragment.RoleFragment"
+        android:label="RoleFragment" >
         <action
-            android:id="@+id/action_roleScreen_to_voteScreen"
-            app:destination="@id/voteScreen" />
+            android:id="@+id/action_roleFragment_to_voteFragment"
+            app:destination="@id/voteFragment" />
         <action
-            android:id="@+id/action_roleScreen_to_checkLocationScreen"
-            app:destination="@id/checkLocationScreen" />
+            android:id="@+id/action_roleFragment_to_checkLocationFragment"
+            app:destination="@id/checkLocationFragment" />
         <action
-            android:id="@+id/action_roleScreen_to_callLocationScreen"
-            app:destination="@id/callLocationScreen" />
+            android:id="@+id/action_roleFragment_to_callLocationFragment"
+            app:destination="@id/callLocationFragment" />
     </fragment>
     <fragment
-        android:id="@+id/callLocationScreen"
-        android:name="com.example.spyfall.ui.screen.CallLocationScreen"
-        android:label="CallLocationScreen" >
+        android:id="@+id/callLocationFragment"
+        android:name="com.example.spyfall.ui.fragment.CallLocationFragment"
+        android:label="CallLocationFragment" >
         <action
-            android:id="@+id/action_callLocationScreen_to_resultScreen"
-            app:destination="@id/resultScreen" />
+            android:id="@+id/action_callLocationFragment_to_resultFragment"
+            app:destination="@id/resultFragment" />
     </fragment>
     <fragment
-        android:id="@+id/checkLocationScreen"
-        android:name="com.example.spyfall.ui.screen.CheckLocationScreen"
-        android:label="CheckLocationScreen" >
+        android:id="@+id/checkLocationFragment"
+        android:name="com.example.spyfall.ui.fragment.CheckLocationFragment"
+        android:label="CheckLocationFragment" >
         <action
-            android:id="@+id/action_checkLocationScreen_to_resultScreen"
-            app:destination="@id/resultScreen" />
+            android:id="@+id/action_checkLocationFragment_to_resultFragment"
+            app:destination="@id/resultFragment" />
     </fragment>
     <fragment
-        android:id="@+id/resultScreen"
-        android:name="com.example.spyfall.ui.screen.ResultScreen"
-        android:label="ResultScreen" />
+        android:id="@+id/resultFragment"
+        android:name="com.example.spyfall.ui.fragment.ResultFragment"
+        android:label="ResultFragment" />
 </navigation>

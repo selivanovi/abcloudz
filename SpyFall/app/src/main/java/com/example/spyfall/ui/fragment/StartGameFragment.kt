@@ -1,4 +1,4 @@
-package com.example.spyfall.ui.screen
+package com.example.spyfall.ui.fragment
 
 import android.os.Bundle
 import android.util.Log
@@ -10,9 +10,9 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.example.spyfall.R
 import com.example.spyfall.domain.entity.User
-import com.example.spyfall.ui.screen.listener.CreateGameListener
+import com.example.spyfall.ui.fragment.listener.CreateGameListener
 
-class StartGameScreen : Fragment(R.layout.fragment_start_game), CreateGameListener {
+class StartGameFragment : Fragment(R.layout.fragment_start_game), CreateGameListener {
 
 
     private val user: User by lazy {
@@ -56,11 +56,11 @@ class StartGameScreen : Fragment(R.layout.fragment_start_game), CreateGameListen
     }
 
     override fun createGame(gameId: String) {
-        findNavController().navigate(R.id.action_startGameScreen_to_invitePlayerScreen, InvitePlayerScreen.getInstance(user, gameId))
+        findNavController().navigate(R.id.action_startGameFragment_to_invitePlayerFragment, InvitePlayerFragment.getInstance(user, gameId))
     }
 
     companion object {
-        private const val TAG = "StartGameScreen"
+        private const val TAG = "StartGameFragment"
         private const val KEY_USER = "key_user"
 
         fun getInstance(user: User): Bundle {

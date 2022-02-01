@@ -1,4 +1,4 @@
-package com.example.spyfall.ui.screen.view
+package com.example.spyfall.ui.fragment.subfragment
 
 import android.content.res.Resources
 import android.graphics.Color
@@ -16,7 +16,7 @@ import com.example.spyfall.utils.times
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class PickTimeView : Fragment(R.layout.fragment_pick_time) {
+class PickTimeFragment : Fragment(R.layout.fragment_pick_time) {
 
     private val parentViewModel: CreateGameViewModel by viewModels(ownerProducer = { requireParentFragment().requireParentFragment() })
     private val viewModel: TimeViewModel by viewModels()

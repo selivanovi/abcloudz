@@ -1,9 +1,8 @@
-package com.example.spyfall.ui.screen
+package com.example.spyfall.ui.fragment
 
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Button
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
@@ -17,14 +16,11 @@ import com.example.spyfall.data.entity.Role
 import com.example.spyfall.domain.entity.User
 import com.example.spyfall.ui.viewmodel.RoleViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
-class RoleScreen : Fragment(R.layout.fragment_role) {
+class RoleFragment : Fragment(R.layout.fragment_role) {
 
     private val viewModel: RoleViewModel by viewModels()
 
@@ -57,7 +53,7 @@ class RoleScreen : Fragment(R.layout.fragment_role) {
 
         viewModel.playersChannel.onEach {
             it.forEach { player ->
-                Log.d("RoleScreen", "User: ${user.userId} Player: ${player.playerId}")
+                Log.d("RoleFragment", "User: ${user.userId} Player: ${player.playerId}")
                 if (player.playerId == user.userId) {
                     player.role?.let { role ->
                         locationImageView.setImageResource(role.drawable)
@@ -72,8 +68,8 @@ class RoleScreen : Fragment(R.layout.fragment_role) {
                 if (player.status == PlayerStatus.VOTE) {
                     viewModel.pauseCountDownTimer()
                     findNavController().navigate(
-                        R.id.voteScreen,
-                        VoteScreen.getInstance(gameId, isSpy, false)
+                        R.id.voteFragment,
+                        VoteFragment.getInstance(gameId, isSpy, false)
                     )
                 }
                 if (player.status == PlayerStatus.LOCATION) {
@@ -87,7 +83,7 @@ class RoleScreen : Fragment(R.layout.fragment_role) {
                 val minutes = it / 60
                 val seconds = it % 60
 
-                Log.d("RoleScreen", "$minutes:$seconds")
+                Log.d("RoleFragment", "$minutes:$seconds")
 
                 timeTextView.text = "$minutes:$seconds"
             } else {

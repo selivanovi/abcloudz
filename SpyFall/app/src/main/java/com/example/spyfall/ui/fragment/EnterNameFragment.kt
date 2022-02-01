@@ -1,4 +1,4 @@
-package com.example.spyfall.ui.screen
+package com.example.spyfall.ui.fragment
 
 import android.os.Bundle
 import android.view.View
@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
-class EnterNameScreen : Fragment(R.layout.fragment_enter_name) {
+class EnterNameFragment : Fragment(R.layout.fragment_enter_name) {
 
     private val viewModel: SetNameViewModel by viewModels()
 
@@ -25,7 +25,7 @@ class EnterNameScreen : Fragment(R.layout.fragment_enter_name) {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.getUser()?.let {
-            findNavController().navigate(R.id.action_enterNameScreen_to_startGameScreen, StartGameScreen.getInstance(it))
+            findNavController().navigate(R.id.action_enterNameFragment_to_startGameFragment, StartGameFragment.getInstance(it))
         }
 
         viewModel.errorChannel.onEach {
@@ -33,8 +33,8 @@ class EnterNameScreen : Fragment(R.layout.fragment_enter_name) {
         }.launchIn(lifecycleScope)
 
         viewModel.successAuthorizationChannel.onEach {
-            findNavController().navigate(R.id.action_enterNameScreen_to_startGameScreen,
-                viewModel.getUser()?.let { user -> StartGameScreen.getInstance(user) })
+            findNavController().navigate(R.id.action_enterNameFragment_to_startGameFragment,
+                viewModel.getUser()?.let { user -> StartGameFragment.getInstance(user) })
         }.launchIn(lifecycleScope)
 
 

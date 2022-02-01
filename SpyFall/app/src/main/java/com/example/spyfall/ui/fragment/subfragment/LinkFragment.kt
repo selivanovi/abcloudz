@@ -1,4 +1,4 @@
-package com.example.spyfall.ui.screen.view
+package com.example.spyfall.ui.fragment.subfragment
 
 import android.content.Context
 import android.os.Bundle
@@ -10,15 +10,13 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import com.example.spyfall.R
-import com.example.spyfall.ui.screen.InvitePlayerScreen
-import com.example.spyfall.ui.screen.listener.CreateGameListener
+import com.example.spyfall.ui.fragment.listener.CreateGameListener
 import com.example.spyfall.ui.viewmodel.CreateGameIdViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class LinkView : Fragment(R.layout.fragment_link_view) {
+class LinkFragment : Fragment(R.layout.fragment_link_view) {
 
     private val viewModel: CreateGameIdViewModel by viewModels()
     private var createGameListener: CreateGameListener? = null
