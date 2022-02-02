@@ -6,7 +6,7 @@ import android.widget.Button
 import androidx.fragment.app.Fragment
 import com.example.spyfall.R
 
-class ResultFragment : Fragment(R.layout.fragment_result) {
+class LocationWonFragment : Fragment(R.layout.fragment_location_won) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
