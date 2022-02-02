@@ -33,7 +33,7 @@ fun DataSnapshot.toPlayerDomain(): PlayerDomain? {
     val key = this.key
     val player = this.getValue(Player::class.java)
     return if (key != null && player != null){
-        PlayerDomain(key, player.name, player.status, player.role)
+        PlayerDomain(key, player.name, player.status, player.role, player.vote)
     } else null
 }
 

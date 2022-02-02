@@ -2,9 +2,7 @@ package com.example.spyfall.ui.fragment
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.Fragment
@@ -24,21 +22,15 @@ class InvitePlayerFragment : Fragment(R.layout.fragment_invite_player), StartGam
 
     private val viewModel: CreateGameViewModel by viewModels()
 
-    private val user: User by lazy {
-        requireArguments().getSerializable(KEY_USER)!! as User
-    }
-
     private val gameId: String by lazy {
         requireArguments().getString(KEY_GAME_ID)!!
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel.createGame(gameId, user)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val user: User = requireArguments().getSerializable(KEY_USER)!! as User
+
 
         view.findViewById<TextView>(R.id.nameTextView).text = user.name
         view.findViewById<TextView>(R.id.gameIdTextView).text =
@@ -51,11 +43,14 @@ class InvitePlayerFragment : Fragment(R.layout.fragment_invite_player), StartGam
         view.findViewById<TextView>(R.id.nameTextView).text = user.name
 
         createButtons(view, childNavController)
+
+        viewModel.createGame(gameId, user)
     }
 
     override fun startGame() {
         findNavController().navigate(
-            R.id.roleFragment
+            R.id.roleFragment,
+            RoleFragment.getBundle(gameId, true)
         )
     }
 

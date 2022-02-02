@@ -23,7 +23,7 @@ import kotlinx.coroutines.flow.onEach
 @AndroidEntryPoint
 class LobbyFragment : Fragment(R.layout.fragment_invite_player_view) {
 
-    private val parentViewModel: CreateGameViewModel by viewModels(ownerProducer = { requireParentFragment().requireParentFragment() })
+    private val parentViewModel: CreateGameViewModel by viewModels(ownerProducer = {requireParentFragment().requireParentFragment()})
     private val viewModel: LobbyViewModel by viewModels()
 
     private val adapter = PlayersAdapter()
@@ -40,14 +40,16 @@ class LobbyFragment : Fragment(R.layout.fragment_invite_player_view) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val buttonPlay = view.findViewById<AppCompatButton>(R.id.buttonPlay).apply {
-            isEnabled = false
+        val gameId = parentViewModel.gameId!!
+        val playerId = parentViewModel.user!!.userId
+
+        view.findViewById<AppCompatButton>(R.id.buttonPlay).apply {
             setOnClickListener {
-                viewModel.setStatusPlayForPlayerInGame()
+                viewModel.setStatusPlayForPlayerInGame(gameId, playerId)
             }
         }
 
-        viewModel.observePlayersFromGame()
+        viewModel.observePlayersFromGame(gameId)
 
         viewModel.playersChannel.onEach {
             adapter.setData(it)
@@ -57,9 +59,7 @@ class LobbyFragment : Fragment(R.layout.fragment_invite_player_view) {
            when(state) {
                is PlayState -> {
                    startGameListener?.startGame()
-                   buttonPlay.isEnabled = true
                }
-               is WaitState -> buttonPlay.isEnabled = false
            }
         }.launchIn(lifecycleScope)
 

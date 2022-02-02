@@ -17,7 +17,7 @@
         android:text="Player"
         android:textAppearance="@style/Text.Item" />
 
-    <CheckBox
+    <androidx.appcompat.widget.AppCompatCheckBox
         android:id="@+id/voteCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -9,5 +9,4 @@ data class PlayerDomain(
     val status: PlayerStatus?,
     var role: Role?,
     val vote: String? = null
-
 )

@@ -10,7 +10,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.spyfall.R
 import com.example.spyfall.domain.entity.PlayerDomain
 
-class VotesAdapter : RecyclerView.Adapter<VotesAdapter.VoteViewHolder>() {
+class VotesAdapter(
+    private val changeItemListener: (playerDomain: PlayerDomain) -> Unit
+) : RecyclerView.Adapter<VotesAdapter.VoteViewHolder>() {
 
     private var currentCheckBox: CheckBox? = null
 
@@ -34,16 +36,19 @@ class VotesAdapter : RecyclerView.Adapter<VotesAdapter.VoteViewHolder>() {
     override fun onBindViewHolder(holder: VoteViewHolder, position: Int) {
         holder.playerTextView.text = players[position].name
         holder.voteCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked){
+            if (isChecked) {
                 currentCheckBox?.let {
-                    it.callOnClick()
+                    if (it.isChecked) it.isChecked = false
                 }
+
+                changeItemListener(players[position])
+
                 currentCheckBox = holder.voteCheckBox
                 holder.frameLayout.background =
                     holder.view.resources.getDrawable(R.drawable.rounded_fill_item_view, null)
-            }
-            else {
-                holder.view.resources.getDrawable(R.drawable.rounded_item_view, null)
+            } else {
+                holder.frameLayout.background =
+                    holder.view.resources.getDrawable(R.drawable.rounded_item_view, null)
             }
         }
     }

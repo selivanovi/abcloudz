@@ -1,6 +1,7 @@
 package com.example.spyfall.ui.viewmodel
 
 import androidx.lifecycle.viewModelScope
+import com.example.spyfall.data.entity.GameStatus
 import com.example.spyfall.data.entity.PlayerStatus
 import com.example.spyfall.data.utils.Constants
 import com.example.spyfall.domain.entity.PlayerDomain
@@ -18,16 +19,18 @@ class LobbyViewModel @Inject constructor(
     private val gameRepository: GameRepository
 ) : BaseViewModel() {
 
+    private var playerStatus: PlayerStatus? = null
+
     private val lobbyStateMutableChannel = Channel<LobbyState>()
     val lobbyState = lobbyStateMutableChannel.receiveAsFlow()
 
     private val playersMutableChannel = Channel<List<PlayerDomain>>()
     val playersChannel = playersMutableChannel.receiveAsFlow()
 
-    fun observePlayersFromGame() {
+    fun observePlayersFromGame(gameId: String) {
 
 
-        gameRepository.observePlayersFromGame().onEach { result ->
+        gameRepository.observePlayersFromGame(gameId).onEach { result ->
             result.onSuccess { players ->
 
                 playersMutableChannel.send(players)
@@ -35,6 +38,7 @@ class LobbyViewModel @Inject constructor(
                 if (players.all { player -> player.status == PlayerStatus.PLAY }) {
                     if (players.size >= Constants.MIN_NUMBER_PLAYERS){
                         lobbyStateMutableChannel.send(PlayState)
+                        gameRepository.setStatusForGame(gameId, GameStatus.PLAYING)
                     }
                     else lobbyStateMutableChannel.send(WaitState)
                 }
@@ -44,13 +48,14 @@ class LobbyViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    fun setStatusPlayForPlayerInGame() {
+    fun setStatusPlayForPlayerInGame(gameId: String, playerId: String) {
 
-        val currentPlayer = gameRepository.currentPlayer!!
+        playerStatus = if(playerStatus == null) PlayerStatus.PLAY else null
 
-        val playerDomain = currentPlayer.copy(status = PlayerStatus.PLAY)
+
+
         launch {
-            gameRepository.addPlayerToGame(playerDomain)
+            gameRepository.setStatusForPlayerInGame(gameId, playerId, playerStatus)
         }
     }
 }

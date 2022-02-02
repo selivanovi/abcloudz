@@ -7,6 +7,7 @@ import com.example.spyfall.data.entity.PlayerStatus
 import com.example.spyfall.data.entity.Role
 import com.example.spyfall.domain.entity.PlayerDomain
 import com.example.spyfall.domain.repository.GameRepository
+import com.example.spyfall.domain.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
@@ -17,14 +18,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RoleViewModel @Inject constructor(
-    private val gameRepository: GameRepository
+    private val gameRepository: GameRepository,
+    private val userRepository: UserRepository
 ) : BaseViewModel() {
 
-    private val isHost: Boolean
-        get() = gameRepository.currentGame == null
+    private var isSpy: Boolean = false
 
-    private val isSpy: Boolean
-        get() = gameRepository.currentPlayer?.role == Role.SPY
+    private val currentPlayer = userRepository.getUser()!!
 
     private val roleStateMutableChannel = Channel<RoleState>()
     val roleStateChannel = roleStateMutableChannel.receiveAsFlow()
@@ -33,10 +33,16 @@ class RoleViewModel @Inject constructor(
     private val timeMutableChannel = Channel<Long?>()
     val timeChannel = timeMutableChannel.receiveAsFlow()
 
-    fun observeGame() {
-        gameRepository.observeGame().onEach { result ->
+    fun observeGame(gameId: String) {
+        gameRepository.observeGame(gameId).onEach { result ->
             result.onSuccess { game ->
-                if (game.status == GameStatus.VOTE || game.status == GameStatus.GAME_OVER) {
+                Log.d("RoleViewModel", "observeGame: $game")
+                if (game.status == GameStatus.VOTE) {
+                    if (isSpy) {
+                        roleStateMutableChannel.send(RoleState.VoteSpyState)
+                    } else roleStateMutableChannel.send(RoleState.VotePlayerState)
+                }
+                if (game.status == GameStatus.GAME_OVER) {
                     if (isSpy) {
                         roleStateMutableChannel.send(RoleState.VoteSpyState)
                     } else roleStateMutableChannel.send(RoleState.VotePlayerState)
@@ -54,14 +60,20 @@ class RoleViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    fun observeRoleOfCurrentPlayer() {
-        gameRepository.observeCurrentPlayer().onEach { result ->
+    fun observeRoleOfCurrentPlayer(gameId: String) {
+        gameRepository.observePlayerInGame(gameId, currentPlayer.userId).onEach { result ->
             result.onSuccess { player ->
-
+                Log.d("RoleViewModel", "observeCurrentPlayer: $player")
                 val role = player.role
 
                 if (role != null) {
                     roleStateMutableChannel.send(RoleState.SetRoleState(role = role))
+                }
+                if (player.role == Role.SPY) {
+                    isSpy = true
+                    roleStateMutableChannel.send(RoleState.SpyState)
+                }else {
+                    roleStateMutableChannel.send(RoleState.PlayerState)
                 }
             }
             result.onFailure { throwable ->
@@ -71,22 +83,22 @@ class RoleViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    fun setRolesInGame() {
+    fun setRolesInGame(gameId: String, isHost: Boolean) {
         if (!isHost) return
         launch {
-            val players = gameRepository.getPlayersFromGame()
+            val players = gameRepository.getPlayersFromGame(gameId)
             Log.d("RoleViewModel", "Get players from firebase")
-            setRoleForPLayersInGame(players)
+            setRoleForPLayersInGame(gameId, players)
         }
     }
 
-    fun setStatusForСurrentPlayerInGame(status: PlayerStatus) {
+    fun setStatusForGame(gameId: String, status: GameStatus) {
         launch {
-            gameRepository.setStatusForCurrentPlayerInGame(status)
+            gameRepository.setStatusForGame(gameId, status)
         }
     }
 
-    private suspend fun setRoleForPLayersInGame(players: List<PlayerDomain>) {
+    private suspend fun setRoleForPLayersInGame(gameId: String, players: List<PlayerDomain>) {
         if (players.all { it.role != null }) return
 
         players.random().role = Role.SPY
@@ -97,7 +109,13 @@ class RoleViewModel @Inject constructor(
             if (player.role == null) {
                 player.role = role
             }
-            gameRepository.updatePlayerInGame(player)
+            gameRepository.updatePlayerInGame(gameId, player)
+        }
+    }
+
+    fun setStatusForCurrentPlayerInGame(gameId: String, status: PlayerStatus) {
+        launch {
+            gameRepository.setStatusForPlayerInGame(gameId, currentPlayer.userId, status)
         }
     }
 
@@ -109,5 +127,7 @@ sealed class RoleState {
     object VotePlayerState : RoleState()
     object LocationSpyState : RoleState()
     object LocationPlayerState : RoleState()
+    object SpyState : RoleState()
+    object PlayerState : RoleState()
     class SetRoleState(val role: Role) : RoleState()
 }

@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.spyfall.R
+import com.example.spyfall.data.entity.GameStatus
 import com.example.spyfall.data.entity.PlayerStatus
 import com.example.spyfall.ui.viewmodel.RoleState
 import com.example.spyfall.ui.viewmodel.RoleViewModel
@@ -26,49 +27,65 @@ class RoleFragment : Fragment(R.layout.fragment_role) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val gameId = requireArguments().getString(KEY_GAME_ID)!!
+        val isHost = requireArguments().getBoolean(KEY_IS_HOST)
+
         val locationTextView = view.findViewById<AppCompatTextView>(R.id.locationTextView)
         val timeTextView = view.findViewById<AppCompatTextView>(R.id.timeTextView)
         val locationImageView = view.findViewById<AppCompatImageView>(R.id.locationImageView)
         val locationButton = view.findViewById<AppCompatButton>(R.id.locationButton)
         val voteButton = view.findViewById<AppCompatButton>(R.id.voteButton)
 
+        viewModel.observeRoleOfCurrentPlayer(gameId)
+        viewModel.observeGame(gameId)
 
-        viewModel.setRolesInGame()
+
+        Log.d("RoleFragment", "set role fragment")
 
         viewModel.roleStateChannel.onEach { state ->
             when (state) {
                 is RoleState.SetRoleState -> {
                     locationTextView.text = resources.getString(state.role.string)
-                    locationImageView.background = resources.getDrawable(state.role.drawable, null)
+                    locationImageView.setImageResource(state.role.drawable)
                 }
                 is RoleState.VoteSpyState -> {
-                    //todo
+                    findNavController().navigate(R.id.spyVoteFragment, SpyVoteFragment.getBundle(gameId))
+                }
+                is RoleState.PlayerState -> {
+                    locationButton.isEnabled = false
+                }
+                is RoleState.SpyState -> {
+                    locationButton.isEnabled = true
                 }
                 is RoleState.VotePlayerState -> {
-                    findNavController().navigate(R.id.voteFragment)
+                    findNavController().navigate(R.id.locationVoteFragment, LocationVoteFragment.getBundle(gameId))
                 }
-            }
-        }.launchIn(lifecycleScope)
-
-        viewModel.timeChannel.onEach {
-            if (it != null) {
-                val minutes = it / 60
-                val seconds = it % 60
-
-                Log.d("RoleFragment", "$minutes:$seconds")
-
-                timeTextView.text = "$minutes:$seconds"
-            } else {
-
             }
         }.launchIn(lifecycleScope)
 
         voteButton.setOnClickListener {
-            viewModel.setStatusForСurrentPlayerInGame(PlayerStatus.VOTE)
+            viewModel.setStatusForGame(gameId, GameStatus.VOTE)
+            viewModel.setStatusForCurrentPlayerInGame(gameId, PlayerStatus.VOTED)
         }
 
         locationButton.setOnClickListener {
-            viewModel.setStatusForСurrentPlayerInGame(PlayerStatus.LOCATION)
+            viewModel.setStatusForGame(gameId, GameStatus.LOCATION)
+        }
+
+        viewModel.setRolesInGame(gameId, isHost)
+    }
+
+    companion object {
+
+
+        private const val KEY_GAME_ID = "key_game_id"
+        private const val KEY_IS_HOST = "key_is_host"
+
+        fun getBundle(gameId: String, isHost: Boolean): Bundle {
+            return Bundle().apply {
+                putString(KEY_GAME_ID, gameId)
+                putBoolean(KEY_IS_HOST, isHost)
+            }
         }
     }
 }

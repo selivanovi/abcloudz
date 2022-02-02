@@ -52,7 +52,6 @@
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/voteContainerView"
-            android:name="com.example.spyfall.ui.fragment.subfragment.ListVoteFragment"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="54dp"
