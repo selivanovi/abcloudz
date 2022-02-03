@@ -73,5 +73,7 @@
     <string name="office">Office</string>
     <string name="railway_carriage">Railway carriage</string>
     <string name="no_limit">No limit</string>
+    <string name="cityWonText">The city won</string>
+    <string name="spyWonText">The spy won</string>
 
 </resources>
