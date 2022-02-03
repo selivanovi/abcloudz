@@ -13,7 +13,10 @@ import com.example.spyfall.R
 import com.example.spyfall.domain.entity.User
 import com.example.spyfall.ui.fragment.listener.CreateGameListener
 
-class StartGameFragment : Fragment(R.layout.fragment_start_game), CreateGameListener {
+class StartGameFragment : BaseFragment(R.layout.fragment_start_game), CreateGameListener {
+
+    override val TAG: String
+        get() = "StartGameFragment"
 
     private val user: User by lazy {
         requireArguments().getSerializable(KEY_USER)!! as User

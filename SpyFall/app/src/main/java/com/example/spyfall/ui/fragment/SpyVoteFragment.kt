@@ -16,12 +16,16 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
-class SpyVoteFragment : Fragment(R.layout.fragment_location_vote) {
+class SpyVoteFragment : BaseFragment(R.layout.fragment_location_vote) {
+
+    override val TAG: String
+        get() = "SpyVoteFragment"
 
     private val viewModel: VoteViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
 
         val gameId = requireArguments().getString(KEY_GAME_ID)!!
 
@@ -32,9 +36,9 @@ class SpyVoteFragment : Fragment(R.layout.fragment_location_vote) {
         viewModel.voteStateChannel.onEach { state ->
             Log.d("VoteViewModel", "$state")
             when(state) {
-                is VoteState.SpyWonState -> findNavController().navigate(R.id.spyWonFragment)
-                is VoteState.SpyLostState -> findNavController().navigate(R.id.locationWonFragment)
-                is VoteState.GameContinueState -> findNavController().popBackStack()
+                is VoteState.SpyWonState -> findNavController().navigate(R.id.spyWonFragment, SpyWonFragment.getBundle(gameId))
+                is VoteState.SpyLostState -> findNavController().navigate(R.id.locationWonFragment, LocationWonFragment.getBundle(gameId))
+                is VoteState.GameContinueState -> findNavController().navigate(R.id.roleFragment, RoleFragment.getBundle(gameId))
             }
 
         }.launchIn(lifecycleScope)

@@ -18,7 +18,10 @@ import com.google.android.material.button.MaterialButton
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class InvitePlayerFragment : Fragment(R.layout.fragment_invite_player), StartGameListener {
+class InvitePlayerFragment : BaseFragment(R.layout.fragment_invite_player), StartGameListener {
+
+    override val TAG: String
+        get() = "InvitePlayerFragment"
 
     private val viewModel: CreateGameViewModel by viewModels()
 
@@ -50,7 +53,7 @@ class InvitePlayerFragment : Fragment(R.layout.fragment_invite_player), StartGam
     override fun startGame() {
         findNavController().navigate(
             R.id.roleFragment,
-            RoleFragment.getBundle(gameId, true)
+            RoleFragment.getBundle(gameId)
         )
     }
 

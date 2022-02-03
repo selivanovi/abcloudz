@@ -15,9 +15,11 @@ import com.example.spyfall.ui.fragment.recyclerview.VotesAdapter
 import com.example.spyfall.ui.viewmodel.ListVoteViewModel
 import com.example.spyfall.ui.viewmodel.VoteViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ListVoteFragment : Fragment(R.layout.fragment_list_vote) {
@@ -30,10 +32,6 @@ class ListVoteFragment : Fragment(R.layout.fragment_list_vote) {
         super.onViewCreated(view, savedInstanceState)
 
         val gameId = requireArguments().getString(KEY_GAME_ID)!!
-
-        viewModel.playersChannel.onEach {
-            adapter.setData(it)
-        }.launchIn(lifecycleScope)
 
 
         view.findViewById<AppCompatButton>(R.id.voteButton).setOnClickListener {
@@ -49,6 +47,12 @@ class ListVoteFragment : Fragment(R.layout.fragment_list_vote) {
         recyclerView.adapter = adapter
         recyclerView.layoutManager =
             LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
+
+        lifecycleScope.launch {
+            adapter.setData(
+                viewModel.playersChannel.first()
+            )
+        }
     }
 
     private fun changeItem(playerDomain: PlayerDomain) {

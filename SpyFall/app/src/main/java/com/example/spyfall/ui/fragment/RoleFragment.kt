@@ -20,7 +20,10 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
-class RoleFragment : Fragment(R.layout.fragment_role) {
+class RoleFragment : BaseFragment(R.layout.fragment_role) {
+
+    override val TAG: String
+        get() = "RoleFragment"
 
     private val viewModel: RoleViewModel by viewModels()
 
@@ -28,7 +31,6 @@ class RoleFragment : Fragment(R.layout.fragment_role) {
         super.onViewCreated(view, savedInstanceState)
 
         val gameId = requireArguments().getString(KEY_GAME_ID)!!
-        val isHost = requireArguments().getBoolean(KEY_IS_HOST)
 
         val locationTextView = view.findViewById<AppCompatTextView>(R.id.locationTextView)
         val timeTextView = view.findViewById<AppCompatTextView>(R.id.timeTextView)
@@ -38,9 +40,7 @@ class RoleFragment : Fragment(R.layout.fragment_role) {
 
         viewModel.observeRoleOfCurrentPlayer(gameId)
         viewModel.observeGame(gameId)
-
-
-        Log.d("RoleFragment", "set role fragment")
+        viewModel.setStatusForGame(gameId, GameStatus.PLAYING)
 
         viewModel.roleStateChannel.onEach { state ->
             when (state) {
@@ -60,6 +60,15 @@ class RoleFragment : Fragment(R.layout.fragment_role) {
                 is RoleState.VotePlayerState -> {
                     findNavController().navigate(R.id.locationVoteFragment, LocationVoteFragment.getBundle(gameId))
                 }
+                is RoleState.LocationSpyState -> {
+                    findNavController().navigate(R.id.callLocationFragment, CallLocationFragment.getBundle(gameId))
+                }
+                is RoleState.LocationPlayerState -> {
+                    findNavController().navigate(R.id.checkLocationFragment, CheckLocationFragment.getBundle(gameId))
+                }
+                is RoleState.VotedState -> {
+                    voteButton.isEnabled = false
+                }
             }
         }.launchIn(lifecycleScope)
 
@@ -72,19 +81,20 @@ class RoleFragment : Fragment(R.layout.fragment_role) {
             viewModel.setStatusForGame(gameId, GameStatus.LOCATION)
         }
 
-        viewModel.setRolesInGame(gameId, isHost)
+        viewModel.setRolesInGame(gameId)
+    }
+
+    override fun onStop() {
+        super.onStop()
     }
 
     companion object {
 
-
         private const val KEY_GAME_ID = "key_game_id"
-        private const val KEY_IS_HOST = "key_is_host"
 
-        fun getBundle(gameId: String, isHost: Boolean): Bundle {
+        fun getBundle(gameId: String): Bundle {
             return Bundle().apply {
                 putString(KEY_GAME_ID, gameId)
-                putBoolean(KEY_IS_HOST, isHost)
             }
         }
     }

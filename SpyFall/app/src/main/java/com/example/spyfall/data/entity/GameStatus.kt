@@ -6,5 +6,6 @@ enum class GameStatus {
     VOTE,
     LOCATION,
     GAME_OVER,
-    STOP,
+    SPY_WON,
+    LOCATION_WON
 }

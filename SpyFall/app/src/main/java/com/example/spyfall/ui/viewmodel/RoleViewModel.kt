@@ -11,6 +11,7 @@ import com.example.spyfall.domain.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -49,15 +50,15 @@ class RoleViewModel @Inject constructor(
                 }
                 if (game.status == GameStatus.LOCATION) {
                     if (isSpy) {
-                        roleStateMutableChannel.send(RoleState.LocationPlayerState)
-                    } else roleStateMutableChannel.send(RoleState.LocationSpyState)
+                        roleStateMutableChannel.send(RoleState.LocationSpyState)
+                    } else roleStateMutableChannel.send(RoleState.LocationPlayerState)
                 }
             }
             result.onFailure { throwable ->
                 errorMutableChannel.send(throwable)
             }
-
         }.launchIn(viewModelScope)
+
     }
 
     fun observeRoleOfCurrentPlayer(gameId: String) {
@@ -72,20 +73,25 @@ class RoleViewModel @Inject constructor(
                 if (player.role == Role.SPY) {
                     isSpy = true
                     roleStateMutableChannel.send(RoleState.SpyState)
-                }else {
+                } else {
                     roleStateMutableChannel.send(RoleState.PlayerState)
+                }
+                if (player.status == PlayerStatus.VOTED) {
+                    roleStateMutableChannel.send(RoleState.VotedState)
                 }
             }
             result.onFailure { throwable ->
                 errorMutableChannel.send(throwable)
             }
-
         }.launchIn(viewModelScope)
     }
 
-    fun setRolesInGame(gameId: String, isHost: Boolean) {
-        if (!isHost) return
+    fun setRolesInGame(gameId: String) {
+
+        val isHost = async { getHost(gameId) == currentPlayer.userId }
+
         launch {
+            if (isHost.await()) return@launch
             val players = gameRepository.getPlayersFromGame(gameId)
             Log.d("RoleViewModel", "Get players from firebase")
             setRoleForPLayersInGame(gameId, players)
@@ -97,6 +103,7 @@ class RoleViewModel @Inject constructor(
             gameRepository.setStatusForGame(gameId, status)
         }
     }
+
 
     private suspend fun setRoleForPLayersInGame(gameId: String, players: List<PlayerDomain>) {
         if (players.all { it.role != null }) return
@@ -119,10 +126,15 @@ class RoleViewModel @Inject constructor(
         }
     }
 
+    private suspend fun getHost(gameId: String): String {
+        return gameRepository.getGame(gameId).gameId
+    }
+
 }
 
 sealed class RoleState {
 
+    object VotedState : RoleState()
     object VoteSpyState : RoleState()
     object VotePlayerState : RoleState()
     object LocationSpyState : RoleState()

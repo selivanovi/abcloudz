@@ -83,11 +83,21 @@
     <fragment
         android:id="@+id/spyWonFragment"
         android:name="com.example.spyfall.ui.fragment.SpyWonFragment"
-        android:label="SpyWonFragment" />
+        android:label="SpyWonFragment" >
+        <action
+            android:id="@+id/action_spyWonFragment_to_startGameFragment"
+            app:destination="@id/startGameFragment"
+            app:popUpTo="@id/startGameFragment" />
+    </fragment>
     <fragment
         android:id="@+id/locationWonFragment"
         android:name="com.example.spyfall.ui.fragment.LocationWonFragment"
-        android:label="LocationWonFragment" />
+        android:label="LocationWonFragment" >
+        <action
+            android:id="@+id/action_locationWonFragment_to_startGameFragment"
+            app:destination="@id/startGameFragment"
+            app:popUpTo="@id/startGameFragment" />
+    </fragment>
     <fragment
         android:id="@+id/locationVoteFragment"
         android:name="com.example.spyfall.ui.fragment.LocationVoteFragment"

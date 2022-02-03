@@ -10,25 +10,33 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.core.view.forEach
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import com.example.spyfall.R
 import com.example.spyfall.ui.dialog.DialogListener
 import com.example.spyfall.ui.dialog.QuiteDialog
+import com.example.spyfall.ui.fragment.listener.NavigationListener
 import com.example.spyfall.ui.viewmodel.SetNameViewModel
 import com.google.android.material.navigation.NavigationView
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity(), DialogListener {
+class MainActivity : AppCompatActivity(), NavigationListener, DialogListener {
 
     private val viewModel: SetNameViewModel by viewModels()
 
-    private val drawerLayout by lazy {
-        findViewById<DrawerLayout>(R.id.drawerLayout)
+    private val drawerLayout: DrawerLayout by lazy {
+        findViewById(R.id.drawerLayout)
     }
 
-    private val navigationView by lazy {
-        findViewById<NavigationView>(R.id.navigation_view)
+    private val navigationView: NavigationView by lazy {
+        findViewById(R.id.navigation_view)
+    }
+
+    private val navController: NavController by lazy {
+        val navHost = supportFragmentManager.findFragmentById(R.id.main_nav_graph) as NavHostFragment
+        navHost.navController
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -102,10 +110,16 @@ class MainActivity : AppCompatActivity(), DialogListener {
         }
     }
 
-    /**
-    Replace with callback
-     */
-    fun moveDrawableLayout() {
+    override fun logOut() {
+        Log.d("MainActivity", "Log Out")
+        viewModel.logOut()
+
+        val navController = findNavController(R.id.mainFragmentContainerView)
+        navController.navigate(R.id.enterNameFragment)
+        openDrawer()
+    }
+
+    override fun openDrawer() {
         if (!drawerLayout.isDrawerOpen(navigationView)) {
             drawerLayout.openDrawer(navigationView)
         } else {
@@ -113,16 +127,11 @@ class MainActivity : AppCompatActivity(), DialogListener {
         }
     }
 
-    companion object {
-        private const val END_SCALE = 0.7f
+    override fun back() {
+        navController.popBackStack()
     }
 
-    override fun logOut() {
-        Log.d("MainActivity", "Log Out")
-        viewModel.logOut()
-
-        val navController = findNavController(R.id.mainFragmentContainerView)
-        navController.navigate(R.id.enterNameFragment)
-        moveDrawableLayout()
+    companion object {
+        private const val END_SCALE = 0.7f
     }
 }

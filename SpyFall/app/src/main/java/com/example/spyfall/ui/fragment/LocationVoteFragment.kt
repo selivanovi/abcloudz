@@ -16,7 +16,10 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
-class LocationVoteFragment : Fragment(R.layout.fragment_location_vote) {
+class LocationVoteFragment : BaseFragment(R.layout.fragment_location_vote) {
+
+    override val TAG: String
+        get() = "LocationVoteFragment"
 
     private val viewModel: VoteViewModel by viewModels()
 
@@ -38,9 +41,11 @@ class LocationVoteFragment : Fragment(R.layout.fragment_location_vote) {
                         replace(R.id.voteContainerView, WaitingGameFragment())
                     }
                 }
-                is VoteState.SpyWonState -> findNavController().navigate(R.id.spyWonFragment)
-                is VoteState.SpyLostState -> findNavController().navigate(R.id.spyVoteFragment)
-                is VoteState.GameContinueState -> findNavController().popBackStack()
+                is VoteState.SpyWonState -> findNavController().navigate(R.id.spyWonFragment, SpyWonFragment.getBundle(gameId))
+                is VoteState.SpyLostState -> findNavController().navigate(R.id.locationWonFragment, LocationWonFragment.getBundle(gameId))
+                is VoteState.GameContinueState -> {
+                    findNavController().navigate(R.id.roleFragment, RoleFragment.getBundle(gameId))
+                }
             }
 
         }.launchIn(lifecycleScope)

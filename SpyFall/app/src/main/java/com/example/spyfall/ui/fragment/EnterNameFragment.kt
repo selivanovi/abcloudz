@@ -17,7 +17,10 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
-class EnterNameFragment : Fragment(R.layout.fragment_enter_name) {
+class EnterNameFragment : BaseFragment(R.layout.fragment_enter_name) {
+
+    override val TAG: String
+        get() = "EnterNameFragment"
 
     private val viewModel: SetNameViewModel by viewModels()
 

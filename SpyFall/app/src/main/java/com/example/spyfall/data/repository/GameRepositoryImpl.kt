@@ -105,6 +105,10 @@ class GameRepositoryImpl @Inject constructor(
         playerReferences(gameId, playerDomain.playerId).setValue(player)
     }
 
+    override suspend fun deletePlayerInGame(gameId: String, playerId: String) {
+        playerReferences(gameId, playerId).setValue(null)
+    }
+
     override suspend fun updatePlayerInGame(gameId: String, playerDomain: PlayerDomain) {
 
         val player = playerDomain.toPlayer()
@@ -224,10 +228,10 @@ class GameRepositoryImpl @Inject constructor(
     override suspend fun setVoteForPlayerInGame(
         gameId: String,
         playerId: String,
-        playerDomain: PlayerDomain
+        vote: PlayerDomain?
     ) {
         playerReferences(gameId, playerId).child(VOTE_KEY_REFERENCES)
-            .setValue(playerDomain.playerId)
+            .setValue(vote?.playerId)
     }
 
     companion object {

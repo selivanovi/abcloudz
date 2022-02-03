@@ -30,9 +30,11 @@ interface GameRepository {
 
     suspend fun addPlayerToGame(gameId: String, playerDomain: PlayerDomain)
 
+    suspend fun deletePlayerInGame(gameId: String, playerId: String)
+
     fun observeGame(gameId: String): Flow<Result<GameDomain>>
 
     suspend fun setStatusForGame(gameId: String, status: GameStatus)
 
-    suspend fun setVoteForPlayerInGame(gameId: String, playerId: String, playerDomain: PlayerDomain)
+    suspend fun setVoteForPlayerInGame(gameId: String, playerId: String, vote: PlayerDomain?)
 }
