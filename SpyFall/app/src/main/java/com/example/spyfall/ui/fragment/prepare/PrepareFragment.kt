@@ -44,6 +44,7 @@ class PrepareFragment : BaseFragment(R.layout.fragment_prepare), StartGameListen
             childFragmentManager.findFragmentById(R.id.createGameContainerView) as NavHostFragment
         val childNavController = childNavHost.navController
 
+
         view.findViewById<TextView>(R.id.nameTextView).text = user.name
 
         createButtons(view, childNavController)
@@ -52,23 +53,17 @@ class PrepareFragment : BaseFragment(R.layout.fragment_prepare), StartGameListen
     }
 
     override fun startGame() {
-        findNavController().navigate(
-            R.id.action_invitePlayerFragment_to_roleFragment,
-            RoleFragment.getBundle(gameId)
-        )
+        findNavController().navigate(R.id.roleFragment, RoleFragment.getBundle(gameId))
     }
 
     private fun createButtons(view: View, childNavController: NavController) {
         val buttonPlayers = view.findViewById<MaterialButton>(R.id.buttonPlayers)
         val buttonCardDuration = view.findViewById<AppCompatButton>(R.id.buttonCardDuration)
 
-        buttonPlayers.isActivated = true
-        childNavController.navigate(R.id.invitePlayerView)
-
         buttonPlayers.setOnClickListener {
             if (!buttonPlayers.isActivated) {
                 Log.d(TAG, "Click players button")
-                childNavController.navigate(R.id.invitePlayerView)
+                childNavController.navigate(R.id.lobbyHostFragment)
                 buttonPlayers.isActivated = true
                 buttonCardDuration.isActivated = false
             }

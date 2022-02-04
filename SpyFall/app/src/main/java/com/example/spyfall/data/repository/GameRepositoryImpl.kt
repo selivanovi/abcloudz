@@ -66,12 +66,12 @@ class GameRepositoryImpl @Inject constructor(
             db.addListenerForSingleValueEvent(listener)
         }
 
-    override fun observeGame(gameId: String): Flow<Result<GameDomain>> =
+    override fun observeGame(gameId: String): Flow<Result<GameDomain?>> =
         callbackFlow {
 
             val valueEventListener = object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    val game = snapshot.toGameDomain()!!
+                    val game = snapshot.toGameDomain()
                     this@callbackFlow.trySendBlocking(Result.success(game))
                 }
 
@@ -158,13 +158,15 @@ class GameRepositoryImpl @Inject constructor(
             }
         }
 
-    override fun observePlayerInGame(gameId: String, playerId: String): Flow<Result<PlayerDomain>> =
+    override fun observePlayerFromGame(gameId: String, playerId: String): Flow<Result<PlayerDomain>> =
         callbackFlow {
 
             val valueEventListener = object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    val player = snapshot.toPlayerDomain()!!
-                    this@callbackFlow.trySendBlocking(Result.success(player))
+                    val player = snapshot.toPlayerDomain()
+                    player?.let {
+                        this@callbackFlow.trySendBlocking(Result.success(it))
+                    }
                 }
 
                 override fun onCancelled(error: DatabaseError) {

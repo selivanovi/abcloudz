@@ -17,7 +17,7 @@ class SplashFragment : Fragment(R.layout.fragment_splash) {
         super.onStart()
         lifecycleScope.launchWhenStarted {
             delay(1000)
-            findNavController().navigate(R.id.action_splashFragment_to_enterNameFragment)
+            findNavController().navigate(R.id.action_splashFragment_to_logInFragment)
         }
     }
 }

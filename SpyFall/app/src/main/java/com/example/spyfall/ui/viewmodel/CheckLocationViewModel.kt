@@ -24,7 +24,7 @@ class CheckLocationViewModel @Inject constructor(
                 gameRepository.observeGame(gameId).collect { result ->
                     result.onSuccess { game ->
 
-                        if (game.status != null) {
+                        if (game?.status != null) {
                             if (game.status == GameStatus.SPY_WON)
                                 checkStateMutableChannel.send(CheckState.SpyWon)
                             if (game.status == GameStatus.LOCATION_WON)

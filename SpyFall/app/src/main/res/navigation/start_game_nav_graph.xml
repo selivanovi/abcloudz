@@ -7,23 +7,7 @@
     <fragment
         android:id="@+id/joinGameView"
         android:name="com.example.spyfall.ui.fragment.start.sub.JoinGameFragment"
-        android:label="JoinGameView" >
-        <action
-            android:id="@+id/action_joinGameView_to_waitingGameView"
-            app:destination="@id/waitingGameView" />
-    </fragment>
-    <fragment
-        android:id="@+id/waitingGameView"
-        android:name="com.example.spyfall.ui.fragment.vote.sub.WaitingFragment"
-        android:label="WaitingGameView" >
-        <action
-            android:id="@+id/action_waitingGameView_to_listPlayerView"
-            app:destination="@id/listPlayerView" />
-    </fragment>
-    <fragment
-        android:id="@+id/listPlayerView"
-        android:name="com.example.spyfall.ui.fragment.subfragment.LobyyFragment"
-        android:label="ListPlayerView" />
+        android:label="JoinGameView" />
     <fragment
         android:id="@+id/linkView"
         android:name="com.example.spyfall.ui.fragment.start.sub.LinkFragment"

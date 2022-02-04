@@ -115,7 +115,7 @@ class MainActivity : AppCompatActivity(), NavigationListener, DialogListener {
         viewModel.logOut()
 
         val navController = findNavController(R.id.mainFragmentContainerView)
-        navController.navigate(R.id.enterNameFragment)
+        navController.navigate(R.id.logInFragment)
         openDrawer()
     }
 

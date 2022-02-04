@@ -10,17 +10,20 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.spyfall.R
+import com.example.spyfall.domain.entity.User
+import com.example.spyfall.ui.fragment.prepare.WaitingGameFragment
 import com.example.spyfall.ui.listener.StartGameListener
 import com.example.spyfall.ui.recyclerview.PlayersAdapter
 import com.example.spyfall.ui.viewmodel.CreateGameViewModel
 import com.example.spyfall.ui.viewmodel.LobbyViewModel
 import com.example.spyfall.ui.viewmodel.PlayState
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
+@AndroidEntryPoint
 class LobbyFragment : Fragment(R.layout.fragment_lobby) {
 
-    private val parentViewModel: CreateGameViewModel by viewModels(ownerProducer = {requireParentFragment().requireParentFragment()})
     private val viewModel: LobbyViewModel by viewModels()
 
     private val adapter = PlayersAdapter()
@@ -37,12 +40,12 @@ class LobbyFragment : Fragment(R.layout.fragment_lobby) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val gameId = parentViewModel.gameId!!
-        val playerId = parentViewModel.user!!.userId
+        val user: User = requireArguments().getSerializable(KEY_USER)!! as User
+        val gameId: String = requireArguments().getString(KEY_GAME_ID)!!
 
         view.findViewById<AppCompatButton>(R.id.buttonPlay).apply {
             setOnClickListener {
-                viewModel.setStatusPlayForPlayerInGame(gameId, playerId)
+                viewModel.setStatusPlayForPlayerInGame(gameId, user.userId)
             }
         }
 
@@ -69,5 +72,18 @@ class LobbyFragment : Fragment(R.layout.fragment_lobby) {
         recyclerView.adapter = adapter
         recyclerView.layoutManager =
             LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
+    }
+
+    companion object {
+
+        private const val KEY_GAME_ID = "key_game_id"
+        private const val KEY_USER = "key_user"
+
+        fun getBundle(user: User, gameId: String): Bundle {
+            return Bundle().apply {
+                putSerializable(KEY_USER, user)
+                putString(KEY_GAME_ID, gameId)
+            }
+        }
     }
 }

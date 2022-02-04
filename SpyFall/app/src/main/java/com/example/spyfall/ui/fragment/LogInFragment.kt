@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
-class LogInFragment : BaseFragment(R.layout.fragment_enter_name) {
+class LogInFragment : BaseFragment(R.layout.fragment_log_in) {
 
     override val TAG: String
         get() = "LogInFragment"
@@ -28,7 +28,7 @@ class LogInFragment : BaseFragment(R.layout.fragment_enter_name) {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.getUser()?.let {
-            findNavController().navigate(R.id.action_enterNameFragment_to_startGameFragment, StartFragment.getBundle(it))
+            findNavController().navigate(R.id.action_logInFragment_to_startFragment, StartFragment.getBundle(it))
         }
 
         viewModel.errorChannel.onEach {
@@ -36,7 +36,7 @@ class LogInFragment : BaseFragment(R.layout.fragment_enter_name) {
         }.launchIn(lifecycleScope)
 
         viewModel.successAuthorizationChannel.onEach {
-            findNavController().navigate(R.id.action_enterNameFragment_to_startGameFragment,
+            findNavController().navigate(R.id.action_logInFragment_to_startFragment,
                 viewModel.getUser()?.let { user -> StartFragment.getBundle(user) })
         }.launchIn(lifecycleScope)
 

@@ -1,20 +1,15 @@
 package com.example.spyfall.ui.viewmodel
 
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.example.spyfall.data.entity.GameStatus
-import com.example.spyfall.data.entity.Player
 import com.example.spyfall.data.entity.PlayerStatus
 import com.example.spyfall.data.entity.Role
 import com.example.spyfall.data.utils.Constants
-import com.example.spyfall.domain.entity.GameDomain
 import com.example.spyfall.domain.entity.PlayerDomain
 import com.example.spyfall.domain.entity.User
 import com.example.spyfall.domain.repository.GameRepository
 import com.example.spyfall.domain.repository.UserRepository
-import com.example.spyfall.utils.times
-import com.example.spyfall.utils.toPlayerDomain
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.Channel
@@ -41,7 +36,7 @@ class ResultViewModel @Inject constructor(
 
     fun observeStatusOfCurrentPlayer(gameId: String) {
         launch {
-            gameRepository.observePlayerInGame(gameId, currentPlayer.userId).collect { result ->
+            gameRepository.observePlayerFromGame(gameId, currentPlayer.userId).collect { result ->
                 result.onSuccess { player ->
                     if (player.status == PlayerStatus.EXIT)
                         deletePlayerInGame(gameId, player)
@@ -59,9 +54,14 @@ class ResultViewModel @Inject constructor(
                 if (players.size < Constants.MIN_NUMBER_PLAYERS)
                     resultStateMutableChannel.send(ResultState.Exit)
                 if (players.all { player -> player.status == PlayerStatus.Continue }) {
-                    gameRepository.setStatusForGame(gameId, GameStatus.PLAYING)
+                    gameRepository.setStatusForGame(gameId, GameStatus.CREATE)
                     resetPlayerInGame(gameId)
-                    resultStateMutableChannel.send(ResultState.Continue)
+                    val isHost = async { checkHost(gameId, currentPlayer.userId) }
+                    if (isHost.await()) {
+                        resultStateMutableChannel.send(ResultState.HostContinue)
+                    } else {
+                        resultStateMutableChannel.send(ResultState.PlayerContinue)
+                    }
                 }
                 val player = players.find { player -> player.role != Role.SPY } ?: return@onEach
                 player.role?.let { role ->
@@ -88,7 +88,7 @@ class ResultViewModel @Inject constructor(
     }
 
     private fun deletePlayerInGame(gameId: String, playerDomain: PlayerDomain) {
-        val isHost = async { getHost(gameId) == playerDomain.playerId }
+        val isHost = async { checkHost(gameId, playerDomain.playerId) }
         launch {
             gameRepository.deletePlayerInGame(gameId, currentPlayer.userId)
             if (isHost.await()) {
@@ -97,8 +97,12 @@ class ResultViewModel @Inject constructor(
         }
     }
 
+    private suspend fun checkHost(gameId: String, playerId: String): Boolean {
+        return getHost(gameId) == playerId
+    }
+
     private suspend fun getHost(gameId: String): String {
-        return gameRepository.getGame(gameId).gameId
+        return gameRepository.getGame(gameId).host!!
     }
 
     fun setStatusForCurrentPlayerInGame(gameId: String, status: PlayerStatus) {
@@ -111,5 +115,6 @@ class ResultViewModel @Inject constructor(
 sealed class ResultState {
 
     object Exit : ResultState()
-    object Continue : ResultState()
+    object HostContinue : ResultState()
+    object PlayerContinue : ResultState()
 }

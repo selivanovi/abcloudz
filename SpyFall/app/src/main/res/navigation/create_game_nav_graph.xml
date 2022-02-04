@@ -2,14 +2,14 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/create_game_nav_graph"
-    app:startDestination="@id/invitePlayerView">
+    app:startDestination="@id/lobbyHostFragment">
 
     <fragment
-        android:id="@+id/invitePlayerView"
+        android:id="@+id/lobbyHostFragment"
         android:name="com.example.spyfall.ui.fragment.prepare.sub.LobbyHostFragment"
         android:label="InvitePlayerView" />
     <fragment
         android:id="@+id/pickTimeView"
-        android:name="com.example.spyfall.ui.fragment.subfragment.PickTimeFragment"
+        android:name="com.example.spyfall.ui.fragment.prepare.sub.PickTimeFragment"
         android:label="PickTimeView" />
 </navigation>

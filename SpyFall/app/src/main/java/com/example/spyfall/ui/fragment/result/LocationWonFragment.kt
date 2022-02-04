@@ -31,18 +31,21 @@ class LocationWonFragment : BaseFragment(R.layout.fragment_location_won) {
         val gameId = requireArguments().getString(KEY_GAME_ID)!!
 
 
-        lifecycleScope.launchWhenStarted {
-            val role = viewModel.roleChannel.first()
-            view.findViewById<AppCompatImageView>(R.id.locationImageView).setImageResource(role.drawable)
-        }
+        viewModel.roleChannel.onEach { role ->
+            view.findViewById<AppCompatImageView>(R.id.locationImageView)
+                .setImageResource(role.drawable)
+        }.launchIn(lifecycleScope)
 
         viewModel.resultStateChannel.onEach { state ->
-            if (state is ResultState.Exit) {
-                findNavController().navigate(R.id.action_spyWonFragment_to_startGameFragment)
+            when (state) {
+                is ResultState.Exit ->
+                    findNavController().navigate(R.id.action_locationWonFragment_to_startFragment)
+                is ResultState.HostContinue ->
+                    findNavController().navigate(R.id.action_locationWonFragment_to_prepareFragment)
+                is ResultState.PlayerContinue ->
+                    findNavController().navigate(R.id.action_locationWonFragment_to_waitingGameFragment)
             }
-            else {
-                findNavController().navigate(R.id.roleFragment, )
-            }
+
         }.launchIn(lifecycleScope)
 
         view.findViewById<AppCompatButton>(R.id.nextCardButton).setOnClickListener {

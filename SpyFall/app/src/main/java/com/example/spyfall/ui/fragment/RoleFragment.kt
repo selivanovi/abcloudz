@@ -18,6 +18,7 @@ import com.example.spyfall.ui.fragment.vote.SpyVoteFragment
 import com.example.spyfall.ui.viewmodel.RoleState
 import com.example.spyfall.ui.viewmodel.RoleViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
@@ -48,7 +49,6 @@ class RoleFragment : BaseFragment(R.layout.fragment_role) {
             locationTextView.setText(role.string)
             locationImageView.setImageResource(role.drawable)
         }.launchIn(lifecycleScope)
-
 
 
         viewModel.roleStateChannel.onEach { state ->
@@ -99,6 +99,10 @@ class RoleFragment : BaseFragment(R.layout.fragment_role) {
         }
 
         viewModel.setRolesInGame(gameId)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
     }
 
     companion object {

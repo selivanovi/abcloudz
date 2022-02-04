@@ -13,8 +13,9 @@ import com.example.spyfall.domain.entity.User
 import com.example.spyfall.ui.fragment.BaseFragment
 import com.example.spyfall.ui.fragment.prepare.PrepareFragment
 import com.example.spyfall.ui.listener.CreateGameListener
+import com.example.spyfall.ui.listener.JoinGameListener
 
-class StartFragment : BaseFragment(R.layout.fragment_start_game), CreateGameListener {
+class StartFragment : BaseFragment(R.layout.fragment_start), CreateGameListener, JoinGameListener {
 
     override val TAG: String
         get() = "StartGameFragment"
@@ -63,9 +64,13 @@ class StartFragment : BaseFragment(R.layout.fragment_start_game), CreateGameList
     }
 
     override fun createGame(gameId: String) {
-        findNavController().navigate(R.id.action_startGameFragment_to_invitePlayerFragment,
+        findNavController().navigate(R.id.action_startFragment_to_prepareFragment,
             PrepareFragment.getBundle(user, gameId)
         )
+    }
+
+    override fun join(gameId: String) {
+        findNavController().navigate(R.id.action_startFragment_to_waitingGameFragment)
     }
 
     companion object {
@@ -78,4 +83,6 @@ class StartFragment : BaseFragment(R.layout.fragment_start_game), CreateGameList
             }
         }
     }
+
+
 }

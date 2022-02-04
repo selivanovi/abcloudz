@@ -11,7 +11,6 @@ import com.example.spyfall.domain.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -40,22 +39,24 @@ class RoleViewModel @Inject constructor(
         gameRepository.observeGame(gameId).onEach { result ->
             result.onSuccess { game ->
                 Log.d("RoleViewModel", "observeGame: $game")
-                if (game.status == GameStatus.VOTE) {
+
+                if (game?.status == GameStatus.VOTE) {
                     if (isSpy) {
                         roleStateMutableChannel.send(RoleState.VoteSpyState)
                     } else roleStateMutableChannel.send(RoleState.VotePlayerState)
                 }
-                if (game.status == GameStatus.GAME_OVER) {
+                if (game?.status == GameStatus.GAME_OVER) {
                     if (isSpy) {
                         roleStateMutableChannel.send(RoleState.VoteSpyState)
                     } else roleStateMutableChannel.send(RoleState.VotePlayerState)
                 }
-                if (game.status == GameStatus.LOCATION) {
+                if (game?.status == GameStatus.LOCATION) {
                     if (isSpy) {
                         roleStateMutableChannel.send(RoleState.LocationSpyState)
                     } else roleStateMutableChannel.send(RoleState.LocationPlayerState)
                 }
             }
+
             result.onFailure { throwable ->
                 errorMutableChannel.send(throwable)
             }
@@ -64,7 +65,7 @@ class RoleViewModel @Inject constructor(
     }
 
     fun observeRoleOfCurrentPlayer(gameId: String) {
-        gameRepository.observePlayerInGame(gameId, currentPlayer.userId).onEach { result ->
+        gameRepository.observePlayerFromGame(gameId, currentPlayer.userId).onEach { result ->
             result.onSuccess { player ->
                 Log.d("RoleViewModel", "observeCurrentPlayer: $player")
                 val role = player.role
@@ -90,10 +91,11 @@ class RoleViewModel @Inject constructor(
 
     fun setRolesInGame(gameId: String) {
 
-        val isHost = async { getHost(gameId) == currentPlayer.userId }
+        val isHostDeferred = async { checkHost(gameId, currentPlayer.userId) }
 
         launch {
-            if (isHost.await()) return@launch
+            val isHost = isHostDeferred.await()
+            if (!isHost) return@launch
             val players = gameRepository.getPlayersFromGame(gameId)
             Log.d("RoleViewModel", "Get players from firebase")
             setRoleForPLayersInGame(gameId, players)
@@ -128,8 +130,13 @@ class RoleViewModel @Inject constructor(
         }
     }
 
+
+    private suspend fun checkHost(gameId: String, playerId: String): Boolean {
+        return getHost(gameId) == playerId
+    }
+
     private suspend fun getHost(gameId: String): String {
-        return gameRepository.getGame(gameId).gameId
+        return gameRepository.getGame(gameId).host!!
     }
 
 }
@@ -143,4 +150,5 @@ sealed class RoleState {
     object LocationPlayerState : RoleState()
     object SpyState : RoleState()
     object PlayerState : RoleState()
+    object Exit : RoleState()
 }

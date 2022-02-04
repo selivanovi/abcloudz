@@ -13,7 +13,6 @@ class JoinGameFragment : Fragment(R.layout.fragment_join_game) {
         super.onViewCreated(view, savedInstanceState)
 
         view.findViewById<Button>(R.id.buttonJoinGame).setOnClickListener {
-            findNavController().navigate(R.id.action_joinGameView_to_waitingGameView)
         }
     }
 }

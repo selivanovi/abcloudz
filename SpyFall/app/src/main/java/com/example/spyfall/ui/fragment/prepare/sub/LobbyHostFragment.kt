@@ -2,6 +2,7 @@ package com.example.spyfall.ui.fragment.prepare.sub
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.Fragment
@@ -30,6 +31,8 @@ class LobbyHostFragment : Fragment(R.layout.fragment_lobby_host) {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
+        Log.d("LobbyHostFragment","onAttach")
+
         val parent = requireParentFragment().requireParentFragment()
         if (parent is StartGameListener) {
             startGameListener = parent
@@ -38,6 +41,8 @@ class LobbyHostFragment : Fragment(R.layout.fragment_lobby_host) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        Log.d("LobbyHostFragment","onViewCreated")
 
         val gameId = parentViewModel.gameId!!
         val playerId = parentViewModel.user!!.userId
@@ -63,6 +68,12 @@ class LobbyHostFragment : Fragment(R.layout.fragment_lobby_host) {
         }.launchIn(lifecycleScope)
 
         createRecyclerView(view)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d("LobbyHostFragment","onStop")
+        startGameListener = null
     }
 
     private fun createRecyclerView(view: View) {

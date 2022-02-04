@@ -9,12 +9,21 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.example.spyfall.R
 import com.example.spyfall.ui.listener.NavigationListener
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
+import kotlin.coroutines.CoroutineContext
 
 abstract class BaseFragment(
     @LayoutRes layoutId: Int
-) : Fragment(layoutId){
+) : Fragment(layoutId), CoroutineScope {
+
+
+    override val coroutineContext: CoroutineContext
+        get() = TODO("Not yet implemented")
 
     abstract val TAG: String
 
@@ -89,6 +98,7 @@ abstract class BaseFragment(
 
     override fun onDestroyView() {
         super.onDestroyView()
+        lifecycleScope.cancel()
         Log.d(TAG, "onDestroyView")
     }
 
