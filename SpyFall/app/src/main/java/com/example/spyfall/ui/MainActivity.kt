@@ -16,7 +16,7 @@ import androidx.navigation.fragment.NavHostFragment
 import com.example.spyfall.R
 import com.example.spyfall.ui.dialog.DialogListener
 import com.example.spyfall.ui.dialog.QuiteDialog
-import com.example.spyfall.ui.fragment.listener.NavigationListener
+import com.example.spyfall.ui.listener.NavigationListener
 import com.example.spyfall.ui.viewmodel.SetNameViewModel
 import com.google.android.material.navigation.NavigationView
 import dagger.hilt.android.AndroidEntryPoint

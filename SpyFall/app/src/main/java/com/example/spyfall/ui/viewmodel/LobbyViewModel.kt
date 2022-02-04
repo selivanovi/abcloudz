@@ -28,8 +28,6 @@ class LobbyViewModel @Inject constructor(
     val playersChannel = playersMutableChannel.receiveAsFlow()
 
     fun observePlayersFromGame(gameId: String) {
-
-
         gameRepository.observePlayersFromGame(gameId).onEach { result ->
             result.onSuccess { players ->
 
@@ -51,8 +49,6 @@ class LobbyViewModel @Inject constructor(
     fun setStatusPlayForPlayerInGame(gameId: String, playerId: String) {
 
         playerStatus = if(playerStatus == null) PlayerStatus.PLAY else null
-
-
 
         launch {
             gameRepository.setStatusForPlayerInGame(gameId, playerId, playerStatus)

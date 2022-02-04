@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="36dp"
-        android:text="10:15"
+        tools:text="10:15"
         android:textAppearance="@style/Text.Title"
         android:textSize="24dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -37,7 +37,6 @@
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/locationImageView"
-        tools:src="@drawable/image_beach"
         android:layout_width="760dp"
         android:layout_height="0dp"
         android:layout_marginTop="24dp"
@@ -46,7 +45,7 @@
         app:layout_constraintBottom_toTopOf="@id/controlGameLayout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/timeTextView"
-        app:layout_constraintVertical_bias="1.0" />
+        tools:src="@drawable/image_beach" />
 
     <LinearLayout
         android:id="@+id/controlGameLayout"

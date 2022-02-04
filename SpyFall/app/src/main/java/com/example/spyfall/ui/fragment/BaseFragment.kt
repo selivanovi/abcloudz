@@ -6,15 +6,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.FrameLayout
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import com.example.spyfall.R
-import com.example.spyfall.ui.fragment.listener.CreateGameListener
-import com.example.spyfall.ui.fragment.listener.NavigationListener
+import com.example.spyfall.ui.listener.NavigationListener
 
 abstract class BaseFragment(
     @LayoutRes layoutId: Int

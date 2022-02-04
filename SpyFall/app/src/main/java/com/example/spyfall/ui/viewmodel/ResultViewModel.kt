@@ -36,7 +36,7 @@ class ResultViewModel @Inject constructor(
     private val resultStateMutableChannel = Channel<ResultState>()
     val resultStateChannel = resultStateMutableChannel.receiveAsFlow()
 
-    private val roleMutableChannel = Channel<Role?>()
+    private val roleMutableChannel = Channel<Role>()
     val roleChannel = roleMutableChannel.receiveAsFlow()
 
     fun observeStatusOfCurrentPlayer(gameId: String) {
@@ -45,7 +45,6 @@ class ResultViewModel @Inject constructor(
                 result.onSuccess { player ->
                     if (player.status == PlayerStatus.EXIT)
                         deletePlayerInGame(gameId, player)
-                    roleMutableChannel.send(player.role)
                 }
                 result.onFailure { throwable ->
                     errorMutableChannel.send(throwable)
@@ -63,6 +62,10 @@ class ResultViewModel @Inject constructor(
                     gameRepository.setStatusForGame(gameId, GameStatus.PLAYING)
                     resetPlayerInGame(gameId)
                     resultStateMutableChannel.send(ResultState.Continue)
+                }
+                val player = players.find { player -> player.role != Role.SPY } ?: return@onEach
+                player.role?.let { role ->
+                    roleMutableChannel.send(role)
                 }
             }
             result.onFailure { throwable -> errorMutableChannel.send(throwable) }

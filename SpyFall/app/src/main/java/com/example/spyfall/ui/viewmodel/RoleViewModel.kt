@@ -30,6 +30,8 @@ class RoleViewModel @Inject constructor(
     private val roleStateMutableChannel = Channel<RoleState>()
     val roleStateChannel = roleStateMutableChannel.receiveAsFlow()
 
+    private val roleMutableChannel = Channel<Role>()
+    val roleChannel = roleMutableChannel.receiveAsFlow()
 
     private val timeMutableChannel = Channel<Long?>()
     val timeChannel = timeMutableChannel.receiveAsFlow()
@@ -67,8 +69,8 @@ class RoleViewModel @Inject constructor(
                 Log.d("RoleViewModel", "observeCurrentPlayer: $player")
                 val role = player.role
 
-                if (role != null) {
-                    roleStateMutableChannel.send(RoleState.SetRoleState(role = role))
+                role?.let {
+                    roleMutableChannel.send(it)
                 }
                 if (player.role == Role.SPY) {
                     isSpy = true
@@ -141,5 +143,4 @@ sealed class RoleState {
     object LocationPlayerState : RoleState()
     object SpyState : RoleState()
     object PlayerState : RoleState()
-    class SetRoleState(val role: Role) : RoleState()
 }

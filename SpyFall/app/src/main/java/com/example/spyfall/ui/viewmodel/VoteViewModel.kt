@@ -34,7 +34,7 @@ class VoteViewModel @Inject constructor(
                 val currentPlayer =
                     players.find { it.playerId == currentPlayer.userId } ?: return@onEach
 
-                if (currentPlayer.vote == null) {
+                if (currentPlayer.vote == null && currentPlayer.role != Role.SPY) {
                     voteStateMutableChannel.trySend(VoteState.WaitCurrentPlayerState)
                 } else {
                     if (playersWithoutSpy.all { it.vote != null }) {

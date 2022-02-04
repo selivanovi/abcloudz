@@ -1,18 +1,20 @@
 package com.example.spyfall.ui.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.spyfall.R
 import com.example.spyfall.data.entity.GameStatus
 import com.example.spyfall.data.entity.PlayerStatus
+import com.example.spyfall.ui.fragment.location.CallLocationFragment
+import com.example.spyfall.ui.fragment.location.CheckLocationFragment
+import com.example.spyfall.ui.fragment.vote.LocationVoteFragment
+import com.example.spyfall.ui.fragment.vote.SpyVoteFragment
 import com.example.spyfall.ui.viewmodel.RoleState
 import com.example.spyfall.ui.viewmodel.RoleViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -42,14 +44,20 @@ class RoleFragment : BaseFragment(R.layout.fragment_role) {
         viewModel.observeGame(gameId)
         viewModel.setStatusForGame(gameId, GameStatus.PLAYING)
 
+        viewModel.roleChannel.onEach { role ->
+            locationTextView.setText(role.string)
+            locationImageView.setImageResource(role.drawable)
+        }.launchIn(lifecycleScope)
+
+
+
         viewModel.roleStateChannel.onEach { state ->
             when (state) {
-                is RoleState.SetRoleState -> {
-                    locationTextView.text = resources.getString(state.role.string)
-                    locationImageView.setImageResource(state.role.drawable)
-                }
                 is RoleState.VoteSpyState -> {
-                    findNavController().navigate(R.id.spyVoteFragment, SpyVoteFragment.getBundle(gameId))
+                    findNavController().navigate(
+                        R.id.spyVoteFragment,
+                        SpyVoteFragment.getBundle(gameId)
+                    )
                 }
                 is RoleState.PlayerState -> {
                     locationButton.isEnabled = false
@@ -58,13 +66,22 @@ class RoleFragment : BaseFragment(R.layout.fragment_role) {
                     locationButton.isEnabled = true
                 }
                 is RoleState.VotePlayerState -> {
-                    findNavController().navigate(R.id.locationVoteFragment, LocationVoteFragment.getBundle(gameId))
+                    findNavController().navigate(
+                        R.id.locationVoteFragment,
+                        LocationVoteFragment.getBundle(gameId)
+                    )
                 }
                 is RoleState.LocationSpyState -> {
-                    findNavController().navigate(R.id.callLocationFragment, CallLocationFragment.getBundle(gameId))
+                    findNavController().navigate(
+                        R.id.callLocationFragment,
+                        CallLocationFragment.getBundle(gameId)
+                    )
                 }
                 is RoleState.LocationPlayerState -> {
-                    findNavController().navigate(R.id.checkLocationFragment, CheckLocationFragment.getBundle(gameId))
+                    findNavController().navigate(
+                        R.id.checkLocationFragment,
+                        CheckLocationFragment.getBundle(gameId)
+                    )
                 }
                 is RoleState.VotedState -> {
                     voteButton.isEnabled = false
@@ -82,10 +99,6 @@ class RoleFragment : BaseFragment(R.layout.fragment_role) {
         }
 
         viewModel.setRolesInGame(gameId)
-    }
-
-    override fun onStop() {
-        super.onStop()
     }
 
     companion object {
