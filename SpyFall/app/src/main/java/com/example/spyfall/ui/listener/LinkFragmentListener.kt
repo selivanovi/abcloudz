@@ -1,6 +1,6 @@
 package com.example.spyfall.ui.listener
 
-interface CreateGameListener {
+interface LinkFragmentListener {
 
     fun createGame(gameId: String)
 }
