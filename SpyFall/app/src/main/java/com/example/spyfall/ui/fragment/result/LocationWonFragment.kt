@@ -10,10 +10,10 @@ import androidx.navigation.fragment.findNavController
 import com.example.spyfall.R
 import com.example.spyfall.data.entity.PlayerStatus
 import com.example.spyfall.ui.fragment.BaseFragment
-import com.example.spyfall.ui.viewmodel.ResultState
+import com.example.spyfall.ui.fragment.prepare.PrepareFragment
+import com.example.spyfall.ui.state.ResultState
 import com.example.spyfall.ui.viewmodel.ResultViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
@@ -41,9 +41,15 @@ class LocationWonFragment : BaseFragment(R.layout.fragment_location_won) {
                 is ResultState.Exit ->
                     findNavController().navigate(R.id.action_locationWonFragment_to_startFragment)
                 is ResultState.HostContinue ->
-                    findNavController().navigate(R.id.action_locationWonFragment_to_prepareFragment)
+                    findNavController().navigate(
+                        R.id.action_locationWonFragment_to_prepareFragment,
+                        PrepareFragment.getBundle(gameId)
+                    )
                 is ResultState.PlayerContinue ->
-                    findNavController().navigate(R.id.action_locationWonFragment_to_waitingGameFragment)
+                    findNavController().navigate(
+                        R.id.action_locationWonFragment_to_waitingGameFragment,
+                        PrepareFragment.getBundle(gameId)
+                    )
             }
 
         }.launchIn(lifecycleScope)

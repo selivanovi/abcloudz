@@ -3,7 +3,9 @@ package com.example.spyfall.ui.fragment.vote
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.fragment.app.*
+import androidx.fragment.app.add
+import androidx.fragment.app.commit
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.spyfall.R
@@ -13,7 +15,7 @@ import com.example.spyfall.ui.fragment.result.LocationWonFragment
 import com.example.spyfall.ui.fragment.result.SpyWonFragment
 import com.example.spyfall.ui.fragment.vote.sub.ListVoteFragment
 import com.example.spyfall.ui.fragment.vote.sub.WaitingFragment
-import com.example.spyfall.ui.viewmodel.VoteState
+import com.example.spyfall.ui.state.VoteState
 import com.example.spyfall.ui.viewmodel.VoteViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
@@ -38,16 +40,22 @@ class LocationVoteFragment : BaseFragment(R.layout.fragment_location_vote) {
 
         viewModel.voteStateChannel.onEach { state ->
             Log.d("VoteViewModel", "$state")
-            when(state) {
-                is VoteState.WaitOtherPlayersState -> {
+            when (state) {
+                is VoteState.WaitOtherPlayers -> {
                     childFragmentManager.commit(allowStateLoss = true) {
                         setReorderingAllowed(true)
                         replace(R.id.voteContainerView, WaitingFragment())
                     }
                 }
-                is VoteState.SpyWonState -> findNavController().navigate(R.id.spyWonFragment, SpyWonFragment.getBundle(gameId))
-                is VoteState.SpyLostState -> findNavController().navigate(R.id.locationWonFragment, LocationWonFragment.getBundle(gameId))
-                is VoteState.GameContinueState -> {
+                is VoteState.SpyWon -> findNavController().navigate(
+                    R.id.spyWonFragment,
+                    SpyWonFragment.getBundle(gameId)
+                )
+                is VoteState.SpyLost -> findNavController().navigate(
+                    R.id.locationWonFragment,
+                    LocationWonFragment.getBundle(gameId)
+                )
+                is VoteState.GameContinue -> {
                     findNavController().navigate(R.id.roleFragment, RoleFragment.getBundle(gameId))
                 }
             }

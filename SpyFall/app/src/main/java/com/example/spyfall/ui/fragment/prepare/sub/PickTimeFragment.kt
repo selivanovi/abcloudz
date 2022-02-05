@@ -1,5 +1,6 @@
 package com.example.spyfall.ui.fragment.prepare.sub
 
+import android.content.Context
 import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -8,18 +9,26 @@ import android.view.View
 import android.widget.NumberPicker
 import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
 import com.example.spyfall.R
-import com.example.spyfall.ui.viewmodel.CreateGameViewModel
+import com.example.spyfall.ui.listener.PickTimeFragmentListener
 import com.example.spyfall.ui.viewmodel.TimeViewModel
 import com.example.spyfall.utils.times
 import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
+
 class PickTimeFragment : Fragment(R.layout.fragment_pick_time) {
 
-    private val parentViewModel: CreateGameViewModel by viewModels(ownerProducer = { requireParentFragment().requireParentFragment() })
-    private val viewModel: TimeViewModel by viewModels()
+    private var pickTimeFragmentListener: PickTimeFragmentListener? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        val parent = requireParentFragment()
+        if(parent is PickTimeFragmentListener) {
+            pickTimeFragmentListener = parent
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -29,7 +38,7 @@ class PickTimeFragment : Fragment(R.layout.fragment_pick_time) {
 
         buttonPlay.setOnClickListener {
             val value = timePicker.value
-            viewModel.setTimeForGame(parentViewModel.gameId!!, times[value])
+            pickTimeFragmentListener?.setTime(times[value])
         }
 
 
@@ -51,6 +60,10 @@ class PickTimeFragment : Fragment(R.layout.fragment_pick_time) {
         }
     }
 
+    override fun onDetach() {
+        super.onDetach()
+        pickTimeFragmentListener = null
+    }
 }
 
 

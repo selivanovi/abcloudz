@@ -8,6 +8,7 @@ import com.example.spyfall.data.entity.Role
 import com.example.spyfall.domain.entity.PlayerDomain
 import com.example.spyfall.domain.repository.GameRepository
 import com.example.spyfall.domain.repository.UserRepository
+import com.example.spyfall.ui.state.RoleState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
@@ -42,18 +43,18 @@ class RoleViewModel @Inject constructor(
 
                 if (game?.status == GameStatus.VOTE) {
                     if (isSpy) {
-                        roleStateMutableChannel.send(RoleState.VoteSpyState)
-                    } else roleStateMutableChannel.send(RoleState.VotePlayerState)
+                        roleStateMutableChannel.send(RoleState.VoteSpy)
+                    } else roleStateMutableChannel.send(RoleState.VotePlayer)
                 }
                 if (game?.status == GameStatus.GAME_OVER) {
                     if (isSpy) {
-                        roleStateMutableChannel.send(RoleState.VoteSpyState)
-                    } else roleStateMutableChannel.send(RoleState.VotePlayerState)
+                        roleStateMutableChannel.send(RoleState.VoteSpy)
+                    } else roleStateMutableChannel.send(RoleState.VotePlayer)
                 }
                 if (game?.status == GameStatus.LOCATION) {
                     if (isSpy) {
-                        roleStateMutableChannel.send(RoleState.LocationSpyState)
-                    } else roleStateMutableChannel.send(RoleState.LocationPlayerState)
+                        roleStateMutableChannel.send(RoleState.LocationSpy)
+                    } else roleStateMutableChannel.send(RoleState.LocationPlayer)
                 }
             }
 
@@ -75,12 +76,12 @@ class RoleViewModel @Inject constructor(
                 }
                 if (player.role == Role.SPY) {
                     isSpy = true
-                    roleStateMutableChannel.send(RoleState.SpyState)
+                    roleStateMutableChannel.send(RoleState.Spy)
                 } else {
-                    roleStateMutableChannel.send(RoleState.PlayerState)
+                    roleStateMutableChannel.send(RoleState.Player)
                 }
                 if (player.status == PlayerStatus.VOTED) {
-                    roleStateMutableChannel.send(RoleState.VotedState)
+                    roleStateMutableChannel.send(RoleState.Voted)
                 }
             }
             result.onFailure { throwable ->
@@ -141,14 +142,3 @@ class RoleViewModel @Inject constructor(
 
 }
 
-sealed class RoleState {
-
-    object VotedState : RoleState()
-    object VoteSpyState : RoleState()
-    object VotePlayerState : RoleState()
-    object LocationSpyState : RoleState()
-    object LocationPlayerState : RoleState()
-    object SpyState : RoleState()
-    object PlayerState : RoleState()
-    object Exit : RoleState()
-}

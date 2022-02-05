@@ -6,6 +6,8 @@ import com.example.spyfall.data.entity.PlayerStatus
 import com.example.spyfall.data.utils.Constants
 import com.example.spyfall.domain.entity.PlayerDomain
 import com.example.spyfall.domain.repository.GameRepository
+import com.example.spyfall.domain.repository.UserRepository
+import com.example.spyfall.ui.state.LobbyState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.launchIn
@@ -16,10 +18,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LobbyViewModel @Inject constructor(
-    private val gameRepository: GameRepository
+    private val gameRepository: GameRepository,
+    private val userRepository: UserRepository
 ) : BaseViewModel() {
 
     private var playerStatus: PlayerStatus? = null
+    private val currentPayer = userRepository.getUser()!!
 
     private val lobbyStateMutableChannel = Channel<LobbyState>()
     val lobbyState = lobbyStateMutableChannel.receiveAsFlow()
@@ -35,10 +39,10 @@ class LobbyViewModel @Inject constructor(
 
                 if (players.all { player -> player.status == PlayerStatus.PLAY }) {
                     if (players.size >= Constants.MIN_NUMBER_PLAYERS){
-                        lobbyStateMutableChannel.send(PlayState)
+                        lobbyStateMutableChannel.send(LobbyState.Play)
                         gameRepository.setStatusForGame(gameId, GameStatus.PLAYING)
                     }
-                    else lobbyStateMutableChannel.send(WaitState)
+                    else lobbyStateMutableChannel.send(LobbyState.Wait)
                 }
 
             }
@@ -46,19 +50,17 @@ class LobbyViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    fun setStatusPlayForPlayerInGame(gameId: String, playerId: String) {
+    fun setStatusPlayForPlayerInGame(gameId: String) {
 
         playerStatus = if(playerStatus == null) PlayerStatus.PLAY else null
 
         launch {
-            gameRepository.setStatusForPlayerInGame(gameId, playerId, playerStatus)
+            gameRepository.setStatusForPlayerInGame(gameId, currentPayer.userId, playerStatus)
         }
     }
 }
 
-sealed class LobbyState
 
-object PlayState : LobbyState()
 
-object WaitState : LobbyState()
+
 

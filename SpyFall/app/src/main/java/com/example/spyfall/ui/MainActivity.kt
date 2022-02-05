@@ -16,13 +16,13 @@ import androidx.navigation.fragment.NavHostFragment
 import com.example.spyfall.R
 import com.example.spyfall.ui.dialog.DialogListener
 import com.example.spyfall.ui.dialog.QuiteDialog
-import com.example.spyfall.ui.listener.NavigationListener
+import com.example.spyfall.ui.listener.DrawerListener
 import com.example.spyfall.ui.viewmodel.SetNameViewModel
 import com.google.android.material.navigation.NavigationView
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity(), NavigationListener, DialogListener {
+class MainActivity : AppCompatActivity(), DrawerListener, DialogListener {
 
     private val viewModel: SetNameViewModel by viewModels()
 
@@ -125,10 +125,6 @@ class MainActivity : AppCompatActivity(), NavigationListener, DialogListener {
         } else {
             drawerLayout.closeDrawer(navigationView)
         }
-    }
-
-    override fun back() {
-        navController.popBackStack()
     }
 
     companion object {

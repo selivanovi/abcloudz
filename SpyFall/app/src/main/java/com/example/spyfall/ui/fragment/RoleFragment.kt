@@ -15,10 +15,9 @@ import com.example.spyfall.ui.fragment.location.CallLocationFragment
 import com.example.spyfall.ui.fragment.location.CheckLocationFragment
 import com.example.spyfall.ui.fragment.vote.LocationVoteFragment
 import com.example.spyfall.ui.fragment.vote.SpyVoteFragment
-import com.example.spyfall.ui.viewmodel.RoleState
+import com.example.spyfall.ui.state.RoleState
 import com.example.spyfall.ui.viewmodel.RoleViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
@@ -43,6 +42,7 @@ class RoleFragment : BaseFragment(R.layout.fragment_role) {
 
         viewModel.observeRoleOfCurrentPlayer(gameId)
         viewModel.observeGame(gameId)
+
         viewModel.setStatusForGame(gameId, GameStatus.PLAYING)
 
         viewModel.roleChannel.onEach { role ->
@@ -53,37 +53,37 @@ class RoleFragment : BaseFragment(R.layout.fragment_role) {
 
         viewModel.roleStateChannel.onEach { state ->
             when (state) {
-                is RoleState.VoteSpyState -> {
+                is RoleState.VoteSpy -> {
                     findNavController().navigate(
                         R.id.spyVoteFragment,
                         SpyVoteFragment.getBundle(gameId)
                     )
                 }
-                is RoleState.PlayerState -> {
+                is RoleState.Player -> {
                     locationButton.isEnabled = false
                 }
-                is RoleState.SpyState -> {
+                is RoleState.Spy -> {
                     locationButton.isEnabled = true
                 }
-                is RoleState.VotePlayerState -> {
+                is RoleState.VotePlayer -> {
                     findNavController().navigate(
                         R.id.locationVoteFragment,
                         LocationVoteFragment.getBundle(gameId)
                     )
                 }
-                is RoleState.LocationSpyState -> {
+                is RoleState.LocationSpy -> {
                     findNavController().navigate(
                         R.id.callLocationFragment,
                         CallLocationFragment.getBundle(gameId)
                     )
                 }
-                is RoleState.LocationPlayerState -> {
+                is RoleState.LocationPlayer -> {
                     findNavController().navigate(
                         R.id.checkLocationFragment,
                         CheckLocationFragment.getBundle(gameId)
                     )
                 }
-                is RoleState.VotedState -> {
+                is RoleState.Voted -> {
                     voteButton.isEnabled = false
                 }
             }
@@ -99,10 +99,6 @@ class RoleFragment : BaseFragment(R.layout.fragment_role) {
         }
 
         viewModel.setRolesInGame(gameId)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
     }
 
     companion object {

@@ -2,8 +2,7 @@ package com.example.spyfall.ui.viewmodel
 
 import com.example.spyfall.data.entity.GameStatus
 import com.example.spyfall.domain.repository.GameRepository
-import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.HiltAndroidApp
+import com.example.spyfall.ui.state.CheckState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.collect
@@ -23,7 +22,6 @@ class CheckLocationViewModel @Inject constructor(
             launch {
                 gameRepository.observeGame(gameId).collect { result ->
                     result.onSuccess { game ->
-
                         if (game?.status != null) {
                             if (game.status == GameStatus.SPY_WON)
                                 checkStateMutableChannel.send(CheckState.SpyWon)
@@ -45,8 +43,3 @@ class CheckLocationViewModel @Inject constructor(
     }
 }
 
-sealed class CheckState {
-
-    object SpyWon : CheckState()
-    object SpyLost : CheckState()
-}

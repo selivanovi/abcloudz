@@ -9,7 +9,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.spyfall.R
 import com.example.spyfall.data.entity.PlayerStatus
 import com.example.spyfall.ui.fragment.BaseFragment
-import com.example.spyfall.ui.viewmodel.ResultState
+import com.example.spyfall.ui.state.ResultState
 import com.example.spyfall.ui.viewmodel.ResultViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn

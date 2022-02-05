@@ -4,7 +4,7 @@ import com.example.spyfall.utils.generateRandomId
 import java.io.Serializable
 
 
-data class User(
+data class UserDomain(
     val userId: String = generateRandomId(),
     val name: String
 ) : Serializable

@@ -9,8 +9,8 @@ import com.example.spyfall.R
 import com.example.spyfall.ui.fragment.BaseFragment
 import com.example.spyfall.ui.fragment.result.LocationWonFragment
 import com.example.spyfall.ui.fragment.vote.LocationVoteFragment
+import com.example.spyfall.ui.state.CheckState
 import com.example.spyfall.ui.viewmodel.CheckLocationViewModel
-import com.example.spyfall.ui.viewmodel.CheckState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach

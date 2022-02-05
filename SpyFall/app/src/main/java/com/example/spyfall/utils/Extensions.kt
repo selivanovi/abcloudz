@@ -6,8 +6,7 @@ import com.example.spyfall.data.utils.Constants
 import com.example.spyfall.data.utils.GetDataException
 import com.example.spyfall.domain.entity.GameDomain
 import com.example.spyfall.domain.entity.PlayerDomain
-import com.example.spyfall.domain.entity.User
-import com.google.firebase.FirebaseException
+import com.example.spyfall.domain.entity.UserDomain
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -26,7 +25,7 @@ fun PlayerDomain.toPlayer(): Player =
 fun GameDomain.toGame(): Game =
     Game(this.host, this.status, this.duration)
 
-fun User.toPlayerDomain(): PlayerDomain =
+fun UserDomain.toPlayerDomain(): PlayerDomain =
     PlayerDomain(this.userId, this.name, null, null)
 
 fun DataSnapshot.toPlayerDomain(): PlayerDomain? {

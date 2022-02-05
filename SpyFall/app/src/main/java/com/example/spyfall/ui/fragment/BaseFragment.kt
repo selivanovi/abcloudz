@@ -10,30 +10,24 @@ import android.widget.ImageView
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.example.spyfall.R
-import com.example.spyfall.ui.listener.NavigationListener
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
+import com.example.spyfall.ui.listener.DrawerListener
 import kotlinx.coroutines.cancel
-import kotlin.coroutines.CoroutineContext
 
 abstract class BaseFragment(
     @LayoutRes layoutId: Int
-) : Fragment(layoutId), CoroutineScope {
-
-
-    override val coroutineContext: CoroutineContext
-        get() = TODO("Not yet implemented")
+) : Fragment(layoutId) {
 
     abstract val TAG: String
 
-    private var navigationListener: NavigationListener? = null
+    private var drawerListener: DrawerListener? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         Log.d(TAG, "onAttach")
-        if (requireActivity() is NavigationListener) {
-            navigationListener = requireActivity() as NavigationListener
+        if (requireActivity() is DrawerListener) {
+            drawerListener = requireActivity() as DrawerListener
         }
     }
 
@@ -47,23 +41,15 @@ abstract class BaseFragment(
         buttonDrawer.setOnClickListener {
             openDrawer()
         }
-
-//        viewLifecycleOwnerLiveData.observe(requireActivity()) {
-//            Log.d(TAG, it.lifecycle.currentState.toString())
-//        }
     }
 
     fun openDrawer() {
-        navigationListener?.openDrawer()
-    }
-
-    fun back() {
-        navigationListener?.back()
+        drawerListener?.openDrawer()
     }
 
     override fun onDetach() {
         super.onDetach()
-        navigationListener = null
+        Log.d(TAG, "onDetach")
     }
 
     override fun onCreateView(
@@ -83,6 +69,7 @@ abstract class BaseFragment(
 
     override fun onStop() {
         super.onStop()
+        lifecycleScope.cancel()
         Log.d(TAG, "onStop")
     }
 
@@ -98,7 +85,6 @@ abstract class BaseFragment(
 
     override fun onDestroyView() {
         super.onDestroyView()
-        lifecycleScope.cancel()
         Log.d(TAG, "onDestroyView")
     }
 

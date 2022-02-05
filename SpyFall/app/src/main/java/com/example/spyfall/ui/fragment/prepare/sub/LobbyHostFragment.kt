@@ -11,45 +11,43 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.spyfall.R
-import com.example.spyfall.ui.listener.StartGameListener
+import com.example.spyfall.ui.listener.LobbyFragmentListener
 import com.example.spyfall.ui.recyclerview.PlayersAdapter
-import com.example.spyfall.ui.viewmodel.CreateGameViewModel
+import com.example.spyfall.ui.state.LobbyState
 import com.example.spyfall.ui.viewmodel.LobbyViewModel
-import com.example.spyfall.ui.viewmodel.PlayState
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
 class LobbyHostFragment : Fragment(R.layout.fragment_lobby_host) {
 
-    private val parentViewModel: CreateGameViewModel by viewModels(ownerProducer = {requireParentFragment().requireParentFragment()})
     private val viewModel: LobbyViewModel by viewModels()
 
     private val adapter = PlayersAdapter()
-    private var startGameListener: StartGameListener? = null
+    private var lobbyFragmentListener: LobbyFragmentListener? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        Log.d("LobbyHostFragment","onAttach")
 
-        val parent = requireParentFragment().requireParentFragment()
-        if (parent is StartGameListener) {
-            startGameListener = parent
+        Log.d("LobbyFragment", "onAttach")
+        val parent = requireParentFragment()
+        if (parent is LobbyFragmentListener) {
+            lobbyFragmentListener = parent
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Log.d("LobbyHostFragment","onViewCreated")
+        Log.d("LobbyFragment", "onViewCreated")
 
-        val gameId = parentViewModel.gameId!!
-        val playerId = parentViewModel.user!!.userId
+        val gameId = requireArguments().getString(KEY_GAME_ID)!!
 
         view.findViewById<AppCompatButton>(R.id.buttonPlay).apply {
             setOnClickListener {
-                viewModel.setStatusPlayForPlayerInGame(gameId, playerId)
+                viewModel.setStatusPlayForPlayerInGame(gameId)
             }
         }
 
@@ -60,20 +58,29 @@ class LobbyHostFragment : Fragment(R.layout.fragment_lobby_host) {
         }.launchIn(lifecycleScope)
 
         viewModel.lobbyState.onEach { state ->
-           when(state) {
-               is PlayState -> {
-                   startGameListener?.startGame()
-               }
-           }
+            if (state is LobbyState.Play) {
+                lobbyFragmentListener?.startGame()
+            }
         }.launchIn(lifecycleScope)
 
         createRecyclerView(view)
     }
 
+    override fun onStart() {
+        super.onStart()
+        Log.d("LobbyFragment", "onStart")
+    }
+
     override fun onStop() {
         super.onStop()
-        Log.d("LobbyHostFragment","onStop")
-        startGameListener = null
+        Log.d("LobbyFragment", "onStop")
+        lifecycleScope.cancel()
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        Log.d("LobbyFragment", "onDetach")
+        lobbyFragmentListener = null
     }
 
     private fun createRecyclerView(view: View) {
@@ -83,4 +90,22 @@ class LobbyHostFragment : Fragment(R.layout.fragment_lobby_host) {
         recyclerView.layoutManager =
             LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
     }
+
+    companion object {
+
+        private const val TAG = "InvitePLayerFragment"
+
+        private const val KEY_GAME_ID = "key_game_id"
+
+        fun newInstance(gameId: String): LobbyHostFragment {
+            val bundle = Bundle().apply {
+                putString(KEY_GAME_ID, gameId)
+            }
+            val fragment = LobbyHostFragment().apply {
+                arguments = bundle
+            }
+            return fragment
+        }
+    }
+
 }

@@ -1,8 +1,6 @@
 package com.example.spyfall.ui.listener
 
-interface NavigationListener {
+interface DrawerListener {
 
     fun openDrawer()
-
-    fun back()
 }

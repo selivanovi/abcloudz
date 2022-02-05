@@ -28,7 +28,7 @@ class LogInFragment : BaseFragment(R.layout.fragment_log_in) {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.getUser()?.let {
-            findNavController().navigate(R.id.action_logInFragment_to_startFragment, StartFragment.getBundle(it))
+            findNavController().navigate(R.id.action_logInFragment_to_startFragment)
         }
 
         viewModel.errorChannel.onEach {
@@ -36,8 +36,7 @@ class LogInFragment : BaseFragment(R.layout.fragment_log_in) {
         }.launchIn(lifecycleScope)
 
         viewModel.successAuthorizationChannel.onEach {
-            findNavController().navigate(R.id.action_logInFragment_to_startFragment,
-                viewModel.getUser()?.let { user -> StartFragment.getBundle(user) })
+            findNavController().navigate(R.id.action_logInFragment_to_startFragment)
         }.launchIn(lifecycleScope)
 
 

@@ -1,13 +1,13 @@
 package com.example.spyfall.domain.repository
 
-import com.example.spyfall.domain.entity.User
+import com.example.spyfall.domain.entity.UserDomain
 import kotlinx.coroutines.flow.Flow
 
 interface UserRepository {
 
-    suspend fun addUser(user: User): Flow<Result<Unit?>>
+    suspend fun addUser(userDomain: UserDomain): Flow<Result<Unit?>>
 
-    fun getUser(): User?
+    fun getUser(): UserDomain?
 
-    suspend fun deleteUser(user: User)
+    suspend fun deleteUser(userDomain: UserDomain)
 }

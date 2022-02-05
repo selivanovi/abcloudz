@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.spyfall.R
-import com.example.spyfall.ui.listener.CreateGameListener
+import com.example.spyfall.ui.listener.LinkFragmentListener
 import com.example.spyfall.ui.viewmodel.LinkViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -16,15 +16,16 @@ import dagger.hilt.android.AndroidEntryPoint
 class LinkFragment : Fragment(R.layout.fragment_create_link) {
 
     private val viewModel: LinkViewModel by viewModels()
-    private var createGameListener: CreateGameListener? = null
+    private var linkFragmentListener: LinkFragmentListener? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        val parent = requireParentFragment().requireParentFragment()
-        if(parent is CreateGameListener){
-            createGameListener = parent
+        val parent = requireParentFragment()
+        if(parent is LinkFragmentListener){
+            linkFragmentListener = parent
         }
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -34,8 +35,16 @@ class LinkFragment : Fragment(R.layout.fragment_create_link) {
         view.findViewById<TextView>(R.id.textViewGameId).text = gameId
 
         view.findViewById<Button>(R.id.buttonCool).setOnClickListener {
-            createGameListener?.createGame(gameId)
+            linkFragmentListener?.createGame(gameId)
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        linkFragmentListener = null
+    }
 }

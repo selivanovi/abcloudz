@@ -7,6 +7,7 @@ import com.example.spyfall.data.entity.Role
 import com.example.spyfall.domain.entity.PlayerDomain
 import com.example.spyfall.domain.repository.GameRepository
 import com.example.spyfall.domain.repository.UserRepository
+import com.example.spyfall.ui.state.VoteState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.launchIn
@@ -35,22 +36,21 @@ class VoteViewModel @Inject constructor(
                     players.find { it.playerId == currentPlayer.userId } ?: return@onEach
 
                 if (currentPlayer.vote == null && currentPlayer.role != Role.SPY) {
-                    voteStateMutableChannel.trySend(VoteState.WaitCurrentPlayerState)
+                    voteStateMutableChannel.trySend(VoteState.WaitCurrentPlayer)
                 } else {
                     if (playersWithoutSpy.all { it.vote != null }) {
                         if (playersWithoutSpy.all { player -> player.vote == spy.playerId }) {
-                            voteStateMutableChannel.trySend(VoteState.SpyLostState)
+                            voteStateMutableChannel.trySend(VoteState.SpyLost)
                         } else {
                             if (gameRepository.getGame(gameId).status == GameStatus.GAME_OVER)
-                                voteStateMutableChannel.send(VoteState.SpyWonState)
+                                voteStateMutableChannel.send(VoteState.SpyWon)
                             else {
-                                gameRepository.setStatusForGame(gameId, GameStatus.PLAYING)
                                 clearVoteForPlayersInGame(gameId, playersWithoutSpy)
-                                voteStateMutableChannel.send(VoteState.GameContinueState)
+                                voteStateMutableChannel.send(VoteState.GameContinue)
                             }
                         }
                     } else {
-                        voteStateMutableChannel.trySend(VoteState.WaitOtherPlayersState)
+                        voteStateMutableChannel.trySend(VoteState.WaitOtherPlayers)
                     }
                 }
             }
@@ -67,11 +67,4 @@ class VoteViewModel @Inject constructor(
     }
 }
 
-sealed class VoteState {
 
-    object WaitCurrentPlayerState : VoteState()
-    object WaitOtherPlayersState : VoteState()
-    object SpyLostState : VoteState()
-    object SpyWonState : VoteState()
-    object GameContinueState : VoteState()
-}

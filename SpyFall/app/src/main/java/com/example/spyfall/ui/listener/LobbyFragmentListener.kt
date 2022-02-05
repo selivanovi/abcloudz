@@ -1,6 +1,6 @@
 package com.example.spyfall.ui.listener
 
-interface StartGameListener {
+interface LobbyFragmentListener {
 
     fun startGame()
 }
