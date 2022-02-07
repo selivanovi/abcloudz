@@ -15,6 +15,7 @@ import com.example.spyfall.R
 import com.example.spyfall.ui.listener.PickTimeFragmentListener
 import com.example.spyfall.ui.viewmodel.TimeViewModel
 import com.example.spyfall.utils.times
+import com.example.spyfall.utils.toSeconds
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -38,12 +39,12 @@ class PickTimeFragment : Fragment(R.layout.fragment_pick_time) {
 
         buttonPlay.setOnClickListener {
             val value = timePicker.value
-            pickTimeFragmentListener?.setTime(times[value])
+            pickTimeFragmentListener?.setTime(times[value].toSeconds())
         }
 
 
         val timesString = times.map {
-            if (it != 0) {
+            if (it > 0) {
                 it.toString() + "\t" + resources.getString(R.string.measure_of_time)
             } else {
                 resources.getString(R.string.no_limit)

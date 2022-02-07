@@ -198,16 +198,16 @@ class GameRepositoryImpl @Inject constructor(
         return db.get().await().children.mapNotNull { it.toPlayerDomain() }
     }
 
-    override suspend fun setTimeForGames(gameId: String, time: Int) {
+    override suspend fun setDurationForGames(gameId: String, time: Long) {
         firebaseDatabase.reference
             .child(GAMES_KEY_REFERENCES)
             .child(gameId)
             .child(DURATION_KEY_REFERENCES).setValue(time)
     }
 
-    override suspend fun getDurationForGames(gameId: String): Int {
+    override suspend fun getDurationForGames(gameId: String): Long {
         return gameReferences(gameId).get().await().child(DURATION_KEY_REFERENCES)
-            .getValue(Int::class.java)!!
+            .getValue(Long::class.java)!!
     }
 
     override suspend fun setStatusForPlayerInGame(

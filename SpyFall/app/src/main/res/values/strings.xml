@@ -76,5 +76,6 @@
     <string name="cityWonText">The city won</string>
     <string name="spyWonText">The spy won</string>
     <string name="textInfoForJoin">You can press the play button for set statuts ready</string>
+    <string name="textContinue">Continue</string>
 
 </resources>

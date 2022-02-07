@@ -31,7 +31,7 @@ fun UserDomain.toPlayerDomain(): PlayerDomain =
 fun DataSnapshot.toPlayerDomain(): PlayerDomain? {
     val key = this.key
     val player = this.getValue(Player::class.java)
-    return if (key != null && player != null){
+    return if (key != null && player != null) {
         PlayerDomain(key, player.name, player.status, player.role, player.vote)
     } else null
 }
@@ -39,7 +39,7 @@ fun DataSnapshot.toPlayerDomain(): PlayerDomain? {
 fun DataSnapshot.toGameDomain(): GameDomain? {
     val key = this.key
     val game = this.getValue(Game::class.java)
-    return if (key != null && game != null){
+    return if (key != null && game != null) {
         GameDomain(key, game.host, game.status)
     } else null
 }
@@ -62,3 +62,6 @@ suspend fun DatabaseReference.awaitsSingle(): DataSnapshot? =
         continuation.invokeOnCancellation { this.removeEventListener(listener) }
         this.addListenerForSingleValueEvent(listener)
     }
+
+fun Long.toSeconds(): Long =
+    this * 60

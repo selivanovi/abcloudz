@@ -14,7 +14,6 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupWithNavController
-import com.example.spyfall.AppCloseService
 import com.example.spyfall.R
 import com.example.spyfall.ui.dialog.QuiteDialogListener
 import com.example.spyfall.ui.listener.DrawerListener
@@ -46,11 +45,6 @@ class MainActivity : AppCompatActivity(), DrawerListener, QuiteDialogListener {
         createDrawerLayout()
 
         createNavigationView()
-
-
-        navigationView.setupWithNavController(navController)
-
-
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -91,7 +85,7 @@ class MainActivity : AppCompatActivity(), DrawerListener, QuiteDialogListener {
     private fun createDrawerLayout() {
 
         val content = findViewById<CardView>(R.id.cardContainer)
-        drawerLayout.setScrimColor(Color.TRANSPARENT);
+        drawerLayout.setScrimColor(Color.TRANSPARENT)
         drawerLayout.addDrawerListener(object : DrawerLayout.SimpleDrawerListener() {
 
             override fun onDrawerSlide(drawerView: View, slideOffset: Float) {

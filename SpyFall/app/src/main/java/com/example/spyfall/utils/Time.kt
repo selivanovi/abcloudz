@@ -1,6 +1,6 @@
 package com.example.spyfall.utils
 
-val times = listOf(
+val times = listOf<Long>(
     5,
     6,
     7,

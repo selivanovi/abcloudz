@@ -9,5 +9,7 @@ sealed class RoleState {
     object LocationPlayer : RoleState()
     object Spy : RoleState()
     object Player : RoleState()
+    object GameIsPlaying : RoleState()
+    object GameIsPause : RoleState()
     object Exit : RoleState()
 }

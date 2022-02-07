@@ -2,6 +2,8 @@ package com.example.spyfall.ui.fragment
 
 import android.os.Bundle
 import android.view.View
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
@@ -34,11 +36,12 @@ class RoleFragment : BaseFragment(R.layout.fragment_role) {
 
         val gameId = requireArguments().getString(KEY_GAME_ID)!!
 
-        val locationTextView = view.findViewById<AppCompatTextView>(R.id.locationTextView)
+//        val controlGameImageView =
+//        val controlGameTextView =
         val timeTextView = view.findViewById<AppCompatTextView>(R.id.timeTextView)
-        val locationImageView = view.findViewById<AppCompatImageView>(R.id.locationImageView)
         val locationButton = view.findViewById<AppCompatButton>(R.id.locationButton)
         val voteButton = view.findViewById<AppCompatButton>(R.id.voteButton)
+        val controlGameLayout = view.findViewById<LinearLayout>(R.id.controlGameLayout)
 
         viewModel.observeRoleOfCurrentPlayer(gameId)
         viewModel.observeGame(gameId)
@@ -46,13 +49,26 @@ class RoleFragment : BaseFragment(R.layout.fragment_role) {
         viewModel.setStatusForGame(gameId, GameStatus.PLAYING)
 
         viewModel.roleChannel.onEach { role ->
-            locationTextView.setText(role.string)
-            locationImageView.setImageResource(role.drawable)
+            view.findViewById<AppCompatTextView>(R.id.locationTextView).setText(role.string)
+            view.findViewById<AppCompatImageView>(R.id.locationImageView)
+                .setImageResource(role.drawable)
         }.launchIn(lifecycleScope)
 
 
         viewModel.roleStateChannel.onEach { state ->
             when (state) {
+                is RoleState.GameIsPlaying -> {
+                    view.findViewById<AppCompatImageView>(R.id.controlGameImageView)
+                        .setImageResource(R.drawable.pause)
+                    view.findViewById<TextView>(R.id.controlGameTextView)
+                        .setText(R.string.textPause)
+                }
+                is RoleState.GameIsPause -> {
+                    view.findViewById<AppCompatImageView>(R.id.controlGameImageView)
+                        .setImageResource(R.drawable.play)
+                    view.findViewById<TextView>(R.id.controlGameTextView)
+                        .setText(R.string.textContinue)
+                }
                 is RoleState.VoteSpy -> {
                     findNavController().navigate(
                         R.id.spyVoteFragment,
@@ -89,6 +105,14 @@ class RoleFragment : BaseFragment(R.layout.fragment_role) {
             }
         }.launchIn(lifecycleScope)
 
+        viewModel.timeChannel.onEach {
+
+            val minutes = it / 60
+            val seconds = it % 60
+
+            timeTextView.text = "$minutes:$seconds"
+        }.launchIn(lifecycleScope)
+
         voteButton.setOnClickListener {
             viewModel.setStatusForGame(gameId, GameStatus.VOTE)
             viewModel.setStatusForCurrentPlayerInGame(gameId, PlayerStatus.VOTED)
@@ -96,6 +120,10 @@ class RoleFragment : BaseFragment(R.layout.fragment_role) {
 
         locationButton.setOnClickListener {
             viewModel.setStatusForGame(gameId, GameStatus.LOCATION)
+        }
+
+        controlGameLayout.setOnClickListener {
+            viewModel.setPauseOrPlayForGame(gameId)
         }
 
         viewModel.setRolesInGame(gameId)

@@ -14,9 +14,9 @@ interface GameRepository {
 
     suspend fun setStatusForPlayerInGame(gameId: String, playerId: String, status: PlayerStatus?)
 
-    suspend fun getDurationForGames(gameId: String): Int
+    suspend fun getDurationForGames(gameId: String): Long
 
-    suspend fun setTimeForGames(gameId: String, time: Int)
+    suspend fun setDurationForGames(gameId: String, time: Long)
 
     suspend fun getPlayersFromGame(gameId: String): List<PlayerDomain>
 

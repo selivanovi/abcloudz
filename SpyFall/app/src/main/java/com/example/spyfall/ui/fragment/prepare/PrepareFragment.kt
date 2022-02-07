@@ -95,7 +95,7 @@ class PrepareFragment : BaseFragment(R.layout.fragment_prepare), LobbyFragmentLi
         }
     }
 
-    override fun setTime(time: Int) {
+    override fun setTime(time: Long) {
         viewModel.setTimeForGame(gameId, time)
         requireView().findViewById<MaterialButton>(R.id.buttonPlayers).callOnClick()
     }

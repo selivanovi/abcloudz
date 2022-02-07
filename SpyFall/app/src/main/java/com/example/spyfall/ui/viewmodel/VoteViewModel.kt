@@ -45,6 +45,7 @@ class VoteViewModel @Inject constructor(
                             if (gameRepository.getGame(gameId)?.status == GameStatus.GAME_OVER)
                                 voteStateMutableChannel.send(VoteState.SpyWon)
                             else {
+                                gameRepository.setStatusForGame(gameId,GameStatus.PLAYING)
                                 clearVoteForPlayersInGame(gameId, playersWithoutSpy)
                                 voteStateMutableChannel.send(VoteState.GameContinue)
                             }

@@ -25,6 +25,10 @@ class RoleViewModel @Inject constructor(
 
     private var isSpy: Boolean = false
 
+    private var currentTime: Long? = null
+
+    private var stopTimer: Boolean = false
+
     private val currentPlayer = userRepository.getUser()!!
 
     private val roleStateMutableChannel = Channel<RoleState>()
@@ -33,7 +37,7 @@ class RoleViewModel @Inject constructor(
     private val roleMutableChannel = Channel<Role>()
     val roleChannel = roleMutableChannel.receiveAsFlow()
 
-    private val timeMutableChannel = Channel<Long?>()
+    private val timeMutableChannel = Channel<Long>()
     val timeChannel = timeMutableChannel.receiveAsFlow()
 
     fun observeGame(gameId: String) {
@@ -41,12 +45,22 @@ class RoleViewModel @Inject constructor(
             result.onSuccess { game ->
                 Log.d("RoleViewModel", "observeGame: $game")
 
+                if (game?.status == GameStatus.PLAYING) {
+                    startTimer(gameId)
+                    roleStateMutableChannel.send(RoleState.GameIsPlaying)
+                }
+                if (game?.status == GameStatus.PAUSE) {
+                    stopTimer(gameId)
+                    roleStateMutableChannel.send(RoleState.GameIsPause)
+                }
                 if (game?.status == GameStatus.VOTE) {
+                    stopTimer(gameId)
                     if (isSpy) {
                         roleStateMutableChannel.send(RoleState.VoteSpy)
                     } else roleStateMutableChannel.send(RoleState.VotePlayer)
                 }
                 if (game?.status == GameStatus.GAME_OVER) {
+                    stopTimer(gameId)
                     if (isSpy) {
                         roleStateMutableChannel.send(RoleState.VoteSpy)
                     } else roleStateMutableChannel.send(RoleState.VotePlayer)
@@ -90,6 +104,35 @@ class RoleViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
+    private fun stopTimer(gameId: String) = launch {
+        stopTimer = true
+        currentTime?.let {
+            gameRepository.setDurationForGames(gameId, it)
+        }
+    }
+
+
+    private fun startTimer(gameId: String) = launch {
+
+        stopTimer = false
+
+        val duration = gameRepository.getDurationForGames(gameId)
+
+        if (duration < 0) currentTime = duration
+        else {
+            for (i in duration downTo 0) {
+                if (stopTimer) {
+                    return@launch
+                }
+                currentTime = i
+                timeMutableChannel.send(i)
+                delay(1000)
+            }
+
+            gameRepository.setStatusForGame(gameId, GameStatus.GAME_OVER)
+        }
+    }
+
     fun setRolesInGame(gameId: String) {
 
         val isHostDeferred = async { checkHost(gameId, currentPlayer.userId) }
@@ -129,6 +172,13 @@ class RoleViewModel @Inject constructor(
         launch {
             gameRepository.setStatusForPlayerInGame(gameId, currentPlayer.userId, status)
         }
+    }
+
+    fun setPauseOrPlayForGame(gameId: String) = launch {
+        val game = gameRepository.getGame(gameId)
+        val status =
+            if (game?.status == GameStatus.PLAYING) GameStatus.PAUSE else GameStatus.PLAYING
+        gameRepository.setStatusForGame(gameId, status)
     }
 
 

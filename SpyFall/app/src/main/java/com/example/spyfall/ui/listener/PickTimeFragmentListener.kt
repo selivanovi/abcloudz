@@ -2,5 +2,5 @@ package com.example.spyfall.ui.listener
 
 interface PickTimeFragmentListener {
 
-    fun setTime(time: Int)
+    fun setTime(time: Long)
 }
