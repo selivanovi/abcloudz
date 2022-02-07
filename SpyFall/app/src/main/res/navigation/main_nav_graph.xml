@@ -142,40 +142,20 @@
         android:id="@+id/spyWonFragment"
         android:name="com.example.spyfall.ui.fragment.result.SpyWonFragment"
         android:label="spyWonFragment"
-        tools:layout="@layout/fragment_spy_won">
-
-        <action
-            android:id="@+id/action_spyWonFragment_to_waitingGameFragment"
-            app:destination="@id/waitingGameFragment"
-            app:popUpTo="@id/waitingGameFragment"/>
-        <action
-            android:id="@+id/action_spyWonFragment_to_prepareFragment"
-            app:destination="@id/prepareFragment"
-            app:popUpTo="@id/prepareFragment"/>
-        <action
-            android:id="@+id/action_spyWonFragment_to_startFragment"
-            app:destination="@id/startFragment"
-            app:popUpTo="@id/startFragment"/>
-    </fragment>
+        tools:layout="@layout/fragment_spy_won"/>
 
     <fragment
         android:id="@+id/locationWonFragment"
         android:name="com.example.spyfall.ui.fragment.result.LocationWonFragment"
         android:label="spyWonFragment"
-        tools:layout="@layout/fragment_location_won">
-
-        <action
-            android:id="@+id/action_locationWonFragment_to_waitingGameFragment"
-            app:destination="@id/waitingGameFragment"
-            app:popUpTo="@id/waitingGameFragment"/>
-        <action
-            android:id="@+id/action_locationWonFragment_to_prepareFragment"
-            app:destination="@id/prepareFragment"
-            app:popUpTo="@id/prepareFragment"/>
-        <action
-            android:id="@+id/action_locationWonFragment_to_startFragment"
-            app:destination="@id/startFragment"
-            app:popUpTo="@id/startFragment"/>
-    </fragment>
+        tools:layout="@layout/fragment_location_won"/>
+    <fragment
+        android:id="@+id/howToPlayFragment"
+        android:name="com.example.spyfall.ui.fragment.HowToPlayFragment"
+        android:label="HowToPlayFragment" />
+    <fragment
+        android:id="@+id/aboutFragment"
+        android:name="com.example.spyfall.ui.fragment.AboutFragment"
+        android:label="AboutFragment" />
 
 </navigation>

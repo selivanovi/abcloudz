@@ -42,7 +42,7 @@ class VoteViewModel @Inject constructor(
                         if (playersWithoutSpy.all { player -> player.vote == spy.playerId }) {
                             voteStateMutableChannel.trySend(VoteState.SpyLost)
                         } else {
-                            if (gameRepository.getGame(gameId).status == GameStatus.GAME_OVER)
+                            if (gameRepository.getGame(gameId)?.status == GameStatus.GAME_OVER)
                                 voteStateMutableChannel.send(VoteState.SpyWon)
                             else {
                                 clearVoteForPlayersInGame(gameId, playersWithoutSpy)
@@ -58,11 +58,9 @@ class VoteViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    private fun clearVoteForPlayersInGame(gameId: String, players: List<PlayerDomain>) {
+    private suspend fun clearVoteForPlayersInGame(gameId: String, players: List<PlayerDomain>) {
         players.forEach { player ->
-            launch {
-                gameRepository.setVoteForPlayerInGame(gameId, player.playerId, null)
-            }
+            gameRepository.setVoteForPlayerInGame(gameId, player.playerId, null)
         }
     }
 }

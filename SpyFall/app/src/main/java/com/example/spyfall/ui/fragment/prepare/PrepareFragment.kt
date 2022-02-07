@@ -31,17 +31,11 @@ class PrepareFragment : BaseFragment(R.layout.fragment_prepare), LobbyFragmentLi
         requireArguments().getString(KEY_GAME_ID)!!
     }
 
-    private val buttonPlayers by lazy {
-        requireView().findViewById<MaterialButton>(R.id.buttonPlayers)
-    }
-    private val buttonCardDuration by lazy {
-        requireView().findViewById<AppCompatButton>(R.id.buttonCardDuration)
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val userDomain = viewModel.getUser()!!
+        val userDomain = viewModel.currentUser
 
         view.findViewById<TextView>(R.id.nameTextView).text = userDomain.name
         view.findViewById<TextView>(R.id.gameIdTextView).text =
@@ -55,7 +49,7 @@ class PrepareFragment : BaseFragment(R.layout.fragment_prepare), LobbyFragmentLi
 
         createButtons()
 
-        viewModel.createGame(gameId, userDomain)
+        viewModel.setGame(gameId)
     }
 
     override fun startGame() {
@@ -66,6 +60,13 @@ class PrepareFragment : BaseFragment(R.layout.fragment_prepare), LobbyFragmentLi
     }
 
     private fun createButtons() {
+
+        val buttonPlayers =
+            requireView().findViewById<MaterialButton>(R.id.buttonPlayers)
+
+        val buttonCardDuration =
+            requireView().findViewById<AppCompatButton>(R.id.buttonCardDuration)
+
 
         buttonPlayers.isActivated = true
 
@@ -96,7 +97,7 @@ class PrepareFragment : BaseFragment(R.layout.fragment_prepare), LobbyFragmentLi
 
     override fun setTime(time: Int) {
         viewModel.setTimeForGame(gameId, time)
-        buttonPlayers.callOnClick()
+        requireView().findViewById<MaterialButton>(R.id.buttonPlayers).callOnClick()
     }
 
     companion object {

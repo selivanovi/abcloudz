@@ -137,7 +137,7 @@ class RoleViewModel @Inject constructor(
     }
 
     private suspend fun getHost(gameId: String): String {
-        return gameRepository.getGame(gameId).host!!
+        return gameRepository.getGame(gameId)?.host!!
     }
 
 }

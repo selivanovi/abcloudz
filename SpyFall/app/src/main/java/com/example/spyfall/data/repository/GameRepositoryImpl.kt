@@ -41,7 +41,7 @@ class GameRepositoryImpl @Inject constructor(
         gameReferences(gameDomain.gameId).setValue(gameDomain.toGame())
     }
 
-    override suspend fun getGame(gameId: String): GameDomain =
+    override suspend fun getGame(gameId: String): GameDomain? =
         suspendCancellableCoroutine { continuation ->
             val db = gameReferences(gameId)
 
@@ -54,9 +54,7 @@ class GameRepositoryImpl @Inject constructor(
                 override fun onDataChange(snapshot: DataSnapshot) {
                     try {
                         val game = snapshot.toGameDomain()
-                        game?.let {
-                            continuation.resume(it)
-                        }
+                        continuation.resume(game)
                     } catch (exception: Exception) {
                         continuation.resumeWithException(exception)
                     }

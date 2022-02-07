@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SetNameViewModel @Inject constructor(
+class LogInViewModel @Inject constructor(
     private val userRepository: UserRepository
 ) : BaseViewModel() {
 
@@ -39,16 +39,5 @@ class SetNameViewModel @Inject constructor(
     fun getUser(): UserDomain? {
         Log.d("SetNameViewModel", userRepository.getUser().toString())
         return userRepository.getUser()
-    }
-
-    fun logOut() {
-
-        val user = userRepository.getUser()
-
-        user?.let {
-            launch {
-                userRepository.deleteUser(it)
-            }
-        }
     }
 }

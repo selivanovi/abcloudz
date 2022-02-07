@@ -40,14 +40,13 @@ class ResultViewModel @Inject constructor(
             gameRepository.observePlayerFromGame(gameId, currentPlayer.userId).collect { result ->
                 result.onSuccess { player ->
                     if (player.status == PlayerStatus.EXIT) {
-                        deletePlayerInGame(gameId, player.playerId)
-                        resultStateMutableChannel.send(ResultState.Exit)
                         val isHost = async { checkHost(gameId, currentPlayer.userId) }
                         if (isHost.await()) {
                             deleteGameById(gameId)
                         } else {
                             deletePlayerInGame(gameId, player.playerId)
                         }
+                        resultStateMutableChannel.send(ResultState.Exit)
                     }
                     if (player.status == PlayerStatus.Continue) {
                         val isHost = async { checkHost(gameId, currentPlayer.userId) }
@@ -91,7 +90,7 @@ class ResultViewModel @Inject constructor(
     }
 
     private suspend fun getHost(gameId: String): String {
-        return gameRepository.getGame(gameId).host!!
+        return gameRepository.getGame(gameId)?.host!!
     }
 
     fun setStatusForCurrentPlayerInGame(gameId: String, status: PlayerStatus) {

@@ -39,16 +39,19 @@ class LocationWonFragment : BaseFragment(R.layout.fragment_location_won) {
         viewModel.resultStateChannel.onEach { state ->
             when (state) {
                 is ResultState.Exit ->
-                    findNavController().navigate(R.id.action_locationWonFragment_to_startFragment)
+                    findNavController().popBackStack(
+                        destinationId = R.id.startFragment,
+                        inclusive = false
+                    )
                 is ResultState.HostContinue ->
-                    findNavController().navigate(
-                        R.id.action_locationWonFragment_to_prepareFragment,
-                        PrepareFragment.getBundle(gameId)
+                    findNavController().popBackStack(
+                        destinationId = R.id.prepareFragment,
+                        inclusive = false
                     )
                 is ResultState.PlayerContinue ->
-                    findNavController().navigate(
-                        R.id.action_locationWonFragment_to_waitingGameFragment,
-                        PrepareFragment.getBundle(gameId)
+                    findNavController().popBackStack(
+                        destinationId = R.id.waitingGameFragment,
+                        inclusive = false
                     )
             }
 

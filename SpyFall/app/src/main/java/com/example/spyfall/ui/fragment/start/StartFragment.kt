@@ -57,7 +57,6 @@ class StartFragment : BaseFragment(R.layout.fragment_start), LinkFragmentListene
 
         joinButton.setOnClickListener {
             if (!joinButton.isActivated) {
-                Log.d(TAG, "Click join button")
                 childFragmentManager.commit {
                     setReorderingAllowed(true)
                     replace(R.id.startGameContainerView, JoinGameFragment())
@@ -69,7 +68,6 @@ class StartFragment : BaseFragment(R.layout.fragment_start), LinkFragmentListene
 
         createGameButton.setOnClickListener {
             if (!createGameButton.isActivated) {
-                Log.d(TAG, "Click create button")
                 childFragmentManager.commit {
                     setReorderingAllowed(true)
                     replace(R.id.startGameContainerView, LinkFragment())

@@ -31,11 +31,20 @@ class SpyWonFragment : BaseFragment(R.layout.fragment_spy_won) {
         viewModel.resultStateChannel.onEach { state ->
             when (state) {
                 is ResultState.Exit ->
-                    findNavController().navigate(R.id.action_locationWonFragment_to_startFragment)
+                    findNavController().popBackStack(
+                        destinationId = R.id.startFragment,
+                        inclusive = false
+                    )
                 is ResultState.HostContinue ->
-                    findNavController().navigate(R.id.action_locationWonFragment_to_prepareFragment)
+                    findNavController().popBackStack(
+                        destinationId = R.id.prepareFragment,
+                        inclusive = false
+                    )
                 is ResultState.PlayerContinue ->
-                    findNavController().navigate(R.id.action_locationWonFragment_to_waitingGameFragment)
+                    findNavController().popBackStack(
+                        destinationId = R.id.waitingGameFragment,
+                        inclusive = false
+                    )
             }
 
         }.launchIn(lifecycleScope)

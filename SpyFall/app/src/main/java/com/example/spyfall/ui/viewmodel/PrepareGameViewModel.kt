@@ -18,24 +18,36 @@ class PrepareGameViewModel @Inject constructor(
     private val userRepository: UserRepository
 ) : BaseViewModel() {
 
-    var gameId: String? = null
-    var userDomain: UserDomain? = null
+    val currentUser: UserDomain
+        get() = userRepository.getUser()!!
 
-    fun createGame(gameId: String, userDomain: UserDomain) {
+    fun setGame(gameId: String) = launch {
 
+        val game = gameRepository.getGame(gameId)
+
+        if (game == null) createGame(gameId) else resetGame(gameId)
+    }
+
+    private suspend fun createGame(gameId: String) {
         val gameDomain = GameDomain(
             gameId = gameId,
-            host = userDomain.userId,
+            host = currentUser.userId,
             status = GameStatus.CREATE,
             duration = times.first()
         )
 
-        launch {
-            gameRepository.addGame(gameDomain)
-            gameRepository.addPlayerToGame(gameId, userDomain.toPlayerDomain())
-        }
-        this.gameId = gameId
-        this.userDomain = userDomain
+        val currentPLayer = currentUser.toPlayerDomain()
+
+        gameRepository.addGame(gameDomain)
+        gameRepository.addPlayerToGame(gameId, currentPLayer)
+    }
+
+    private suspend fun resetGame(gameId: String) {
+        gameRepository.setStatusForGame(gameId, GameStatus.CREATE)
+        gameRepository.setTimeForGames(gameId, times.first())
+
+        val currentPlayer = currentUser.toPlayerDomain()
+        gameRepository.addPlayerToGame(gameId, currentPlayer)
     }
 
     fun setTimeForGame(gameId: String, time: Int) {
@@ -43,8 +55,5 @@ class PrepareGameViewModel @Inject constructor(
             gameRepository.setTimeForGames(gameId, time)
         }
     }
-
-    fun getUser(): UserDomain? =
-        userRepository.getUser()
 
 }

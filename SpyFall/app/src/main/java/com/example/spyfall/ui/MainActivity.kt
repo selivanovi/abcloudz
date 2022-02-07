@@ -2,41 +2,39 @@ package com.example.spyfall.ui
 
 import android.graphics.Color
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.util.Log
+import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
-import androidx.core.view.forEach
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.onNavDestinationSelected
+import androidx.navigation.ui.setupWithNavController
+import com.example.spyfall.AppCloseService
 import com.example.spyfall.R
-import com.example.spyfall.ui.dialog.DialogListener
-import com.example.spyfall.ui.dialog.QuiteDialog
+import com.example.spyfall.ui.dialog.QuiteDialogListener
 import com.example.spyfall.ui.listener.DrawerListener
-import com.example.spyfall.ui.viewmodel.SetNameViewModel
 import com.google.android.material.navigation.NavigationView
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity(), DrawerListener, DialogListener {
-
-    private val viewModel: SetNameViewModel by viewModels()
+class MainActivity : AppCompatActivity(), DrawerListener, QuiteDialogListener {
 
     private val drawerLayout: DrawerLayout by lazy {
         findViewById(R.id.drawerLayout)
     }
 
-    private val navigationView: NavigationView by lazy {
-        findViewById(R.id.navigation_view)
+    private val navController: NavController by lazy {
+        val navHost = supportFragmentManager.findFragmentById(R.id.mainFragmentContainerView) as NavHostFragment
+        navHost.navController
     }
 
-    private val navController: NavController by lazy {
-        val navHost = supportFragmentManager.findFragmentById(R.id.main_nav_graph) as NavHostFragment
-        navHost.navController
+    private val navigationView: NavigationView by lazy {
+        findViewById(R.id.navigation_view)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,12 +46,51 @@ class MainActivity : AppCompatActivity(), DrawerListener, DialogListener {
         createDrawerLayout()
 
         createNavigationView()
+
+
+        navigationView.setupWithNavController(navController)
+
+
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Log.d("MainActivity", "onStart")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d("MainActivity", "onResume")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d("MainActivity", "onPause")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d("MainActivity", "onStop")
+    }
+
+    override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
+        Log.d("MainActivity", "onSaveInstanceState")
+        super.onSaveInstanceState(outState, outPersistentState)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        Log.d("MainActivity", "onDestroy")
     }
 
     private fun createDrawerLayout() {
 
         val content = findViewById<CardView>(R.id.cardContainer)
-
         drawerLayout.setScrimColor(Color.TRANSPARENT);
         drawerLayout.addDrawerListener(object : DrawerLayout.SimpleDrawerListener() {
 
@@ -85,36 +122,33 @@ class MainActivity : AppCompatActivity(), DrawerListener, DialogListener {
 
     private fun createNavigationView() {
 
+
+        navigationView.setupWithNavController(navController)
+
         navigationView.getHeaderView(0).findViewById<ImageView>(R.id.closeImageView)
             .setOnClickListener {
-                drawerLayout.closeDrawer(navigationView)
+                openDrawer()
             }
 
-        navigationView.setNavigationItemSelectedListener {
-
-            navigationView.menu.forEach { item -> item.isChecked = false }
-
-            it.isChecked = true
-
-            when (it.itemId) {
-                R.id.itemCreateGame -> {
-                }
-                R.id.itemAbout -> {
-                }
-                R.id.itemRules -> {
-                }
-                R.id.itemGoOut -> QuiteDialog().show(supportFragmentManager, null)
-            }
-
-            true
-        }
+//        navigationView.setNavigationItemSelectedListener {
+//
+//            navigationView.menu.forEach { item -> item.isChecked = false }
+//
+//            it.isChecked = true
+//
+//            when (it.itemId) {
+//                R.id.itemCreateGame -> {
+//                }
+//                R.id.itemGoOut -> QuiteDialog().show(supportFragmentManager, null)
+//            }
+//
+//            true
+//        }
     }
 
     override fun logOut() {
         Log.d("MainActivity", "Log Out")
-        viewModel.logOut()
 
-        val navController = findNavController(R.id.mainFragmentContainerView)
         navController.navigate(R.id.logInFragment)
         openDrawer()
     }

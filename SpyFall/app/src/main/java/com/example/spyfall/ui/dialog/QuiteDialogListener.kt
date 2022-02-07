@@ -1,6 +1,6 @@
 package com.example.spyfall.ui.dialog
 
-interface DialogListener {
+interface QuiteDialogListener {
 
     fun logOut()
 }

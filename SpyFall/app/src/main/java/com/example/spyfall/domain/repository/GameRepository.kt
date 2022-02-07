@@ -10,7 +10,7 @@ interface GameRepository {
 
     suspend fun addGame(gameDomain: GameDomain)
 
-    suspend fun getGame(gameId: String) : GameDomain
+    suspend fun getGame(gameId: String) : GameDomain?
 
     suspend fun setStatusForPlayerInGame(gameId: String, playerId: String, status: PlayerStatus?)
 

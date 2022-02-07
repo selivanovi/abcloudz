@@ -8,11 +8,11 @@
         android:title="@string/menuCreateGame"/>
 
     <item
-        android:id="@+id/itemAbout"
+        android:id="@+id/aboutFragment"
         android:title="@string/menuAbout"/>
 
     <item
-        android:id="@+id/itemRules"
+        android:id="@+id/howToPlayFragment"
         android:title="@string/menuRules"/>
 
     <item
