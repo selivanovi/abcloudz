@@ -1,4 +1,4 @@
-package com.example.spyfall.data.utils
+package com.example.spyfall.utils
 
 import java.lang.Exception
 

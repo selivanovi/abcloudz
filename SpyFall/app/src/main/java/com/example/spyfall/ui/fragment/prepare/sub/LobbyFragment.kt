@@ -83,11 +83,9 @@ class LobbyFragment : Fragment(R.layout.fragment_lobby) {
     companion object {
 
         private const val KEY_GAME_ID = "key_game_id"
-        private const val KEY_USER = "key_user"
 
-        fun getBundle(userDomain: UserDomain, gameId: String): Bundle {
+        fun getBundle(gameId: String): Bundle {
             return Bundle().apply {
-                putSerializable(KEY_USER, userDomain)
                 putString(KEY_GAME_ID, gameId)
             }
         }

@@ -3,9 +3,9 @@ package com.example.spyfall.data.repository
 import android.content.SharedPreferences
 import androidx.core.content.edit
 import com.example.spyfall.domain.entity.UserDomain
-import com.example.spyfall.data.utils.Constants
-import com.example.spyfall.data.utils.GetDataException
-import com.example.spyfall.data.utils.InvalidNameException
+import com.example.spyfall.utils.Constants
+import com.example.spyfall.utils.GetDataException
+import com.example.spyfall.utils.InvalidNameException
 import com.example.spyfall.domain.repository.UserRepository
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -33,7 +33,7 @@ class UserRepositoryImpl @Inject constructor(
                         putString(KEY_USER_ID, userDomain.userId)
                         putString(KEY_USER_NAME, userDomain.name)
                     }
-                    firebaseDatabase.reference.child(USER_REFERENCES).child(userDomain.userId).setValue(userDomain.name)
+                    firebaseDatabase.reference.child(USER_REFERENCES).child(userDomain.userId.toString()).setValue(userDomain.name)
                     this@callbackFlow.trySendBlocking(Result.success(Unit))
                 } else {
                     this@callbackFlow.trySendBlocking(Result.failure(InvalidNameException(Constants.INVALID_NAME_EXCEPTION)))
@@ -69,7 +69,7 @@ class UserRepositoryImpl @Inject constructor(
             putString(KEY_USER_ID, null)
             putString(KEY_USER_NAME, null)
         }
-        firebaseDatabase.reference.child(USER_REFERENCES).child(userDomain.userId).setValue(null)
+        firebaseDatabase.reference.child(USER_REFERENCES).child(userDomain.userId.toString()).setValue(null)
     }
 
     companion object {

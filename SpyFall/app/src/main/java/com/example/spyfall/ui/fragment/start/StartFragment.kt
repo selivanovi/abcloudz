@@ -4,20 +4,25 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.spyfall.R
 import com.example.spyfall.domain.entity.UserDomain
 import com.example.spyfall.ui.fragment.BaseFragment
 import com.example.spyfall.ui.fragment.prepare.PrepareFragment
+import com.example.spyfall.ui.fragment.prepare.WaitingGameFragment
 import com.example.spyfall.ui.fragment.start.sub.JoinGameFragment
 import com.example.spyfall.ui.fragment.start.sub.LinkFragment
 import com.example.spyfall.ui.listener.JoinGameFragmentListener
 import com.example.spyfall.ui.listener.LinkFragmentListener
 import com.example.spyfall.ui.viewmodel.StartViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
 class StartFragment : BaseFragment(R.layout.fragment_start), LinkFragmentListener,
@@ -28,9 +33,6 @@ class StartFragment : BaseFragment(R.layout.fragment_start), LinkFragmentListene
 
     private val viewModel: StartViewModel by viewModels()
 
-    private val userDomain: UserDomain by lazy {
-        viewModel.getUser()!!
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -40,7 +42,11 @@ class StartFragment : BaseFragment(R.layout.fragment_start), LinkFragmentListene
             add(R.id.startGameContainerView, JoinGameFragment())
         }
 
-        view.findViewById<TextView>(R.id.nameTextView).text = userDomain.name
+        viewModel.errorChannel.onEach {
+            Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
+        }.launchIn(lifecycleScope)
+
+        view.findViewById<TextView>(R.id.nameTextView).text = viewModel.currentPLayer.name
 
         createButtons()
     }
@@ -86,6 +92,7 @@ class StartFragment : BaseFragment(R.layout.fragment_start), LinkFragmentListene
     }
 
     override fun joinToGame(gameId: String) {
-        findNavController().navigate(R.id.action_startFragment_to_waitingGameFragment)
+        viewModel.joinToGame(gameId)
+        findNavController().navigate(R.id.action_startFragment_to_waitingGameFragment, WaitingGameFragment.getBundle(gameId))
     }
 }

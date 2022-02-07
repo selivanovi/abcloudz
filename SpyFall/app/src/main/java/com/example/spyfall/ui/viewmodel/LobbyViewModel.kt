@@ -3,7 +3,7 @@ package com.example.spyfall.ui.viewmodel
 import androidx.lifecycle.viewModelScope
 import com.example.spyfall.data.entity.GameStatus
 import com.example.spyfall.data.entity.PlayerStatus
-import com.example.spyfall.data.utils.Constants
+import com.example.spyfall.utils.Constants
 import com.example.spyfall.domain.entity.PlayerDomain
 import com.example.spyfall.domain.repository.GameRepository
 import com.example.spyfall.domain.repository.UserRepository

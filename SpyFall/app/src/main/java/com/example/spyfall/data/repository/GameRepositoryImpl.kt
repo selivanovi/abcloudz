@@ -3,8 +3,8 @@ package com.example.spyfall.data.repository
 import android.util.Log
 import com.example.spyfall.data.entity.GameStatus
 import com.example.spyfall.data.entity.PlayerStatus
-import com.example.spyfall.data.utils.Constants
-import com.example.spyfall.data.utils.GetDataException
+import com.example.spyfall.utils.Constants
+import com.example.spyfall.utils.GetDataException
 import com.example.spyfall.domain.entity.GameDomain
 import com.example.spyfall.domain.entity.PlayerDomain
 import com.example.spyfall.domain.repository.GameRepository
@@ -38,7 +38,7 @@ class GameRepositoryImpl @Inject constructor(
 
     override suspend fun addGame(gameDomain: GameDomain) {
 
-        gameReferences(gameDomain.gameId).setValue(gameDomain.toGame())
+        gameReferences(gameDomain.gameId.toString()).setValue(gameDomain.toGame())
     }
 
     override suspend fun getGame(gameId: String): GameDomain? =
@@ -100,7 +100,7 @@ class GameRepositoryImpl @Inject constructor(
     ) {
         val player = playerDomain.toPlayer()
 
-        playerReferences(gameId, playerDomain.playerId).setValue(player)
+        playerReferences(gameId, playerDomain.playerId.toString()).setValue(player)
     }
 
     override suspend fun deletePlayerInGame(gameId: String, playerId: String) {
@@ -111,7 +111,7 @@ class GameRepositoryImpl @Inject constructor(
 
         val player = playerDomain.toPlayer()
 
-        playerReferences(gameId, playerDomain.playerId).setValue(player)
+        playerReferences(gameId, playerDomain.playerId.toString()).setValue(player)
     }
 
 

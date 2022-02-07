@@ -1,26 +1,35 @@
 package com.example.spyfall.ui.fragment.prepare
 
-import android.content.Context
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.Fragment
+import android.widget.TextView
 import androidx.fragment.app.commit
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.spyfall.R
-import com.example.spyfall.domain.entity.UserDomain
+import com.example.spyfall.ui.fragment.BaseFragment
 import com.example.spyfall.ui.fragment.prepare.sub.LobbyFragment
 import com.example.spyfall.ui.listener.LobbyFragmentListener
+import com.example.spyfall.ui.viewmodel.WaitingGameViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
-class WaitingGameFragment : Fragment(R.layout.fragment_waiting_game), LobbyFragmentListener {
+@AndroidEntryPoint
+class WaitingGameFragment : BaseFragment(R.layout.fragment_waiting_game), LobbyFragmentListener {
+
+    private val viewModel: WaitingGameViewModel by viewModels()
+
+    override val TAG: String
+        get() = "WaitingGameFragment"
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val userDomain: UserDomain = requireArguments().getSerializable(KEY_USER)!! as UserDomain
         val gameId: String = requireArguments().getString(KEY_GAME_ID)!!
 
+        view.findViewById<TextView>(R.id.nameTextView).text = viewModel.currentUser.name
+
         childFragmentManager.commit {
-            add(R.id.waitingGameContainerView, LobbyFragment::class.java, LobbyFragment.getBundle(userDomain, gameId))
+            add(R.id.waitingGameContainerView, LobbyFragment::class.java, LobbyFragment.getBundle(gameId))
         }
     }
 
@@ -31,11 +40,9 @@ class WaitingGameFragment : Fragment(R.layout.fragment_waiting_game), LobbyFragm
     companion object {
 
         private const val KEY_GAME_ID = "key_game_id"
-        private const val KEY_USER = "key_user"
 
-        fun getBundle(userDomain: UserDomain, gameId: String): Bundle {
+        fun getBundle( gameId: String): Bundle {
             return Bundle().apply {
-                putSerializable(KEY_USER, userDomain)
                 putString(KEY_GAME_ID, gameId)
             }
         }

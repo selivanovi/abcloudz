@@ -28,7 +28,8 @@ class MainActivity : AppCompatActivity(), DrawerListener, QuiteDialogListener {
     }
 
     private val navController: NavController by lazy {
-        val navHost = supportFragmentManager.findFragmentById(R.id.mainFragmentContainerView) as NavHostFragment
+        val navHost =
+            supportFragmentManager.findFragmentById(R.id.mainFragmentContainerView) as NavHostFragment
         navHost.navController
     }
 
@@ -39,7 +40,6 @@ class MainActivity : AppCompatActivity(), DrawerListener, QuiteDialogListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        Log.d("MainActivity", "onCreate")
         setContentView(R.layout.activity_main)
 
         createDrawerLayout()
@@ -51,38 +51,8 @@ class MainActivity : AppCompatActivity(), DrawerListener, QuiteDialogListener {
         return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
     }
 
-    override fun onStart() {
-        super.onStart()
-        Log.d("MainActivity", "onStart")
-    }
-
-    override fun onResume() {
-        super.onResume()
-        Log.d("MainActivity", "onResume")
-    }
-
-    override fun onPause() {
-        super.onPause()
-        Log.d("MainActivity", "onPause")
-    }
-
-    override fun onStop() {
-        super.onStop()
-        Log.d("MainActivity", "onStop")
-    }
-
-    override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
-        Log.d("MainActivity", "onSaveInstanceState")
-        super.onSaveInstanceState(outState, outPersistentState)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-
-        Log.d("MainActivity", "onDestroy")
-    }
-
     private fun createDrawerLayout() {
+
 
         val content = findViewById<CardView>(R.id.cardContainer)
         drawerLayout.setScrimColor(Color.TRANSPARENT)
@@ -111,6 +81,7 @@ class MainActivity : AppCompatActivity(), DrawerListener, QuiteDialogListener {
                 content.translationX = -xTranslation
             }
         })
+
         drawerLayout.drawerElevation = 0f
     }
 
@@ -121,38 +92,26 @@ class MainActivity : AppCompatActivity(), DrawerListener, QuiteDialogListener {
 
         navigationView.getHeaderView(0).findViewById<ImageView>(R.id.closeImageView)
             .setOnClickListener {
-                openDrawer()
+                setDrawer()
             }
-
-//        navigationView.setNavigationItemSelectedListener {
-//
-//            navigationView.menu.forEach { item -> item.isChecked = false }
-//
-//            it.isChecked = true
-//
-//            when (it.itemId) {
-//                R.id.itemCreateGame -> {
-//                }
-//                R.id.itemGoOut -> QuiteDialog().show(supportFragmentManager, null)
-//            }
-//
-//            true
-//        }
     }
 
     override fun logOut() {
-        Log.d("MainActivity", "Log Out")
-
         navController.navigate(R.id.logInFragment)
-        openDrawer()
+        setDrawer()
     }
 
-    override fun openDrawer() {
+    override fun setDrawer() {
         if (!drawerLayout.isDrawerOpen(navigationView)) {
             drawerLayout.openDrawer(navigationView)
         } else {
             drawerLayout.closeDrawer(navigationView)
         }
+    }
+
+    override fun closeDrawer() {
+        if (drawerLayout.isDrawerOpen(navigationView))
+            drawerLayout.closeDrawer(navigationView)
     }
 
     companion object {
