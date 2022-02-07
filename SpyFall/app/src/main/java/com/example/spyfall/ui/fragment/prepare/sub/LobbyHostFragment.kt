@@ -1,6 +1,8 @@
 package com.example.spyfall.ui.fragment.prepare.sub
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -15,10 +17,12 @@ import com.example.spyfall.ui.listener.LobbyFragmentListener
 import com.example.spyfall.ui.recyclerview.PlayersAdapter
 import com.example.spyfall.ui.state.LobbyState
 import com.example.spyfall.ui.viewmodel.LobbyViewModel
+import com.google.android.material.button.MaterialButton
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+
 
 @AndroidEntryPoint
 class LobbyHostFragment : Fragment(R.layout.fragment_lobby_host) {
@@ -45,10 +49,13 @@ class LobbyHostFragment : Fragment(R.layout.fragment_lobby_host) {
 
         val gameId = requireArguments().getString(KEY_GAME_ID)!!
 
-        view.findViewById<AppCompatButton>(R.id.buttonPlay).apply {
-            setOnClickListener {
-                viewModel.setStatusPlayForPlayerInGame(gameId)
-            }
+        view.findViewById<AppCompatButton>(R.id.buttonPlay).setOnClickListener {
+            viewModel.setStatusPlayForPlayerInGame(gameId)
+        }
+
+
+        view.findViewById<MaterialButton>(R.id.inviteButton).setOnClickListener {
+            sendApp(gameId)
         }
 
         viewModel.observePlayersFromGame(gameId)
@@ -64,6 +71,24 @@ class LobbyHostFragment : Fragment(R.layout.fragment_lobby_host) {
         }.launchIn(lifecycleScope)
 
         createRecyclerView(view)
+    }
+
+    private fun sendApp(gameId: String) {
+        try {
+            val packageName = requireContext().packageName
+            val intent = Intent(Intent.ACTION_SEND)
+            intent.type = "text/plain"
+            intent.putExtra(Intent.EXTRA_SUBJECT, "My app name")
+            var strShareMessage = resources.getString(R.string.invite)+"\n"
+            strShareMessage += "https://spyfall.example.com?id=$gameId"
+            val screenshotUri = Uri.parse("android.resource://$packageName/drawable/image_spy")
+            intent.type = "image/png"
+            intent.putExtra(Intent.EXTRA_STREAM, screenshotUri)
+            intent.putExtra(Intent.EXTRA_TEXT, strShareMessage)
+            startActivity(Intent.createChooser(intent, resources.getString(R.string.share)))
+        } catch (e: Exception) {
+            //e.toString();
+        }
     }
 
     override fun onStart() {

@@ -1,6 +1,7 @@
 package com.example.spyfall.ui.fragment.start.sub
 
 import android.content.Context
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -24,7 +25,14 @@ class JoinGameFragment : Fragment(R.layout.fragment_join_game) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val data: Uri? = requireActivity().intent.data
+
         val joinGameEditText = view.findViewById<EditText>(R.id.joinGameEditText)
+
+        data?.let {
+            val gameId = it.getQueryParameter("id")
+            joinGameEditText.setText(gameId)
+        }
 
         view.findViewById<Button>(R.id.buttonJoinGame).setOnClickListener {
             val gameId = joinGameEditText.text.toString()

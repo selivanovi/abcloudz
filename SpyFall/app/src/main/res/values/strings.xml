@@ -77,5 +77,8 @@
     <string name="spyWonText">The spy won</string>
     <string name="textInfoForJoin">You can press the play button for set statuts ready</string>
     <string name="textContinue">Continue</string>
+    <string name="chooser_title">Share</string>
+    <string name="share">Share</string>
+    <string name="invite">Invite you to play SpyFall to enjoy the game with us.</string>
 
 </resources>

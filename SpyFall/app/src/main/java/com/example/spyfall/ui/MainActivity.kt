@@ -1,12 +1,14 @@
 package com.example.spyfall.ui
 
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.drawerlayout.widget.DrawerLayout
@@ -41,6 +43,7 @@ class MainActivity : AppCompatActivity(), DrawerListener, QuiteDialogListener {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)
+
 
         createDrawerLayout()
 

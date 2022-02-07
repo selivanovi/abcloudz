@@ -26,6 +26,7 @@ class LogInFragment : BaseFragment(R.layout.fragment_log_in) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         viewModel.getUser()?.let {
             findNavController().navigate(R.id.action_logInFragment_to_startFragment)
         }
