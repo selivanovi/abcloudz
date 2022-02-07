@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/itemCreateGame"
+        android:id="@+id/game_nested_nav_graph"
         android:checked="true"
         android:title="@string/menuCreateGame"/>
 
@@ -16,6 +16,6 @@
         android:title="@string/menuRules"/>
 
     <item
-        android:id="@+id/itemGoOut"
+        android:id="@+id/quiteDialog"
         android:title="@string/menuGoOut"/>
 </menu>
