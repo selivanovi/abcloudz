@@ -26,8 +26,6 @@ interface GameRepository {
 
     suspend fun deleteGame(gameId: String)
 
-    suspend fun updatePlayerInGame(gameId: String, playerDomain: PlayerDomain)
-
     suspend fun addPlayerToGame(gameId: String, playerDomain: PlayerDomain)
 
     suspend fun deletePlayerInGame(gameId: String, playerId: String)

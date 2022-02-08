@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.activity.OnBackPressedCallback
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -22,12 +23,23 @@ abstract class BaseFragment(
 
     private var drawerListener: DrawerListener? = null
 
+    open fun onBackPressed() {}
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         Log.d(TAG, "onAttach")
         if (requireActivity() is DrawerListener) {
             drawerListener = requireActivity() as DrawerListener
         }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        requireActivity().onBackPressedDispatcher.addCallback(requireActivity(), object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                onBackPressed()
+            }
+        })
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -65,7 +77,6 @@ abstract class BaseFragment(
 
     override fun onStop() {
         super.onStop()
-        lifecycleScope.cancel()
         Log.d(TAG, "onStop")
     }
 

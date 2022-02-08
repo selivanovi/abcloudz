@@ -59,6 +59,14 @@ class PrepareFragment : BaseFragment(R.layout.fragment_prepare), LobbyFragmentLi
         )
     }
 
+    override fun exit() {
+        findNavController().popBackStack(R.id.startFragment, false)
+    }
+
+    override fun onBackPressed() {
+        viewModel.clearGame(gameId)
+    }
+
     private fun createButtons() {
 
         val buttonPlayers =

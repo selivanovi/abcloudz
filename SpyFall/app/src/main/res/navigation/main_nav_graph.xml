@@ -37,10 +37,12 @@
             tools:layout="@layout/fragment_location_vote">
             <action
                 android:id="@+id/action_locationVoteFragment_to_locationWonFragment"
-                app:destination="@id/locationWonFragment" />
+                app:destination="@id/locationWonFragment"
+                app:popUpTo="@id/startFragment" />
             <action
                 android:id="@+id/action_locationVoteFragment_to_spyWonFragment"
-                app:destination="@id/spyWonFragment" />
+                app:destination="@id/spyWonFragment"
+                app:popUpTo="@id/startFragment" />
         </fragment>
         <fragment
             android:id="@+id/spyWonFragment"
@@ -55,7 +57,8 @@
 
             <action
                 android:id="@+id/action_prepareFragment_to_roleFragment"
-                app:destination="@id/roleFragment" />
+                app:destination="@id/roleFragment"
+                app:popUpTo="@id/startFragment" />
         </fragment>
         <fragment
             android:id="@+id/checkLocationFragment"
@@ -65,10 +68,12 @@
 
             <action
                 android:id="@+id/action_checkLocationFragment_to_locationWonFragment"
-                app:destination="@id/locationWonFragment" />
+                app:destination="@id/locationWonFragment"
+                app:popUpTo="@id/startFragment" />
             <action
                 android:id="@+id/action_checkLocationFragment_to_spyWonFragment"
-                app:destination="@id/spyWonFragment" />
+                app:destination="@id/spyWonFragment"
+                app:popUpTo="@id/startFragment" />
         </fragment>
         <fragment
             android:id="@+id/waitingGameFragment"
@@ -78,7 +83,8 @@
 
             <action
                 android:id="@+id/action_waitingGameFragment_to_roleFragment"
-                app:destination="@id/roleFragment" />
+                app:destination="@id/roleFragment"
+                app:popUpTo="@id/startFragment" />
         </fragment>
         <fragment
             android:id="@+id/callLocationFragment"
@@ -88,10 +94,12 @@
 
             <action
                 android:id="@+id/action_callLocationFragment_to_spyWonFragment"
-                app:destination="@id/spyWonFragment" />
+                app:destination="@id/spyWonFragment"
+                app:popUpTo="@id/startFragment" />
             <action
                 android:id="@+id/action_callLocationFragment_to_locationWonFragment"
-                app:destination="@id/locationWonFragment" />
+                app:destination="@id/locationWonFragment"
+                app:popUpTo="@id/startFragment" />
         </fragment>
         <fragment
             android:id="@+id/logInFragment"
@@ -112,16 +120,20 @@
 
             <action
                 android:id="@+id/action_roleFragment_to_spyVoteFragment"
-                app:destination="@id/spyVoteFragment" />
+                app:destination="@id/spyVoteFragment"
+                app:popUpTo="@id/startFragment" />
             <action
                 android:id="@+id/action_roleFragment_to_locationVoteFragment"
-                app:destination="@id/locationVoteFragment" />
+                app:destination="@id/locationVoteFragment"
+                app:popUpTo="@id/startFragment" />
             <action
                 android:id="@+id/action_roleFragment_to_checkLocationFragment"
-                app:destination="@id/checkLocationFragment" />
+                app:destination="@id/checkLocationFragment"
+                app:popUpTo="@id/startFragment" />
             <action
                 android:id="@+id/action_roleFragment_to_callLocationFragment"
-                app:destination="@id/callLocationFragment" />
+                app:destination="@id/callLocationFragment"
+                app:popUpTo="@id/startFragment" />
         </fragment>
         <fragment
             android:id="@+id/startFragment"
@@ -131,10 +143,12 @@
 
             <action
                 android:id="@+id/action_startFragment_to_waitingGameFragment"
-                app:destination="@id/waitingGameFragment" />
+                app:destination="@id/waitingGameFragment"
+                app:popUpTo="@id/startFragment" />
             <action
                 android:id="@+id/action_startFragment_to_prepareFragment"
-                app:destination="@id/prepareFragment" />
+                app:destination="@id/prepareFragment"
+                app:popUpTo="@id/startFragment" />
         </fragment>
         <fragment
             android:id="@+id/locationWonFragment"
@@ -148,10 +162,12 @@
             tools:layout="@layout/fragment_spy_vote">
             <action
                 android:id="@+id/action_spyVoteFragment_to_locationWonFragment"
-                app:destination="@id/locationWonFragment" />
+                app:destination="@id/locationWonFragment"
+                app:popUpTo="@id/startFragment" />
             <action
                 android:id="@+id/action_spyVoteFragment_to_spyWonFragment"
-                app:destination="@id/spyWonFragment" />
+                app:destination="@id/spyWonFragment"
+                app:popUpTo="@id/startFragment" />
         </fragment>
     </navigation>
 

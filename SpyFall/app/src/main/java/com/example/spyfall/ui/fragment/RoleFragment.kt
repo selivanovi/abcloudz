@@ -1,14 +1,17 @@
 package com.example.spyfall.ui.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import com.example.spyfall.R
 import com.example.spyfall.data.entity.GameStatus
@@ -20,6 +23,7 @@ import com.example.spyfall.ui.fragment.vote.SpyVoteFragment
 import com.example.spyfall.ui.state.RoleState
 import com.example.spyfall.ui.viewmodel.RoleViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
@@ -29,24 +33,22 @@ class RoleFragment : BaseFragment(R.layout.fragment_role) {
     override val TAG: String
         get() = "RoleFragment"
 
+
     private val viewModel: RoleViewModel by viewModels()
+
+    private val gameId by lazy {
+        requireArguments().getString(KEY_GAME_ID)!!
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val gameId = requireArguments().getString(KEY_GAME_ID)!!
-
-//        val controlGameImageView =
-//        val controlGameTextView =
+        val controlGameImageView = view.findViewById<AppCompatImageView>(R.id.controlGameImageView)
+        val controlGameTextView = view.findViewById<TextView>(R.id.controlGameTextView)
         val timeTextView = view.findViewById<AppCompatTextView>(R.id.timeTextView)
         val locationButton = view.findViewById<AppCompatButton>(R.id.locationButton)
         val voteButton = view.findViewById<AppCompatButton>(R.id.voteButton)
         val controlGameLayout = view.findViewById<LinearLayout>(R.id.controlGameLayout)
-
-        viewModel.observeRoleOfCurrentPlayer(gameId)
-        viewModel.observeGame(gameId)
-
-        viewModel.setStatusForGame(gameId, GameStatus.PLAYING)
 
         viewModel.roleChannel.onEach { role ->
             view.findViewById<AppCompatTextView>(R.id.locationTextView).setText(role.string)
@@ -57,14 +59,23 @@ class RoleFragment : BaseFragment(R.layout.fragment_role) {
 
         viewModel.roleStateChannel.onEach { state ->
             when (state) {
+                is RoleState.ExitToMenu -> {
+                    findNavController().popBackStack(R.id.startFragment, false)
+                }
+                is RoleState.ExitToLobbyForHost -> {
+                    findNavController().popBackStack(R.id.prepareFragment, false)
+                }
+                is RoleState.ExitTolLobbyForPlayer -> {
+                    findNavController().popBackStack(R.id.waitingGameFragment, false)
+                }
                 is RoleState.GameIsPlaying -> {
-                    view.findViewById<AppCompatImageView>(R.id.controlGameImageView)
+                    controlGameImageView
                         .setImageResource(R.drawable.pause)
-                    view.findViewById<TextView>(R.id.controlGameTextView)
+                    controlGameTextView
                         .setText(R.string.textPause)
                 }
                 is RoleState.GameIsPause -> {
-                    view.findViewById<AppCompatImageView>(R.id.controlGameImageView)
+                    controlGameImageView
                         .setImageResource(R.drawable.play)
                     view.findViewById<TextView>(R.id.controlGameTextView)
                         .setText(R.string.textContinue)
@@ -125,8 +136,23 @@ class RoleFragment : BaseFragment(R.layout.fragment_role) {
         controlGameLayout.setOnClickListener {
             viewModel.setPauseOrPlayForGame(gameId)
         }
+    }
 
+    override fun onStart() {
+        super.onStart()
         viewModel.setRolesInGame(gameId)
+        viewModel.observeRoleOfCurrentPlayer(gameId)
+        viewModel.observeGame(gameId)
+        viewModel.observePlayersInGame(gameId)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        viewModel.stopTimer(gameId = gameId)
+    }
+
+    override fun onBackPressed() {
+        viewModel.clearGame(gameId)
     }
 
     companion object {

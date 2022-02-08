@@ -9,6 +9,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.spyfall.R
 import com.example.spyfall.ui.fragment.BaseFragment
 import com.example.spyfall.ui.fragment.RoleFragment
+import com.example.spyfall.ui.fragment.prepare.WaitingGameFragment
 import com.example.spyfall.ui.fragment.result.LocationWonFragment
 import com.example.spyfall.ui.fragment.result.SpyWonFragment
 import com.example.spyfall.ui.fragment.vote.sub.WaitingFragment
@@ -26,11 +27,11 @@ class SpyVoteFragment : BaseFragment(R.layout.fragment_location_vote) {
 
     private val viewModel: VoteViewModel by viewModels()
 
+    private val gameId: String by lazy { requireArguments().getString(KEY_GAME_ID)!! }
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
-        val gameId = requireArguments().getString(KEY_GAME_ID)!!
 
         childFragmentManager.commit {
             add<WaitingFragment>(R.id.voteContainerView)

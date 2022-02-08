@@ -107,14 +107,6 @@ class GameRepositoryImpl @Inject constructor(
         playerReferences(gameId, playerId).setValue(null)
     }
 
-    override suspend fun updatePlayerInGame(gameId: String, playerDomain: PlayerDomain) {
-
-        val player = playerDomain.toPlayer()
-
-        playerReferences(gameId, playerDomain.playerId.toString()).setValue(player)
-    }
-
-
     override suspend fun deleteGame(gameId: String) {
         gameReferences(gameId).setValue(null)
     }
@@ -156,7 +148,10 @@ class GameRepositoryImpl @Inject constructor(
             }
         }
 
-    override fun observePlayerFromGame(gameId: String, playerId: String): Flow<Result<PlayerDomain>> =
+    override fun observePlayerFromGame(
+        gameId: String,
+        playerId: String
+    ): Flow<Result<PlayerDomain>> =
         callbackFlow {
 
             val valueEventListener = object : ValueEventListener {

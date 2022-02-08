@@ -9,6 +9,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.spyfall.R
 import com.example.spyfall.data.entity.GameStatus
 import com.example.spyfall.ui.fragment.BaseFragment
+import com.example.spyfall.ui.fragment.prepare.WaitingGameFragment
 import com.example.spyfall.ui.fragment.result.LocationWonFragment
 import com.example.spyfall.ui.fragment.result.SpyWonFragment
 import com.example.spyfall.ui.state.CheckState
@@ -24,6 +25,9 @@ class CheckLocationFragment : BaseFragment(R.layout.fragment_check_location) {
         get() = "CheckLocationFragment"
 
     private val viewModel: CheckLocationViewModel by viewModels()
+
+    private val gameId: String by lazy { requireArguments().getString(KEY_GAME_ID)!! }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

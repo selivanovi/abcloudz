@@ -11,5 +11,4 @@ sealed class RoleState {
     object Player : RoleState()
     object GameIsPlaying : RoleState()
     object GameIsPause : RoleState()
-    object Exit : RoleState()
 }

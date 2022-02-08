@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
-abstract class BaseViewModel : ViewModel(), CoroutineScope {
+abstract class BaseViewModel() : ViewModel(), CoroutineScope {
 
     protected val errorMutableChannel = Channel<Throwable>()
     val errorChannel = errorMutableChannel.receiveAsFlow()

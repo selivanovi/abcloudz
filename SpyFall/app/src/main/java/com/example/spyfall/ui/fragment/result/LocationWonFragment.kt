@@ -11,6 +11,8 @@ import com.example.spyfall.R
 import com.example.spyfall.data.entity.PlayerStatus
 import com.example.spyfall.ui.fragment.BaseFragment
 import com.example.spyfall.ui.fragment.prepare.PrepareFragment
+import com.example.spyfall.ui.fragment.prepare.WaitingGameFragment
+import com.example.spyfall.ui.fragment.vote.SpyVoteFragment
 import com.example.spyfall.ui.state.ResultState
 import com.example.spyfall.ui.viewmodel.ResultViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -25,11 +27,11 @@ class LocationWonFragment : BaseFragment(R.layout.fragment_location_won) {
 
     private val viewModel: ResultViewModel by viewModels()
 
+    private val gameId: String by lazy { requireArguments().getString(KEY_GAME_ID)!! }
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val gameId = requireArguments().getString(KEY_GAME_ID)!!
-
 
         viewModel.roleChannel.onEach { role ->
             view.findViewById<AppCompatImageView>(R.id.locationImageView)

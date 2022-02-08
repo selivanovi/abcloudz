@@ -1,19 +1,29 @@
 package com.example.spyfall.ui.viewmodel
 
+import com.example.spyfall.data.entity.GameStatus
 import com.example.spyfall.domain.repository.GameRepository
 import com.example.spyfall.domain.repository.UserRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
+import com.example.spyfall.ui.state.GameState
 import kotlinx.coroutines.async
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class WaitingGameViewModel @Inject constructor(
+open class GameViewModel(
     private val gameRepository: GameRepository,
     private val userRepository: UserRepository
 ) : BaseViewModel() {
 
-    val currentUser = userRepository.getUser()!!
+    private val currentUser = userRepository.getUser()!!
+
+    private val gameStatusMutableChannel = Channel<GameState>()
+
+    fun observeGame(){
+
+    }
+
+    fun observePLayers() {
+
+    }
 
     fun clearGame(gameId: String) {
         val isHost = async { checkHost(gameId, currentUser.userId) }

@@ -3,12 +3,15 @@ package com.example.spyfall.ui.viewmodel
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.example.spyfall.data.entity.GameStatus
+import com.example.spyfall.data.entity.Player
 import com.example.spyfall.data.entity.PlayerStatus
 import com.example.spyfall.data.entity.Role
 import com.example.spyfall.domain.entity.PlayerDomain
 import com.example.spyfall.domain.repository.GameRepository
 import com.example.spyfall.domain.repository.UserRepository
+import com.example.spyfall.ui.state.ResultState
 import com.example.spyfall.ui.state.RoleState
+import com.example.spyfall.utils.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
@@ -44,28 +47,31 @@ class RoleViewModel @Inject constructor(
         gameRepository.observeGame(gameId).onEach { result ->
             result.onSuccess { game ->
                 Log.d("RoleViewModel", "observeGame: $game")
-
-                if (game?.status == GameStatus.PLAYING) {
+                if (game == null) {
+                    roleStateMutableChannel.send(RoleState.ExitToMenu)
+                    return@onEach
+                }
+                if (game.status == GameStatus.PLAYING) {
                     startTimer(gameId)
                     roleStateMutableChannel.send(RoleState.GameIsPlaying)
                 }
-                if (game?.status == GameStatus.PAUSE) {
+                if (game.status == GameStatus.PAUSE) {
                     stopTimer(gameId)
                     roleStateMutableChannel.send(RoleState.GameIsPause)
                 }
-                if (game?.status == GameStatus.VOTE) {
+                if (game.status == GameStatus.VOTE) {
                     stopTimer(gameId)
                     if (isSpy) {
                         roleStateMutableChannel.send(RoleState.VoteSpy)
                     } else roleStateMutableChannel.send(RoleState.VotePlayer)
                 }
-                if (game?.status == GameStatus.GAME_OVER) {
+                if (game.status == GameStatus.GAME_OVER) {
                     stopTimer(gameId)
                     if (isSpy) {
                         roleStateMutableChannel.send(RoleState.VoteSpy)
                     } else roleStateMutableChannel.send(RoleState.VotePlayer)
                 }
-                if (game?.status == GameStatus.LOCATION) {
+                if (game.status == GameStatus.LOCATION) {
                     if (isSpy) {
                         roleStateMutableChannel.send(RoleState.LocationSpy)
                     } else roleStateMutableChannel.send(RoleState.LocationPlayer)
@@ -79,11 +85,33 @@ class RoleViewModel @Inject constructor(
 
     }
 
+    fun observePlayersInGame(gameId: String) {
+        gameRepository.observePlayersFromGame(gameId).onEach {
+            it.onSuccess { players ->
+                if (players.size < Constants.MIN_NUMBER_PLAYERS) {
+                    clearStatusForPLayers(gameId, players)
+                    val isHost = checkHost(gameId, currentPlayer.userId)
+                    if (isHost) roleStateMutableChannel.send(RoleState.ExitToLobbyForHost)
+                    else roleStateMutableChannel.send(RoleState.ExitTolLobbyForPlayer)
+                }
+            }
+            it.onFailure { }
+        }.launchIn(viewModelScope)
+    }
+
+    private suspend fun clearStatusForPLayers(gameId: String, players: List<PlayerDomain>) {
+        players.forEach {
+            val newPlayer = PlayerDomain(playerId = it.playerId, name = it.name, null, null, null)
+            gameRepository.addPlayerToGame(gameId, newPlayer)
+        }
+    }
+
     fun observeRoleOfCurrentPlayer(gameId: String) {
         gameRepository.observePlayerFromGame(gameId, currentPlayer.userId).onEach { result ->
             result.onSuccess { player ->
                 Log.d("RoleViewModel", "observeCurrentPlayer: $player")
                 val role = player.role
+
 
                 role?.let {
                     roleMutableChannel.send(it)
@@ -104,16 +132,14 @@ class RoleViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    private fun stopTimer(gameId: String) = launch {
+    fun stopTimer(gameId: String) = launch {
         stopTimer = true
         currentTime?.let {
             gameRepository.setDurationForGames(gameId, it)
         }
     }
 
-
     private fun startTimer(gameId: String) = launch {
-
         stopTimer = false
 
         val duration = gameRepository.getDurationForGames(gameId)
@@ -141,7 +167,6 @@ class RoleViewModel @Inject constructor(
             val isHost = isHostDeferred.await()
             if (!isHost) return@launch
             val players = gameRepository.getPlayersFromGame(gameId)
-            Log.d("RoleViewModel", "Get players from firebase")
             setRoleForPLayersInGame(gameId, players)
         }
     }
@@ -164,7 +189,7 @@ class RoleViewModel @Inject constructor(
             if (player.role == null) {
                 player.role = role
             }
-            gameRepository.updatePlayerInGame(gameId, player)
+            gameRepository.addPlayerToGame(gameId, player)
         }
     }
 
@@ -181,6 +206,25 @@ class RoleViewModel @Inject constructor(
         gameRepository.setStatusForGame(gameId, status)
     }
 
+    fun clearGame(gameId: String) {
+        val isHost = async { checkHost(gameId, currentPlayer.userId) }
+        launch {
+            if (isHost.await()) {
+                deleteGameById(gameId)
+            } else {
+                deletePlayerInGame(gameId, currentPlayer.userId)
+            }
+        }
+    }
+
+    private  suspend fun deletePlayerInGame(gameId: String, playerId: String) {
+        gameRepository.deletePlayerInGame(gameId, playerId)
+    }
+
+    private suspend fun deleteGameById(gameId: String) {
+
+        gameRepository.deleteGame(gameId)
+    }
 
     private suspend fun checkHost(gameId: String, playerId: String): Boolean {
         return getHost(gameId) == playerId
@@ -189,6 +233,5 @@ class RoleViewModel @Inject constructor(
     private suspend fun getHost(gameId: String): String {
         return gameRepository.getGame(gameId)?.host!!
     }
-
 }
 

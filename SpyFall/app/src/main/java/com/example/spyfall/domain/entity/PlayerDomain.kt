@@ -8,5 +8,5 @@ data class PlayerDomain(
     val name: String?,
     val status: PlayerStatus?,
     var role: Role?,
-    val vote: String? = null
+    val vote: String?
 )

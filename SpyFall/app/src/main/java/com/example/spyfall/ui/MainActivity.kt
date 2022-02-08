@@ -1,16 +1,14 @@
 package com.example.spyfall.ui
 
 import android.graphics.Color
-import android.net.Uri
 import android.os.Bundle
-import android.os.PersistableBundle
-import android.util.Log
+import android.view.Gravity
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -56,7 +54,7 @@ class MainActivity : AppCompatActivity(), DrawerListener, QuiteDialogListener {
 
     private fun createDrawerLayout() {
 
-
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, GravityCompat.START)
         val content = findViewById<CardView>(R.id.cardContainer)
         drawerLayout.setScrimColor(Color.TRANSPARENT)
         drawerLayout.addDrawerListener(object : DrawerLayout.SimpleDrawerListener() {

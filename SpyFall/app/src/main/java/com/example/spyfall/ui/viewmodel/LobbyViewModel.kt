@@ -3,6 +3,7 @@ package com.example.spyfall.ui.viewmodel
 import androidx.lifecycle.viewModelScope
 import com.example.spyfall.data.entity.GameStatus
 import com.example.spyfall.data.entity.PlayerStatus
+import com.example.spyfall.domain.entity.GameDomain
 import com.example.spyfall.utils.Constants
 import com.example.spyfall.domain.entity.PlayerDomain
 import com.example.spyfall.domain.repository.GameRepository
@@ -10,6 +11,7 @@ import com.example.spyfall.domain.repository.UserRepository
 import com.example.spyfall.ui.state.LobbyState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -25,11 +27,36 @@ class LobbyViewModel @Inject constructor(
     private var playerStatus: PlayerStatus? = null
     private val currentPayer = userRepository.getUser()!!
 
+    private var currentGame: GameDomain? = null
+
     private val lobbyStateMutableChannel = Channel<LobbyState>()
     val lobbyState = lobbyStateMutableChannel.receiveAsFlow()
 
     private val playersMutableChannel = Channel<List<PlayerDomain>>()
     val playersChannel = playersMutableChannel.receiveAsFlow()
+
+    fun observeGame(gameId: String) {
+        gameRepository.observeGame(gameId).onEach {
+            it.onSuccess { game ->
+                if (checkGameChange(currentGame, game)) {
+                    if (game != null)
+                        currentGame = game
+                    else {
+                        lobbyStateMutableChannel.send(LobbyState.ExitToMenu)
+                    }
+                }
+            }
+            it.onFailure { throwable -> errorMutableChannel.send(throwable) }
+
+        }.launchIn(viewModelScope)
+    }
+
+    private fun checkGameChange(currentGame: GameDomain?, game: GameDomain?): Boolean {
+        if (currentGame == game) {
+            return false
+        }
+        return true
+    }
 
     fun observePlayersFromGame(gameId: String) {
         gameRepository.observePlayersFromGame(gameId).onEach { result ->
@@ -38,11 +65,10 @@ class LobbyViewModel @Inject constructor(
                 playersMutableChannel.send(players)
 
                 if (players.all { player -> player.status == PlayerStatus.PLAY }) {
-                    if (players.size >= Constants.MIN_NUMBER_PLAYERS){
+                    if (players.size >= Constants.MIN_NUMBER_PLAYERS) {
                         lobbyStateMutableChannel.send(LobbyState.Play)
                         gameRepository.setStatusForGame(gameId, GameStatus.PLAYING)
-                    }
-                    else lobbyStateMutableChannel.send(LobbyState.Wait)
+                    } else lobbyStateMutableChannel.send(LobbyState.Wait)
                 }
 
             }
@@ -52,7 +78,7 @@ class LobbyViewModel @Inject constructor(
 
     fun setStatusPlayForPlayerInGame(gameId: String) {
 
-        playerStatus = if(playerStatus == null) PlayerStatus.PLAY else null
+        playerStatus = if (playerStatus == null) PlayerStatus.PLAY else null
 
         launch {
             gameRepository.setStatusForPlayerInGame(gameId, currentPayer.userId, playerStatus)

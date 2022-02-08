@@ -18,7 +18,7 @@ fun GameDomain.toGame(): Game =
     Game(this.host, this.status, this.duration)
 
 fun UserDomain.toPlayerDomain(): PlayerDomain =
-    PlayerDomain(this.userId, this.name, null, null)
+    PlayerDomain(this.userId, this.name, null, null, null)
 
 fun DataSnapshot.toPlayerDomain(): PlayerDomain? {
     val key = this.key
@@ -32,7 +32,7 @@ fun DataSnapshot.toGameDomain(): GameDomain? {
     val key = this.key
     val game = this.getValue(Game::class.java)
     return if (key != null && game != null) {
-        GameDomain(key, game.host, game.status)
+        GameDomain(key, game.host, game.status, game.duration)
     } else null
 }
 

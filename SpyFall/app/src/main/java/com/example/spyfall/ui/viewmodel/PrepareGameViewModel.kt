@@ -10,6 +10,7 @@ import com.example.spyfall.utils.times
 import com.example.spyfall.utils.toPlayerDomain
 import com.example.spyfall.utils.toSeconds
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -49,6 +50,34 @@ class PrepareGameViewModel @Inject constructor(
 
         val currentPlayer = currentUser.toPlayerDomain()
         gameRepository.addPlayerToGame(gameId, currentPlayer)
+    }
+
+    fun clearGame(gameId: String) {
+        val isHost = async { checkHost(gameId, currentUser.userId) }
+        launch {
+            if (isHost.await()) {
+                deleteGameById(gameId)
+            } else {
+                deletePlayerInGame(gameId, currentUser.userId)
+            }
+        }
+    }
+
+    private  suspend fun deletePlayerInGame(gameId: String, playerId: String) {
+        gameRepository.deletePlayerInGame(gameId, playerId)
+    }
+
+    private suspend fun deleteGameById(gameId: String) {
+
+        gameRepository.deleteGame(gameId)
+    }
+
+    private suspend fun checkHost(gameId: String, playerId: String): Boolean {
+        return getHost(gameId) == playerId
+    }
+
+    private suspend fun getHost(gameId: String): String {
+        return gameRepository.getGame(gameId)?.host!!
     }
 
     fun setTimeForGame(gameId: String, time: Long) {
