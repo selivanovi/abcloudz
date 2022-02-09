@@ -3,10 +3,12 @@ package com.example.spyfall.ui.fragment.prepare
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.spyfall.R
 import com.example.spyfall.ui.fragment.BaseFragment
@@ -15,12 +17,18 @@ import com.example.spyfall.ui.fragment.prepare.sub.LobbyHostFragment
 import com.example.spyfall.ui.fragment.prepare.sub.PickTimeFragment
 import com.example.spyfall.ui.listener.LobbyFragmentListener
 import com.example.spyfall.ui.listener.PickTimeFragmentListener
+import com.example.spyfall.ui.state.GameState
 import com.example.spyfall.ui.viewmodel.PrepareGameViewModel
 import com.google.android.material.button.MaterialButton
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.cancelChildren
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class PrepareFragment : BaseFragment(R.layout.fragment_prepare), LobbyFragmentListener, PickTimeFragmentListener {
+class PrepareFragment : BaseFragment(R.layout.fragment_prepare), LobbyFragmentListener,
+    PickTimeFragmentListener {
 
     override val TAG: String
         get() = "InvitePlayerFragment"
@@ -29,6 +37,11 @@ class PrepareFragment : BaseFragment(R.layout.fragment_prepare), LobbyFragmentLi
 
     private val gameId: String by lazy {
         requireArguments().getString(KEY_GAME_ID)!!
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.setGame(gameId)
     }
 
 
@@ -41,15 +54,27 @@ class PrepareFragment : BaseFragment(R.layout.fragment_prepare), LobbyFragmentLi
         view.findViewById<TextView>(R.id.gameIdTextView).text =
             resources.getString(R.string.textWelcomeToTheGameWithId, gameId)
 
+        view.findViewById<ImageView>(R.id.back).setOnClickListener {
+            lifecycleScope.launch {
+                viewModel.clearGame(gameId)
+                findNavController().navigateUp()
+            }
+        }
+
         childFragmentManager.commit {
             add(R.id.createGameContainerView, LobbyHostFragment.newInstance(gameId))
         }
 
-        view.findViewById<TextView>(R.id.nameTextView).text = userDomain.name
+        viewModel.gameStateChannel.onEach { state ->
+            if (state is GameState.ExitToMenu) {
+                findNavController().navigateUp()
+            }
+        }.launchIn(lifecycleScope)
+
 
         createButtons()
 
-        viewModel.setGame(gameId)
+        viewModel.observeGameExit(gameId)
     }
 
     override fun startGame() {
@@ -64,7 +89,14 @@ class PrepareFragment : BaseFragment(R.layout.fragment_prepare), LobbyFragmentLi
     }
 
     override fun onBackPressed() {
-        viewModel.clearGame(gameId)
+        lifecycleScope.launch {
+            viewModel.clearGame(gameId)
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        viewModel.coroutineContext.cancelChildren()
     }
 
     private fun createButtons() {
@@ -104,7 +136,7 @@ class PrepareFragment : BaseFragment(R.layout.fragment_prepare), LobbyFragmentLi
     }
 
     override fun setTime(time: Long) {
-        viewModel.setTimeForGame(gameId, time)
+        viewModel.setDuration(gameId, time)
         requireView().findViewById<MaterialButton>(R.id.buttonPlayers).callOnClick()
     }
 

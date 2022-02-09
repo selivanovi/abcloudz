@@ -24,7 +24,7 @@ import javax.inject.Inject
 class RoleViewModel @Inject constructor(
     private val gameRepository: GameRepository,
     private val userRepository: UserRepository
-) : BaseViewModel() {
+) : GameViewModel(gameRepository, userRepository) {
 
     private var isSpy: Boolean = false
 
@@ -46,32 +46,34 @@ class RoleViewModel @Inject constructor(
     fun observeGame(gameId: String) {
         gameRepository.observeGame(gameId).onEach { result ->
             result.onSuccess { game ->
+
+
                 Log.d("RoleViewModel", "observeGame: $game")
-                if (game == null) {
-                    roleStateMutableChannel.send(RoleState.ExitToMenu)
-                    return@onEach
-                }
-                if (game.status == GameStatus.PLAYING) {
+                if (game?.status == GameStatus.PLAYING) {
                     startTimer(gameId)
                     roleStateMutableChannel.send(RoleState.GameIsPlaying)
                 }
-                if (game.status == GameStatus.PAUSE) {
+                if (game?.status == GameStatus.PAUSE) {
+                    game.duration?.let {
+                        timeMutableChannel.send(it)
+                    }
                     stopTimer(gameId)
                     roleStateMutableChannel.send(RoleState.GameIsPause)
                 }
-                if (game.status == GameStatus.VOTE) {
+                if (game?.status == GameStatus.VOTE) {
                     stopTimer(gameId)
                     if (isSpy) {
                         roleStateMutableChannel.send(RoleState.VoteSpy)
                     } else roleStateMutableChannel.send(RoleState.VotePlayer)
                 }
-                if (game.status == GameStatus.GAME_OVER) {
+                if (game?.status == GameStatus.GAME_OVER) {
                     stopTimer(gameId)
                     if (isSpy) {
                         roleStateMutableChannel.send(RoleState.VoteSpy)
                     } else roleStateMutableChannel.send(RoleState.VotePlayer)
                 }
-                if (game.status == GameStatus.LOCATION) {
+                if (game?.status == GameStatus.LOCATION) {
+                    stopTimer(gameId)
                     if (isSpy) {
                         roleStateMutableChannel.send(RoleState.LocationSpy)
                     } else roleStateMutableChannel.send(RoleState.LocationPlayer)
@@ -83,20 +85,6 @@ class RoleViewModel @Inject constructor(
             }
         }.launchIn(viewModelScope)
 
-    }
-
-    fun observePlayersInGame(gameId: String) {
-        gameRepository.observePlayersFromGame(gameId).onEach {
-            it.onSuccess { players ->
-                if (players.size < Constants.MIN_NUMBER_PLAYERS) {
-                    clearStatusForPLayers(gameId, players)
-                    val isHost = checkHost(gameId, currentPlayer.userId)
-                    if (isHost) roleStateMutableChannel.send(RoleState.ExitToLobbyForHost)
-                    else roleStateMutableChannel.send(RoleState.ExitTolLobbyForPlayer)
-                }
-            }
-            it.onFailure { }
-        }.launchIn(viewModelScope)
     }
 
     private suspend fun clearStatusForPLayers(gameId: String, players: List<PlayerDomain>) {
@@ -140,6 +128,7 @@ class RoleViewModel @Inject constructor(
     }
 
     private fun startTimer(gameId: String) = launch {
+
         stopTimer = false
 
         val duration = gameRepository.getDurationForGames(gameId)
@@ -171,13 +160,6 @@ class RoleViewModel @Inject constructor(
         }
     }
 
-    fun setStatusForGame(gameId: String, status: GameStatus) {
-        launch {
-            gameRepository.setStatusForGame(gameId, status)
-        }
-    }
-
-
     private suspend fun setRoleForPLayersInGame(gameId: String, players: List<PlayerDomain>) {
         if (players.all { it.role != null }) return
 
@@ -193,45 +175,11 @@ class RoleViewModel @Inject constructor(
         }
     }
 
-    fun setStatusForCurrentPlayerInGame(gameId: String, status: PlayerStatus) {
-        launch {
-            gameRepository.setStatusForPlayerInGame(gameId, currentPlayer.userId, status)
-        }
-    }
-
     fun setPauseOrPlayForGame(gameId: String) = launch {
         val game = gameRepository.getGame(gameId)
         val status =
             if (game?.status == GameStatus.PLAYING) GameStatus.PAUSE else GameStatus.PLAYING
         gameRepository.setStatusForGame(gameId, status)
-    }
-
-    fun clearGame(gameId: String) {
-        val isHost = async { checkHost(gameId, currentPlayer.userId) }
-        launch {
-            if (isHost.await()) {
-                deleteGameById(gameId)
-            } else {
-                deletePlayerInGame(gameId, currentPlayer.userId)
-            }
-        }
-    }
-
-    private  suspend fun deletePlayerInGame(gameId: String, playerId: String) {
-        gameRepository.deletePlayerInGame(gameId, playerId)
-    }
-
-    private suspend fun deleteGameById(gameId: String) {
-
-        gameRepository.deleteGame(gameId)
-    }
-
-    private suspend fun checkHost(gameId: String, playerId: String): Boolean {
-        return getHost(gameId) == playerId
-    }
-
-    private suspend fun getHost(gameId: String): String {
-        return gameRepository.getGame(gameId)?.host!!
     }
 }
 

@@ -18,14 +18,18 @@ import com.example.spyfall.data.entity.GameStatus
 import com.example.spyfall.data.entity.PlayerStatus
 import com.example.spyfall.ui.fragment.location.CallLocationFragment
 import com.example.spyfall.ui.fragment.location.CheckLocationFragment
+import com.example.spyfall.ui.fragment.prepare.PrepareFragment
 import com.example.spyfall.ui.fragment.vote.LocationVoteFragment
 import com.example.spyfall.ui.fragment.vote.SpyVoteFragment
+import com.example.spyfall.ui.state.GameState
 import com.example.spyfall.ui.state.RoleState
 import com.example.spyfall.ui.viewmodel.RoleViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class RoleFragment : BaseFragment(R.layout.fragment_role) {
@@ -59,15 +63,6 @@ class RoleFragment : BaseFragment(R.layout.fragment_role) {
 
         viewModel.roleStateChannel.onEach { state ->
             when (state) {
-                is RoleState.ExitToMenu -> {
-                    findNavController().popBackStack(R.id.startFragment, false)
-                }
-                is RoleState.ExitToLobbyForHost -> {
-                    findNavController().popBackStack(R.id.prepareFragment, false)
-                }
-                is RoleState.ExitTolLobbyForPlayer -> {
-                    findNavController().popBackStack(R.id.waitingGameFragment, false)
-                }
                 is RoleState.GameIsPlaying -> {
                     controlGameImageView
                         .setImageResource(R.drawable.pause)
@@ -124,6 +119,20 @@ class RoleFragment : BaseFragment(R.layout.fragment_role) {
             timeTextView.text = "$minutes:$seconds"
         }.launchIn(lifecycleScope)
 
+        viewModel.gameStateChannel.onEach { state ->
+            when (state) {
+                is GameState.ExitToMenu -> {
+                    findNavController().navigateUp()
+                }
+                is GameState.ExitToLobbyForHost -> {
+                    findNavController().navigate(R.id.prepareFragment, PrepareFragment.getBundle(gameId))
+                }
+                is GameState.ExitToLobbyForPlayer -> {
+                    findNavController().navigate(R.id.waitingGameFragment, PrepareFragment.getBundle(gameId))
+                }
+            }
+        }.launchIn(lifecycleScope)
+
         voteButton.setOnClickListener {
             viewModel.setStatusForGame(gameId, GameStatus.VOTE)
             viewModel.setStatusForCurrentPlayerInGame(gameId, PlayerStatus.VOTED)
@@ -136,23 +145,31 @@ class RoleFragment : BaseFragment(R.layout.fragment_role) {
         controlGameLayout.setOnClickListener {
             viewModel.setPauseOrPlayForGame(gameId)
         }
+
     }
+
 
     override fun onStart() {
         super.onStart()
-        viewModel.setRolesInGame(gameId)
-        viewModel.observeRoleOfCurrentPlayer(gameId)
-        viewModel.observeGame(gameId)
-        viewModel.observePlayersInGame(gameId)
+        with(viewModel) {
+
+            setRolesInGame(gameId)
+            observeRoleOfCurrentPlayer(gameId)
+            observeGame(gameId)
+            observeNumberOfPlayer(gameId)
+            observeGameExit(gameId)
+        }
     }
 
     override fun onStop() {
         super.onStop()
-        viewModel.stopTimer(gameId = gameId)
+        viewModel.coroutineContext.cancelChildren()
     }
 
     override fun onBackPressed() {
-        viewModel.clearGame(gameId)
+        lifecycleScope.launch {
+            viewModel.clearGame(gameId)
+        }
     }
 
     companion object {

@@ -2,7 +2,6 @@ package com.example.spyfall.ui.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import com.example.spyfall.data.entity.GameStatus
-import com.example.spyfall.data.entity.Player
 import com.example.spyfall.data.entity.Role
 import com.example.spyfall.domain.entity.PlayerDomain
 import com.example.spyfall.domain.repository.GameRepository
@@ -13,16 +12,14 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class VoteViewModel @Inject constructor(
     private val gameRepository: GameRepository,
     private val userRepository: UserRepository
-) : BaseViewModel() {
+) : GameViewModel(gameRepository, userRepository) {
 
-    private val currentPlayer = userRepository.getUser()!!
     private val voteStateMutableChannel = Channel<VoteState>()
     val voteStateChannel = voteStateMutableChannel.receiveAsFlow()
 
@@ -33,7 +30,7 @@ class VoteViewModel @Inject constructor(
                 val spy = players.find { it.role == Role.SPY } ?: return@onEach
                 val playersWithoutSpy = players.filter { it.role != Role.SPY }
                 val currentPlayer =
-                    players.find { it.playerId == currentPlayer.userId } ?: return@onEach
+                    players.find { it.playerId == currentUser.userId } ?: return@onEach
 
                 if (currentPlayer.vote == null && currentPlayer.role != Role.SPY) {
                     voteStateMutableChannel.trySend(VoteState.WaitCurrentPlayer)

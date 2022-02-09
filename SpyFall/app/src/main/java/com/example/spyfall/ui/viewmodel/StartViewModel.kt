@@ -22,6 +22,10 @@ class StartViewModel @Inject constructor(
 
     val currentPLayer = userRepository.getUser()!!
 
+    fun clearGames(){
+
+    }
+
     fun joinToGame(gameId:String) = launch {
         val game = gameRepository.getGame(gameId)
         if (game == null) {

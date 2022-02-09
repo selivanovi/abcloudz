@@ -2,6 +2,7 @@ package com.example.spyfall.ui.viewmodel
 
 import com.example.spyfall.data.entity.GameStatus
 import com.example.spyfall.domain.repository.GameRepository
+import com.example.spyfall.domain.repository.UserRepository
 import com.example.spyfall.ui.state.CheckState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -12,8 +13,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CheckLocationViewModel @Inject constructor(
-    private val gameRepository: GameRepository
-) : BaseViewModel() {
+    private val gameRepository: GameRepository,
+    private val userRepository: UserRepository
+) : GameViewModel(gameRepository, userRepository) {
 
     private val checkStateMutableChannel = Channel<CheckState>()
     val checkStateChannel = checkStateMutableChannel.receiveAsFlow()
@@ -34,12 +36,6 @@ class CheckLocationViewModel @Inject constructor(
                     }
                 }
             }
-    }
-
-    fun setStatusForGame(gameId: String, status: GameStatus) {
-        launch {
-            gameRepository.setStatusForGame(gameId, status)
-        }
     }
 }
 

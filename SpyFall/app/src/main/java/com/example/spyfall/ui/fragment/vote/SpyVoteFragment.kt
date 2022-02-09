@@ -9,10 +9,12 @@ import androidx.navigation.fragment.findNavController
 import com.example.spyfall.R
 import com.example.spyfall.ui.fragment.BaseFragment
 import com.example.spyfall.ui.fragment.RoleFragment
+import com.example.spyfall.ui.fragment.prepare.PrepareFragment
 import com.example.spyfall.ui.fragment.prepare.WaitingGameFragment
 import com.example.spyfall.ui.fragment.result.LocationWonFragment
 import com.example.spyfall.ui.fragment.result.SpyWonFragment
 import com.example.spyfall.ui.fragment.vote.sub.WaitingFragment
+import com.example.spyfall.ui.state.GameState
 import com.example.spyfall.ui.state.VoteState
 import com.example.spyfall.ui.viewmodel.VoteViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -50,7 +52,24 @@ class SpyVoteFragment : BaseFragment(R.layout.fragment_location_vote) {
         }.launchIn(lifecycleScope)
 
 
+        viewModel.gameStateChannel.onEach { state ->
+            when (state) {
+                is GameState.ExitToMenu -> {
+                    findNavController().navigateUp()
+                }
+                is GameState.ExitToLobbyForHost -> {
+                    findNavController().navigate(R.id.prepareFragment, PrepareFragment.getBundle(gameId))
+                }
+                is GameState.ExitToLobbyForPlayer -> {
+                    findNavController().navigate(R.id.waitingGameFragment, PrepareFragment.getBundle(gameId))
+                }
+            }
+        }.launchIn(lifecycleScope)
+
+
         viewModel.observeVotePlayersInGame(gameId)
+        viewModel.observeGameExit(gameId)
+        viewModel.observeNumberOfPlayer(gameId)
     }
 
     companion object {

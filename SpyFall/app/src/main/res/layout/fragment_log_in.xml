@@ -49,15 +49,16 @@
             android:layout_marginTop="12dp"
             android:text="@string/textStartGame" />
 
-        <Button
-            android:id="@+id/buttonConfirm"
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/confirmButton"
             style="@style/FillButton"
-            android:textAppearance="@style/FillButtonText"
             android:layout_width="match_parent"
-            android:layout_height="54dp"
+            android:text="@string/buttonPlay"
             android:layout_marginTop="28dp"
-            android:background="@drawable/rounded_button"
-            android:text="@string/buttonContinue" />
+            android:textAppearance="@style/FillButtonText"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </LinearLayout>
 

@@ -44,7 +44,7 @@ class LogInFragment : BaseFragment(R.layout.fragment_log_in) {
     }
 
     private fun createButtons(view: View) {
-        val confirmButton = view.findViewById<Button>(R.id.buttonConfirm)
+        val confirmButton = view.findViewById<Button>(R.id.confirmButton)
         val nameEditText = view.findViewById<EditText>(R.id.nameEditText)
 
         nameEditText.apply {

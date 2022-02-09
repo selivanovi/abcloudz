@@ -40,10 +40,6 @@ class JoinGameFragment : Fragment(R.layout.fragment_join_game) {
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-    }
-
     override fun onDetach() {
         super.onDetach()
         joinGameFragmentListener = null

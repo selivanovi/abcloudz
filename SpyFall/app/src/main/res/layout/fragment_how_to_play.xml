@@ -54,14 +54,12 @@
             android:layout_weight="1"
             android:text="@string/textHowToPlay" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/buttonCool"
             style="@style/FillButton"
             android:textAppearance="@style/FillButtonText"
             android:layout_width="match_parent"
-            android:layout_height="54dp"
             android:layout_marginTop="28dp"
-            android:background="@drawable/rounded_button"
             android:text="@string/buttonCool" />
 
     </LinearLayout>

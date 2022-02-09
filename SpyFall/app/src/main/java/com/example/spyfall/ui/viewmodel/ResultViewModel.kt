@@ -22,9 +22,7 @@ import javax.inject.Inject
 class ResultViewModel @Inject constructor(
     private val gameRepository: GameRepository,
     private val userRepository: UserRepository
-) : BaseViewModel() {
-
-    private val currentPlayer: UserDomain = userRepository.getUser()!!
+) : GameViewModel(gameRepository, userRepository) {
 
     private val resultStateMutableChannel = Channel<ResultState>()
     val resultStateChannel = resultStateMutableChannel.receiveAsFlow()
@@ -34,10 +32,10 @@ class ResultViewModel @Inject constructor(
 
     fun observeStatusOfCurrentPlayer(gameId: String) {
         launch {
-            gameRepository.observePlayerFromGame(gameId, currentPlayer.userId).collect { result ->
+            gameRepository.observePlayerFromGame(gameId, currentUser.userId).collect { result ->
                 result.onSuccess { player ->
                     if (player.status == PlayerStatus.EXIT) {
-                        val isHost = async { checkHost(gameId, currentPlayer.userId) }
+                        val isHost = async { checkHost(gameId, currentUser.userId) }
                         if (isHost.await()) {
                             deleteGameById(gameId)
                         } else {
@@ -46,7 +44,7 @@ class ResultViewModel @Inject constructor(
                         resultStateMutableChannel.send(ResultState.Exit)
                     }
                     if (player.status == PlayerStatus.Continue) {
-                        val isHost = async { checkHost(gameId, currentPlayer.userId) }
+                        val isHost = async { checkHost(gameId, currentUser.userId) }
                         if (isHost.await()) {
                             resultStateMutableChannel.send(ResultState.HostContinue)
                         } else {
@@ -71,29 +69,6 @@ class ResultViewModel @Inject constructor(
             }
             result.onFailure { throwable -> errorMutableChannel.send(throwable) }
         }.launchIn(viewModelScope)
-    }
-
-    private  suspend fun deletePlayerInGame(gameId: String, playerId: String) {
-        gameRepository.deletePlayerInGame(gameId, playerId)
-    }
-
-    private suspend fun deleteGameById(gameId: String) {
-
-        gameRepository.deleteGame(gameId)
-    }
-
-    private suspend fun checkHost(gameId: String, playerId: String): Boolean {
-        return getHost(gameId) == playerId
-    }
-
-    private suspend fun getHost(gameId: String): String {
-        return gameRepository.getGame(gameId)?.host!!
-    }
-
-    fun setStatusForCurrentPlayerInGame(gameId: String, status: PlayerStatus) {
-        launch {
-            gameRepository.setStatusForPlayerInGame(gameId, currentPlayer.userId, status)
-        }
     }
 }
 

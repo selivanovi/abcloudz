@@ -98,7 +98,7 @@ class MainActivity : AppCompatActivity(), DrawerListener, QuiteDialogListener {
     }
 
     override fun logOut() {
-        navController.navigate(R.id.logInFragment)
+        navController.popBackStack(R.id.logInFragment, false)
         setDrawer()
     }
 

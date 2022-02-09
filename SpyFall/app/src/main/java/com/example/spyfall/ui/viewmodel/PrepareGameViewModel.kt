@@ -18,10 +18,7 @@ import javax.inject.Inject
 class PrepareGameViewModel @Inject constructor(
     private val gameRepository: GameRepository,
     private val userRepository: UserRepository
-) : BaseViewModel() {
-
-    val currentUser: UserDomain
-        get() = userRepository.getUser()!!
+) : GameViewModel(gameRepository, userRepository) {
 
     fun setGame(gameId: String) = launch {
 
@@ -42,48 +39,19 @@ class PrepareGameViewModel @Inject constructor(
 
         gameRepository.addGame(gameDomain)
         gameRepository.addPlayerToGame(gameId, currentPLayer)
+
+
     }
 
     private suspend fun resetGame(gameId: String) {
         gameRepository.setStatusForGame(gameId, GameStatus.CREATE)
-        gameRepository.setDurationForGames(gameId, times.first().toSeconds().toLong())
+        gameRepository.setDurationForGames(gameId, times.first().toSeconds())
 
         val currentPlayer = currentUser.toPlayerDomain()
         gameRepository.addPlayerToGame(gameId, currentPlayer)
     }
 
-    fun clearGame(gameId: String) {
-        val isHost = async { checkHost(gameId, currentUser.userId) }
-        launch {
-            if (isHost.await()) {
-                deleteGameById(gameId)
-            } else {
-                deletePlayerInGame(gameId, currentUser.userId)
-            }
-        }
+    fun setDuration(gameId: String, time: Long) = launch{
+        setDurationForGame(gameId, time)
     }
-
-    private  suspend fun deletePlayerInGame(gameId: String, playerId: String) {
-        gameRepository.deletePlayerInGame(gameId, playerId)
-    }
-
-    private suspend fun deleteGameById(gameId: String) {
-
-        gameRepository.deleteGame(gameId)
-    }
-
-    private suspend fun checkHost(gameId: String, playerId: String): Boolean {
-        return getHost(gameId) == playerId
-    }
-
-    private suspend fun getHost(gameId: String): String {
-        return gameRepository.getGame(gameId)?.host!!
-    }
-
-    fun setTimeForGame(gameId: String, time: Long) {
-        launch {
-            gameRepository.setDurationForGames(gameId, time)
-        }
-    }
-
 }

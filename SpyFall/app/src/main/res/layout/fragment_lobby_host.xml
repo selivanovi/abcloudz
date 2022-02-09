@@ -71,7 +71,6 @@
         android:id="@+id/buttonPlay"
         style="@style/FillButton"
         android:layout_width="0dp"
-        android:layout_height="60dp"
         android:text="@string/buttonPlay"
         android:textAppearance="@style/FillButtonText"
         app:layout_constraintBottom_toBottomOf="parent"

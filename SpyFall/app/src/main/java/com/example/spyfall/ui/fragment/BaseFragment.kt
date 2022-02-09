@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.spyfall.R
 import com.example.spyfall.ui.listener.DrawerListener
-import kotlinx.coroutines.cancel
+import kotlinx.coroutines.*
 
 abstract class BaseFragment(
     @LayoutRes layoutId: Int
@@ -35,11 +35,13 @@ abstract class BaseFragment(
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requireActivity().onBackPressedDispatcher.addCallback(requireActivity(), object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                onBackPressed()
-            }
-        })
+        requireActivity().onBackPressedDispatcher.addCallback(
+            requireActivity(),
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    onBackPressed()
+                }
+            })
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -77,6 +79,8 @@ abstract class BaseFragment(
 
     override fun onStop() {
         super.onStop()
+
+        lifecycleScope.coroutineContext.cancelChildren()
         Log.d(TAG, "onStop")
     }
 

@@ -54,9 +54,6 @@ class LobbyFragment : Fragment(R.layout.fragment_lobby) {
         }.launchIn(lifecycleScope)
 
         viewModel.lobbyState.onEach { state ->
-            if (state is LobbyState.ExitToMenu) {
-                lobbyFragmentListener?.exit()
-            }
             if (state is LobbyState.Play) {
                 lobbyFragmentListener?.startGame()
             }
@@ -64,7 +61,6 @@ class LobbyFragment : Fragment(R.layout.fragment_lobby) {
 
         createRecyclerView(view)
 
-        viewModel.observeGame(gameId)
     }
 
     override fun onStop() {
