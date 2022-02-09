@@ -1,4 +1,4 @@
-package com.example.spyfall.ui.fragment.prepare
+package com.example.spyfall.ui.fragment
 
 import android.os.Bundle
 import android.util.Log
@@ -11,10 +11,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.spyfall.R
-import com.example.spyfall.ui.fragment.BaseFragment
-import com.example.spyfall.ui.fragment.RoleFragment
-import com.example.spyfall.ui.fragment.prepare.sub.LobbyHostFragment
-import com.example.spyfall.ui.fragment.prepare.sub.PickTimeFragment
 import com.example.spyfall.ui.listener.LobbyFragmentListener
 import com.example.spyfall.ui.listener.PickTimeFragmentListener
 import com.example.spyfall.ui.state.GameState
@@ -27,13 +23,10 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class PrepareFragment : BaseFragment(R.layout.fragment_prepare), LobbyFragmentListener,
+class PrepareFragment : BaseFragment<PrepareGameViewModel>(R.layout.fragment_prepare), LobbyFragmentListener,
     PickTimeFragmentListener {
 
-    override val TAG: String
-        get() = "InvitePlayerFragment"
-
-    private val viewModel: PrepareGameViewModel by viewModels()
+    override val viewModel: PrepareGameViewModel by viewModels()
 
     private val gameId: String by lazy {
         requireArguments().getString(KEY_GAME_ID)!!

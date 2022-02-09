@@ -1,35 +1,38 @@
-package com.example.spyfall.ui.fragment.result
+package com.example.spyfall.ui.fragment
 
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.widget.AppCompatButton
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.spyfall.R
 import com.example.spyfall.data.entity.PlayerStatus
-import com.example.spyfall.ui.fragment.BaseFragment
-import com.example.spyfall.ui.fragment.prepare.WaitingGameFragment
-import com.example.spyfall.ui.fragment.vote.SpyVoteFragment
 import com.example.spyfall.ui.state.ResultState
 import com.example.spyfall.ui.viewmodel.ResultViewModel
+import com.example.spyfall.ui.viewmodel.VoteViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class SpyWonFragment : BaseFragment(R.layout.fragment_spy_won) {
+class LocationWonFragment : BaseFragment<ResultViewModel>(R.layout.fragment_location_won) {
 
-    override val TAG: String
-        get() = "SpyWonFragment"
 
-    private val viewModel: ResultViewModel by viewModels()
+    override val viewModel: ResultViewModel by viewModels()
 
     private val gameId: String by lazy { requireArguments().getString(KEY_GAME_ID)!! }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewModel.roleChannel.onEach { role ->
+            view.findViewById<AppCompatImageView>(R.id.locationImageView)
+                .setImageResource(role.drawable)
+        }.launchIn(lifecycleScope)
 
         viewModel.resultStateChannel.onEach { state ->
             when (state) {
@@ -61,6 +64,12 @@ class SpyWonFragment : BaseFragment(R.layout.fragment_spy_won) {
 
         viewModel.observeStatusOfCurrentPlayer(gameId)
         viewModel.observeStatusOfPlayers(gameId)
+    }
+
+    override fun onBackPressed() {
+        lifecycleScope.launch {
+            viewModel.clearGame(gameId)
+        }
     }
 
     companion object {

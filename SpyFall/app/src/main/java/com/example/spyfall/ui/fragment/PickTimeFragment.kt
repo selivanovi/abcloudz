@@ -1,4 +1,4 @@
-package com.example.spyfall.ui.fragment.prepare.sub
+package com.example.spyfall.ui.fragment
 
 import android.content.Context
 import android.content.res.Resources
@@ -9,14 +9,10 @@ import android.view.View
 import android.widget.NumberPicker
 import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.commit
-import androidx.fragment.app.viewModels
 import com.example.spyfall.R
 import com.example.spyfall.ui.listener.PickTimeFragmentListener
-import com.example.spyfall.ui.viewmodel.TimeViewModel
 import com.example.spyfall.utils.times
 import com.example.spyfall.utils.toSeconds
-import dagger.hilt.android.AndroidEntryPoint
 
 
 class PickTimeFragment : Fragment(R.layout.fragment_pick_time) {

@@ -1,44 +1,31 @@
 package com.example.spyfall.ui.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import com.example.spyfall.R
 import com.example.spyfall.data.entity.GameStatus
 import com.example.spyfall.data.entity.PlayerStatus
-import com.example.spyfall.ui.fragment.location.CallLocationFragment
-import com.example.spyfall.ui.fragment.location.CheckLocationFragment
-import com.example.spyfall.ui.fragment.prepare.PrepareFragment
-import com.example.spyfall.ui.fragment.vote.LocationVoteFragment
-import com.example.spyfall.ui.fragment.vote.SpyVoteFragment
 import com.example.spyfall.ui.state.GameState
 import com.example.spyfall.ui.state.RoleState
 import com.example.spyfall.ui.viewmodel.RoleViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class RoleFragment : BaseFragment(R.layout.fragment_role) {
+class RoleFragment : BaseFragment<RoleViewModel>(R.layout.fragment_role) {
 
-    override val TAG: String
-        get() = "RoleFragment"
-
-
-    private val viewModel: RoleViewModel by viewModels()
+    override val viewModel: RoleViewModel by viewModels()
 
     private val gameId by lazy {
         requireArguments().getString(KEY_GAME_ID)!!

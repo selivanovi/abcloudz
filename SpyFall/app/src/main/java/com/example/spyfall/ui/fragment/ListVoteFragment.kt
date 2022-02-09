@@ -1,4 +1,4 @@
-package com.example.spyfall.ui.fragment.vote.sub
+package com.example.spyfall.ui.fragment
 
 import android.os.Bundle
 import android.view.View

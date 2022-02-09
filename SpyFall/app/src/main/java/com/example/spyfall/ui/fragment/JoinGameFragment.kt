@@ -1,4 +1,4 @@
-package com.example.spyfall.ui.fragment.start.sub
+package com.example.spyfall.ui.fragment
 
 import android.content.Context
 import android.net.Uri

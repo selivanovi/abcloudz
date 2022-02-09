@@ -1,32 +1,27 @@
-package com.example.spyfall.ui.fragment.prepare
+package com.example.spyfall.ui.fragment
 
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.spyfall.R
-import com.example.spyfall.ui.fragment.BaseFragment
-import com.example.spyfall.ui.fragment.prepare.sub.LobbyFragment
 import com.example.spyfall.ui.listener.LobbyFragmentListener
 import com.example.spyfall.ui.viewmodel.WaitingGameViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class WaitingGameFragment : BaseFragment(R.layout.fragment_waiting_game), LobbyFragmentListener {
+class WaitingGameFragment : BaseFragment<WaitingGameViewModel>(R.layout.fragment_waiting_game), LobbyFragmentListener {
 
-    private val viewModel: WaitingGameViewModel by viewModels()
-
-    override val TAG: String
-        get() = "WaitingGameFragment"
+    override val viewModel: WaitingGameViewModel by viewModels()
 
     private val gameId: String by lazy { requireArguments().getString(KEY_GAME_ID)!! }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
 
         view.findViewById<TextView>(R.id.nameTextView).text = viewModel.currentUser.name
 
@@ -40,7 +35,9 @@ class WaitingGameFragment : BaseFragment(R.layout.fragment_waiting_game), LobbyF
     }
 
     override fun onBackPressed() {
-        viewModel.clearGame(gameId)
+        lifecycleScope.launch {
+            viewModel.clearGame(gameId)
+        }
     }
 
     override fun startGame() {

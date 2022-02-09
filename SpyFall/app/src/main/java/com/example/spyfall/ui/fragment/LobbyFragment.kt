@@ -1,10 +1,7 @@
-package com.example.spyfall.ui.fragment.prepare.sub
+package com.example.spyfall.ui.fragment
 
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.Fragment
@@ -17,15 +14,13 @@ import com.example.spyfall.ui.listener.LobbyFragmentListener
 import com.example.spyfall.ui.recyclerview.PlayersAdapter
 import com.example.spyfall.ui.state.LobbyState
 import com.example.spyfall.ui.viewmodel.LobbyViewModel
-import com.google.android.material.button.MaterialButton
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
-
 @AndroidEntryPoint
-class LobbyHostFragment : Fragment(R.layout.fragment_lobby_host) {
+class LobbyFragment : Fragment(R.layout.fragment_lobby) {
 
     private val viewModel: LobbyViewModel by viewModels()
 
@@ -34,8 +29,6 @@ class LobbyHostFragment : Fragment(R.layout.fragment_lobby_host) {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-
-        Log.d("LobbyFragment", "onAttach")
         val parent = requireParentFragment()
         if (parent is LobbyFragmentListener) {
             lobbyFragmentListener = parent
@@ -45,17 +38,15 @@ class LobbyHostFragment : Fragment(R.layout.fragment_lobby_host) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Log.d("LobbyFragment", "onViewCreated")
+        val gameId: String = requireArguments().getString(KEY_GAME_ID)!!
 
-        val gameId = requireArguments().getString(KEY_GAME_ID)!!
-
-        view.findViewById<AppCompatButton>(R.id.buttonPlay).setOnClickListener {
-            viewModel.setStatusPlayForPlayerInGame(gameId)
+        view.findViewById<AppCompatButton>(R.id.buttonPlay).apply {
+            setOnClickListener {
+                viewModel.setStatusPlayForPlayerInGame(gameId)
+            }
         }
 
-        view.findViewById<MaterialButton>(R.id.inviteButton).setOnClickListener {
-            sendApp(gameId)
-        }
+        viewModel.observePlayersFromGame(gameId)
 
         viewModel.playersChannel.onEach {
             adapter.setData(it)
@@ -69,48 +60,15 @@ class LobbyHostFragment : Fragment(R.layout.fragment_lobby_host) {
 
         createRecyclerView(view)
 
-        viewModel.observePlayersFromGame(gameId)
-    }
-
-    private fun sendApp(gameId: String) {
-        val packageName = requireContext().packageName
-
-        val intent = Intent(Intent.ACTION_SEND).apply {
-            // The intent does not have a URI, so declare the "text/plain" MIME type
-            type = "text/link"
-            putExtra(
-                Intent.EXTRA_TEXT,
-                getString(R.string.invite) + "\n" + "https://spyfall.example.com?id=$gameId"
-            )
-            type = "image/png"
-            putExtra(
-                Intent.EXTRA_STREAM,
-                Uri.parse("android.resource://$packageName/drawable/image_spy")
-            )
-            // You can also attach multiple items by passing an ArrayList of Uris
-        }
-
-        try {
-            startActivity(Intent.createChooser(intent, resources.getString(R.string.share)))
-        } catch (e: Exception) {
-            //e.toString();
-        }
-    }
-
-    override fun onStart() {
-        super.onStart()
-        Log.d("LobbyFragment", "onStart")
     }
 
     override fun onStop() {
         super.onStop()
-        Log.d("LobbyFragment", "onStop")
         lifecycleScope.cancel()
     }
 
     override fun onDetach() {
         super.onDetach()
-        Log.d("LobbyFragment", "onDetach")
         lobbyFragmentListener = null
     }
 
@@ -124,19 +82,12 @@ class LobbyHostFragment : Fragment(R.layout.fragment_lobby_host) {
 
     companion object {
 
-        private const val TAG = "InvitePLayerFragment"
-
         private const val KEY_GAME_ID = "key_game_id"
 
-        fun newInstance(gameId: String): LobbyHostFragment {
-            val bundle = Bundle().apply {
+        fun getBundle(gameId: String): Bundle {
+            return Bundle().apply {
                 putString(KEY_GAME_ID, gameId)
             }
-            val fragment = LobbyHostFragment().apply {
-                arguments = bundle
-            }
-            return fragment
         }
     }
-
 }

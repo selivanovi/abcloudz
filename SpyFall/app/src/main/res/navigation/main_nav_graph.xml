@@ -32,7 +32,7 @@
         app:startDestination="@id/logInFragment">
         <fragment
             android:id="@+id/locationVoteFragment"
-            android:name="com.example.spyfall.ui.fragment.vote.LocationVoteFragment"
+            android:name="com.example.spyfall.ui.fragment.LocationVoteFragment"
             android:label="LocationFragment"
             tools:layout="@layout/fragment_location_vote">
             <action
@@ -46,12 +46,12 @@
         </fragment>
         <fragment
             android:id="@+id/spyWonFragment"
-            android:name="com.example.spyfall.ui.fragment.result.SpyWonFragment"
+            android:name="com.example.spyfall.ui.fragment.SpyWonFragment"
             android:label="spyWonFragment"
             tools:layout="@layout/fragment_spy_won" />
         <fragment
             android:id="@+id/prepareFragment"
-            android:name="com.example.spyfall.ui.fragment.prepare.PrepareFragment"
+            android:name="com.example.spyfall.ui.fragment.PrepareFragment"
             android:label="InvitePLayerFragment"
             tools:layout="@layout/fragment_prepare">
 
@@ -62,7 +62,7 @@
         </fragment>
         <fragment
             android:id="@+id/checkLocationFragment"
-            android:name="com.example.spyfall.ui.fragment.location.CheckLocationFragment"
+            android:name="com.example.spyfall.ui.fragment.CheckLocationFragment"
             android:label="CheckLocation"
             tools:layout="@layout/fragment_check_location">
 
@@ -77,7 +77,7 @@
         </fragment>
         <fragment
             android:id="@+id/waitingGameFragment"
-            android:name="com.example.spyfall.ui.fragment.prepare.WaitingGameFragment"
+            android:name="com.example.spyfall.ui.fragment.WaitingGameFragment"
             android:label="RoleFragment"
             tools:layout="@layout/fragment_waiting_game">
 
@@ -88,7 +88,7 @@
         </fragment>
         <fragment
             android:id="@+id/callLocationFragment"
-            android:name="com.example.spyfall.ui.fragment.location.CallLocationFragment"
+            android:name="com.example.spyfall.ui.fragment.CallLocationFragment"
             android:label="CallLocationFragment"
             tools:layout="@layout/fragment_call_location">
 
@@ -137,7 +137,7 @@
         </fragment>
         <fragment
             android:id="@+id/startFragment"
-            android:name="com.example.spyfall.ui.fragment.start.StartFragment"
+            android:name="com.example.spyfall.ui.fragment.StartFragment"
             android:label="EnterNameFragment"
             tools:layout="@layout/fragment_start">
 
@@ -152,12 +152,12 @@
         </fragment>
         <fragment
             android:id="@+id/locationWonFragment"
-            android:name="com.example.spyfall.ui.fragment.result.LocationWonFragment"
+            android:name="com.example.spyfall.ui.fragment.LocationWonFragment"
             android:label="spyWonFragment"
             tools:layout="@layout/fragment_location_won" />
         <fragment
             android:id="@+id/spyVoteFragment"
-            android:name="com.example.spyfall.ui.fragment.vote.SpyVoteFragment"
+            android:name="com.example.spyfall.ui.fragment.SpyVoteFragment"
             android:label="LocationFragment"
             tools:layout="@layout/fragment_spy_vote">
             <action

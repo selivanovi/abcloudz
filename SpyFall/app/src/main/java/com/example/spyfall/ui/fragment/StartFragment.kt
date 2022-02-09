@@ -1,7 +1,6 @@
-package com.example.spyfall.ui.fragment.start
+package com.example.spyfall.ui.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
@@ -11,12 +10,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.spyfall.R
-import com.example.spyfall.domain.entity.UserDomain
-import com.example.spyfall.ui.fragment.BaseFragment
-import com.example.spyfall.ui.fragment.prepare.PrepareFragment
-import com.example.spyfall.ui.fragment.prepare.WaitingGameFragment
-import com.example.spyfall.ui.fragment.start.sub.JoinGameFragment
-import com.example.spyfall.ui.fragment.start.sub.LinkFragment
 import com.example.spyfall.ui.listener.JoinGameFragmentListener
 import com.example.spyfall.ui.listener.LinkFragmentListener
 import com.example.spyfall.ui.viewmodel.StartViewModel
@@ -25,14 +18,10 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
-class StartFragment : BaseFragment(R.layout.fragment_start), LinkFragmentListener,
+class StartFragment : BaseFragment<StartViewModel>(R.layout.fragment_start), LinkFragmentListener,
     JoinGameFragmentListener {
 
-    override val TAG: String
-        get() = "StartGameFragment"
-
-    private val viewModel: StartViewModel by viewModels()
-
+    override val viewModel: StartViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
