@@ -23,7 +23,7 @@ abstract class BaseFragment<VM : BaseViewModel>(
 
     private var drawerListener: DrawerListener? = null
 
-    abstract val viewModel: VM
+    protected abstract val viewModel: VM?
 
     open fun onBackPressed() {}
 
@@ -55,8 +55,6 @@ abstract class BaseFragment<VM : BaseViewModel>(
         }
     }
 
-
-
     override fun onStart() {
         super.onStart()
         drawerListener?.closeDrawer()
@@ -66,7 +64,7 @@ abstract class BaseFragment<VM : BaseViewModel>(
         super.onStop()
 
         lifecycleScope.coroutineContext.cancelChildren()
-        viewModel.clear()
+        viewModel?.clear()
     }
 
     override fun onDetach() {

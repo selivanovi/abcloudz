@@ -16,12 +16,9 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
-class LogInFragment : BaseFragment(R.layout.fragment_log_in) {
+class LogInFragment : BaseFragment<LogInViewModel>(R.layout.fragment_log_in) {
 
-    override val TAG: String
-        get() = "LogInFragment"
-
-    private val viewModel: LogInViewModel by viewModels()
+    override val viewModel: LogInViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

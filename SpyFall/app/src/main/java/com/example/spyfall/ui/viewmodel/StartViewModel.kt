@@ -1,16 +1,13 @@
 package com.example.spyfall.ui.viewmodel
 
 import com.example.spyfall.data.entity.GameStatus
-import com.example.spyfall.domain.entity.UserDomain
 import com.example.spyfall.domain.repository.GameRepository
 import com.example.spyfall.domain.repository.UserRepository
-import com.example.spyfall.ui.state.RoleState
 import com.example.spyfall.utils.Constants
 import com.example.spyfall.utils.GameIsPlayingException
 import com.example.spyfall.utils.GameNotFoundException
 import com.example.spyfall.utils.toPlayerDomain
 import dagger.hilt.android.lifecycle.HiltViewModel
-import hilt_aggregated_deps._com_example_spyfall_ui_fragment_result_SpyWonFragment_GeneratedInjector
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,10 +18,6 @@ class StartViewModel @Inject constructor(
 ) : BaseViewModel() {
 
     val currentPLayer = userRepository.getUser()!!
-
-    fun clearGames(){
-
-    }
 
     fun joinToGame(gameId:String) = launch {
         val game = gameRepository.getGame(gameId)

@@ -4,12 +4,14 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatButton
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.spyfall.R
+import com.example.spyfall.ui.viewmodel.BaseViewModel
 
-class HowToPlayFragment : BaseFragment(R.layout.fragment_how_to_play) {
-    override val TAG: String
-        get() = "HowToPlayFragment"
+class HowToPlayFragment : BaseFragment<BaseViewModel>(R.layout.fragment_how_to_play) {
+
+    override val viewModel: BaseViewModel? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -21,4 +23,6 @@ class HowToPlayFragment : BaseFragment(R.layout.fragment_how_to_play) {
             findNavController().popBackStack()
         }
     }
+
+
 }
