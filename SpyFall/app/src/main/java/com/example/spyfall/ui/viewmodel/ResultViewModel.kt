@@ -4,10 +4,12 @@ package com.example.spyfall.ui.viewmodel
 import androidx.lifecycle.viewModelScope
 import com.example.spyfall.data.entity.PlayerStatus
 import com.example.spyfall.data.entity.Role
+import com.example.spyfall.domain.entity.PlayerDomain
 import com.example.spyfall.domain.entity.UserDomain
 import com.example.spyfall.domain.repository.GameRepository
 import com.example.spyfall.domain.repository.UserRepository
 import com.example.spyfall.ui.state.ResultState
+import com.example.spyfall.utils.toPlayerDomain
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.Channel
@@ -35,8 +37,8 @@ class ResultViewModel @Inject constructor(
             gameRepository.observePlayerFromGame(gameId, currentUser.userId).collect { result ->
                 result.onSuccess { player ->
                     if (player.status == PlayerStatus.EXIT) {
-                        val isHost = async { checkHost(gameId, currentUser.userId) }
-                        if (isHost.await()) {
+                        val isHost = checkHost(gameId, currentUser.userId)
+                        if (isHost) {
                             deleteGameById(gameId)
                         } else {
                             deletePlayerInGame(gameId, player.playerId)
@@ -44,8 +46,9 @@ class ResultViewModel @Inject constructor(
                         resultStateMutableChannel.send(ResultState.Exit)
                     }
                     if (player.status == PlayerStatus.Continue) {
-                        val isHost = async { checkHost(gameId, currentUser.userId) }
-                        if (isHost.await()) {
+                        resetCurrentPlayer(gameId)
+                        val isHost = checkHost(gameId, currentUser.userId)
+                        if (isHost) {
                             resultStateMutableChannel.send(ResultState.HostContinue)
                         } else {
                             resultStateMutableChannel.send(ResultState.PlayerContinue)
@@ -57,6 +60,11 @@ class ResultViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    private suspend fun resetCurrentPlayer(gameId: String) {
+        val player = currentUser.toPlayerDomain()
+        gameRepository.addPlayerToGame(gameId, player)
     }
 
     fun observeStatusOfPlayers(gameId: String) {

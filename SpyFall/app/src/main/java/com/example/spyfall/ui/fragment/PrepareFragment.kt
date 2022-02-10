@@ -77,10 +77,6 @@ class PrepareFragment : BaseFragment<PrepareGameViewModel>(R.layout.fragment_pre
         )
     }
 
-    override fun exit() {
-        findNavController().popBackStack(R.id.startFragment, false)
-    }
-
     override fun onBackPressed() {
         lifecycleScope.launch {
             viewModel.clearGame(gameId)

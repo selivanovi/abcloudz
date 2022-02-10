@@ -87,13 +87,6 @@ class RoleViewModel @Inject constructor(
 
     }
 
-    private suspend fun clearStatusForPLayers(gameId: String, players: List<PlayerDomain>) {
-        players.forEach {
-            val newPlayer = PlayerDomain(playerId = it.playerId, name = it.name, null, null, null)
-            gameRepository.addPlayerToGame(gameId, newPlayer)
-        }
-    }
-
     fun observeRoleOfCurrentPlayer(gameId: String) {
         gameRepository.observePlayerFromGame(gameId, currentPlayer.userId).onEach { result ->
             result.onSuccess { player ->
