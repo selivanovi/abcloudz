@@ -9,6 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.spyfall.R
 import com.example.spyfall.data.entity.PlayerStatus
+import com.example.spyfall.ui.state.GameState
 import com.example.spyfall.ui.state.ResultState
 import com.example.spyfall.ui.viewmodel.ResultViewModel
 import com.example.spyfall.ui.viewmodel.VoteViewModel
@@ -55,6 +56,12 @@ class LocationWonFragment : BaseFragment<ResultViewModel>(R.layout.fragment_loca
 
         }.launchIn(lifecycleScope)
 
+        viewModel.gameStateChannel.onEach { state ->
+            if (state is GameState.ExitToMenu) {
+                findNavController().popBackStack(R.id.startFragment, false)
+            }
+        }.launchIn(lifecycleScope)
+
         view.findViewById<AppCompatButton>(R.id.nextCardButton).setOnClickListener {
             viewModel.setStatusForCurrentPlayerInGame(gameId, PlayerStatus.Continue)
         }
@@ -62,6 +69,7 @@ class LocationWonFragment : BaseFragment<ResultViewModel>(R.layout.fragment_loca
             viewModel.setStatusForCurrentPlayerInGame(gameId, PlayerStatus.EXIT)
         }
 
+        viewModel.observeGameExit(gameId)
         viewModel.observeStatusOfCurrentPlayer(gameId)
         viewModel.observeStatusOfPlayers(gameId)
     }

@@ -2,12 +2,14 @@ package com.example.spyfall.ui.fragment
 
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.spyfall.R
 import com.example.spyfall.data.entity.PlayerStatus
+import com.example.spyfall.ui.state.GameState
 import com.example.spyfall.ui.state.ResultState
 import com.example.spyfall.ui.viewmodel.ResultViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -47,6 +49,12 @@ class SpyWonFragment : BaseFragment<ResultViewModel>(R.layout.fragment_spy_won) 
 
         }.launchIn(lifecycleScope)
 
+        viewModel.gameStateChannel.onEach { state ->
+            if (state is GameState.ExitToMenu) {
+                findNavController().popBackStack(R.id.startFragment, false)
+            }
+        }.launchIn(lifecycleScope)
+
         view.findViewById<AppCompatButton>(R.id.nextCardButton).setOnClickListener {
             viewModel.setStatusForCurrentPlayerInGame(gameId, PlayerStatus.Continue)
         }
@@ -54,6 +62,7 @@ class SpyWonFragment : BaseFragment<ResultViewModel>(R.layout.fragment_spy_won) 
             viewModel.setStatusForCurrentPlayerInGame(gameId, PlayerStatus.EXIT)
         }
 
+        viewModel.observeGameExit(gameId)
         viewModel.observeStatusOfCurrentPlayer(gameId)
         viewModel.observeStatusOfPlayers(gameId)
     }
