@@ -2,6 +2,7 @@ package com.example.spyfall.ui.fragment
 
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
@@ -9,8 +10,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.spyfall.R
 import com.example.spyfall.ui.listener.LobbyFragmentListener
+import com.example.spyfall.ui.state.GameState
 import com.example.spyfall.ui.viewmodel.WaitingGameViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -32,6 +36,20 @@ class WaitingGameFragment : BaseFragment<WaitingGameViewModel>(R.layout.fragment
                 LobbyFragment.getBundle(gameId)
             )
         }
+
+        viewModel.gameStateChannel.onEach { state ->
+            if(state is GameState.ExitToMenu) {
+                findNavController().popBackStack(R.id.startFragment, false)
+            }
+
+        }.launchIn(lifecycleScope)
+
+        view.findViewById<ImageView>(R.id.back).setOnClickListener {
+            lifecycleScope.launch {
+                viewModel.clearGame(gameId)
+                findNavController().popBackStack()
+            }
+        }
     }
 
     override fun onBackPressed() {
@@ -41,11 +59,7 @@ class WaitingGameFragment : BaseFragment<WaitingGameViewModel>(R.layout.fragment
     }
 
     override fun startGame() {
-        findNavController().navigate(R.id.action_waitingGameFragment_to_roleFragment)
-    }
-
-    override fun exit() {
-        findNavController().popBackStack(R.id.startFragment, false)
+        findNavController().navigate(R.id.action_waitingGameFragment_to_roleFragment, getBundle(gameId))
     }
 
     companion object {
