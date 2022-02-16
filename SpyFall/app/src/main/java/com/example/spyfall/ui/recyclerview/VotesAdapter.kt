@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.FrameLayout
 import android.widget.TextView
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.RecyclerView
 import com.example.spyfall.R
 import com.example.spyfall.domain.entity.PlayerDomain
@@ -45,10 +46,10 @@ class VotesAdapter(
 
                 currentCheckBox = holder.voteCheckBox
                 holder.frameLayout.background =
-                    holder.view.resources.getDrawable(R.drawable.rounded_fill_item_view, null)
+                    AppCompatResources.getDrawable(holder.itemView.context, R.drawable.rounded_fill_item_view)
             } else {
                 holder.frameLayout.background =
-                    holder.view.resources.getDrawable(R.drawable.rounded_item_view, null)
+                    AppCompatResources.getDrawable(holder.itemView.context, R.drawable.rounded_item_view)
             }
         }
     }

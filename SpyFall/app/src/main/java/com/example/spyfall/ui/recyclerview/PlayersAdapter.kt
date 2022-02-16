@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.TextView
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.RecyclerView
 import com.example.spyfall.R
 import com.example.spyfall.data.entity.PlayerStatus
@@ -33,10 +34,10 @@ class PlayersAdapter : RecyclerView.Adapter<PlayersAdapter.PlayerViewHolder>() {
         holder.playerTextView.text = players[position].name
         if (players[position].status == PlayerStatus.PLAY) {
             holder.frameLayout.background =
-                holder.itemView.resources.getDrawable(R.drawable.rounded_green_item_view, null)
+                AppCompatResources.getDrawable(holder.itemView.context, R.drawable.rounded_green_item_view)
         } else {
             holder.frameLayout.background =
-                holder.itemView.resources.getDrawable(R.drawable.rounded_item_view, null)
+                AppCompatResources.getDrawable(holder.itemView.context,R.drawable.rounded_item_view)
         }
     }
 
