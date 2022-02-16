@@ -8,9 +8,9 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/playersRecyclerView"
-        android:layout_margin="20dp"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_margin="20dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/textView"
         app:layout_constraintEnd_toEndOf="parent"
@@ -25,34 +25,35 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
         android:text="@string/textPleaseWaitPlayers"
         android:textAppearance="@style/Text.AccentedText"
-        app:layout_constraintBottom_toTopOf="@+id/dottedHorizontalProgressBar"
+        app:layout_constraintBottom_toTopOf="@+id/progressBarLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginBottom="4dp"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <com.example.spyfall.ui.customview.DottedHorizontalProgressBar
-        android:id="@+id/dottedHorizontalProgressBar"
+    <FrameLayout
+        android:id="@+id/progressBarLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:color="@color/blue"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toTopOf="@id/buttonPlay"
         android:layout_marginBottom="16dp"
-        app:maxDotRadius="5px"
-        app:minDotRadius="3px" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <include layout="@layout/dotted_progress_bar_view"/>
+
+    </FrameLayout>
 
     <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonPlay"
+        style="@style/FillButton"
+        android:layout_width="0dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
-        android:id="@+id/buttonPlay"
-        android:layout_width="0dp"
-        android:textAppearance="@style/FillButtonText"
-        style="@style/FillButton"
         android:text="@string/buttonPlay"
+        android:textAppearance="@style/FillButtonText"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

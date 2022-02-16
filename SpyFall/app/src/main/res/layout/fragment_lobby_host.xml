@@ -50,22 +50,22 @@
         android:layout_marginBottom="4dp"
         android:text="@string/textPleaseWaitEveryone"
         android:textAppearance="@style/Text.AccentedText"
-        app:layout_constraintBottom_toTopOf="@+id/dottedHorizontalProgressBar"
+        app:layout_constraintBottom_toTopOf="@+id/progressBarLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <com.example.spyfall.ui.customview.DottedHorizontalProgressBar
-        android:id="@+id/dottedHorizontalProgressBar"
+    <FrameLayout
+        android:id="@+id/progressBarLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        app:color="@color/blue"
         app:layout_constraintBottom_toTopOf="@id/buttonPlay"
+        android:layout_marginBottom="16dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:maxDotRadius="5px"
-        app:minDotRadius="3px"
-        tools:layout_editor_absoluteY="629dp" />
+        app:layout_constraintStart_toStartOf="parent">
+
+        <include layout="@layout/dotted_progress_bar_view"/>
+
+    </FrameLayout>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/buttonPlay"
