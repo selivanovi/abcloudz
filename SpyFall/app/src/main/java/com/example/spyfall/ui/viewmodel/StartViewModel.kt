@@ -3,6 +3,8 @@ package com.example.spyfall.ui.viewmodel
 import com.example.spyfall.data.entity.GameStatus
 import com.example.spyfall.domain.repository.GameRepository
 import com.example.spyfall.domain.repository.UserRepository
+import com.example.spyfall.ui.base.BaseViewModel
+import com.example.spyfall.ui.navigation.StartDirections
 import com.example.spyfall.utils.Constants
 import com.example.spyfall.utils.GameIsPlayingException
 import com.example.spyfall.utils.GameNotFoundException
@@ -14,7 +16,8 @@ import javax.inject.Inject
 @HiltViewModel
 class StartViewModel @Inject constructor(
     private val gameRepository: GameRepository,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val startDirections: StartDirections
 ) : BaseViewModel() {
 
     val currentPLayer = userRepository.getUser()!!
@@ -34,4 +37,11 @@ class StartViewModel @Inject constructor(
         gameRepository.addPlayerToGame(gameId, player)
     }
 
+    fun navigateToPrepareFragmentWithArgs(gameId: String) {
+        navigateTo(startDirections.toPrepareWithArgs(gameId))
+    }
+
+    fun navigateToWaitingGameFragment(gameId: String) {
+        navigateTo(startDirections.toWaitingGameWithArgs(gameId))
+    }
 }

@@ -6,6 +6,7 @@ import com.example.spyfall.domain.entity.GameDomain
 import com.example.spyfall.domain.entity.PlayerDomain
 import com.example.spyfall.domain.entity.UserDomain
 import com.google.firebase.database.DataSnapshot
+import kotlinx.coroutines.CoroutineScope
 import java.util.*
 
 fun generateRandomId(): String =

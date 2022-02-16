@@ -3,12 +3,14 @@ package com.example.spyfall.ui.fragment
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
-import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.spyfall.R
+import com.example.spyfall.databinding.FragmentWaitingGameBinding
+import com.example.spyfall.ui.base.GameFragment
 import com.example.spyfall.ui.listener.LobbyFragmentListener
 import com.example.spyfall.ui.state.GameState
 import com.example.spyfall.ui.viewmodel.WaitingGameViewModel
@@ -18,16 +20,16 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class WaitingGameFragment : BaseFragment<WaitingGameViewModel>(R.layout.fragment_waiting_game), LobbyFragmentListener {
+class WaitingGameFragment :
+    GameFragment<FragmentWaitingGameBinding, WaitingGameViewModel>(FragmentWaitingGameBinding::inflate),
+    LobbyFragmentListener {
 
     override val viewModel: WaitingGameViewModel by viewModels()
 
-    private val gameId: String by lazy { requireArguments().getString(KEY_GAME_ID)!! }
+    override fun setupView() {
+        super.setupView()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        view.findViewById<TextView>(R.id.nameTextView).text = viewModel.currentUser.name
+        binding.nameTextView.text = viewModel.currentUser.name
 
         childFragmentManager.commit {
             add(
@@ -36,20 +38,31 @@ class WaitingGameFragment : BaseFragment<WaitingGameViewModel>(R.layout.fragment
                 LobbyFragment.getBundle(gameId)
             )
         }
+    }
 
-        viewModel.gameStateChannel.onEach { state ->
-            if(state is GameState.ExitToMenu) {
-                findNavController().popBackStack(R.id.startFragment, false)
-            }
-
-        }.launchIn(lifecycleScope)
-
-        view.findViewById<ImageView>(R.id.back).setOnClickListener {
+    override fun setupListeners() {
+        super.setupListeners()
+        binding.back.setOnClickListener {
             lifecycleScope.launch {
                 viewModel.clearGame(gameId)
-                findNavController().popBackStack()
+                viewModel.navigateBack()
             }
         }
+    }
+
+    override fun setupObserver() {
+
+        viewModel.errorChannel.onEach { throwable ->
+            Toast.makeText(requireContext(), throwable.message, Toast.LENGTH_LONG).show()
+        }.launchIn(lifecycleScope)
+
+        viewModel.gameStateChannel.onEach { state ->
+            if (state is GameState.ExitToMenu) {
+                findNavController().popBackStack(R.id.startFragment, false)
+            }
+        }.launchIn(lifecycleScope)
+
+        viewModel.observeGameExit(gameId)
     }
 
     override fun onBackPressed() {
@@ -59,17 +72,6 @@ class WaitingGameFragment : BaseFragment<WaitingGameViewModel>(R.layout.fragment
     }
 
     override fun startGame() {
-        findNavController().navigate(R.id.action_waitingGameFragment_to_roleFragment, getBundle(gameId))
-    }
-
-    companion object {
-
-        private const val KEY_GAME_ID = "key_game_id"
-
-        fun getBundle(gameId: String): Bundle {
-            return Bundle().apply {
-                putString(KEY_GAME_ID, gameId)
-            }
-        }
+        viewModel.navigateToRoleWithArgs(gameId)
     }
 }

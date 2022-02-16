@@ -1,6 +1,7 @@
 package com.example.spyfall.ui.viewmodel
 
 import com.example.spyfall.domain.repository.UserRepository
+import com.example.spyfall.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

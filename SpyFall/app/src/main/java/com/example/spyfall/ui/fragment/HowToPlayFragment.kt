@@ -2,27 +2,28 @@ package com.example.spyfall.ui.fragment
 
 import android.os.Bundle
 import android.view.View
-import android.widget.ImageView
-import androidx.appcompat.widget.AppCompatButton
-import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
-import com.example.spyfall.R
-import com.example.spyfall.ui.viewmodel.BaseViewModel
+import androidx.fragment.app.viewModels
+import com.example.spyfall.databinding.FragmentHowToPlayBinding
+import com.example.spyfall.ui.base.DrawerFragment
+import com.example.spyfall.ui.base.BaseViewModel
+import com.example.spyfall.ui.viewmodel.HowToPlayViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
-class HowToPlayFragment : BaseFragment<BaseViewModel>(R.layout.fragment_how_to_play) {
+@AndroidEntryPoint
+class HowToPlayFragment :
+    DrawerFragment<FragmentHowToPlayBinding, BaseViewModel>(FragmentHowToPlayBinding::inflate) {
 
-    override val viewModel: BaseViewModel? = null
+    override val viewModel: HowToPlayViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        view.findViewById<ImageView>(R.id.back).setOnClickListener {
-            findNavController().popBackStack()
-        }
-        view.findViewById<AppCompatButton>(R.id.buttonCool).setOnClickListener {
-            findNavController().popBackStack()
+        with(binding) {
+            back.setOnClickListener {
+                viewModel.navigateUp()
+            }
+            buttonCool.setOnClickListener {
+                viewModel.navigateUp()
+            }
         }
     }
-
-
 }

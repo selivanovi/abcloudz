@@ -9,30 +9,47 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.spyfall.R
+import com.example.spyfall.databinding.FragmentListVoteBinding
 import com.example.spyfall.domain.entity.PlayerDomain
+import com.example.spyfall.ui.base.BaseFragment
 import com.example.spyfall.ui.recyclerview.VotesAdapter
 import com.example.spyfall.ui.viewmodel.ListVoteViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class ListVoteFragment : Fragment(R.layout.fragment_list_vote) {
+class ListVoteFragment : BaseFragment<FragmentListVoteBinding, ListVoteViewModel>(FragmentListVoteBinding::inflate) {
 
-    private val viewModel: ListVoteViewModel by viewModels()
+    override val viewModel: ListVoteViewModel by viewModels()
 
     private val adapter = VotesAdapter(::changeItem)
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    private val gameId by lazy {
+        requireArguments().getString(KEY_GAME_ID)!!
+    }
 
-        val gameId = requireArguments().getString(KEY_GAME_ID)!!
+    override fun setupView() {
+        super.setupView()
+        createRecyclerView(requireView())
+    }
 
-
-        view.findViewById<AppCompatButton>(R.id.voteButton).setOnClickListener {
+    override fun setupListeners() {
+        super.setupListeners()
+        binding.voteButton.setOnClickListener {
             viewModel.sendVoteForCurrentPLayerInGame(gameId)
         }
-        createRecyclerView(view)
+    }
+
+    override fun setupObserver() {
+        super.setupObserver()
+
+        viewModel.playersChannel.onEach { players ->
+            adapter.setData(players)
+        }.launchIn(lifecycleScope)
+
         viewModel.observePlayersFromGame(gameId)
     }
 
@@ -42,12 +59,6 @@ class ListVoteFragment : Fragment(R.layout.fragment_list_vote) {
         recyclerView.adapter = adapter
         recyclerView.layoutManager =
             LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
-
-        lifecycleScope.launch {
-            adapter.setData(
-                viewModel.playersChannel.first()
-            )
-        }
     }
 
     private fun changeItem(playerDomain: PlayerDomain) {

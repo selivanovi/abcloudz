@@ -1,16 +1,15 @@
 package com.example.spyfall.ui.fragment
 
 import android.os.Bundle
-import android.util.Log
-import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.spyfall.R
+import com.example.spyfall.databinding.FragmentPrepareBinding
+import com.example.spyfall.ui.base.GameFragment
 import com.example.spyfall.ui.listener.LobbyFragmentListener
 import com.example.spyfall.ui.listener.PickTimeFragmentListener
 import com.example.spyfall.ui.state.GameState
@@ -23,40 +22,50 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class PrepareFragment : BaseFragment<PrepareGameViewModel>(R.layout.fragment_prepare), LobbyFragmentListener,
+class PrepareFragment :
+    GameFragment<FragmentPrepareBinding, PrepareGameViewModel>(FragmentPrepareBinding::inflate),
+    LobbyFragmentListener,
     PickTimeFragmentListener {
 
     override val viewModel: PrepareGameViewModel by viewModels()
 
-    private val gameId: String by lazy {
-        requireArguments().getString(KEY_GAME_ID)!!
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.setGame(gameId)
+        viewModel.setupGame(gameId)
     }
 
+    override fun setupView() {
+        super.setupView()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        childFragmentManager.commit {
+            add(R.id.createGameContainerView, LobbyHostFragment.newInstance(gameId))
+        }
 
-        val userDomain = viewModel.currentUser
+        with(binding) {
+            nameTextView.text = viewModel.currentUser.name
+            gameIdTextView.text =
+                resources.getString(R.string.textWelcomeToTheGameWithId, gameId)
+        }
 
-        view.findViewById<TextView>(R.id.nameTextView).text = userDomain.name
-        view.findViewById<TextView>(R.id.gameIdTextView).text =
-            resources.getString(R.string.textWelcomeToTheGameWithId, gameId)
+        createButtons()
+    }
 
-        view.findViewById<ImageView>(R.id.back).setOnClickListener {
+    override fun setupListeners() {
+        super.setupListeners()
+
+        binding.back.setOnClickListener {
             lifecycleScope.launch {
                 viewModel.clearGame(gameId)
                 findNavController().navigateUp()
             }
         }
+    }
 
-        childFragmentManager.commit {
-            add(R.id.createGameContainerView, LobbyHostFragment.newInstance(gameId))
-        }
+    override fun setupObserver() {
+
+        viewModel.errorChannel.onEach { throwable ->
+            Toast.makeText(requireContext(), throwable.message, Toast.LENGTH_LONG).show()
+        }.launchIn(lifecycleScope)
 
         viewModel.gameStateChannel.onEach { state ->
             if (state is GameState.ExitToMenu) {
@@ -64,17 +73,11 @@ class PrepareFragment : BaseFragment<PrepareGameViewModel>(R.layout.fragment_pre
             }
         }.launchIn(lifecycleScope)
 
-
-        createButtons()
-
         viewModel.observeGameExit(gameId)
     }
 
     override fun startGame() {
-        findNavController().navigate(
-            R.id.action_prepareFragment_to_roleFragment,
-            RoleFragment.getBundle(gameId)
-        )
+        viewModel.navigateToRoleWithArgs(gameId)
     }
 
     override fun onBackPressed() {
@@ -83,43 +86,30 @@ class PrepareFragment : BaseFragment<PrepareGameViewModel>(R.layout.fragment_pre
         }
     }
 
-    override fun onStop() {
-        super.onStop()
-        viewModel.coroutineContext.cancelChildren()
-    }
-
     private fun createButtons() {
+        with(binding) {
+            buttonPlayers.isActivated = true
 
-        val buttonPlayers =
-            requireView().findViewById<MaterialButton>(R.id.buttonPlayers)
-
-        val buttonCardDuration =
-            requireView().findViewById<AppCompatButton>(R.id.buttonCardDuration)
-
-
-        buttonPlayers.isActivated = true
-
-        buttonPlayers.setOnClickListener {
-            if (!buttonPlayers.isActivated) {
-                Log.d(TAG, "Click players button")
-                childFragmentManager.commit {
-                    setReorderingAllowed(true)
-                    replace(R.id.createGameContainerView, LobbyHostFragment.newInstance(gameId))
+            buttonPlayers.setOnClickListener {
+                if (!buttonPlayers.isActivated) {
+                    childFragmentManager.commit {
+                        setReorderingAllowed(true)
+                        replace(R.id.createGameContainerView, LobbyHostFragment.newInstance(gameId))
+                    }
+                    buttonPlayers.isActivated = true
+                    buttonCardDuration.isActivated = false
                 }
-                buttonPlayers.isActivated = true
-                buttonCardDuration.isActivated = false
             }
-        }
 
-        buttonCardDuration.setOnClickListener {
-            if (!buttonCardDuration.isActivated) {
-                Log.d(TAG, "Click time button")
-                childFragmentManager.commit {
-                    setReorderingAllowed(true)
-                    replace(R.id.createGameContainerView, PickTimeFragment())
+            buttonCardDuration.setOnClickListener {
+                if (!buttonCardDuration.isActivated) {
+                    childFragmentManager.commit {
+                        setReorderingAllowed(true)
+                        replace(R.id.createGameContainerView, PickTimeFragment())
+                    }
+                    buttonCardDuration.isActivated = true
+                    buttonPlayers.isActivated = false
                 }
-                buttonCardDuration.isActivated = true
-                buttonPlayers.isActivated = false
             }
         }
     }
@@ -127,18 +117,5 @@ class PrepareFragment : BaseFragment<PrepareGameViewModel>(R.layout.fragment_pre
     override fun setTime(time: Long) {
         viewModel.setDuration(gameId, time)
         requireView().findViewById<MaterialButton>(R.id.buttonPlayers).callOnClick()
-    }
-
-    companion object {
-
-        private const val TAG = "InvitePLayerFragment"
-
-        private const val KEY_GAME_ID = "key_game_id"
-
-        fun getBundle(gameId: String): Bundle {
-            return Bundle().apply {
-                putString(KEY_GAME_ID, gameId)
-            }
-        }
     }
 }

@@ -1,4 +1,4 @@
-package com.example.spyfall.ui.viewmodel
+package com.example.spyfall.ui.base
 
 import androidx.lifecycle.viewModelScope
 import com.example.spyfall.data.entity.GameStatus
@@ -7,17 +7,15 @@ import com.example.spyfall.domain.entity.PlayerDomain
 import com.example.spyfall.domain.repository.GameRepository
 import com.example.spyfall.domain.repository.UserRepository
 import com.example.spyfall.ui.state.VoteState
-import dagger.hilt.android.lifecycle.HiltViewModel
+import com.example.spyfall.ui.viewmodel.GameViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
-import javax.inject.Inject
 
-@HiltViewModel
-class VoteViewModel @Inject constructor(
+abstract class VoteViewModel(
     private val gameRepository: GameRepository,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
 ) : GameViewModel(gameRepository, userRepository) {
 
     private val voteStateMutableChannel = Channel<VoteState>()
@@ -37,14 +35,14 @@ class VoteViewModel @Inject constructor(
                 } else {
                     if (playersWithoutSpy.all { it.vote != null }) {
                         if (playersWithoutSpy.all { player -> player.vote == spy.playerId }) {
-                            voteStateMutableChannel.trySend(VoteState.SpyLost)
+                            navigateToLocationWonWithArgs(gameId)
                         } else {
                             if (gameRepository.getGame(gameId)?.status == GameStatus.GAME_OVER)
-                                voteStateMutableChannel.send(VoteState.SpyWon)
+                                navigateToSpyWonWithArgs(gameId)
                             else {
                                 gameRepository.setStatusForGame(gameId,GameStatus.PLAYING)
                                 clearVoteForPlayersInGame(gameId, playersWithoutSpy)
-                                voteStateMutableChannel.send(VoteState.GameContinue)
+                                navigateBack()
                             }
                         }
                     } else {
@@ -61,6 +59,10 @@ class VoteViewModel @Inject constructor(
             gameRepository.setVoteForPlayerInGame(gameId, player.playerId, null)
         }
     }
+
+    abstract fun navigateToLocationWonWithArgs(gameId: String)
+
+    abstract fun navigateToSpyWonWithArgs(gameId: String)
 }
 
 

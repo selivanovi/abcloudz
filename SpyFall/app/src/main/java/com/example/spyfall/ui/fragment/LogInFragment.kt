@@ -10,50 +10,50 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.spyfall.R
+import com.example.spyfall.databinding.FragmentLogInBinding
+import com.example.spyfall.ui.base.BaseFragment
+import com.example.spyfall.ui.base.DrawerFragment
 import com.example.spyfall.ui.viewmodel.LogInViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
-class LogInFragment : BaseFragment<LogInViewModel>(R.layout.fragment_log_in) {
+class LogInFragment :
+    DrawerFragment<FragmentLogInBinding, LogInViewModel>(FragmentLogInBinding::inflate) {
 
     override val viewModel: LogInViewModel by viewModels()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-
+    override fun setupView() {
+        super.setupView()
         viewModel.getUser()?.let {
-            findNavController().navigate(R.id.action_logInFragment_to_startFragment)
+            viewModel.navigateToStartFragment()
         }
-
-        viewModel.errorChannel.onEach { throwable ->
-            Toast.makeText(requireContext(), throwable.message, Toast.LENGTH_LONG).show()
-        }.launchIn(lifecycleScope)
-
-        viewModel.successAuthorizationChannel.onEach {
-            findNavController().navigate(R.id.action_logInFragment_to_startFragment)
-        }.launchIn(lifecycleScope)
-
-
-        createButtons(view)
     }
 
-    private fun createButtons(view: View) {
-        val confirmButton = view.findViewById<Button>(R.id.confirmButton)
-        val nameEditText = view.findViewById<EditText>(R.id.nameEditText)
+    override fun setupObserver() {
+        super.setupObserver()
 
-        nameEditText.apply {
-            addTextChangedListener {
-                confirmButton.isEnabled = nameEditText.text.isNotEmpty()
+        viewModel.successAuthorizationChannel.onEach {
+            viewModel.navigateToStartFragment()
+        }.launchIn(lifecycleScope)
+    }
+
+    override fun setupListeners() {
+        super.setupListeners()
+        with(binding) {
+
+            nameEditText.apply {
+                addTextChangedListener {
+                    confirmButton.isEnabled = nameEditText.text.isNotEmpty()
+                }
             }
-        }
 
-        confirmButton.apply {
-            isEnabled = false
-            setOnClickListener {
-                viewModel.logIn(nameEditText.text.toString())
+            confirmButton.apply {
+                isEnabled = false
+                setOnClickListener {
+                    viewModel.logIn(nameEditText.text.toString())
+                }
             }
         }
     }

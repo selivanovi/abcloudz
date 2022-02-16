@@ -2,13 +2,17 @@ package com.example.spyfall.ui.fragment
 
 import android.os.Bundle
 import android.view.View
-import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatButton
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.spyfall.R
 import com.example.spyfall.data.entity.PlayerStatus
+import com.example.spyfall.data.entity.Role
+import com.example.spyfall.databinding.FragmentSpyWonBinding
+import com.example.spyfall.ui.base.BaseFragment
+import com.example.spyfall.ui.base.GameFragment
 import com.example.spyfall.ui.state.GameState
 import com.example.spyfall.ui.state.ResultState
 import com.example.spyfall.ui.viewmodel.ResultViewModel
@@ -18,16 +22,31 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class SpyWonFragment : BaseFragment<ResultViewModel>(R.layout.fragment_spy_won) {
+class SpyWonFragment :
+    GameFragment<FragmentSpyWonBinding, ResultViewModel>(FragmentSpyWonBinding::inflate) {
 
     override val viewModel: ResultViewModel by viewModels()
 
-    private val gameId: String by lazy { requireArguments().getString(KEY_GAME_ID)!! }
+    override fun setupView() {
+        super.setupView()
+        with(binding) {
+            locationImageView.setImageResource(Role.SPY.drawable)
+        }
+    }
 
+    override fun setupListeners() {
+        super.setupListeners()
+        with(binding) {
+            nextCardButton.setOnClickListener {
+                viewModel.setStatusForCurrentPlayerInGame(gameId, PlayerStatus.Continue)
+            }
+            mainMenuButton.setOnClickListener {
+                viewModel.setStatusForCurrentPlayerInGame(gameId, PlayerStatus.EXIT)
+            }
+        }
+    }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
+    override fun setupObserver() {
         viewModel.resultStateChannel.onEach { state ->
             when (state) {
                 is ResultState.Exit ->
@@ -55,13 +74,6 @@ class SpyWonFragment : BaseFragment<ResultViewModel>(R.layout.fragment_spy_won) 
             }
         }.launchIn(lifecycleScope)
 
-        view.findViewById<AppCompatButton>(R.id.nextCardButton).setOnClickListener {
-            viewModel.setStatusForCurrentPlayerInGame(gameId, PlayerStatus.Continue)
-        }
-        view.findViewById<AppCompatButton>(R.id.mainMenuButton).setOnClickListener {
-            viewModel.setStatusForCurrentPlayerInGame(gameId, PlayerStatus.EXIT)
-        }
-
         viewModel.observeGameExit(gameId)
         viewModel.observeStatusOfCurrentPlayer(gameId)
         viewModel.observeStatusOfPlayers(gameId)
@@ -70,16 +82,6 @@ class SpyWonFragment : BaseFragment<ResultViewModel>(R.layout.fragment_spy_won) 
     override fun onBackPressed() {
         lifecycleScope.launch {
             viewModel.clearGame(gameId)
-        }
-    }
-    companion object {
-
-        private const val KEY_GAME_ID = "key_game_id"
-
-        fun getBundle(gameId: String): Bundle {
-            return Bundle().apply {
-                putString(KEY_GAME_ID, gameId)
-            }
         }
     }
 }

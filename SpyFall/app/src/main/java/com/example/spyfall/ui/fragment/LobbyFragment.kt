@@ -10,6 +10,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.spyfall.R
+import com.example.spyfall.databinding.FragmentLobbyBinding
+import com.example.spyfall.ui.base.BaseFragment
 import com.example.spyfall.ui.listener.LobbyFragmentListener
 import com.example.spyfall.ui.recyclerview.PlayersAdapter
 import com.example.spyfall.ui.state.LobbyState
@@ -20,12 +22,16 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
-class LobbyFragment : Fragment(R.layout.fragment_lobby) {
+class LobbyFragment : BaseFragment<FragmentLobbyBinding, LobbyViewModel>(FragmentLobbyBinding::inflate) {
 
-    private val viewModel: LobbyViewModel by viewModels()
+    override val viewModel: LobbyViewModel by viewModels()
 
     private val adapter = PlayersAdapter()
     private var lobbyFragmentListener: LobbyFragmentListener? = null
+
+    private val gameId by lazy {
+        requireArguments().getString(KEY_GAME_ID)!!
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -35,18 +41,20 @@ class LobbyFragment : Fragment(R.layout.fragment_lobby) {
         }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun setupView() {
+        super.setupView()
+        createRecyclerView(requireView())
+    }
 
-        val gameId: String = requireArguments().getString(KEY_GAME_ID)!!
-
-        view.findViewById<AppCompatButton>(R.id.buttonPlay).apply {
-            setOnClickListener {
-                viewModel.setStatusPlayForPlayerInGame(gameId)
-            }
+    override fun setupListeners() {
+        super.setupListeners()
+        binding.buttonPlay.setOnClickListener {
+            viewModel.setStatusPlayForPlayerInGame(gameId)
         }
+    }
 
-        viewModel.observePlayersFromGame(gameId)
+    override fun setupObserver() {
+        super.setupObserver()
 
         viewModel.playersChannel.onEach {
             adapter.setData(it)
@@ -58,8 +66,7 @@ class LobbyFragment : Fragment(R.layout.fragment_lobby) {
             }
         }.launchIn(lifecycleScope)
 
-        createRecyclerView(view)
-
+        viewModel.observePlayersFromGame(gameId)
     }
 
     override fun onStop() {

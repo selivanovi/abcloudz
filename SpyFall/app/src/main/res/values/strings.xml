@@ -80,5 +80,6 @@
     <string name="chooser_title">Share</string>
     <string name="share">Share</string>
     <string name="invite">Invite you to play SpyFall to enjoy the game with us.</string>
+    <string name="time">%d:%d</string>
 
 </resources>

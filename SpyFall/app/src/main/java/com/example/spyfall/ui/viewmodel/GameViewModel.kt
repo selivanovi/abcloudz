@@ -7,6 +7,7 @@ import com.example.spyfall.domain.entity.GameDomain
 import com.example.spyfall.domain.entity.PlayerDomain
 import com.example.spyfall.domain.repository.GameRepository
 import com.example.spyfall.domain.repository.UserRepository
+import com.example.spyfall.ui.base.BaseViewModel
 import com.example.spyfall.ui.state.GameState
 
 import com.example.spyfall.utils.Constants

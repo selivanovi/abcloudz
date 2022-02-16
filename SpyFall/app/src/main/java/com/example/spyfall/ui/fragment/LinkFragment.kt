@@ -39,10 +39,6 @@ class LinkFragment : Fragment(R.layout.fragment_create_link) {
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-    }
-
     override fun onDetach() {
         super.onDetach()
         linkFragmentListener = null

@@ -7,12 +7,16 @@ import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.spyfall.R
 import com.example.spyfall.data.entity.GameStatus
 import com.example.spyfall.data.entity.PlayerStatus
+import com.example.spyfall.databinding.FragmentRoleBinding
+import com.example.spyfall.ui.base.BaseFragment
+import com.example.spyfall.ui.base.GameFragment
 import com.example.spyfall.ui.state.GameState
 import com.example.spyfall.ui.state.RoleState
 import com.example.spyfall.ui.viewmodel.RoleViewModel
@@ -23,150 +27,77 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class RoleFragment : BaseFragment<RoleViewModel>(R.layout.fragment_role) {
+class RoleFragment :
+    GameFragment<FragmentRoleBinding, RoleViewModel>(FragmentRoleBinding::inflate) {
 
     override val viewModel: RoleViewModel by viewModels()
 
-    private val gameId by lazy {
-        requireArguments().getString(KEY_GAME_ID)!!
+    override fun setupListeners() {
+        super.setupListeners()
+        with(binding) {
+            voteButton.setOnClickListener {
+                viewModel.setStatusForGame(gameId, GameStatus.VOTE)
+                viewModel.setStatusForCurrentPlayerInGame(gameId, PlayerStatus.VOTED)
+            }
+
+            locationButton.setOnClickListener {
+                viewModel.setStatusForGame(gameId, GameStatus.LOCATION)
+            }
+
+            controlGameLayout.setOnClickListener {
+                viewModel.setPauseOrPlayForGame(gameId)
+            }
+        }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun setupObserver() {
+        super.setupObserver()
+        with(binding) {
+            viewModel.roleStateChannel.onEach { state ->
+                when (state) {
+                    is RoleState.SetRole -> {
+                        locationTextView.setText(state.role.string)
+                        locationImageView.setImageResource(state.role.drawable)
+                    }
+                    is RoleState.SetTime -> {
+                        val minutes = state.time / 60
+                        val seconds = state.time % 60
 
-        val controlGameImageView = view.findViewById<AppCompatImageView>(R.id.controlGameImageView)
-        val controlGameTextView = view.findViewById<TextView>(R.id.controlGameTextView)
-        val timeTextView = view.findViewById<AppCompatTextView>(R.id.timeTextView)
-        val locationButton = view.findViewById<AppCompatButton>(R.id.locationButton)
-        val voteButton = view.findViewById<AppCompatButton>(R.id.voteButton)
-        val controlGameLayout = view.findViewById<LinearLayout>(R.id.controlGameLayout)
+                        binding.timeTextView.text =
+                            resources.getString(R.string.time, minutes, seconds)
+                    }
+                    is RoleState.GameIsPlaying -> {
+                        controlGameImageView.setImageResource(R.drawable.pause)
+                        controlGameTextView.setText(R.string.textPause)
+                    }
+                    is RoleState.GameIsPause -> {
+                        controlGameImageView.setImageResource(R.drawable.play)
+                        controlGameTextView.setText(R.string.textContinue)
+                    }
+                    is RoleState.Player -> {
+                        locationButton.isEnabled = false
+                    }
+                    is RoleState.Spy -> {
+                        locationButton.isEnabled = true
+                    }
+                    is RoleState.Voted -> {
+                        voteButton.isEnabled = false
+                    }
+                }
+            }.launchIn(lifecycleScope)
 
-        viewModel.roleChannel.onEach { role ->
-            view.findViewById<AppCompatTextView>(R.id.locationTextView).setText(role.string)
-            view.findViewById<AppCompatImageView>(R.id.locationImageView)
-                .setImageResource(role.drawable)
-        }.launchIn(lifecycleScope)
-
-
-        viewModel.roleStateChannel.onEach { state ->
-            when (state) {
-                is RoleState.GameIsPlaying -> {
-                    controlGameImageView
-                        .setImageResource(R.drawable.pause)
-                    controlGameTextView
-                        .setText(R.string.textPause)
-                }
-                is RoleState.GameIsPause -> {
-                    controlGameImageView
-                        .setImageResource(R.drawable.play)
-                    view.findViewById<TextView>(R.id.controlGameTextView)
-                        .setText(R.string.textContinue)
-                }
-                is RoleState.VoteSpy -> {
-                    findNavController().navigate(
-                        R.id.spyVoteFragment,
-                        SpyVoteFragment.getBundle(gameId)
-                    )
-                }
-                is RoleState.Player -> {
-                    locationButton.isEnabled = false
-                }
-                is RoleState.Spy -> {
-                    locationButton.isEnabled = true
-                }
-                is RoleState.VotePlayer -> {
-                    findNavController().navigate(
-                        R.id.locationVoteFragment,
-                        LocationVoteFragment.getBundle(gameId)
-                    )
-                }
-                is RoleState.LocationSpy -> {
-                    findNavController().navigate(
-                        R.id.callLocationFragment,
-                        CallLocationFragment.getBundle(gameId)
-                    )
-                }
-                is RoleState.LocationPlayer -> {
-                    findNavController().navigate(
-                        R.id.checkLocationFragment,
-                        CheckLocationFragment.getBundle(gameId)
-                    )
-                }
-                is RoleState.Voted -> {
-                    voteButton.isEnabled = false
-                }
-            }
-        }.launchIn(lifecycleScope)
-
-        viewModel.timeChannel.onEach {
-
-            val minutes = it / 60
-            val seconds = it % 60
-
-            timeTextView.text = "$minutes:$seconds"
-        }.launchIn(lifecycleScope)
-
-        viewModel.gameStateChannel.onEach { state ->
-            when (state) {
-                is GameState.ExitToMenu -> {
-                    findNavController().navigateUp()
-                }
-                is GameState.ExitToLobbyForHost -> {
-                    findNavController().navigate(R.id.prepareFragment, PrepareFragment.getBundle(gameId))
-                }
-                is GameState.ExitToLobbyForPlayer -> {
-                    findNavController().navigate(R.id.waitingGameFragment, PrepareFragment.getBundle(gameId))
-                }
-            }
-        }.launchIn(lifecycleScope)
-
-        voteButton.setOnClickListener {
-            viewModel.setStatusForGame(gameId, GameStatus.VOTE)
-            viewModel.setStatusForCurrentPlayerInGame(gameId, PlayerStatus.VOTED)
         }
 
-        locationButton.setOnClickListener {
-            viewModel.setStatusForGame(gameId, GameStatus.LOCATION)
-        }
-
-        controlGameLayout.setOnClickListener {
-            viewModel.setPauseOrPlayForGame(gameId)
-        }
-
-    }
-
-
-    override fun onStart() {
-        super.onStart()
         with(viewModel) {
-
             setRolesInGame(gameId)
             observeRoleOfCurrentPlayer(gameId)
             observeGame(gameId)
-            observeNumberOfPlayer(gameId)
-            observeGameExit(gameId)
         }
-    }
-
-    override fun onStop() {
-        super.onStop()
-        viewModel.coroutineContext.cancelChildren()
     }
 
     override fun onBackPressed() {
         lifecycleScope.launch {
             viewModel.clearGame(gameId)
-        }
-    }
-
-    companion object {
-
-        private const val KEY_GAME_ID = "key_game_id"
-
-        fun getBundle(gameId: String): Bundle {
-            return Bundle().apply {
-                putString(KEY_GAME_ID, gameId)
-            }
         }
     }
 }

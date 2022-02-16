@@ -29,37 +29,32 @@ class ResultViewModel @Inject constructor(
     private val resultStateMutableChannel = Channel<ResultState>()
     val resultStateChannel = resultStateMutableChannel.receiveAsFlow()
 
-    private val roleMutableChannel = Channel<Role>()
-    val roleChannel = roleMutableChannel.receiveAsFlow()
-
     fun observeStatusOfCurrentPlayer(gameId: String) {
-        launch {
-            gameRepository.observePlayerFromGame(gameId, currentUser.userId).collect { result ->
-                result.onSuccess { player ->
-                    if (player.status == PlayerStatus.EXIT) {
-                        val isHost = checkHost(gameId, currentUser.userId)
-                        if (isHost) {
-                            deleteGameById(gameId)
-                        } else {
-                            deletePlayerInGame(gameId, player.playerId)
-                        }
-                        resultStateMutableChannel.send(ResultState.Exit)
+        gameRepository.observePlayerFromGame(gameId, currentUser.userId).onEach { result ->
+            result.onSuccess { player ->
+                if (player.status == PlayerStatus.EXIT) {
+                    val isHost = checkHost(gameId, currentUser.userId)
+                    if (isHost) {
+                        deleteGameById(gameId)
+                    } else {
+                        deletePlayerInGame(gameId, player.playerId)
                     }
-                    if (player.status == PlayerStatus.Continue) {
-                        resetCurrentPlayer(gameId)
-                        val isHost = checkHost(gameId, currentUser.userId)
-                        if (isHost) {
-                            resultStateMutableChannel.send(ResultState.HostContinue)
-                        } else {
-                            resultStateMutableChannel.send(ResultState.PlayerContinue)
-                        }
-                    }
+                    resultStateMutableChannel.send(ResultState.Exit)
                 }
-                result.onFailure { throwable ->
-                    errorMutableChannel.send(throwable)
+                if (player.status == PlayerStatus.Continue) {
+                    resetCurrentPlayer(gameId)
+                    val isHost = checkHost(gameId, currentUser.userId)
+                    if (isHost) {
+                        resultStateMutableChannel.send(ResultState.HostContinue)
+                    } else {
+                        resultStateMutableChannel.send(ResultState.PlayerContinue)
+                    }
                 }
             }
-        }
+            result.onFailure { throwable ->
+                errorMutableChannel.send(throwable)
+            }
+        }.launchIn(viewModelScope)
     }
 
     private suspend fun resetCurrentPlayer(gameId: String) {
@@ -72,7 +67,7 @@ class ResultViewModel @Inject constructor(
             result.onSuccess { players ->
                 val player = players.find { player -> player.role != Role.SPY } ?: return@onEach
                 player.role?.let { role ->
-                    roleMutableChannel.send(role)
+                    resultStateMutableChannel.send(ResultState.SetRole(role))
                 }
             }
             result.onFailure { throwable -> errorMutableChannel.send(throwable) }

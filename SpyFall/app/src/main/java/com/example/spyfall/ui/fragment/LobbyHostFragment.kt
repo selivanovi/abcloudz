@@ -13,6 +13,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.spyfall.R
+import com.example.spyfall.databinding.FragmentLobbyHostBinding
+import com.example.spyfall.ui.base.BaseFragment
 import com.example.spyfall.ui.listener.LobbyFragmentListener
 import com.example.spyfall.ui.recyclerview.PlayersAdapter
 import com.example.spyfall.ui.state.LobbyState
@@ -25,9 +27,10 @@ import kotlinx.coroutines.flow.onEach
 
 
 @AndroidEntryPoint
-class LobbyHostFragment : Fragment(R.layout.fragment_lobby_host) {
+class LobbyHostFragment :
+    BaseFragment<FragmentLobbyHostBinding, LobbyViewModel>(FragmentLobbyHostBinding::inflate) {
 
-    private val viewModel: LobbyViewModel by viewModels()
+    override val viewModel: LobbyViewModel by viewModels()
 
     private val adapter = PlayersAdapter()
     private var lobbyFragmentListener: LobbyFragmentListener? = null
@@ -97,20 +100,9 @@ class LobbyHostFragment : Fragment(R.layout.fragment_lobby_host) {
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        Log.d("LobbyFragment", "onStart")
-    }
-
-    override fun onStop() {
-        super.onStop()
-        Log.d("LobbyFragment", "onStop")
-        lifecycleScope.cancel()
-    }
-
     override fun onDetach() {
         super.onDetach()
-        Log.d("LobbyFragment", "onDetach")
+
         lobbyFragmentListener = null
     }
 
@@ -123,10 +115,7 @@ class LobbyHostFragment : Fragment(R.layout.fragment_lobby_host) {
     }
 
 
-
     companion object {
-
-        private const val TAG = "InvitePLayerFragment"
 
         private const val KEY_GAME_ID = "key_game_id"
 

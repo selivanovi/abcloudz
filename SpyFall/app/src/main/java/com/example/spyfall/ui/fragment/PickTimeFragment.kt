@@ -1,9 +1,6 @@
 package com.example.spyfall.ui.fragment
 
 import android.content.Context
-import android.content.res.Resources
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.View
 import android.widget.NumberPicker
@@ -53,7 +50,6 @@ class PickTimeFragment : Fragment(R.layout.fragment_pick_time) {
             wrapSelectorWheel = true
             displayedValues = timesString.toTypedArray()
             descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
-            removeDivider()
         }
     }
 
@@ -63,23 +59,3 @@ class PickTimeFragment : Fragment(R.layout.fragment_pick_time) {
     }
 }
 
-
-fun NumberPicker.removeDivider() {
-    val pickerFields = NumberPicker::class.java.declaredFields
-    for (pf in pickerFields) {
-        if (pf.name == "mSelectionDivider") {
-            pf.isAccessible = true
-            try {
-                val colorDrawable = ColorDrawable(Color.TRANSPARENT)
-                pf[this] = colorDrawable
-            } catch (e: java.lang.IllegalArgumentException) {
-                // log exception here
-            } catch (e: Resources.NotFoundException) {
-                // log exception here
-            } catch (e: IllegalAccessException) {
-                // log exception here
-            }
-            break
-        }
-    }
-}
