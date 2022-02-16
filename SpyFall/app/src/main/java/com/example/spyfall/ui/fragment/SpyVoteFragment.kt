@@ -1,6 +1,8 @@
 package com.example.spyfall.ui.fragment
 
-import androidx.fragment.app.*
+import androidx.fragment.app.add
+import androidx.fragment.app.commit
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.spyfall.R
 import com.example.spyfall.databinding.FragmentSpyVoteBinding

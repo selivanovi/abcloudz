@@ -3,7 +3,6 @@ package com.example.spyfall.ui.navigation
 import android.os.Bundle
 import androidx.navigation.NavDirections
 import com.example.spyfall.R
-import com.example.spyfall.ui.fragment.SplashFragment
 import javax.inject.Inject
 
 class SplashDirections @Inject constructor() {

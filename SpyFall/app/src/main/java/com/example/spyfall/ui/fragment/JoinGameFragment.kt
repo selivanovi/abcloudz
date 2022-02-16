@@ -19,7 +19,7 @@ class JoinGameFragment : Fragment(R.layout.fragment_join_game) {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         val parent = requireParentFragment()
-        if (parent is JoinGameFragmentListener){
+        if (parent is JoinGameFragmentListener) {
             joinGameFragmentListener = parent
         }
     }
@@ -40,7 +40,7 @@ class JoinGameFragment : Fragment(R.layout.fragment_join_game) {
             val gameId = joinGameEditText.text.toString()
             if (gameId.length != 5) {
                 Toast.makeText(requireContext(), Constants.NOT_CORRECT_GAME_ID, Toast.LENGTH_LONG).show()
-            }else {
+            } else {
                 joinGameFragmentListener?.joinToGame(gameId)
             }
         }

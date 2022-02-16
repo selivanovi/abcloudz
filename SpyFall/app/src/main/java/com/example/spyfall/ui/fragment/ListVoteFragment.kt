@@ -2,8 +2,6 @@ package com.example.spyfall.ui.fragment
 
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.widget.AppCompatButton
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,10 +13,8 @@ import com.example.spyfall.ui.base.BaseFragment
 import com.example.spyfall.ui.recyclerview.VotesAdapter
 import com.example.spyfall.ui.viewmodel.ListVoteViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ListVoteFragment : BaseFragment<FragmentListVoteBinding, ListVoteViewModel>(FragmentListVoteBinding::inflate) {

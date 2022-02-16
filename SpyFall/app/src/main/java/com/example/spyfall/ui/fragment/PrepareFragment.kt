@@ -2,7 +2,6 @@ package com.example.spyfall.ui.fragment
 
 import android.os.Bundle
 import android.widget.Toast
-import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -16,7 +15,6 @@ import com.example.spyfall.ui.state.GameState
 import com.example.spyfall.ui.viewmodel.PrepareGameViewModel
 import com.google.android.material.button.MaterialButton
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -62,7 +60,6 @@ class PrepareFragment :
     }
 
     override fun setupObserver() {
-
         viewModel.errorChannel.onEach { throwable ->
             Toast.makeText(requireContext(), throwable.message, Toast.LENGTH_LONG).show()
         }.launchIn(lifecycleScope)

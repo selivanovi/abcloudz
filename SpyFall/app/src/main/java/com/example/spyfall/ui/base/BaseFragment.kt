@@ -32,7 +32,6 @@ abstract class BaseFragment<VB : ViewBinding, VM : BaseViewModel>(
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
         requireActivity().onBackPressedDispatcher.addCallback(
             requireActivity(),
             object : OnBackPressedCallback(true) {
@@ -59,11 +58,9 @@ abstract class BaseFragment<VB : ViewBinding, VM : BaseViewModel>(
     }
 
     protected open fun setupView() {
-
     }
 
     protected open fun setupListeners() {
-
     }
 
     protected open fun setupObserver() {
@@ -96,5 +93,4 @@ abstract class BaseFragment<VB : ViewBinding, VM : BaseViewModel>(
             }
         }
     }
-
 }

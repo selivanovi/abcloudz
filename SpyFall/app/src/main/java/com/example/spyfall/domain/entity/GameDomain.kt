@@ -7,6 +7,4 @@ data class GameDomain(
     val host: String? = null,
     val status: GameStatus? = null,
     val duration: Long? = null,
-) {
-
-}
+)

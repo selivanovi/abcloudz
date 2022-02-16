@@ -1,8 +1,5 @@
 package com.example.spyfall.ui.fragment
 
-import android.os.Bundle
-import android.view.View
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
@@ -51,7 +48,6 @@ class WaitingGameFragment :
     }
 
     override fun setupObserver() {
-
         viewModel.errorChannel.onEach { throwable ->
             Toast.makeText(requireContext(), throwable.message, Toast.LENGTH_LONG).show()
         }.launchIn(lifecycleScope)

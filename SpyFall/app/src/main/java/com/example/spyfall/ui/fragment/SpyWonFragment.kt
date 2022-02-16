@@ -1,9 +1,5 @@
 package com.example.spyfall.ui.fragment
 
-import android.os.Bundle
-import android.view.View
-import androidx.appcompat.widget.AppCompatButton
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -11,7 +7,6 @@ import com.example.spyfall.R
 import com.example.spyfall.data.entity.PlayerStatus
 import com.example.spyfall.data.entity.Role
 import com.example.spyfall.databinding.FragmentSpyWonBinding
-import com.example.spyfall.ui.base.BaseFragment
 import com.example.spyfall.ui.base.GameFragment
 import com.example.spyfall.ui.state.GameState
 import com.example.spyfall.ui.state.ResultState
@@ -65,7 +60,6 @@ class SpyWonFragment :
                         inclusive = false
                     )
             }
-
         }.launchIn(lifecycleScope)
 
         viewModel.gameStateChannel.onEach { state ->

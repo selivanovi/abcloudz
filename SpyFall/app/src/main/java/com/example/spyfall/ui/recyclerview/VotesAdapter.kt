@@ -60,6 +60,5 @@ class VotesAdapter(
         val frameLayout = view.findViewById<FrameLayout>(R.id.frameLayout)
         val playerTextView = view.findViewById<TextView>(R.id.itemPlayer)
         val voteCheckBox = view.findViewById<CheckBox>(R.id.voteCheckBox)
-
     }
 }

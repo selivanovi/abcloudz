@@ -4,8 +4,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import com.example.spyfall.databinding.FragmentHowToPlayBinding
-import com.example.spyfall.ui.base.DrawerFragment
 import com.example.spyfall.ui.base.BaseViewModel
+import com.example.spyfall.ui.base.DrawerFragment
 import com.example.spyfall.ui.viewmodel.HowToPlayViewModel
 import dagger.hilt.android.AndroidEntryPoint
 

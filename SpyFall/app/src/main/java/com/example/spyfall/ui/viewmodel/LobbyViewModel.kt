@@ -4,12 +4,12 @@ import androidx.lifecycle.viewModelScope
 import com.example.spyfall.data.entity.GameStatus
 import com.example.spyfall.data.entity.PlayerStatus
 import com.example.spyfall.domain.entity.GameDomain
-import com.example.spyfall.utils.Constants
 import com.example.spyfall.domain.entity.PlayerDomain
 import com.example.spyfall.domain.repository.GameRepository
 import com.example.spyfall.domain.repository.UserRepository
 import com.example.spyfall.ui.base.BaseViewModel
 import com.example.spyfall.ui.state.LobbyState
+import com.example.spyfall.utils.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.launchIn
@@ -47,14 +47,12 @@ class LobbyViewModel @Inject constructor(
                         gameRepository.setStatusForGame(gameId, GameStatus.PLAYING)
                     } else lobbyStateMutableChannel.send(LobbyState.Wait)
                 }
-
             }
             result.onFailure { throwable -> errorMutableChannel.send(throwable) }
         }.launchIn(viewModelScope)
     }
 
     fun setStatusPlayForPlayerInGame(gameId: String) {
-
         playerStatus = if (playerStatus == null) PlayerStatus.PLAY else null
 
         launch {
@@ -62,8 +60,3 @@ class LobbyViewModel @Inject constructor(
         }
     }
 }
-
-
-
-
-

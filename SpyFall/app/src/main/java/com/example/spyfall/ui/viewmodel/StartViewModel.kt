@@ -22,13 +22,12 @@ class StartViewModel @Inject constructor(
 
     val currentPLayer = userRepository.getUser()!!
 
-    fun joinToGame(gameId:String) = launch {
+    fun joinToGame(gameId: String) = launch {
         val game = gameRepository.getGame(gameId)
         if (game == null) {
             errorMutableChannel.send(GameNotFoundException(Constants.GAME_NOT_FOUND_EXCEPTION))
             return@launch
-        }
-        else if (game.status != GameStatus.CREATE) {
+        } else if (game.status != GameStatus.CREATE) {
             errorMutableChannel.send(GameIsPlayingException(Constants.GAME_IS_PLAYING_EXCEPTION))
             return@launch
         }

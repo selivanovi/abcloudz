@@ -6,7 +6,7 @@ import com.example.spyfall.R
 import com.example.spyfall.ui.base.GameFragment
 import javax.inject.Inject
 
-class CallLocationDirections @Inject constructor(){
+class CallLocationDirections @Inject constructor() {
 
     fun toLocationWonWithArgs(gameId: String) = object : NavDirections {
         override val actionId: Int = R.id.action_callLocationFragment_to_locationWonFragment

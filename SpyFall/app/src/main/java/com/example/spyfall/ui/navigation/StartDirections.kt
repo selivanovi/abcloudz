@@ -4,8 +4,6 @@ import android.os.Bundle
 import androidx.navigation.NavDirections
 import com.example.spyfall.R
 import com.example.spyfall.ui.base.GameFragment
-import com.example.spyfall.ui.fragment.PrepareFragment
-import com.example.spyfall.ui.fragment.WaitingGameFragment
 import javax.inject.Inject
 
 class StartDirections @Inject constructor() {

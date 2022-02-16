@@ -12,7 +12,6 @@ class LogOutViewModel @Inject constructor(
 ) : BaseViewModel() {
 
     fun logOut() {
-
         val user = userRepository.getUser()
 
         user?.let {

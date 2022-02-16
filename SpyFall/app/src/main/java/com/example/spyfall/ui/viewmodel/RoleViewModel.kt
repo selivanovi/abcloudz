@@ -11,11 +11,13 @@ import com.example.spyfall.domain.repository.UserRepository
 import com.example.spyfall.ui.navigation.RoleDirections
 import com.example.spyfall.ui.state.RoleState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.*
+import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -76,7 +78,6 @@ class RoleViewModel @Inject constructor(
                 Log.d("RoleViewModel", "observeCurrentPlayer: $player")
                 val role = player.role
 
-
                 role?.let {
                     roleStateMutableChannel.send(RoleState.SetRole(it))
                 }
@@ -97,7 +98,6 @@ class RoleViewModel @Inject constructor(
     }
 
     fun setRolesInGame(gameId: String) {
-
         val isHostDeferred = async { checkHost(gameId, currentUser.userId) }
 
         launch {
@@ -125,7 +125,6 @@ class RoleViewModel @Inject constructor(
     }
 
     private fun startTimer(gameId: String) = launch {
-
         stopTimer = false
 
         val duration = gameRepository.getDurationForGames(gameId)
@@ -178,4 +177,3 @@ class RoleViewModel @Inject constructor(
         navigateTo(roleDirections.toSpyVoteWithArgs(gameId))
     }
 }
-

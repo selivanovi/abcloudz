@@ -3,10 +3,10 @@ package com.example.spyfall.data.repository
 import android.content.SharedPreferences
 import androidx.core.content.edit
 import com.example.spyfall.domain.entity.UserDomain
+import com.example.spyfall.domain.repository.UserRepository
 import com.example.spyfall.utils.Constants
 import com.example.spyfall.utils.GetDataException
 import com.example.spyfall.utils.InvalidNameException
-import com.example.spyfall.domain.repository.UserRepository
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -24,7 +24,6 @@ class UserRepositoryImpl @Inject constructor(
 ) : UserRepository {
 
     override suspend fun addUser(userDomain: UserDomain) = callbackFlow<Result<Unit?>> {
-
         val valueEventListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val users = snapshot.children.map { it.getValue(String::class.java) }
@@ -43,7 +42,6 @@ class UserRepositoryImpl @Inject constructor(
             override fun onCancelled(error: DatabaseError) {
                 this@callbackFlow.trySendBlocking(Result.failure(GetDataException(Constants.GET_DATA_EXCEPTION)))
             }
-
         }
 
         firebaseDatabase.reference.child(USER_REFERENCES).addListenerForSingleValueEvent(

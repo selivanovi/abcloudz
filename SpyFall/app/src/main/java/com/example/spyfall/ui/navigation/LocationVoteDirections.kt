@@ -4,8 +4,6 @@ import android.os.Bundle
 import androidx.navigation.NavDirections
 import com.example.spyfall.R
 import com.example.spyfall.ui.base.GameFragment
-import com.example.spyfall.ui.fragment.LocationVoteFragment
-import com.example.spyfall.ui.fragment.LocationWonFragment
 import javax.inject.Inject
 
 class LocationVoteDirections @Inject constructor() {

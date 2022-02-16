@@ -6,17 +6,16 @@ import com.example.spyfall.domain.entity.GameDomain
 import com.example.spyfall.domain.entity.PlayerDomain
 import com.example.spyfall.domain.entity.UserDomain
 import com.google.firebase.database.DataSnapshot
-import kotlinx.coroutines.CoroutineScope
-import java.util.*
+import java.util.UUID
 
 fun generateRandomId(): String =
     UUID.randomUUID().toString().takeLast(5)
 
 fun PlayerDomain.toPlayer(): Player =
-    Player(name = this.name, status = this.status, role = this.role)
+    Player(name = this.name, status = this.status, role = this.role, null)
 
 fun GameDomain.toGame(): Game =
-    Game(this.host, this.status, this.duration)
+    Game(this.host, this.status, this.duration, null)
 
 fun UserDomain.toPlayerDomain(): PlayerDomain =
     PlayerDomain(this.userId, this.name, null, null, null)

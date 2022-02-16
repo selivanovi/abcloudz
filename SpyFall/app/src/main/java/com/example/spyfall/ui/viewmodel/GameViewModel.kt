@@ -9,7 +9,6 @@ import com.example.spyfall.domain.repository.GameRepository
 import com.example.spyfall.domain.repository.UserRepository
 import com.example.spyfall.ui.base.BaseViewModel
 import com.example.spyfall.ui.state.GameState
-
 import com.example.spyfall.utils.Constants
 import com.example.spyfall.utils.FewPlayersException
 import com.example.spyfall.utils.GameNotFoundException
@@ -74,7 +73,6 @@ open class GameViewModel(
     }
 
     suspend fun clearGame(gameId: String) {
-
         val isHost = checkHost(gameId, currentUser.userId)
 
         if (isHost) {
@@ -93,7 +91,6 @@ open class GameViewModel(
     }
 
     protected suspend fun deleteGameById(gameId: String) {
-
         gameRepository.deleteGame(gameId)
     }
 

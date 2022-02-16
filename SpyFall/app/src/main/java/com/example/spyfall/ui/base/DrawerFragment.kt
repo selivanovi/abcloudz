@@ -38,6 +38,4 @@ abstract class DrawerFragment<VB : ViewBinding, VM : BaseViewModel>(
         super.onDetach()
         drawerListener = null
     }
-
-
 }

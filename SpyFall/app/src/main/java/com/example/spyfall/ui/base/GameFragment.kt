@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.onEach
 
 abstract class GameFragment<VB : ViewBinding, VM : GameViewModel>(
     inflate: Inflate<VB>
-) : DrawerFragment<VB, VM>(inflate){
+) : DrawerFragment<VB, VM>(inflate) {
 
     protected val gameId: String by lazy { requireArguments().getString(KEY_GAME_ID)!! }
 

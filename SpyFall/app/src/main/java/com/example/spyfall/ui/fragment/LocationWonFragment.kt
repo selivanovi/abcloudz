@@ -55,7 +55,6 @@ class LocationWonFragment :
                         inclusive = false
                     )
             }
-
         }.launchIn(lifecycleScope)
 
         viewModel.gameStateChannel.onEach { state ->
@@ -68,7 +67,6 @@ class LocationWonFragment :
         viewModel.observeStatusOfCurrentPlayer(gameId)
         viewModel.observeStatusOfPlayers(gameId)
     }
-
 
     override fun onBackPressed() {
         lifecycleScope.launch {

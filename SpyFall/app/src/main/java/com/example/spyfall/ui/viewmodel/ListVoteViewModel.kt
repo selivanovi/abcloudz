@@ -38,7 +38,7 @@ class ListVoteViewModel @Inject constructor(
     }
 
     fun sendVoteForCurrentPLayerInGame(gameId: String) {
-        playerForVote?.let{ player ->
+        playerForVote?.let { player ->
             launch {
                 gameRepository.setVoteForPlayerInGame(gameId, currentPlayer.userId, player)
             }

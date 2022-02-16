@@ -4,7 +4,6 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.example.spyfall.R
 
-
 enum class Role(@StringRes val string: Int, @DrawableRes val drawable: Int) {
 
     SPY(R.string.spy, R.drawable.image_spy),

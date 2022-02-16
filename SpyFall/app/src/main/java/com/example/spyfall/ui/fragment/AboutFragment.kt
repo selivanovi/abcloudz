@@ -4,9 +4,9 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import com.example.spyfall.databinding.FragmentAboutBinding
+import com.example.spyfall.ui.base.BaseViewModel
 import com.example.spyfall.ui.base.DrawerFragment
 import com.example.spyfall.ui.viewmodel.AboutViewModel
-import com.example.spyfall.ui.base.BaseViewModel
 
 class AboutFragment :
     DrawerFragment<FragmentAboutBinding, BaseViewModel>(FragmentAboutBinding::inflate) {

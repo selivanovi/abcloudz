@@ -33,7 +33,6 @@ class StartFragment :
     }
 
     private fun createButtons() {
-
         val joinButton =
             requireView().findViewById<AppCompatButton>(R.id.buttonJoinGame)
 

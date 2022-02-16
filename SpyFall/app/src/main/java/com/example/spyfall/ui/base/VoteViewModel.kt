@@ -37,10 +37,10 @@ abstract class VoteViewModel(
                         if (playersWithoutSpy.all { player -> player.vote == spy.playerId }) {
                             navigateToLocationWonWithArgs(gameId)
                         } else {
-                            if (gameRepository.getGame(gameId)?.status == GameStatus.GAME_OVER)
+                            if (gameRepository.getGame(gameId)?.status == GameStatus.GAME_OVER) {
                                 navigateToSpyWonWithArgs(gameId)
-                            else {
-                                gameRepository.setStatusForGame(gameId,GameStatus.PLAYING)
+                            } else {
+                                gameRepository.setStatusForGame(gameId, GameStatus.PLAYING)
                                 clearVoteForPlayersInGame(gameId, playersWithoutSpy)
                                 navigateBack()
                             }
@@ -64,5 +64,3 @@ abstract class VoteViewModel(
 
     abstract fun navigateToSpyWonWithArgs(gameId: String)
 }
-
-

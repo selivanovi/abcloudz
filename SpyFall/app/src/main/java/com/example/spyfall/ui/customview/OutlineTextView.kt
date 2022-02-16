@@ -8,7 +8,6 @@ import android.util.TypedValue
 import androidx.appcompat.widget.AppCompatTextView
 import com.example.spyfall.R
 
-
 class OutlineTextView(context: Context, attrs: AttributeSet?) : AppCompatTextView(context, attrs) {
 
     private val defaultOutlineWidth = 0F
@@ -16,7 +15,6 @@ class OutlineTextView(context: Context, attrs: AttributeSet?) : AppCompatTextVie
 
     private var outlineColor: Int = 0
     private var outlineWidth: Float = 0.toFloat()
-
 
    init {
         if (attrs != null) {
@@ -35,7 +33,6 @@ class OutlineTextView(context: Context, attrs: AttributeSet?) : AppCompatTextVie
     fun setOutlineColor(color: Int) {
         outlineColor = color
     }
-
 
     fun setOutlineWidth(unit: Int, width: Float) {
         outlineWidth = TypedValue.applyDimension(

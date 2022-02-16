@@ -6,7 +6,7 @@ detekt {
     config = files("${project.rootDir}/config/detekt/config.yml") // point to your custom config defining rules to run, overwriting default behavior
     baseline = file("${projectDir}/config/detekt/baseline.xml") // a way of suppressing issues before introducing detekt
     parallel = true
-    autoCorrect = false
+    autoCorrect = true
 }
 
 tasks.named("detekt").configure {

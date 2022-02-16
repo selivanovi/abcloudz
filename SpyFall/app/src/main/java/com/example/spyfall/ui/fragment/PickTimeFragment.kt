@@ -11,7 +11,6 @@ import com.example.spyfall.ui.listener.PickTimeFragmentListener
 import com.example.spyfall.utils.times
 import com.example.spyfall.utils.toSeconds
 
-
 class PickTimeFragment : Fragment(R.layout.fragment_pick_time) {
 
     private var pickTimeFragmentListener: PickTimeFragmentListener? = null
@@ -19,7 +18,7 @@ class PickTimeFragment : Fragment(R.layout.fragment_pick_time) {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         val parent = requireParentFragment()
-        if(parent is PickTimeFragmentListener) {
+        if (parent is PickTimeFragmentListener) {
             pickTimeFragmentListener = parent
         }
     }
@@ -34,7 +33,6 @@ class PickTimeFragment : Fragment(R.layout.fragment_pick_time) {
             val value = timePicker.value
             pickTimeFragmentListener?.setTime(times[value].toSeconds())
         }
-
 
         val timesString = times.map {
             if (it > 0) {
@@ -58,4 +56,3 @@ class PickTimeFragment : Fragment(R.layout.fragment_pick_time) {
         pickTimeFragmentListener = null
     }
 }
-

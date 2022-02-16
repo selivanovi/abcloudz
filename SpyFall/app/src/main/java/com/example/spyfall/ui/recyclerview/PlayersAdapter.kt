@@ -27,7 +27,6 @@ class PlayersAdapter : RecyclerView.Adapter<PlayersAdapter.PlayerViewHolder>() {
             .inflate(R.layout.item_recyclerview_player, parent, false)
 
         return PlayerViewHolder(view)
-
     }
 
     override fun onBindViewHolder(holder: PlayerViewHolder, position: Int) {
@@ -35,8 +34,7 @@ class PlayersAdapter : RecyclerView.Adapter<PlayersAdapter.PlayerViewHolder>() {
         if (players[position].status == PlayerStatus.PLAY) {
             holder.frameLayout.background =
                 holder.itemView.resources.getDrawable(R.drawable.rounded_green_item_view, null)
-        }
-        else {
+        } else {
             holder.frameLayout.background =
                 holder.itemView.resources.getDrawable(R.drawable.rounded_item_view, null)
         }

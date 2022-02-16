@@ -2,7 +2,6 @@ package com.example.spyfall.ui
 
 import android.graphics.Color
 import android.os.Bundle
-import android.view.Gravity
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
@@ -42,7 +41,6 @@ class MainActivity : AppCompatActivity(), DrawerListener, QuiteDialogListener {
 
         setContentView(R.layout.activity_main)
 
-
         createDrawerLayout()
 
         createNavigationView()
@@ -53,14 +51,12 @@ class MainActivity : AppCompatActivity(), DrawerListener, QuiteDialogListener {
     }
 
     private fun createDrawerLayout() {
-
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, GravityCompat.START)
         val content = findViewById<CardView>(R.id.cardContainer)
         drawerLayout.setScrimColor(Color.TRANSPARENT)
         drawerLayout.addDrawerListener(object : DrawerLayout.SimpleDrawerListener() {
 
             override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
-
                 val diffScaledOffset: Float = slideOffset * (1 - END_SCALE)
                 val offsetScale = 1 - diffScaledOffset
                 content.scaleX = offsetScale
@@ -87,8 +83,6 @@ class MainActivity : AppCompatActivity(), DrawerListener, QuiteDialogListener {
     }
 
     private fun createNavigationView() {
-
-
         navigationView.setupWithNavController(navController)
 
         navigationView.getHeaderView(0).findViewById<ImageView>(R.id.closeImageView)
@@ -111,8 +105,9 @@ class MainActivity : AppCompatActivity(), DrawerListener, QuiteDialogListener {
     }
 
     override fun closeDrawer() {
-        if (drawerLayout.isDrawerOpen(navigationView))
+        if (drawerLayout.isDrawerOpen(navigationView)) {
             drawerLayout.closeDrawer(navigationView)
+        }
     }
 
     companion object {

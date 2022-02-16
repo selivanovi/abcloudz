@@ -1,5 +1,3 @@
 package com.example.spyfall.utils
 
-class FewPlayersException(message: String) : Exception(message) {
-
-}
+class FewPlayersException(message: String) : Exception(message)

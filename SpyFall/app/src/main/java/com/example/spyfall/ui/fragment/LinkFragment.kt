@@ -21,14 +21,13 @@ class LinkFragment : Fragment(R.layout.fragment_create_link) {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         val parent = requireParentFragment()
-        if(parent is LinkFragmentListener){
+        if (parent is LinkFragmentListener) {
             linkFragmentListener = parent
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
 
         val gameId = viewModel.generateGameId()
 

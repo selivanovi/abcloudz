@@ -3,8 +3,6 @@ package com.example.spyfall.ui.fragment
 import android.content.Context
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.widget.AppCompatButton
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager

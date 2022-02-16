@@ -22,7 +22,6 @@ class DottedHorizontalProgressBar(context: Context, attributeSet: AttributeSet) 
     private var timeOut: Int = 500
     private var dotCount: Int = 3
 
-
     private val animators = mutableListOf<Animator>()
 
     private var primaryValueAnimator: ValueAnimator? = null
@@ -31,7 +30,7 @@ class DottedHorizontalProgressBar(context: Context, attributeSet: AttributeSet) 
         applyAttributeSet(attributeSet)
         val minRadius = convertDpToPixel(minDotRadius, context)
         val maxRadius = convertDpToPixel(maxDotRadius, context)
-        val margin = maxRadius-minRadius
+        val margin = maxRadius - minRadius
         for (i in 0 until dotCount) {
             val dot = View(context)
             val layoutParams = LayoutParams(minRadius * 2, minRadius * 2)
@@ -49,12 +48,13 @@ class DottedHorizontalProgressBar(context: Context, attributeSet: AttributeSet) 
         }
         primaryValueAnimator = ValueAnimator.ofInt(0, dotCount)
         primaryValueAnimator?.addUpdateListener {
-            if (it.animatedValue != dotCount)
+            if (it.animatedValue != dotCount) {
                 animators[it.animatedValue as Int].start()
+            }
         }
         primaryValueAnimator?.repeatMode = ValueAnimator.RESTART
         primaryValueAnimator?.repeatCount = ValueAnimator.INFINITE
-        primaryValueAnimator?.duration = (timeOut*dotCount).toLong()
+        primaryValueAnimator?.duration = (timeOut * dotCount).toLong()
         primaryValueAnimator?.interpolator = LinearInterpolator()
     }
 
@@ -72,14 +72,12 @@ class DottedHorizontalProgressBar(context: Context, attributeSet: AttributeSet) 
             repeatMode = ValueAnimator.REVERSE
             interpolator = LinearInterpolator()
         }
-
     }
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         primaryValueAnimator?.start()
     }
-
 
     private fun applyAttributeSet(attributeSet: AttributeSet) {
         context.theme.obtainStyledAttributes(
@@ -103,6 +101,5 @@ class DottedHorizontalProgressBar(context: Context, attributeSet: AttributeSet) 
         fun convertDpToPixel(dp: Float, context: Context): Int {
             return (dp * (context.resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)).toInt()
         }
-
     }
 }

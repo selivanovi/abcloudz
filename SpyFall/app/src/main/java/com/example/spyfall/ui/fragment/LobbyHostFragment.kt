@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.widget.AppCompatButton
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,10 +20,8 @@ import com.example.spyfall.ui.state.LobbyState
 import com.example.spyfall.ui.viewmodel.LobbyViewModel
 import com.google.android.material.button.MaterialButton
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-
 
 @AndroidEntryPoint
 class LobbyHostFragment :
@@ -96,7 +93,7 @@ class LobbyHostFragment :
         try {
             startActivity(Intent.createChooser(intent, resources.getString(R.string.share)))
         } catch (e: Exception) {
-            //e.toString();
+            // e.toString();
         }
     }
 
@@ -114,7 +111,6 @@ class LobbyHostFragment :
             LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
     }
 
-
     companion object {
 
         private const val KEY_GAME_ID = "key_game_id"
@@ -129,5 +125,4 @@ class LobbyHostFragment :
             return fragment
         }
     }
-
 }

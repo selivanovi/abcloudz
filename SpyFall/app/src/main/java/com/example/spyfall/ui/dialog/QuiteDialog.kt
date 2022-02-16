@@ -16,7 +16,6 @@ import com.example.spyfall.R
 import com.example.spyfall.ui.viewmodel.LogOutViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
-
 @AndroidEntryPoint
 class QuiteDialog : DialogFragment() {
 
@@ -26,7 +25,7 @@ class QuiteDialog : DialogFragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if(requireActivity() is QuiteDialogListener){
+        if (requireActivity() is QuiteDialogListener) {
             Log.d("QuiteDialog", "Attach to ${requireActivity()}")
             dialogListener = requireActivity() as QuiteDialogListener
         }
@@ -41,7 +40,7 @@ class QuiteDialog : DialogFragment() {
             findViewById<ImageView>(R.id.closeImage).setOnClickListener {
                 dismiss()
             }
-            findViewById<Button>(R.id.buttonGoOut).setOnClickListener{
+            findViewById<Button>(R.id.buttonGoOut).setOnClickListener {
                 viewModel.logOut()
                 dialogListener?.logOut()
                 dismiss()
@@ -56,6 +55,6 @@ class QuiteDialog : DialogFragment() {
         dialog?.window?.setLayout(
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.WRAP_CONTENT
-        );
+        )
     }
 }

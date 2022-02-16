@@ -1,10 +1,8 @@
 package com.example.spyfall.data.entity
 
-
 data class Player(
-    val name: String? = null,
-    val status: PlayerStatus? = null,
-    val role: Role? = null,
-    val vote: String? = null
+    val name: String?,
+    val status: PlayerStatus?,
+    val role: Role?,
+    val vote: String?
 )
-
