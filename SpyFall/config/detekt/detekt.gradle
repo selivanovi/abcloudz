@@ -1,0 +1,31 @@
+apply plugin: 'io.gitlab.arturbosch.detekt'
+
+detekt {
+//    buildUponDefaultConfig = true // preconfigure defaults
+    allRules = false // activate all available (even unstable) rules.
+    config = files("${project.rootDir}/config/detekt/config.yml") // point to your custom config defining rules to run, overwriting default behavior
+    baseline = file("${projectDir}/config/detekt/baseline.xml") // a way of suppressing issues before introducing detekt
+    parallel = true
+    autoCorrect = false
+}
+
+tasks.named("detekt").configure {
+    reports {
+        html { // observe findings in your browser with structure and code snippets
+            enabled = true
+            destination = file("${project.rootDir}/reports/detekt-report.html")
+        }
+        xml { // checkstyle like format mainly for integrations like Jenkins
+            enabled = true
+            destination = file("${project.rootDir}/reports/detekt-report.xml")
+        }
+        txt { // similar to the console output, contains issue signature to manually edit baseline files
+            enabled = true
+            destination = file("${project.rootDir}/reports/detekt-report.txt")
+        }
+    }
+}
+
+dependencies {
+    detektPlugins "io.gitlab.arturbosch.detekt:detekt-formatting:1.19.0"
+}

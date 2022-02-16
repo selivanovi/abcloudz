@@ -6,6 +6,10 @@ plugins {
     id 'dagger.hilt.android.plugin'
 }
 
+apply from: "$project.rootDir/config/detekt/detekt.gradle"
+apply from: "$project.rootDir/config/ktlint/ktlint.gradle"
+apply from: "$project.rootDir/config/lint/lint.gradle"
+
 android {
     compileSdk 31
 

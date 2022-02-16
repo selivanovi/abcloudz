@@ -1,0 +1,476 @@
+<?xml version="1.0" encoding="utf-8"?>
+<checkstyle version="8.0">
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/androidTest/java/com/example/spyfall/ExampleInstrumentedTest.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+		<error line="3" column="1" severity="error" message="Imports must be ordered in lexicographic order without any empty lines in-between with &quot;java&quot;, &quot;javax&quot;, &quot;kotlin&quot; and aliases in the end" source="import-ordering" />
+		<error line="9" column="1" severity="error" message="Wildcard import (cannot be auto-corrected)" source="no-wildcard-imports" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/app/App.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/app/di/BindModule.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+		<error line="3" column="1" severity="error" message="Needless blank line(s)" source="no-consecutive-blank-lines" />
+		<error line="4" column="1" severity="error" message="Imports must be ordered in lexicographic order without any empty lines in-between with &quot;java&quot;, &quot;javax&quot;, &quot;kotlin&quot; and aliases in the end" source="import-ordering" />
+		<error line="20" column="7" severity="error" message="Unexpected spacing before &quot;:&quot;" source="colon-spacing" />
+		<error line="25" column="7" severity="error" message="Unexpected spacing before &quot;:&quot;" source="colon-spacing" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/app/di/DataModule.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/data/entity/Game.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/data/entity/GameStatus.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/data/entity/Player.kt">
+		<error line="3" column="1" severity="error" message="Needless blank line(s)" source="no-consecutive-blank-lines" />
+		<error line="11" column="1" severity="error" message="Needless blank line(s)" source="no-consecutive-blank-lines" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/data/entity/PlayerStatus.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/data/entity/Role.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+		<error line="7" column="1" severity="error" message="Needless blank line(s)" source="no-consecutive-blank-lines" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/data/repository/GameRepositoryImpl.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+		<error line="3" column="1" severity="error" message="Imports must be ordered in lexicographic order without any empty lines in-between with &quot;java&quot;, &quot;javax&quot;, &quot;kotlin&quot; and aliases in the end" source="import-ordering" />
+		<error line="11" column="1" severity="error" message="Wildcard import (cannot be auto-corrected)" source="no-wildcard-imports" />
+		<error line="12" column="1" severity="error" message="Wildcard import (cannot be auto-corrected)" source="no-wildcard-imports" />
+		<error line="13" column="1" severity="error" message="Wildcard import (cannot be auto-corrected)" source="no-wildcard-imports" />
+		<error line="96" column="1" severity="error" message="Needless blank line(s)" source="no-consecutive-blank-lines" />
+		<error line="189" column="1" severity="error" message="Needless blank line(s)" source="no-consecutive-blank-lines" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/data/repository/UserRepositoryImpl.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+		<error line="3" column="1" severity="error" message="Imports must be ordered in lexicographic order without any empty lines in-between with &quot;java&quot;, &quot;javax&quot;, &quot;kotlin&quot; and aliases in the end" source="import-ordering" />
+		<error line="46" column="1" severity="error" message="Unexpected blank line(s) before &quot;}&quot;" source="no-blank-line-before-rbrace" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/domain/entity/GameDomain.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+		<error line="10" column="3" severity="error" message="Unnecessary block (&quot;{}&quot;)" source="no-empty-class-body" />
+		<error line="11" column="1" severity="error" message="Unexpected blank line(s) before &quot;}&quot;" source="no-blank-line-before-rbrace" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/domain/entity/PlayerDomain.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/domain/entity/UserDomain.kt">
+		<error line="6" column="1" severity="error" message="Needless blank line(s)" source="no-consecutive-blank-lines" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/domain/repository/GameRepository.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+		<error line="13" column="41" severity="error" message="Unexpected spacing before &quot;:&quot;" source="colon-spacing" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/MainActivity.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+		<error line="5" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+		<error line="45" column="1" severity="error" message="Needless blank line(s)" source="no-consecutive-blank-lines" />
+		<error line="91" column="1" severity="error" message="Needless blank line(s)" source="no-consecutive-blank-lines" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/base/BaseFragment.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+		<error line="35" column="1" severity="error" message="Needless blank line(s)" source="no-consecutive-blank-lines" />
+		<error line="42" column="13" severity="error" message="Missing newline before &quot;)&quot;" source="indent" />
+		<error line="62" column="1" severity="error" message="Unexpected blank line(s) before &quot;}&quot;" source="no-blank-line-before-rbrace" />
+		<error line="66" column="1" severity="error" message="Unexpected blank line(s) before &quot;}&quot;" source="no-blank-line-before-rbrace" />
+		<error line="99" column="1" severity="error" message="Unexpected blank line(s) before &quot;}&quot;" source="no-blank-line-before-rbrace" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/base/BaseViewModel.kt">
+		<error line="8" column="1" severity="error" message="Wildcard import (cannot be auto-corrected)" source="no-wildcard-imports" />
+		<error line="15" column="1" severity="error" message="Needless blank line(s)" source="no-consecutive-blank-lines" />
+		<error line="30" column="1" severity="error" message="Needless blank line(s)" source="no-consecutive-blank-lines" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/base/CheckResultViewModel.kt">
+		<error line="8" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+		<error line="13" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+		<error line="15" column="1" severity="error" message="Needless blank line(s)" source="no-consecutive-blank-lines" />
+		<error line="16" column="36" severity="error" message="Unexpected spacing before &quot;(&quot;" source="paren-spacing" />
+		<error line="25" column="1" severity="error" message="Unexpected indentation (12) (should be 8)" source="indent" />
+		<error line="26" column="1" severity="error" message="Unexpected indentation (16) (should be 12)" source="indent" />
+		<error line="27" column="1" severity="error" message="Unexpected indentation (20) (should be 16)" source="indent" />
+		<error line="28" column="1" severity="error" message="Unexpected indentation (24) (should be 20)" source="indent" />
+		<error line="29" column="1" severity="error" message="Unexpected indentation (28) (should be 24)" source="indent" />
+		<error line="30" column="1" severity="error" message="Unexpected indentation (32) (should be 28)" source="indent" />
+		<error line="31" column="1" severity="error" message="Unexpected indentation (28) (should be 24)" source="indent" />
+		<error line="32" column="1" severity="error" message="Unexpected indentation (32) (should be 28)" source="indent" />
+		<error line="33" column="1" severity="error" message="Unexpected indentation (24) (should be 20)" source="indent" />
+		<error line="34" column="1" severity="error" message="Unexpected indentation (20) (should be 16)" source="indent" />
+		<error line="35" column="1" severity="error" message="Unexpected indentation (20) (should be 16)" source="indent" />
+		<error line="36" column="1" severity="error" message="Unexpected indentation (24) (should be 20)" source="indent" />
+		<error line="37" column="1" severity="error" message="Unexpected indentation (20) (should be 16)" source="indent" />
+		<error line="38" column="1" severity="error" message="Unexpected indentation (16) (should be 12)" source="indent" />
+		<error line="39" column="1" severity="error" message="Unexpected indentation (12) (should be 8)" source="indent" />
+		<error line="47" column="1" severity="error" message="Needless blank line(s)" source="no-consecutive-blank-lines" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/base/DrawerFragment.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+		<error line="41" column="1" severity="error" message="Unexpected blank line(s) before &quot;}&quot;" source="no-blank-line-before-rbrace" />
+		<error line="42" column="1" severity="error" message="Needless blank line(s)" source="no-consecutive-blank-lines" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/base/GameFragment.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+		<error line="15" column="36" severity="error" message="Missing spacing before &quot;{&quot;" source="curly-spacing" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/base/VoteViewModel.kt">
+		<error line="43" column="72" severity="error" message="Missing spacing after &quot;,&quot;" source="comma-spacing" />
+		<error line="68" column="1" severity="error" message="Needless blank line(s)" source="no-consecutive-blank-lines" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/customview/DottedHorizontalProgressBar.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+		<error line="25" column="1" severity="error" message="Needless blank line(s)" source="no-consecutive-blank-lines" />
+		<error line="34" column="31" severity="error" message="Missing spacing around &quot;-&quot;" source="op-spacing" />
+		<error line="57" column="50" severity="error" message="Missing spacing around &quot;*&quot;" source="op-spacing" />
+		<error line="75" column="1" severity="error" message="Unexpected blank line(s) before &quot;}&quot;" source="no-blank-line-before-rbrace" />
+		<error line="83" column="1" severity="error" message="Needless blank line(s)" source="no-consecutive-blank-lines" />
+		<error line="106" column="1" severity="error" message="Unexpected blank line(s) before &quot;}&quot;" source="no-blank-line-before-rbrace" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/customview/OutlineTextView.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+		<error line="11" column="1" severity="error" message="Needless blank line(s)" source="no-consecutive-blank-lines" />
+		<error line="20" column="1" severity="error" message="Needless blank line(s)" source="no-consecutive-blank-lines" />
+		<error line="21" column="1" severity="error" message="Unexpected indentation (3) (should be 4)" source="indent" />
+		<error line="39" column="1" severity="error" message="Needless blank line(s)" source="no-consecutive-blank-lines" />
+		<error line="42" column="57" severity="error" message="Missing newline before &quot;)&quot;" source="indent" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/dialog/QuiteDialog.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+		<error line="19" column="1" severity="error" message="Needless blank line(s)" source="no-consecutive-blank-lines" />
+		<error line="29" column="11" severity="error" message="Missing spacing after &quot;if&quot;" source="keyword-spacing" />
+		<error line="29" column="53" severity="error" message="Missing spacing before &quot;{&quot;" source="curly-spacing" />
+		<error line="44" column="70" severity="error" message="Missing spacing before &quot;{&quot;" source="curly-spacing" />
+		<error line="59" column="10" severity="error" message="Unnecessary semicolon" source="no-semi" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/fragment/AboutFragment.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+		<error line="3" column="1" severity="error" message="Imports must be ordered in lexicographic order without any empty lines in-between with &quot;java&quot;, &quot;javax&quot;, &quot;kotlin&quot; and aliases in the end" source="import-ordering" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/fragment/CallLocationFragment.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+		<error line="7" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+		<error line="8" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+		<error line="10" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+		<error line="12" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+		<error line="13" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+		<error line="15" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+		<error line="17" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+		<error line="18" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/fragment/CheckLocationFragment.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/fragment/HowToPlayFragment.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+		<error line="3" column="1" severity="error" message="Imports must be ordered in lexicographic order without any empty lines in-between with &quot;java&quot;, &quot;javax&quot;, &quot;kotlin&quot; and aliases in the end" source="import-ordering" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/fragment/JoinGameFragment.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+		<error line="22" column="48" severity="error" message="Missing spacing before &quot;{&quot;" source="curly-spacing" />
+		<error line="43" column="14" severity="error" message="Missing spacing after &quot;}&quot;" source="curly-spacing" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/fragment/LinkFragment.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+		<error line="24" column="11" severity="error" message="Missing spacing after &quot;if&quot;" source="keyword-spacing" />
+		<error line="24" column="43" severity="error" message="Missing spacing before &quot;{&quot;" source="curly-spacing" />
+		<error line="32" column="1" severity="error" message="Needless blank line(s)" source="no-consecutive-blank-lines" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/fragment/ListVoteFragment.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+		<error line="5" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+		<error line="6" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+		<error line="18" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+		<error line="21" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/fragment/LobbyFragment.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+		<error line="6" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+		<error line="7" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/fragment/LobbyHostFragment.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+		<error line="10" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+		<error line="24" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+		<error line="28" column="1" severity="error" message="Needless blank line(s)" source="no-consecutive-blank-lines" />
+		<error line="99" column="13" severity="error" message="Missing space after //" source="comment-spacing" />
+		<error line="117" column="1" severity="error" message="Needless blank line(s)" source="no-consecutive-blank-lines" />
+		<error line="132" column="1" severity="error" message="Unexpected blank line(s) before &quot;}&quot;" source="no-blank-line-before-rbrace" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/fragment/LocationVoteFragment.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/fragment/LocationWonFragment.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+		<error line="58" column="1" severity="error" message="Unexpected blank line(s) before &quot;}&quot;" source="no-blank-line-before-rbrace" />
+		<error line="72" column="1" severity="error" message="Needless blank line(s)" source="no-consecutive-blank-lines" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/fragment/LogInFragment.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+		<error line="3" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+		<error line="4" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+		<error line="5" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+		<error line="6" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+		<error line="7" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+		<error line="11" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+		<error line="12" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+		<error line="14" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/fragment/PickTimeFragment.kt">
+		<error line="14" column="1" severity="error" message="Needless blank line(s)" source="no-consecutive-blank-lines" />
+		<error line="22" column="11" severity="error" message="Missing spacing after &quot;if&quot;" source="keyword-spacing" />
+		<error line="38" column="1" severity="error" message="Needless blank line(s)" source="no-consecutive-blank-lines" />
+		<error line="62" column="1" severity="error" message="Needless blank line(s)" source="no-consecutive-blank-lines" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/fragment/PrepareFragment.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+		<error line="5" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+		<error line="19" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/fragment/RoleFragment.kt">
+		<error line="3" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+		<error line="4" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+		<error line="5" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+		<error line="6" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+		<error line="7" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+		<error line="8" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+		<error line="9" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+		<error line="10" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+		<error line="13" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+		<error line="18" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+		<error line="20" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+		<error line="24" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+		<error line="88" column="1" severity="error" message="Unexpected blank line(s) before &quot;}&quot;" source="no-blank-line-before-rbrace" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/fragment/SplashFragment.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+		<error line="4" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+		<error line="6" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+		<error line="7" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+		<error line="8" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+		<error line="13" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+		<error line="26" column="1" severity="error" message="Unexpected blank line(s) before &quot;}&quot;" source="no-blank-line-before-rbrace" />
+		<error line="27" column="1" severity="error" message="Needless blank line(s)" source="no-consecutive-blank-lines" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/fragment/SpyVoteFragment.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+		<error line="3" column="1" severity="error" message="Wildcard import (cannot be auto-corrected)" source="no-wildcard-imports" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/fragment/SpyWonFragment.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+		<error line="3" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+		<error line="4" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+		<error line="5" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+		<error line="6" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+		<error line="14" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+		<error line="68" column="1" severity="error" message="Unexpected blank line(s) before &quot;}&quot;" source="no-blank-line-before-rbrace" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/fragment/StartFragment.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/fragment/WaitingFragment.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+		<error line="6" column="61" severity="error" message="Unnecessary block (&quot;{}&quot;)" source="no-empty-class-body" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/fragment/WaitingGameFragment.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+		<error line="3" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+		<error line="4" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+		<error line="5" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/listener/DrawerListener.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/listener/PickTimeFragmentListener.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/navigation/CallLocationDirections.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+		<error line="9" column="51" severity="error" message="Missing spacing before &quot;{&quot;" source="curly-spacing" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/navigation/CheckLocationDirections.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+		<error line="9" column="52" severity="error" message="Missing spacing before &quot;{&quot;" source="curly-spacing" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/navigation/LocationVoteDirections.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+		<error line="7" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+		<error line="8" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/navigation/LogInDirections.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/navigation/NavEvent.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/navigation/PrepareGameDirections.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/navigation/RoleDirections.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+		<error line="7" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+		<error line="8" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+		<error line="9" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+		<error line="10" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+		<error line="25" column="1" severity="error" message="Needless blank line(s)" source="no-consecutive-blank-lines" />
+		<error line="31" column="1" severity="error" message="Needless blank line(s)" source="no-consecutive-blank-lines" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/navigation/SplashDirections.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+		<error line="6" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/navigation/SpyVoteDirections.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+		<error line="7" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/navigation/StartDirections.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+		<error line="7" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+		<error line="8" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/navigation/WaitingGameDirections.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+		<error line="7" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+		<error line="10" column="50" severity="error" message="Missing spacing before &quot;{&quot;" source="curly-spacing" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/recyclerview/PlayersAdapter.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+		<error line="30" column="1" severity="error" message="Unexpected blank line(s) before &quot;}&quot;" source="no-blank-line-before-rbrace" />
+		<error line="39" column="9" severity="error" message="Unexpected newline before &quot;else&quot;" source="keyword-spacing" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/recyclerview/VotesAdapter.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+		<error line="63" column="1" severity="error" message="Unexpected blank line(s) before &quot;}&quot;" source="no-blank-line-before-rbrace" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/state/CheckState.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/state/GameState.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/state/LobbyState.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/state/ResultState.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/state/RoleState.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+		<error line="8" column="40" severity="error" message="Unnecessary space(s)" source="no-multi-spaces" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/state/VoteState.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/viewmodel/AboutViewModel.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+		<error line="8" column="62" severity="error" message="Unnecessary block (&quot;{}&quot;)" source="no-empty-class-body" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/viewmodel/CallLocationViewModel.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/viewmodel/CheckLocationViewModel.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/viewmodel/GameViewModel.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+		<error line="3" column="1" severity="error" message="Imports must be ordered in lexicographic order without any empty lines in-between with &quot;java&quot;, &quot;javax&quot;, &quot;kotlin&quot; and aliases in the end" source="import-ordering" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/viewmodel/HowToPlayViewModel.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+		<error line="8" column="66" severity="error" message="Unnecessary block (&quot;{}&quot;)" source="no-empty-class-body" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/viewmodel/LinkViewModel.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+		<error line="3" column="1" severity="error" message="Needless blank line(s)" source="no-consecutive-blank-lines" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/viewmodel/ListVoteViewModel.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+		<error line="41" column="27" severity="error" message="Missing spacing before &quot;{&quot;" source="curly-spacing" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/viewmodel/LobbyViewModel.kt">
+		<error line="3" column="1" severity="error" message="Imports must be ordered in lexicographic order without any empty lines in-between with &quot;java&quot;, &quot;javax&quot;, &quot;kotlin&quot; and aliases in the end" source="import-ordering" />
+		<error line="50" column="1" severity="error" message="Unexpected blank line(s) before &quot;}&quot;" source="no-blank-line-before-rbrace" />
+		<error line="66" column="1" severity="error" message="Needless blank line(s)" source="no-consecutive-blank-lines" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/viewmodel/LocationVoteViewModel.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/viewmodel/LogInViewModel.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/viewmodel/LogOutViewModel.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/viewmodel/PrepareGameViewModel.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+		<error line="3" column="1" severity="error" message="Needless blank line(s)" source="no-consecutive-blank-lines" />
+		<error line="6" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+		<error line="10" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+		<error line="15" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+		<error line="47" column="1" severity="error" message="Unexpected blank line(s) before &quot;}&quot;" source="no-blank-line-before-rbrace" />
+		<error line="48" column="1" severity="error" message="Needless blank line(s)" source="no-consecutive-blank-lines" />
+		<error line="59" column="57" severity="error" message="Missing spacing before &quot;{&quot;" source="curly-spacing" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/viewmodel/ResultViewModel.kt">
+		<error line="3" column="1" severity="error" message="Needless blank line(s)" source="no-consecutive-blank-lines" />
+		<error line="7" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+		<error line="8" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+		<error line="14" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+		<error line="16" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+		<error line="20" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+		<error line="78" column="1" severity="error" message="Needless blank line(s)" source="no-consecutive-blank-lines" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/viewmodel/RoleViewModel.kt">
+		<error line="14" column="1" severity="error" message="Wildcard import (cannot be auto-corrected)" source="no-wildcard-imports" />
+		<error line="79" column="1" severity="error" message="Needless blank line(s)" source="no-consecutive-blank-lines" />
+		<error line="182" column="1" severity="error" message="Needless blank line(s)" source="no-consecutive-blank-lines" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/viewmodel/SplashViewModel.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/viewmodel/SpyVoteViewModel.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/viewmodel/StartViewModel.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+		<error line="25" column="27" severity="error" message="Missing spacing after &quot;:&quot;" source="colon-spacing" />
+		<error line="31" column="9" severity="error" message="Unexpected newline before &quot;else&quot;" source="keyword-spacing" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/ui/viewmodel/WaitingGameViewModel.kt">
+		<error line="7" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+		<error line="8" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/utils/Constants.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/utils/Extensions.kt">
+		<error line="9" column="1" severity="error" message="Unused import" source="no-unused-imports" />
+		<error line="10" column="1" severity="error" message="Wildcard import (cannot be auto-corrected)" source="no-wildcard-imports" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/utils/FewPlayersException.kt">
+		<error line="3" column="65" severity="error" message="Unnecessary block (&quot;{}&quot;)" source="no-empty-class-body" />
+		<error line="4" column="1" severity="error" message="Unexpected blank line(s) before &quot;}&quot;" source="no-blank-line-before-rbrace" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/utils/GameIsPlayingException.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+		<error line="3" column="68" severity="error" message="Unnecessary block (&quot;{}&quot;)" source="no-empty-class-body" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/utils/GameNotFoundException.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+		<error line="3" column="67" severity="error" message="Unnecessary block (&quot;{}&quot;)" source="no-empty-class-body" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/utils/GetDataException.kt">
+		<error line="5" column="62" severity="error" message="Unnecessary block (&quot;{}&quot;)" source="no-empty-class-body" />
+		<error line="6" column="1" severity="error" message="Unexpected blank line(s) before &quot;}&quot;" source="no-blank-line-before-rbrace" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/main/java/com/example/spyfall/utils/InvalidNameException.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+		<error line="3" column="65" severity="error" message="Unnecessary block (&quot;{}&quot;)" source="no-empty-class-body" />
+		<error line="3" column="65" severity="error" message="Missing spacing before &quot;{&quot;" source="curly-spacing" />
+	</file>
+	<file name="/Users/alexander/Projects/students/ilya_selivanov_android/SpyFall/app/src/test/java/com/example/spyfall/ExampleUnitTest.kt">
+		<error line="1" column="1" severity="error" message="File must end with a newline (\n)" source="final-newline" />
+		<error line="3" column="1" severity="error" message="Imports must be ordered in lexicographic order without any empty lines in-between with &quot;java&quot;, &quot;javax&quot;, &quot;kotlin&quot; and aliases in the end" source="import-ordering" />
+		<error line="5" column="1" severity="error" message="Wildcard import (cannot be auto-corrected)" source="no-wildcard-imports" />
+	</file>
+</checkstyle>
