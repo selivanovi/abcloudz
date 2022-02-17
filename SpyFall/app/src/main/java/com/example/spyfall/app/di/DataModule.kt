@@ -15,12 +15,10 @@ import javax.inject.Singleton
 class DataModule {
 
     @Provides
-    @Singleton
     fun provideFirebaseDatabase(): FirebaseDatabase =
         FirebaseDatabase.getInstance()
 
     @Provides
-    @Singleton
     fun provideSharedPreferences(@ApplicationContext context: Context): SharedPreferences =
         context.getSharedPreferences("SharedPreferences", Context.MODE_PRIVATE)
 }

@@ -14,12 +14,8 @@ import dagger.hilt.components.SingletonComponent
 interface BindModule {
 
     @Binds
-    fun bindUserRepositoryImplToUserRepository(
-        userRepositoryImpl: UserRepositoryImpl
-    ): UserRepository
+    fun bindUserRepository(userRepositoryImpl: UserRepositoryImpl): UserRepository
 
     @Binds
-    fun bindGameRepositoryImplToGameRepository(
-        gameRepositoryImpl: GameRepositoryImpl
-    ): GameRepository
+    fun bindGameRepository(gameRepositoryImpl: GameRepositoryImpl): GameRepository
 }
