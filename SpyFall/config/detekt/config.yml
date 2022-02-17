@@ -53,7 +53,7 @@ comments:
     active: true
     endOfSentenceFormat: '([.?!][ \t\n\r\f<])|([.?!:]$)'
   UndocumentedPublicClass:
-    active: true
+    active: false
     searchInNestedClass: false
     searchInInnerClass: false
     searchInInnerObject: false

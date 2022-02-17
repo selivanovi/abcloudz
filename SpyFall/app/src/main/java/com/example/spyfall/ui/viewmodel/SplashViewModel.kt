@@ -14,7 +14,7 @@ class SplashViewModel @Inject constructor(
 
     fun navigateToLogIn() {
         launch {
-            delay(1000)
+            delay(1_000L)
             navigateTo(fragmentDirections.toLogIn())
         }
     }

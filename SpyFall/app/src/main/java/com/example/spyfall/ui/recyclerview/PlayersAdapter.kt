@@ -37,7 +37,7 @@ class PlayersAdapter : RecyclerView.Adapter<PlayersAdapter.PlayerViewHolder>() {
                 AppCompatResources.getDrawable(holder.itemView.context, R.drawable.rounded_green_item_view)
         } else {
             holder.frameLayout.background =
-                AppCompatResources.getDrawable(holder.itemView.context,R.drawable.rounded_item_view)
+                AppCompatResources.getDrawable(holder.itemView.context, R.drawable.rounded_item_view)
         }
     }
 

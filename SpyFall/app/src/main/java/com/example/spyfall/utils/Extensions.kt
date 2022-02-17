@@ -15,7 +15,7 @@ fun PlayerDomain.toPlayer(): Player =
     Player(name = this.name, status = this.status, role = this.role, null)
 
 fun GameDomain.toGame(): Game =
-    Game(this.host, this.status, this.duration, null)
+    Game(this.host, this.status, this.duration)
 
 fun UserDomain.toPlayerDomain(): PlayerDomain =
     PlayerDomain(this.userId, this.name, null, null, null)

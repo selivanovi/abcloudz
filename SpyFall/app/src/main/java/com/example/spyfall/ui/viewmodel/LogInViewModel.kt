@@ -26,14 +26,12 @@ class LogInViewModel @Inject constructor(
         launch {
             userRepository.addUser(userDomain).collect {
                 when {
-                    it.isSuccess -> {
+                    it.isSuccess ->
                         successAuthorizationMutableChannel.send(Unit)
-                    }
-                    it.isFailure -> {
+                    it.isFailure ->
                         it.exceptionOrNull()?.let { throwable ->
                             throw throwable
                         }
-                    }
                 }
             }
         }

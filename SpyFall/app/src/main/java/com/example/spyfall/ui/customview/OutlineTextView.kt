@@ -16,11 +16,12 @@ class OutlineTextView(context: Context, attrs: AttributeSet?) : AppCompatTextVie
     private var outlineColor: Int = 0
     private var outlineWidth: Float = 0.toFloat()
 
-   init {
+    init {
         if (attrs != null) {
             val a = context.obtainStyledAttributes(attrs, R.styleable.OutlineTextView)
             outlineColor = a.getColor(R.styleable.OutlineTextView_outlineColor, currentTextColor)
-            outlineWidth = a.getDimension(R.styleable.OutlineTextView_outlineWidth, defaultOutlineWidth)
+            outlineWidth =
+                a.getDimension(R.styleable.OutlineTextView_outlineWidth, defaultOutlineWidth)
 
             a.recycle()
         } else {
@@ -36,7 +37,8 @@ class OutlineTextView(context: Context, attrs: AttributeSet?) : AppCompatTextVie
 
     fun setOutlineWidth(unit: Int, width: Float) {
         outlineWidth = TypedValue.applyDimension(
-            unit, width, context.resources.displayMetrics)
+            unit, width, context.resources.displayMetrics
+        )
     }
 
     override fun invalidate() {

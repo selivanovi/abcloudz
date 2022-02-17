@@ -32,10 +32,13 @@ class UserRepositoryImpl @Inject constructor(
                         putString(KEY_USER_ID, userDomain.userId)
                         putString(KEY_USER_NAME, userDomain.name)
                     }
-                    firebaseDatabase.reference.child(USER_REFERENCES).child(userDomain.userId.toString()).setValue(userDomain.name)
+                    firebaseDatabase.reference.child(USER_REFERENCES)
+                        .child(userDomain.userId).setValue(userDomain.name)
                     this@callbackFlow.trySendBlocking(Result.success(Unit))
                 } else {
-                    this@callbackFlow.trySendBlocking(Result.failure(InvalidNameException(Constants.INVALID_NAME_EXCEPTION)))
+                    this@callbackFlow.trySendBlocking(
+                        Result.failure(InvalidNameException(Constants.INVALID_NAME_EXCEPTION))
+                    )
                 }
             }
 
@@ -67,7 +70,8 @@ class UserRepositoryImpl @Inject constructor(
             putString(KEY_USER_ID, null)
             putString(KEY_USER_NAME, null)
         }
-        firebaseDatabase.reference.child(USER_REFERENCES).child(userDomain.userId.toString()).setValue(null)
+        firebaseDatabase.reference.child(USER_REFERENCES).child(userDomain.userId.toString())
+            .setValue(null)
     }
 
     companion object {

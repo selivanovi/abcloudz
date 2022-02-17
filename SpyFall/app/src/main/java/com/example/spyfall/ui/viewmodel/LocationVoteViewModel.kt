@@ -1,4 +1,5 @@
 package com.example.spyfall.ui.viewmodel
+
 import com.example.spyfall.domain.repository.GameRepository
 import com.example.spyfall.domain.repository.UserRepository
 import com.example.spyfall.ui.base.VoteViewModel

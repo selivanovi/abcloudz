@@ -62,15 +62,9 @@ class RoleFragment :
                         controlGameImageView.setImageResource(R.drawable.play)
                         controlGameTextView.setText(R.string.textContinue)
                     }
-                    is RoleState.Player -> {
-                        locationButton.isEnabled = false
-                    }
-                    is RoleState.Spy -> {
-                        locationButton.isEnabled = true
-                    }
-                    is RoleState.Voted -> {
-                        voteButton.isEnabled = false
-                    }
+                    is RoleState.Player -> locationButton.isEnabled = false
+                    is RoleState.Spy -> locationButton.isEnabled = true
+                    is RoleState.Voted -> voteButton.isEnabled = false
                 }
             }.launchIn(lifecycleScope)
         }

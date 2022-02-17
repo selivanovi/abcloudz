@@ -1,6 +1,5 @@
 package com.example.spyfall.ui.base
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavDirections
@@ -14,7 +13,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
-abstract class BaseViewModel() : ViewModel(), CoroutineScope {
+abstract class BaseViewModel : ViewModel(), CoroutineScope {
 
     protected val errorMutableChannel = Channel<Throwable>()
     val errorChannel = errorMutableChannel.receiveAsFlow()
@@ -30,7 +29,6 @@ abstract class BaseViewModel() : ViewModel(), CoroutineScope {
         viewModelScope.coroutineContext + coroutineExceptionHandler + Dispatchers.IO
 
     private fun handleError(throwable: Throwable) {
-        Log.e("BaseViewModel", throwable.toString())
         launch {
             errorMutableChannel.send(throwable)
         }

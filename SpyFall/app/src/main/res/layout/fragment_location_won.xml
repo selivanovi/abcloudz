@@ -43,7 +43,7 @@
         android:textAppearance="@style/Text.Title"
         app:layout_constraintBottom_toTopOf="@id/roleText"
         app:layout_constraintStart_toStartOf="parent"
-        android:text="@string/cityWonText"/>
+        android:text="@string/textCityWon"/>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/roleText"

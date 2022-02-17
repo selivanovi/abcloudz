@@ -3,7 +3,6 @@ package com.example.spyfall.ui.viewmodel
 import androidx.lifecycle.viewModelScope
 import com.example.spyfall.data.entity.GameStatus
 import com.example.spyfall.data.entity.PlayerStatus
-import com.example.spyfall.domain.entity.GameDomain
 import com.example.spyfall.domain.entity.PlayerDomain
 import com.example.spyfall.domain.repository.GameRepository
 import com.example.spyfall.domain.repository.UserRepository
@@ -26,8 +25,6 @@ class LobbyViewModel @Inject constructor(
 
     private var playerStatus: PlayerStatus? = null
     private val currentPayer = userRepository.getUser()!!
-
-    private var currentGame: GameDomain? = null
 
     private val lobbyStateMutableChannel = Channel<LobbyState>()
     val lobbyState = lobbyStateMutableChannel.receiveAsFlow()

@@ -52,18 +52,27 @@ class RoleViewModel @Inject constructor(
                 }
                 if (game?.status == GameStatus.VOTE) {
                     stopTimer(gameId)
-                    if (isSpy) navigateToSpyVoteWithArgs(gameId)
-                    else navigateToLocationVoteWithArgs(gameId)
+                    if (isSpy) {
+                        navigateToSpyVoteWithArgs(gameId)
+                    } else {
+                        navigateToLocationVoteWithArgs(gameId)
+                    }
                 }
                 if (game?.status == GameStatus.GAME_OVER) {
                     stopTimer(gameId)
-                    if (isSpy) navigateToSpyVoteWithArgs(gameId)
-                    else navigateToLocationVoteWithArgs(gameId)
+                    if (isSpy) {
+                        navigateToSpyVoteWithArgs(gameId)
+                    } else {
+                        navigateToLocationVoteWithArgs(gameId)
+                    }
                 }
                 if (game?.status == GameStatus.LOCATION) {
                     stopTimer(gameId)
-                    if (isSpy) navigateToCallLocationWithArgs(gameId)
-                    else navigateToCheckLocationWithArgs(gameId)
+                    if (isSpy) {
+                        navigateToCallLocationWithArgs(gameId)
+                    } else {
+                        navigateToCheckLocationWithArgs(gameId)
+                    }
                 }
             }
             result.onFailure { throwable ->
@@ -117,10 +126,12 @@ class RoleViewModel @Inject constructor(
         }
     }
 
-    private fun stopTimer(gameId: String) = launch {
-        stopTimer = true
-        currentTime?.let {
-            gameRepository.setDurationForGames(gameId, it)
+    private fun stopTimer(gameId: String) {
+        launch {
+            stopTimer = true
+            currentTime?.let {
+                gameRepository.setDurationForGames(gameId, it)
+            }
         }
     }
 
@@ -129,8 +140,9 @@ class RoleViewModel @Inject constructor(
 
         val duration = gameRepository.getDurationForGames(gameId)
 
-        if (duration < 0) currentTime = duration
-        else {
+        if (duration < 0) {
+            currentTime = duration
+        } else {
             for (i in duration downTo 0) {
                 if (stopTimer) {
                     return@launch
@@ -139,7 +151,7 @@ class RoleViewModel @Inject constructor(
 
                 roleStateMutableChannel.send(RoleState.SetTime(i))
 
-                delay(1000)
+                delay(1_000L)
             }
 
             gameRepository.setStatusForGame(gameId, GameStatus.GAME_OVER)

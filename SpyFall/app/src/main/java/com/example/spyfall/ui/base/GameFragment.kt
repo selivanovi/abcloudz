@@ -21,15 +21,11 @@ abstract class GameFragment<VB : ViewBinding, VM : GameViewModel>(
 
         viewModel.gameStateChannel.onEach { state ->
             when (state) {
-                is GameState.ExitToMenu -> {
-                    findNavController().navigateUp()
-                }
-                is GameState.ExitToLobbyForHost -> {
+                GameState.ExitToMenu -> findNavController().navigateUp()
+                GameState.ExitToLobbyForHost ->
                     findNavController().navigate(R.id.prepareFragment, getBundle(gameId))
-                }
-                is GameState.ExitToLobbyForPlayer -> {
+                GameState.ExitToLobbyForPlayer ->
                     findNavController().navigate(R.id.waitingGameFragment, getBundle(gameId))
-                }
             }
         }.launchIn(lifecycleScope)
 

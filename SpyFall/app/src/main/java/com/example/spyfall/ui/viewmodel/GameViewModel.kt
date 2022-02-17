@@ -54,8 +54,11 @@ open class GameViewModel(
                     it.onSuccess { players ->
                         clearStatusForPLayers(gameId, players)
                         val isHost = checkHost(gameId, currentUser.userId)
-                        if (isHost) gameStateMutableChannel.send(GameState.ExitToLobbyForHost)
-                        else gameStateMutableChannel.send(GameState.ExitToLobbyForPlayer)
+                        if (isHost) {
+                            gameStateMutableChannel.send(GameState.ExitToLobbyForHost)
+                        } else {
+                            gameStateMutableChannel.send(GameState.ExitToLobbyForPlayer)
+                        }
                     }
                 }
             }
@@ -90,17 +93,14 @@ open class GameViewModel(
         gameRepository.deletePlayerInGame(gameId, playerId)
     }
 
-    protected suspend fun deleteGameById(gameId: String) {
+    protected suspend fun deleteGameById(gameId: String) =
         gameRepository.deleteGame(gameId)
-    }
 
-    protected suspend fun checkHost(gameId: String, playerId: String): Boolean {
-        return getHost(gameId) == playerId
-    }
+    protected suspend fun checkHost(gameId: String, playerId: String): Boolean =
+        getHost(gameId) == playerId
 
-    private suspend fun getHost(gameId: String): String {
-        return gameRepository.getGame(gameId)?.host!!
-    }
+    private suspend fun getHost(gameId: String): String =
+        gameRepository.getGame(gameId)?.host!!
 
     fun setStatusForCurrentPlayerInGame(gameId: String, status: PlayerStatus) {
         launch {

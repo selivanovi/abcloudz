@@ -41,7 +41,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:text="@string/spyWonText"
+        android:text="@string/textSpyWon"
         android:textAppearance="@style/Text.Title"
         app:layout_constraintBottom_toTopOf="@id/roleText"
         app:layout_constraintStart_toStartOf="parent" />

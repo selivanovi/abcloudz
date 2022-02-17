@@ -36,9 +36,8 @@ class LocationWonFragment :
     override fun setupObserver() {
         viewModel.resultStateChannel.onEach { state ->
             when (state) {
-                is ResultState.SetRole -> {
+                is ResultState.SetRole ->
                     binding.locationImageView.setImageResource(state.role.drawable)
-                }
                 is ResultState.Exit ->
                     findNavController().popBackStack(
                         destinationId = R.id.startFragment,

@@ -31,7 +31,7 @@ class DottedHorizontalProgressBar(context: Context, attributeSet: AttributeSet) 
         val minRadius = convertDpToPixel(minDotRadius, context)
         val maxRadius = convertDpToPixel(maxDotRadius, context)
         val margin = maxRadius - minRadius
-        for (i in 0 until dotCount) {
+        repeat(dotCount) {
             val dot = View(context)
             val layoutParams = LayoutParams(minRadius * 2, minRadius * 2)
             layoutParams.setMargins(
@@ -98,8 +98,7 @@ class DottedHorizontalProgressBar(context: Context, attributeSet: AttributeSet) 
 
     companion object {
 
-        fun convertDpToPixel(dp: Float, context: Context): Int {
-            return (dp * (context.resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)).toInt()
-        }
+        fun convertDpToPixel(dp: Float, context: Context): Int =
+            (dp * (context.resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)).toInt()
     }
 }

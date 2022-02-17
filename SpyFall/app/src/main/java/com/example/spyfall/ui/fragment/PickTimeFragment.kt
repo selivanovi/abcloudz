@@ -36,9 +36,9 @@ class PickTimeFragment : Fragment(R.layout.fragment_pick_time) {
 
         val timesString = times.map {
             if (it > 0) {
-                it.toString() + "\t" + resources.getString(R.string.measure_of_time)
+                it.toString() + "\t" + resources.getString(R.string.measureOfTime)
             } else {
-                resources.getString(R.string.no_limit)
+                resources.getString(R.string.noLimit)
             }
         }
 

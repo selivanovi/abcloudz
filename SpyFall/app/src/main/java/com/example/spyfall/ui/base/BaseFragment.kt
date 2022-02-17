@@ -38,7 +38,8 @@ abstract class BaseFragment<VB : ViewBinding, VM : BaseViewModel>(
                 override fun handleOnBackPressed() {
                     onBackPressed()
                 }
-            })
+            }
+        )
     }
 
     override fun onCreateView(
@@ -82,15 +83,9 @@ abstract class BaseFragment<VB : ViewBinding, VM : BaseViewModel>(
 
     private fun handleNavigation(event: NavEvent) {
         when (event) {
-            is NavEvent.To -> {
-                findNavController().navigate(event.navDirections)
-            }
-            NavEvent.Back -> {
-                findNavController().popBackStack()
-            }
-            NavEvent.Up -> {
-                findNavController().navigateUp()
-            }
+            is NavEvent.To -> findNavController().navigate(event.navDirections)
+            NavEvent.Back -> findNavController().popBackStack()
+            NavEvent.Up -> findNavController().navigateUp()
         }
     }
 }

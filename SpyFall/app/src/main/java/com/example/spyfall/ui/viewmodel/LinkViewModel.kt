@@ -8,7 +8,6 @@ import javax.inject.Inject
 @HiltViewModel
 class LinkViewModel @Inject constructor() : BaseViewModel() {
 
-    fun generateGameId(): String {
-        return generateRandomId()
-    }
+    fun generateGameId(): String =
+        generateRandomId()
 }

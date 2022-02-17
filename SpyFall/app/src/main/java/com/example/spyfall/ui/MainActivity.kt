@@ -46,9 +46,8 @@ class MainActivity : AppCompatActivity(), DrawerListener, QuiteDialogListener {
         createNavigationView()
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
-    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean =
+        item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
 
     private fun createDrawerLayout() {
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, GravityCompat.START)
