@@ -10,6 +10,8 @@ import com.example.spyfall.domain.repository.GameRepository
 import com.example.spyfall.domain.repository.UserRepository
 import com.example.spyfall.ui.navigation.RoleDirections
 import com.example.spyfall.ui.state.RoleState
+import com.example.spyfall.utils.Constants
+import com.example.spyfall.utils.DurationNullException
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.Channel
@@ -37,71 +39,62 @@ class RoleViewModel @Inject constructor(
     val roleStateChannel = roleStateMutableChannel.receiveAsFlow()
 
     fun observeGame(gameId: String) {
-        gameRepository.observeGame(gameId).onEach { result ->
-            result.onSuccess { game ->
-                game?.duration?.let {
-                    roleStateMutableChannel.send(RoleState.SetTime(it))
-                }
-                if (game?.status == GameStatus.PLAYING) {
-                    startTimer(gameId)
-                    roleStateMutableChannel.send(RoleState.GameIsPlaying)
-                }
-                if (game?.status == GameStatus.PAUSE) {
-                    stopTimer(gameId)
-                    roleStateMutableChannel.send(RoleState.GameIsPause)
-                }
-                if (game?.status == GameStatus.VOTE) {
-                    stopTimer(gameId)
-                    if (isSpy) {
-                        navigateToSpyVoteWithArgs(gameId)
-                    } else {
-                        navigateToLocationVoteWithArgs(gameId)
-                    }
-                }
-                if (game?.status == GameStatus.GAME_OVER) {
-                    stopTimer(gameId)
-                    if (isSpy) {
-                        navigateToSpyVoteWithArgs(gameId)
-                    } else {
-                        navigateToLocationVoteWithArgs(gameId)
-                    }
-                }
-                if (game?.status == GameStatus.LOCATION) {
-                    stopTimer(gameId)
-                    if (isSpy) {
-                        navigateToCallLocationWithArgs(gameId)
-                    } else {
-                        navigateToCheckLocationWithArgs(gameId)
-                    }
+        gameRepository.observeGame(gameId).onEach { game ->
+            game?.duration?.let {
+                roleStateMutableChannel.send(RoleState.SetTime(it))
+            }
+            if (game?.status == GameStatus.PLAYING) {
+                startTimer(gameId)
+                roleStateMutableChannel.send(RoleState.GameIsPlaying)
+            }
+            if (game?.status == GameStatus.PAUSE) {
+                stopTimer(gameId)
+                roleStateMutableChannel.send(RoleState.GameIsPause)
+            }
+            if (game?.status == GameStatus.VOTE) {
+                stopTimer(gameId)
+                if (isSpy) {
+                    navigateToSpyVoteWithArgs(gameId)
+                } else {
+                    navigateToLocationVoteWithArgs(gameId)
                 }
             }
-            result.onFailure { throwable ->
-                errorMutableChannel.send(throwable)
+            if (game?.status == GameStatus.GAME_OVER) {
+                stopTimer(gameId)
+                if (isSpy) {
+                    navigateToSpyVoteWithArgs(gameId)
+                } else {
+                    navigateToLocationVoteWithArgs(gameId)
+                }
+            }
+            if (game?.status == GameStatus.LOCATION) {
+                stopTimer(gameId)
+                if (isSpy) {
+                    navigateToCallLocationWithArgs(gameId)
+                } else {
+                    navigateToCheckLocationWithArgs(gameId)
+                }
             }
         }.launchIn(viewModelScope)
     }
 
-    fun observeRoleOfCurrentPlayer(gameId: String) {
-        gameRepository.observePlayerFromGame(gameId, currentUser.userId).onEach { result ->
-            result.onSuccess { player ->
-                Log.d("RoleViewModel", "observeCurrentPlayer: $player")
-                val role = player.role
 
-                role?.let {
-                    roleStateMutableChannel.send(RoleState.SetRole(it))
-                }
-                if (player.role == Role.SPY) {
-                    isSpy = true
-                    roleStateMutableChannel.send(RoleState.Spy)
-                } else {
-                    roleStateMutableChannel.send(RoleState.Player)
-                }
-                if (player.status == PlayerStatus.VOTED) {
-                    roleStateMutableChannel.send(RoleState.Voted)
-                }
+    fun observeRoleOfCurrentPlayer(gameId: String) {
+        gameRepository.observePlayerFromGame(gameId, currentUser.userId).onEach { player ->
+
+            val role = player.role
+
+            role?.let {
+                roleStateMutableChannel.send(RoleState.SetRole(it))
             }
-            result.onFailure { throwable ->
-                errorMutableChannel.send(throwable)
+            if (player.role == Role.SPY) {
+                isSpy = true
+                roleStateMutableChannel.send(RoleState.Spy)
+            } else {
+                roleStateMutableChannel.send(RoleState.Player)
+            }
+            if (player.status == PlayerStatus.VOTED) {
+                roleStateMutableChannel.send(RoleState.Voted)
             }
         }.launchIn(viewModelScope)
     }
@@ -135,26 +128,35 @@ class RoleViewModel @Inject constructor(
         }
     }
 
-    private fun startTimer(gameId: String) = launch {
-        stopTimer = false
+    private fun startTimer(gameId: String) {
+        launch {
 
-        val duration = gameRepository.getDurationForGames(gameId)
+            gameRepository.getDurationForGames(gameId)
+                .onSuccess { duration ->
 
-        if (duration < 0) {
-            currentTime = duration
-        } else {
-            for (i in duration downTo 0) {
-                if (stopTimer) {
-                    return@launch
+                    stopTimer = false
+
+                    if (duration < 0) {
+                        currentTime = duration
+                    } else {
+                        for (i in duration downTo 0) {
+                            if (stopTimer) {
+                                return@launch
+                            }
+                            currentTime = i
+
+                            roleStateMutableChannel.send(RoleState.SetTime(i))
+
+                            delay(1_000L)
+                        }
+
+                        gameRepository.setStatusForGame(gameId, GameStatus.GAME_OVER)
+                    }
                 }
-                currentTime = i
-
-                roleStateMutableChannel.send(RoleState.SetTime(i))
-
-                delay(1_000L)
-            }
-
-            gameRepository.setStatusForGame(gameId, GameStatus.GAME_OVER)
+                .onFailure {
+                    errorMutableChannel
+                        .send(DurationNullException(Constants.DURATION_NULL_EXCEPTION))
+                }
         }
     }
 

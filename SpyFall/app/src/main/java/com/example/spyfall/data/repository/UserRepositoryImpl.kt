@@ -5,7 +5,7 @@ import androidx.core.content.edit
 import com.example.spyfall.domain.entity.UserDomain
 import com.example.spyfall.domain.repository.UserRepository
 import com.example.spyfall.utils.Constants
-import com.example.spyfall.utils.GetDataException
+import com.example.spyfall.utils.DatabaseNotResponding
 import com.example.spyfall.utils.InvalidNameException
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -43,7 +43,7 @@ class UserRepositoryImpl @Inject constructor(
             }
 
             override fun onCancelled(error: DatabaseError) {
-                this@callbackFlow.trySendBlocking(Result.failure(GetDataException(Constants.GET_DATA_EXCEPTION)))
+                this@callbackFlow.trySendBlocking(Result.failure(DatabaseNotResponding(Constants.GET_DATA_EXCEPTION)))
             }
         }
 

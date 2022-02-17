@@ -14,15 +14,15 @@ interface GameRepository {
 
     suspend fun setStatusForPlayerInGame(gameId: String, playerId: String, status: PlayerStatus?)
 
-    suspend fun getDurationForGames(gameId: String): Long
+    suspend fun getDurationForGames(gameId: String): Result<Long>
 
     suspend fun setDurationForGames(gameId: String, time: Long)
 
     suspend fun getPlayersFromGame(gameId: String): List<PlayerDomain>
 
-    fun observePlayerFromGame(gameId: String, playerId: String): Flow<Result<PlayerDomain>>
+    fun observePlayerFromGame(gameId: String, playerId: String): Flow<PlayerDomain>
 
-    fun observePlayersFromGame(gameId: String): Flow<Result<List<PlayerDomain>>>
+    fun observePlayersFromGame(gameId: String): Flow<List<PlayerDomain>>
 
     suspend fun deleteGame(gameId: String)
 
@@ -30,7 +30,7 @@ interface GameRepository {
 
     suspend fun deletePlayerInGame(gameId: String, playerId: String)
 
-    fun observeGame(gameId: String): Flow<Result<GameDomain?>>
+    fun observeGame(gameId: String): Flow<GameDomain?>
 
     suspend fun setStatusForGame(gameId: String, status: GameStatus)
 

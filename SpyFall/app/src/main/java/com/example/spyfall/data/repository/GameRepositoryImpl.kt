@@ -1,13 +1,15 @@
 package com.example.spyfall.data.repository
 
-import android.util.Log
 import com.example.spyfall.data.entity.GameStatus
 import com.example.spyfall.data.entity.PlayerStatus
 import com.example.spyfall.domain.entity.GameDomain
 import com.example.spyfall.domain.entity.PlayerDomain
 import com.example.spyfall.domain.repository.GameRepository
 import com.example.spyfall.utils.Constants
-import com.example.spyfall.utils.GetDataException
+import com.example.spyfall.utils.GameNotFoundException
+import com.example.spyfall.utils.DatabaseNotResponding
+import com.example.spyfall.utils.PLayerNotFoundException
+import com.example.spyfall.utils.PLayersNotFoundException
 import com.example.spyfall.utils.toGame
 import com.example.spyfall.utils.toGameDomain
 import com.example.spyfall.utils.toPlayer
@@ -34,32 +36,43 @@ class GameRepositoryImpl @Inject constructor(
     private val firebaseDatabase: FirebaseDatabase
 ) : GameRepository {
 
-    private val gameReferences: (gameId: String) -> DatabaseReference = { gameId ->
+    private fun getGameReference(gameId: String): DatabaseReference =
         firebaseDatabase.reference.child(GAMES_KEY_REFERENCES).child(gameId)
-    }
 
-    private val playerReferences: (gameId: String, playerId: String) -> DatabaseReference =
-        { gameId, playerId ->
-            gameReferences(gameId).child(PLAYERS_KEY_REFERENCES).child(playerId)
-        }
+
+    private fun getPlayerReference(gameId: String, playerId: String): DatabaseReference =
+        getGameReference(gameId).child(PLAYERS_KEY_REFERENCES).child(playerId)
+
 
     override suspend fun addGame(gameDomain: GameDomain) {
-        gameReferences(gameDomain.gameId).setValue(gameDomain.toGame())
+        getGameReference(gameDomain.gameId).setValue(gameDomain.toGame()).await()
     }
 
-    override suspend fun getGame(gameId: String): GameDomain? =
+    override suspend fun getGame(gameId: String): GameDomain =
         suspendCancellableCoroutine { continuation ->
-            val db = gameReferences(gameId)
+            val db = getGameReference(gameId)
 
             val listener = object : ValueEventListener {
+
                 override fun onCancelled(error: DatabaseError) {
-                    continuation.resumeWithException(GetDataException(Constants.GET_DATA_EXCEPTION))
+                    continuation
+                        .resumeWithException(
+                            DatabaseNotResponding(Constants.DATABASE_NOT_RESPONDING)
+                        )
                 }
 
                 override fun onDataChange(snapshot: DataSnapshot) {
                     try {
                         val game = snapshot.toGameDomain()
-                        continuation.resume(game)
+                        if (game != null) {
+                            continuation.resume(game)
+                        } else {
+                            continuation.resumeWithException(
+                                GameNotFoundException(
+                                    Constants.GAME_NOT_FOUND_EXCEPTION
+                                )
+                            )
+                        }
                     } catch (exception: Exception) {
                         continuation.resumeWithException(exception)
                     }
@@ -69,20 +82,16 @@ class GameRepositoryImpl @Inject constructor(
             db.addListenerForSingleValueEvent(listener)
         }
 
-    override fun observeGame(gameId: String): Flow<Result<GameDomain?>> =
+    override fun observeGame(gameId: String): Flow<GameDomain?> =
         callbackFlow {
             val valueEventListener = object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val game = snapshot.toGameDomain()
-                    this@callbackFlow.trySendBlocking(Result.success(game))
+                    trySendBlocking(game)
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    this@callbackFlow.trySendBlocking(
-                        Result.failure(
-                            GetDataException(Constants.GET_DATA_EXCEPTION)
-                        )
-                    )
+                    close(DatabaseNotResponding(Constants.DATABASE_NOT_RESPONDING))
                 }
             }
 
@@ -103,37 +112,35 @@ class GameRepositoryImpl @Inject constructor(
     ) {
         val player = playerDomain.toPlayer()
 
-        playerReferences(gameId, playerDomain.playerId.toString()).setValue(player)
+        getPlayerReference(gameId, playerDomain.playerId).setValue(player).await()
     }
 
     override suspend fun deletePlayerInGame(gameId: String, playerId: String) {
-        playerReferences(gameId, playerId).setValue(null)
+        getPlayerReference(gameId, playerId).setValue(null).await()
     }
 
     override suspend fun deleteGame(gameId: String) {
-        gameReferences(gameId).setValue(null)
+        getGameReference(gameId).removeValue().await()
     }
 
-    override fun observePlayersFromGame(gameId: String): Flow<Result<List<PlayerDomain>>> =
+    override fun observePlayersFromGame(gameId: String): Flow<List<PlayerDomain>> =
         callbackFlow {
             val valueEventListener = object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val players = snapshot.children.map {
                         it.toPlayerDomain()
                     }
-                    this@callbackFlow.trySendBlocking(Result.success(players.filterNotNull()))
+                    if (players.isEmpty()) {
+                        trySendBlocking(players.filterNotNull())
+                    } else {
+                        close(PLayersNotFoundException(Constants.PLAYERS_NOT_FOUND_EXCEPTION))
+                    }
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    this@callbackFlow.trySendBlocking(
-                        Result.failure(
-                            GetDataException(Constants.GET_DATA_EXCEPTION)
-                        )
-                    )
+                    close(DatabaseNotResponding(Constants.DATABASE_NOT_RESPONDING))
                 }
             }
-
-            Log.d("GameRepository", "observePlayersFromGame: $gameId")
 
             firebaseDatabase.reference.child(GAMES_KEY_REFERENCES).child(gameId)
                 .child(
@@ -153,22 +160,20 @@ class GameRepositoryImpl @Inject constructor(
     override fun observePlayerFromGame(
         gameId: String,
         playerId: String
-    ): Flow<Result<PlayerDomain>> =
+    ): Flow<PlayerDomain> =
         callbackFlow {
             val valueEventListener = object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    val player = snapshot.toPlayerDomain()
-                    player?.let {
-                        this@callbackFlow.trySendBlocking(Result.success(it))
+                    val player: PlayerDomain? = snapshot.toPlayerDomain()
+                    if (player != null) {
+                        trySendBlocking(player)
+                    } else {
+                        close(PLayerNotFoundException(Constants.PLAYER_NOT_FOUND_EXCEPTION))
                     }
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    this@callbackFlow.trySendBlocking(
-                        Result.failure(
-                            GetDataException(Constants.GET_DATA_EXCEPTION)
-                        )
-                    )
+                    close(DatabaseNotResponding(Constants.DATABASE_NOT_RESPONDING))
                 }
             }
 
@@ -188,8 +193,7 @@ class GameRepositoryImpl @Inject constructor(
         }
 
     override suspend fun getPlayersFromGame(gameId: String): List<PlayerDomain> {
-        Log.d("GamerRepository", "getPlayerFromGame")
-        val db = gameReferences(gameId).child(PLAYERS_KEY_REFERENCES)
+        val db = getGameReference(gameId).child(PLAYERS_KEY_REFERENCES)
         return db.get().await().children.mapNotNull { it.toPlayerDomain() }
     }
 
@@ -200,24 +204,25 @@ class GameRepositoryImpl @Inject constructor(
             .child(DURATION_KEY_REFERENCES).setValue(time)
     }
 
-    override suspend fun getDurationForGames(gameId: String): Long {
-        return gameReferences(gameId).get().await().child(DURATION_KEY_REFERENCES)
-            .getValue(Long::class.java)!!
-    }
+    override suspend fun getDurationForGames(gameId: String): Result<Long> =
+        runCatching {
+            getGameReference(gameId).get().await().child(DURATION_KEY_REFERENCES)
+                .getValue(Long::class.java)!!
+        }
 
     override suspend fun setStatusForPlayerInGame(
         gameId: String,
         playerId: String,
         status: PlayerStatus?
     ) {
-        playerReferences(
+        getPlayerReference(
             gameId,
             playerId
-        ).child(STATUS_KEY_REFERENCES).setValue(status)
+        ).child(STATUS_KEY_REFERENCES).setValue(status).await()
     }
 
     override suspend fun setStatusForGame(gameId: String, status: GameStatus) {
-        gameReferences(gameId).child(STATUS_KEY_REFERENCES).setValue(status)
+        getGameReference(gameId).child(STATUS_KEY_REFERENCES).setValue(status).await()
     }
 
     override suspend fun setVoteForPlayerInGame(
@@ -225,8 +230,8 @@ class GameRepositoryImpl @Inject constructor(
         playerId: String,
         vote: PlayerDomain?
     ) {
-        playerReferences(gameId, playerId).child(VOTE_KEY_REFERENCES)
-            .setValue(vote?.playerId)
+        getPlayerReference(gameId, playerId).child(VOTE_KEY_REFERENCES)
+            .setValue(vote?.playerId).await()
     }
 
     companion object {

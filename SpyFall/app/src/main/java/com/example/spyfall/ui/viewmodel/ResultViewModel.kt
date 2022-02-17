@@ -35,7 +35,7 @@ class ResultViewModel @Inject constructor(
                     }
                     resultStateMutableChannel.send(ResultState.Exit)
                 }
-                if (player.status == PlayerStatus.Continue) {
+                if (player.status == PlayerStatus.CONTINUE) {
                     resetCurrentPlayer(gameId)
                     val isHost = checkHost(gameId, currentUser.userId)
                     if (isHost) {
