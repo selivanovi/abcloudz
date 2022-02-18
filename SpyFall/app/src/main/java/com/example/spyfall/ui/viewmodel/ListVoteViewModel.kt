@@ -1,12 +1,14 @@
 package com.example.spyfall.ui.viewmodel
 
+import androidx.lifecycle.viewModelScope
 import com.example.spyfall.domain.entity.PlayerDomain
 import com.example.spyfall.domain.repository.GameRepository
 import com.example.spyfall.domain.repository.UserRepository
 import com.example.spyfall.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -25,16 +27,11 @@ class ListVoteViewModel @Inject constructor(
     val playersChannel = playersMutableChannel.receiveAsFlow()
 
     fun observePlayersFromGame(gameId: String) {
-        launch {
-            gameRepository.observePlayersFromGame(gameId).collect {
-                it.onSuccess { players ->
-
-                    val playersWithoutCurrent = players.filter { player -> player.playerId != currentPlayer.userId }
-                    playersMutableChannel.send(playersWithoutCurrent)
-                }
-                it.onFailure { throwable -> errorMutableChannel.send(throwable) }
-            }
-        }
+        gameRepository.observePlayersFromGame(gameId).onEach { players ->
+            val playersWithoutCurrent =
+                players.filter { player -> player.playerId != currentPlayer.userId }
+            playersMutableChannel.send(playersWithoutCurrent)
+        }.launchIn(viewModelScope)
     }
 
     fun sendVoteForCurrentPLayerInGame(gameId: String) {

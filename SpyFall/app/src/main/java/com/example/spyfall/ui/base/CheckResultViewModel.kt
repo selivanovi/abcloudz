@@ -1,11 +1,12 @@
 package com.example.spyfall.ui.base
 
+import androidx.lifecycle.viewModelScope
 import com.example.spyfall.data.entity.GameStatus
 import com.example.spyfall.domain.repository.GameRepository
 import com.example.spyfall.domain.repository.UserRepository
 import com.example.spyfall.ui.viewmodel.GameViewModel
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 abstract class CheckResultViewModel(
     private val gameRepository: GameRepository,
@@ -13,23 +14,16 @@ abstract class CheckResultViewModel(
 ) : GameViewModel(gameRepository, userRepository) {
 
     fun observeGameStatusForResult(gameId: String) {
-        launch {
-            gameRepository.observeGame(gameId).collect { result ->
-                result.onSuccess { game ->
-                    if (game?.status != null) {
-                        if (game.status == GameStatus.SPY_WON) {
-                            navigateToSpyWonWithArgs(gameId)
-                        }
-                        if (game.status == GameStatus.LOCATION_WON) {
-                            navigateToLocationWonWithArgs(gameId)
-                        }
-                    }
+        gameRepository.observeGame(gameId).onEach { game ->
+            if (game?.status != null) {
+                if (game.status == GameStatus.SPY_WON) {
+                    navigateToSpyWonWithArgs(gameId)
                 }
-                result.onFailure { throwable ->
-                    errorMutableChannel.send(throwable)
+                if (game.status == GameStatus.LOCATION_WON) {
+                    navigateToLocationWonWithArgs(gameId)
                 }
             }
-        }
+        }.launchIn(viewModelScope)
     }
 
     abstract fun navigateToSpyWonWithArgs(gameId: String)

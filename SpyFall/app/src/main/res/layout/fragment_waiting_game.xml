@@ -20,16 +20,18 @@
 
             <ImageView
                 android:id="@+id/back"
+                android:contentDescription="@string/descriptionBack"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="left"
+                android:layout_gravity="start"
                 android:src="@drawable/back" />
 
             <ImageView
                 android:id="@+id/menu"
+                android:contentDescription="@string/descriptionMenu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
+                android:layout_gravity="end"
                 android:src="@drawable/menu" />
 
         </FrameLayout>
@@ -37,11 +39,11 @@
         <TextView
             android:id="@+id/nameTextView"
             style="@style/Text.Title"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="48dp"
             android:paddingStart="20dp"
-            android:text="@string/titlePlayerName" />
+            android:paddingEnd="20dp"/>
 
         <TextView
             android:id="@+id/gameIdTextView"

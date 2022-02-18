@@ -6,8 +6,8 @@ import com.example.spyfall.domain.entity.GameDomain
 import com.example.spyfall.domain.entity.PlayerDomain
 import com.example.spyfall.domain.repository.GameRepository
 import com.example.spyfall.utils.Constants
-import com.example.spyfall.utils.GameNotFoundException
 import com.example.spyfall.utils.DatabaseNotResponding
+import com.example.spyfall.utils.GameNotFoundException
 import com.example.spyfall.utils.PLayerNotFoundException
 import com.example.spyfall.utils.PLayersNotFoundException
 import com.example.spyfall.utils.toGame
@@ -39,10 +39,8 @@ class GameRepositoryImpl @Inject constructor(
     private fun getGameReference(gameId: String): DatabaseReference =
         firebaseDatabase.reference.child(GAMES_KEY_REFERENCES).child(gameId)
 
-
     private fun getPlayerReference(gameId: String, playerId: String): DatabaseReference =
         getGameReference(gameId).child(PLAYERS_KEY_REFERENCES).child(playerId)
-
 
     override suspend fun addGame(gameDomain: GameDomain) {
         getGameReference(gameDomain.gameId).setValue(gameDomain.toGame()).await()
@@ -82,6 +80,7 @@ class GameRepositoryImpl @Inject constructor(
             db.addListenerForSingleValueEvent(listener)
         }
 
+    @OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
     override fun observeGame(gameId: String): Flow<GameDomain?> =
         callbackFlow {
             val valueEventListener = object : ValueEventListener {
@@ -123,6 +122,7 @@ class GameRepositoryImpl @Inject constructor(
         getGameReference(gameId).removeValue().await()
     }
 
+    @OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
     override fun observePlayersFromGame(gameId: String): Flow<List<PlayerDomain>> =
         callbackFlow {
             val valueEventListener = object : ValueEventListener {
@@ -157,6 +157,7 @@ class GameRepositoryImpl @Inject constructor(
             }
         }
 
+    @OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
     override fun observePlayerFromGame(
         gameId: String,
         playerId: String

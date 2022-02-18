@@ -14,7 +14,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|start"
         android:layout_marginStart="20dp"
-        android:text="Player"
         android:textAppearance="@style/Text.Item" />
 
     <androidx.appcompat.widget.AppCompatCheckBox

@@ -36,7 +36,7 @@
     <string name="textEnterGameId">Enter Game ID</string>
     <string name="textLocation">Please announces assumptions\nabout the location</string>
     <string name="textWaitLocation">Please wait until the spy\nsays location</string>
-    <string name="textChooseThePerson">Choose the person you consider\n to be a spy</string>
+    <string name="textChooseThePerson">Choose the person you consider to be a spy</string>
     <string name="textInfoForJoin">You can press the play button for set status ready</string>
     <string name="textContinue">Continue</string>
     <string name="textCityWon">The city won</string>
@@ -81,4 +81,6 @@
     <string name="share">Share</string>
     <string name="invite">Invite you to play SpyFall to enjoy the game with us.</string>
     <string name="time">%d:%d</string>
+    <string name="descriptionBack">Button back</string>
+    <string name="descriptionMenu">Button menu</string>
 </resources>

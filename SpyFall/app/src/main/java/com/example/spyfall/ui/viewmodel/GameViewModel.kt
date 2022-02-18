@@ -10,8 +10,6 @@ import com.example.spyfall.domain.repository.UserRepository
 import com.example.spyfall.ui.base.BaseViewModel
 import com.example.spyfall.ui.state.GameState
 import com.example.spyfall.utils.Constants
-import com.example.spyfall.utils.FewPlayersException
-import com.example.spyfall.utils.GameNotFoundException
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -31,39 +29,27 @@ open class GameViewModel(
     private var currentGame: GameDomain? = null
 
     fun observeGameExit(gameId: String) {
-        gameRepository.observeGame(gameId).onEach {
-            it.onSuccess { game ->
-                if (currentGame != game) {
-                    if (game == null) {
-                        gameStateMutableChannel.send(GameState.ExitToMenu)
-                    } else {
-                        currentGame = game
-                    }
+        gameRepository.observeGame(gameId).onEach { game ->
+            if (currentGame != game) {
+                if (game == null) {
+                    gameStateMutableChannel.send(GameState.ExitToMenu)
+                } else {
+                    currentGame = game
                 }
-            }
-            it.onFailure { throwable ->
-                errorMutableChannel.send(GameNotFoundException(Constants.GAME_NOT_FOUND_EXCEPTION))
             }
         }.launchIn(viewModelScope)
     }
 
     fun observeNumberOfPlayer(gameId: String) {
-        gameRepository.observePlayersFromGame(gameId).onEach {
-            it.onSuccess { players ->
-                if (players.size < Constants.MIN_NUMBER_PLAYERS) {
-                    it.onSuccess { players ->
-                        clearStatusForPLayers(gameId, players)
-                        val isHost = checkHost(gameId, currentUser.userId)
-                        if (isHost) {
-                            gameStateMutableChannel.send(GameState.ExitToLobbyForHost)
-                        } else {
-                            gameStateMutableChannel.send(GameState.ExitToLobbyForPlayer)
-                        }
-                    }
+        gameRepository.observePlayersFromGame(gameId).onEach { players ->
+            if (players.size < Constants.MIN_NUMBER_PLAYERS) {
+                clearStatusForPLayers(gameId, players)
+                val isHost = checkHost(gameId, currentUser.userId)
+                if (isHost) {
+                    gameStateMutableChannel.send(GameState.ExitToLobbyForHost)
+                } else {
+                    gameStateMutableChannel.send(GameState.ExitToLobbyForPlayer)
                 }
-            }
-            it.onFailure { throwable ->
-                errorMutableChannel.send(FewPlayersException(Constants.FEW_PLAYERS_EXCEPTION))
             }
         }.launchIn(viewModelScope)
     }

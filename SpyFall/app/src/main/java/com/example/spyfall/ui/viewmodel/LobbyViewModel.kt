@@ -33,19 +33,15 @@ class LobbyViewModel @Inject constructor(
     val playersChannel = playersMutableChannel.receiveAsFlow()
 
     fun observePlayersFromGame(gameId: String) {
-        gameRepository.observePlayersFromGame(gameId).onEach { result ->
-            result.onSuccess { players ->
+        gameRepository.observePlayersFromGame(gameId).onEach { players ->
+            playersMutableChannel.send(players)
 
-                playersMutableChannel.send(players)
-
-                if (players.all { player -> player.status == PlayerStatus.PLAY }) {
-                    if (players.size >= Constants.MIN_NUMBER_PLAYERS) {
-                        lobbyStateMutableChannel.send(LobbyState.Play)
-                        gameRepository.setStatusForGame(gameId, GameStatus.PLAYING)
-                    } else lobbyStateMutableChannel.send(LobbyState.Wait)
-                }
+            if (players.all { player -> player.status == PlayerStatus.PLAY }) {
+                if (players.size >= Constants.MIN_NUMBER_PLAYERS) {
+                    lobbyStateMutableChannel.send(LobbyState.Play)
+                    gameRepository.setStatusForGame(gameId, GameStatus.PLAYING)
+                } else lobbyStateMutableChannel.send(LobbyState.Wait)
             }
-            result.onFailure { throwable -> errorMutableChannel.send(throwable) }
         }.launchIn(viewModelScope)
     }
 

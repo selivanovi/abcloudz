@@ -24,29 +24,24 @@ class ResultViewModel @Inject constructor(
     val resultStateChannel = resultStateMutableChannel.receiveAsFlow()
 
     fun observeStatusOfCurrentPlayer(gameId: String) {
-        gameRepository.observePlayerFromGame(gameId, currentUser.userId).onEach { result ->
-            result.onSuccess { player ->
-                if (player.status == PlayerStatus.EXIT) {
-                    val isHost = checkHost(gameId, currentUser.userId)
-                    if (isHost) {
-                        deleteGameById(gameId)
-                    } else {
-                        deletePlayerInGame(gameId, player.playerId)
-                    }
-                    resultStateMutableChannel.send(ResultState.Exit)
+        gameRepository.observePlayerFromGame(gameId, currentUser.userId).onEach { player ->
+            if (player.status == PlayerStatus.EXIT) {
+                val isHost = checkHost(gameId, currentUser.userId)
+                if (isHost) {
+                    deleteGameById(gameId)
+                } else {
+                    deletePlayerInGame(gameId, player.playerId)
                 }
-                if (player.status == PlayerStatus.CONTINUE) {
-                    resetCurrentPlayer(gameId)
-                    val isHost = checkHost(gameId, currentUser.userId)
-                    if (isHost) {
-                        resultStateMutableChannel.send(ResultState.HostContinue)
-                    } else {
-                        resultStateMutableChannel.send(ResultState.PlayerContinue)
-                    }
-                }
+                resultStateMutableChannel.send(ResultState.Exit)
             }
-            result.onFailure { throwable ->
-                errorMutableChannel.send(throwable)
+            if (player.status == PlayerStatus.CONTINUE) {
+                resetCurrentPlayer(gameId)
+                val isHost = checkHost(gameId, currentUser.userId)
+                if (isHost) {
+                    resultStateMutableChannel.send(ResultState.HostContinue)
+                } else {
+                    resultStateMutableChannel.send(ResultState.PlayerContinue)
+                }
             }
         }.launchIn(viewModelScope)
     }
@@ -57,14 +52,11 @@ class ResultViewModel @Inject constructor(
     }
 
     fun observeStatusOfPlayers(gameId: String) {
-        gameRepository.observePlayersFromGame(gameId).onEach { result ->
-            result.onSuccess { players ->
-                val player = players.find { player -> player.role != Role.SPY } ?: return@onEach
-                player.role?.let { role ->
-                    resultStateMutableChannel.send(ResultState.SetRole(role))
-                }
+        gameRepository.observePlayersFromGame(gameId).onEach { players ->
+            val player = players.find { player -> player.role != Role.SPY } ?: return@onEach
+            player.role?.let { role ->
+                resultStateMutableChannel.send(ResultState.SetRole(role))
             }
-            result.onFailure { throwable -> errorMutableChannel.send(throwable) }
         }.launchIn(viewModelScope)
     }
 }

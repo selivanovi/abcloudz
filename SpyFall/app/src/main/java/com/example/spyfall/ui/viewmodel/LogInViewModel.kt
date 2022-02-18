@@ -37,12 +37,10 @@ class LogInViewModel @Inject constructor(
         }
     }
 
-    fun getUser(): UserDomain? {
-        Log.d("SetNameViewModel", userRepository.getUser().toString())
-        return userRepository.getUser()
-    }
+    fun getUser(): UserDomain? =
+        userRepository.getUser()
 
-    fun navigateToStartFragment() {
+
+    fun navigateToStartFragment() =
         navigateTo(logInDirections.toStart())
-    }
 }

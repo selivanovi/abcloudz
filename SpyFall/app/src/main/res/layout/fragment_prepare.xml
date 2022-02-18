@@ -22,14 +22,16 @@
                 android:id="@+id/back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="left"
+                android:layout_gravity="start"
+                android:contentDescription="@string/descriptionBack"
                 android:src="@drawable/back" />
 
             <ImageView
                 android:id="@+id/menu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
+                android:layout_gravity="end"
+                android:contentDescription="@string/descriptionMenu"
                 android:src="@drawable/menu" />
 
         </FrameLayout>
@@ -37,10 +39,11 @@
         <TextView
             android:id="@+id/nameTextView"
             style="@style/Text.Title"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="48dp"
             android:paddingStart="20dp"
+            android:paddingEnd="20dp"
             android:text="@string/titlePlayerName" />
 
         <TextView
@@ -61,32 +64,32 @@
             android:paddingEnd="20dp">
 
             <com.google.android.material.button.MaterialButton
-                app:backgroundTint="@null"
-                style="@style/OutlineButton"
                 android:id="@+id/buttonPlayers"
+                style="@style/OutlineButton"
                 android:layout_width="0dp"
                 android:layout_height="60dp"
                 android:layout_marginEnd="5dp"
-                app:icon="@drawable/player"
-                app:iconGravity="textStart"
-                app:iconTint="@drawable/icon_tint"
                 android:layout_weight="1"
                 android:text="@string/buttonPlayers"
-                android:textColor="@drawable/color_text_outline_button" />
+                android:textColor="@drawable/color_text_outline_button"
+                app:backgroundTint="@null"
+                app:icon="@drawable/player"
+                app:iconGravity="textStart"
+                app:iconTint="@drawable/icon_tint" />
 
             <com.google.android.material.button.MaterialButton
-                app:backgroundTint="@null"
-                style="@style/OutlineButton"
                 android:id="@+id/buttonCardDuration"
+                style="@style/OutlineButton"
                 android:layout_width="0dp"
                 android:layout_height="60dp"
-                app:icon="@drawable/time"
-                app:iconGravity="textStart"
-                app:iconTint="@drawable/icon_tint"
                 android:layout_marginStart="5dp"
                 android:layout_weight="1"
                 android:text="@string/buttonCardDuration"
-                android:textColor="@drawable/color_text_outline_button" />
+                android:textColor="@drawable/color_text_outline_button"
+                app:backgroundTint="@null"
+                app:icon="@drawable/time"
+                app:iconGravity="textStart"
+                app:iconTint="@drawable/icon_tint" />
 
         </LinearLayout>
 
@@ -95,7 +98,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="24dp"
-            android:layout_weight="1"/>
+            android:layout_weight="1" />
     </LinearLayout>
 
 </FrameLayout>

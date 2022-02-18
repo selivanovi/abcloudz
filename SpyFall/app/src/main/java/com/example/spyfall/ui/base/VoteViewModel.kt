@@ -22,35 +22,32 @@ abstract class VoteViewModel(
     val voteStateChannel = voteStateMutableChannel.receiveAsFlow()
 
     fun observeVotePlayersInGame(gameId: String) {
-        gameRepository.observePlayersFromGame(gameId).onEach { result ->
-            result.onSuccess { players ->
+        gameRepository.observePlayersFromGame(gameId).onEach { players ->
 
-                val spy = players.find { it.role == Role.SPY } ?: return@onEach
-                val playersWithoutSpy = players.filter { it.role != Role.SPY }
-                val currentPlayer =
-                    players.find { it.playerId == currentUser.userId } ?: return@onEach
+            val spy = players.find { it.role == Role.SPY } ?: return@onEach
+            val playersWithoutSpy = players.filter { it.role != Role.SPY }
+            val currentPlayer =
+                players.find { it.playerId == currentUser.userId } ?: return@onEach
 
-                if (currentPlayer.vote == null && currentPlayer.role != Role.SPY) {
-                    voteStateMutableChannel.trySend(VoteState.WaitCurrentPlayer)
-                } else {
-                    if (playersWithoutSpy.all { it.vote != null }) {
-                        if (playersWithoutSpy.all { player -> player.vote == spy.playerId }) {
-                            navigateToLocationWonWithArgs(gameId)
-                        } else {
-                            if (gameRepository.getGame(gameId)?.status == GameStatus.GAME_OVER) {
-                                navigateToSpyWonWithArgs(gameId)
-                            } else {
-                                gameRepository.setStatusForGame(gameId, GameStatus.PLAYING)
-                                clearVoteForPlayersInGame(gameId, playersWithoutSpy)
-                                navigateBack()
-                            }
-                        }
+            if (currentPlayer.vote == null && currentPlayer.role != Role.SPY) {
+                voteStateMutableChannel.trySend(VoteState.WaitCurrentPlayer)
+            } else {
+                if (playersWithoutSpy.all { it.vote != null }) {
+                    if (playersWithoutSpy.all { player -> player.vote == spy.playerId }) {
+                        navigateToLocationWonWithArgs(gameId)
                     } else {
-                        voteStateMutableChannel.trySend(VoteState.WaitOtherPlayers)
+                        if (gameRepository.getGame(gameId)?.status == GameStatus.GAME_OVER) {
+                            navigateToSpyWonWithArgs(gameId)
+                        } else {
+                            gameRepository.setStatusForGame(gameId, GameStatus.PLAYING)
+                            clearVoteForPlayersInGame(gameId, playersWithoutSpy)
+                            navigateBack()
+                        }
                     }
+                } else {
+                    voteStateMutableChannel.trySend(VoteState.WaitOtherPlayers)
                 }
             }
-            result.onFailure { throw it }
         }.launchIn(viewModelScope)
     }
 

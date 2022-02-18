@@ -21,7 +21,7 @@ class CheckLocationFragment :
             buttonCorrectly.setOnClickListener {
                 viewModel.setStatusForGame(gameId, GameStatus.SPY_WON)
             }
-            buttonCorrectly.setOnClickListener {
+            buttonNo.setOnClickListener {
                 viewModel.setStatusForGame(gameId, GameStatus.LOCATION_WON)
             }
         }

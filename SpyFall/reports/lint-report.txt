@@ -36,27 +36,9 @@ D:\ilya\android\ilya_selivanov_android\SpyFall\app\src\main\res\drawable\dialog_
    You should manually check whether the generated output is acceptable for
    those older devices.
 
-D:\ilya\android\ilya_selivanov_android\SpyFall\app\build.gradle:48: Error: A newer version of androidx.appcompat:appcompat than 1.3.0 is available: 1.4.1 [GradleDependency]
-    implementation 'androidx.appcompat:appcompat:1.3.0'
-                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-D:\ilya\android\ilya_selivanov_android\SpyFall\app\build.gradle:49: Error: A newer version of com.google.android.material:material than 1.4.0 is available: 1.5.0 [GradleDependency]
-    implementation 'com.google.android.material:material:1.4.0'
-                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-D:\ilya\android\ilya_selivanov_android\SpyFall\app\build.gradle:50: Error: A newer version of androidx.constraintlayout:constraintlayout than 2.0.4 is available: 2.1.3 [GradleDependency]
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-D:\ilya\android\ilya_selivanov_android\SpyFall\app\build.gradle:51: Error: A newer version of com.google.firebase:firebase-database than 19.2.1 is available: 20.0.3 [GradleDependency]
-    implementation 'com.google.firebase:firebase-database:19.2.1'
-                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 D:\ilya\android\ilya_selivanov_android\SpyFall\app\build.gradle:57: Error: A newer version of com.google.firebase:firebase-bom than 29.0.3 is available: 29.1.0 [GradleDependency]
     implementation platform('com.google.firebase:firebase-bom:29.0.3')
                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-D:\ilya\android\ilya_selivanov_android\SpyFall\app\build.gradle:61: Error: A newer version of androidx.navigation:navigation-fragment-ktx than 2.4.0 is available: 2.4.1 [GradleDependency]
-    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
-                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-D:\ilya\android\ilya_selivanov_android\SpyFall\app\build.gradle:62: Error: A newer version of androidx.navigation:navigation-ui-ktx than 2.4.0 is available: 2.4.1 [GradleDependency]
-    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
-                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
    Explanation for issues of type "GradleDependency":
    This detector looks for usages of libraries where the version you are using
@@ -65,105 +47,10 @@ D:\ilya\android\ilya_selivanov_android\SpyFall\app\build.gradle:62: Error: A new
    However, you may simply not be aware that a more recent version is
    available, and that is what this lint check helps find.
 
-D:\ilya\android\ilya_selivanov_android\SpyFall\app\src\main\res\layout\fragment_result.xml:23: Error: Should use "sp" instead of "dp" for text sizes [SpUsage]
-        android:textSize="24dp"
-        ~~~~~~~~~~~~~~~~~~~~~~~
-D:\ilya\android\ilya_selivanov_android\SpyFall\app\src\main\res\layout\fragment_role.xml:24: Error: Should use "sp" instead of "dp" for text sizes [SpUsage]
-        android:textSize="24dp"
-        ~~~~~~~~~~~~~~~~~~~~~~~
-
-   Explanation for issues of type "SpUsage":
-   When setting text sizes, you should normally use sp, or "scale-independent
-   pixels". This is like the dp unit, but it is also scaled by the user's font
-   size preference. It is recommend you use this unit when specifying font
-   sizes, so they will be adjusted for both the screen density and the user's
-   preference.
-
-   There are cases where you might need to use dp; typically this happens when
-   the text is in a container with a specific dp-size. This will prevent the
-   text from spilling outside the container. Note however that this means that
-   the user's font size settings are not respected, so consider adjusting the
-   layout itself to be more flexible.
-
-   https://developer.android.com/training/multiscreen/screendensities.html
-
-D:\ilya\android\ilya_selivanov_android\SpyFall\app\src\main\res\layout\fragment_lobby.xml:44: Error: Avoid using "px" as units; use "dp" instead [PxUsage]
-        app:maxDotRadius="5px"
-        ~~~~~~~~~~~~~~~~~~~~~~
-D:\ilya\android\ilya_selivanov_android\SpyFall\app\src\main\res\layout\fragment_lobby.xml:45: Error: Avoid using "px" as units; use "dp" instead [PxUsage]
-        app:minDotRadius="3px" />
-        ~~~~~~~~~~~~~~~~~~~~~~
-D:\ilya\android\ilya_selivanov_android\SpyFall\app\src\main\res\layout\fragment_lobby_host.xml:66: Error: Avoid using "px" as units; use "dp" instead [PxUsage]
-        app:maxDotRadius="5px"
-        ~~~~~~~~~~~~~~~~~~~~~~
-D:\ilya\android\ilya_selivanov_android\SpyFall\app\src\main\res\layout\fragment_lobby_host.xml:67: Error: Avoid using "px" as units; use "dp" instead [PxUsage]
-        app:minDotRadius="3px"
-        ~~~~~~~~~~~~~~~~~~~~~~
-D:\ilya\android\ilya_selivanov_android\SpyFall\app\src\main\res\layout\fragment_waiting.xml:28: Error: Avoid using "px" as units; use "dp" instead [PxUsage]
-        app:maxDotRadius="5px"
-        ~~~~~~~~~~~~~~~~~~~~~~
-D:\ilya\android\ilya_selivanov_android\SpyFall\app\src\main\res\layout\fragment_waiting.xml:29: Error: Avoid using "px" as units; use "dp" instead [PxUsage]
-        app:minDotRadius="3px" />
-        ~~~~~~~~~~~~~~~~~~~~~~
-
-   Explanation for issues of type "PxUsage":
-   For performance reasons and to keep the code simpler, the Android system
-   uses pixels as the standard unit for expressing dimension or coordinate
-   values. That means that the dimensions of a view are always expressed in
-   the code using pixels, but always based on the current screen density. For
-   instance, if myView.getWidth() returns 10, the view is 10 pixels wide on
-   the current screen, but on a device with a higher density screen, the value
-   returned might be 15. If you use pixel values in your application code to
-   work with bitmaps that are not pre-scaled for the current screen density,
-   you might need to scale the pixel values that you use in your code to match
-   the un-scaled bitmap source.
-
-   https://developer.android.com/guide/practices/screens_support.html#screen-independence
-
-D:\ilya\android\ilya_selivanov_android\SpyFall\app\src\main\java\com\example\spyfall\ui\recyclerview\PlayersAdapter.kt:36: Error: Use ResourcesCompat.getDrawable() [UseCompatLoadingForDrawables from appcompat-1.3.0]
-                holder.itemView.resources.getDrawable(R.drawable.rounded_green_item_view, null)
-                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-D:\ilya\android\ilya_selivanov_android\SpyFall\app\src\main\java\com\example\spyfall\ui\recyclerview\PlayersAdapter.kt:36: Error: Use ResourcesCompat.getDrawable() [UseCompatLoadingForDrawables from appcompat-1.3.0]
-                holder.itemView.resources.getDrawable(R.drawable.rounded_green_item_view, null)
-                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-D:\ilya\android\ilya_selivanov_android\SpyFall\app\src\main\java\com\example\spyfall\ui\recyclerview\PlayersAdapter.kt:39: Error: Use ResourcesCompat.getDrawable() [UseCompatLoadingForDrawables from appcompat-1.3.0]
-                holder.itemView.resources.getDrawable(R.drawable.rounded_item_view, null)
-                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-D:\ilya\android\ilya_selivanov_android\SpyFall\app\src\main\java\com\example\spyfall\ui\recyclerview\PlayersAdapter.kt:39: Error: Use ResourcesCompat.getDrawable() [UseCompatLoadingForDrawables from appcompat-1.3.0]
-                holder.itemView.resources.getDrawable(R.drawable.rounded_item_view, null)
-                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-D:\ilya\android\ilya_selivanov_android\SpyFall\app\src\main\java\com\example\spyfall\ui\recyclerview\VotesAdapter.kt:48: Error: Use ResourcesCompat.getDrawable() [UseCompatLoadingForDrawables from appcompat-1.3.0]
-                    holder.view.resources.getDrawable(R.drawable.rounded_fill_item_view, null)
-                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-D:\ilya\android\ilya_selivanov_android\SpyFall\app\src\main\java\com\example\spyfall\ui\recyclerview\VotesAdapter.kt:48: Error: Use ResourcesCompat.getDrawable() [UseCompatLoadingForDrawables from appcompat-1.3.0]
-                    holder.view.resources.getDrawable(R.drawable.rounded_fill_item_view, null)
-                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-D:\ilya\android\ilya_selivanov_android\SpyFall\app\src\main\java\com\example\spyfall\ui\recyclerview\VotesAdapter.kt:51: Error: Use ResourcesCompat.getDrawable() [UseCompatLoadingForDrawables from appcompat-1.3.0]
-                    holder.view.resources.getDrawable(R.drawable.rounded_item_view, null)
-                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-D:\ilya\android\ilya_selivanov_android\SpyFall\app\src\main\java\com\example\spyfall\ui\recyclerview\VotesAdapter.kt:51: Error: Use ResourcesCompat.getDrawable() [UseCompatLoadingForDrawables from appcompat-1.3.0]
-                    holder.view.resources.getDrawable(R.drawable.rounded_item_view, null)
-                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-   Explanation for issues of type "UseCompatLoadingForDrawables":
-   Use Compat loading of drawables
-
-   Vendor: Android Open Source Project (appcompat-1.3.0)
-   Identifier: appcompat-1.3.0
-   Feedback: https://issuetracker.google.com/issues/new?component=192731
-
-D:\ilya\android\ilya_selivanov_android\SpyFall\app\src\main\res\values\strings.xml:20: Error: Repeated word "lectus" in message: possible typo [Typos]
-    <string name="textAboutGame">Praesent nisl sem, euismod id cursus eu, fringilla a nibh. Donec pellentesque elit nisl, nec tincidunt nulla dapibus in. Phasellus odio erat, finibus vel arcu quis, pharetra ultricies metus. Curabitur vitae nisl ac lectus vehicula ultrices. Etiam euismod lectus lectus, in tempus.</string>
-                                                                                                                                                                                                                                                                                                ^
-
-   Explanation for issues of type "Typos":
-   This check looks through the string definitions, and if it finds any words
-   that look like likely misspellings, they are flagged.
-
-D:\ilya\android\ilya_selivanov_android\SpyFall\app\src\main\java\com\example\spyfall\ui\recyclerview\PlayersAdapter.kt:22: Error: It will always be more efficient to use more specific change events if you can. Rely on notifyDataSetChanged as a last resort. [NotifyDataSetChanged]
+D:\ilya\android\ilya_selivanov_android\SpyFall\app\src\main\java\com\example\spyfall\ui\recyclerview\PlayersAdapter.kt:23: Error: It will always be more efficient to use more specific change events if you can. Rely on notifyDataSetChanged as a last resort. [NotifyDataSetChanged]
         notifyDataSetChanged()
         ~~~~~~~~~~~~~~~~~~~~~~
-D:\ilya\android\ilya_selivanov_android\SpyFall\app\src\main\java\com\example\spyfall\ui\recyclerview\VotesAdapter.kt:26: Error: It will always be more efficient to use more specific change events if you can. Rely on notifyDataSetChanged as a last resort. [NotifyDataSetChanged]
+D:\ilya\android\ilya_selivanov_android\SpyFall\app\src\main\java\com\example\spyfall\ui\recyclerview\VotesAdapter.kt:27: Error: It will always be more efficient to use more specific change events if you can. Rely on notifyDataSetChanged as a last resort. [NotifyDataSetChanged]
         notifyDataSetChanged()
         ~~~~~~~~~~~~~~~~~~~~~~
 
@@ -176,15 +63,9 @@ D:\ilya\android\ilya_selivanov_android\SpyFall\app\src\main\java\com\example\spy
 D:\ilya\android\ilya_selivanov_android\SpyFall\app\src\main\java\com\example\spyfall\ui\customview\DottedHorizontalProgressBar.kt:64: Error: The log call Log.d(...) should be conditional: surround with if (Log.isLoggable(...)) or if (BuildConfig.DEBUG) { ... } [LogConditional]
         Log.d("Scale", "scale: ${maxDotRadius / minDotRadius}")
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-D:\ilya\android\ilya_selivanov_android\SpyFall\app\src\main\java\com\example\spyfall\data\repository\GameRepositoryImpl.kt:129: Error: The log call Log.d(...) should be conditional: surround with if (Log.isLoggable(...)) or if (BuildConfig.DEBUG) { ... } [LogConditional]
-            Log.d("GameRepository", "observePlayersFromGame: $gameId")
-            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-D:\ilya\android\ilya_selivanov_android\SpyFall\app\src\main\java\com\example\spyfall\ui\viewmodel\LogInViewModel.kt:43: Error: The log call Log.d(...) should be conditional: surround with if (Log.isLoggable(...)) or if (BuildConfig.DEBUG) { ... } [LogConditional]
+D:\ilya\android\ilya_selivanov_android\SpyFall\app\src\main\java\com\example\spyfall\ui\viewmodel\LogInViewModel.kt:41: Error: The log call Log.d(...) should be conditional: surround with if (Log.isLoggable(...)) or if (BuildConfig.DEBUG) { ... } [LogConditional]
         Log.d("SetNameViewModel", userRepository.getUser().toString())
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-D:\ilya\android\ilya_selivanov_android\SpyFall\app\src\main\java\com\example\spyfall\ui\viewmodel\RoleViewModel.kt:76: Error: The log call Log.d(...) should be conditional: surround with if (Log.isLoggable(...)) or if (BuildConfig.DEBUG) { ... } [LogConditional]
-                Log.d("RoleViewModel", "observeCurrentPlayer: $player")
-                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
    Explanation for issues of type "LogConditional":
    The BuildConfig class provides a constant, DEBUG, which indicates whether
@@ -262,21 +143,21 @@ D:\ilya\android\ilya_selivanov_android\SpyFall\app\src\main\res\drawable-v24\ic_
 D:\ilya\android\ilya_selivanov_android\SpyFall\app\src\main\res\drawable\rounded_outline_button.xml:2: Error: The resource R.drawable.rounded_outline_button appears to be unused [UnusedResources]
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
 ^
-D:\ilya\android\ilya_selivanov_android\SpyFall\app\src\main\res\values\strings.xml:26: Error: The resource R.string.buttonContinue appears to be unused [UnusedResources]
+D:\ilya\android\ilya_selivanov_android\SpyFall\app\src\main\res\values\strings.xml:22: Error: The resource R.string.titleChooser appears to be unused [UnusedResources]
+    <string name="titleChooser">Share</string>
+            ~~~~~~~~~~~~~~~~~~~
+D:\ilya\android\ilya_selivanov_android\SpyFall\app\src\main\res\values\strings.xml:46: Error: The resource R.string.buttonContinue appears to be unused [UnusedResources]
     <string name="buttonContinue">Continue</string>
             ~~~~~~~~~~~~~~~~~~~~~
-D:\ilya\android\ilya_selivanov_android\SpyFall\app\src\main\res\values\strings.xml:40: Error: The resource R.string.description_open_drawer_layout appears to be unused [UnusedResources]
-    <string name="description_open_drawer_layout">Open drawer layout</string>
-            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-D:\ilya\android\ilya_selivanov_android\SpyFall\app\src\main\res\values\strings.xml:41: Error: The resource R.string.description_close_drawer_layout appears to be unused [UnusedResources]
-    <string name="description_close_drawer_layout">Close drawer layout</string>
-            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-D:\ilya\android\ilya_selivanov_android\SpyFall\app\src\main\res\values\strings.xml:68: Error: The resource R.string.buttonDuration appears to be unused [UnusedResources]
+D:\ilya\android\ilya_selivanov_android\SpyFall\app\src\main\res\values\strings.xml:54: Error: The resource R.string.buttonDuration appears to be unused [UnusedResources]
     <string name="buttonDuration">Card duration</string>
             ~~~~~~~~~~~~~~~~~~~~~
-D:\ilya\android\ilya_selivanov_android\SpyFall\app\src\main\res\values\strings.xml:80: Error: The resource R.string.chooser_title appears to be unused [UnusedResources]
-    <string name="chooser_title">Share</string>
-            ~~~~~~~~~~~~~~~~~~~~
+D:\ilya\android\ilya_selivanov_android\SpyFall\app\src\main\res\values\strings.xml:70: Error: The resource R.string.description_open_drawer_layout appears to be unused [UnusedResources]
+    <string name="description_open_drawer_layout">Open drawer layout</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+D:\ilya\android\ilya_selivanov_android\SpyFall\app\src\main\res\values\strings.xml:71: Error: The resource R.string.description_close_drawer_layout appears to be unused [UnusedResources]
+    <string name="description_close_drawer_layout">Close drawer layout</string>
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 D:\ilya\android\ilya_selivanov_android\SpyFall\app\src\main\res\values\styles.xml:89: Error: The resource R.style.DefaultNumberPicker appears to be unused [UnusedResources]
     <style name="DefaultNumberPicker" parent="Theme.AppCompat">
            ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -296,6 +177,9 @@ D:\ilya\android\ilya_selivanov_android\SpyFall\app\src\main\res\values\styles.xm
 D:\ilya\android\ilya_selivanov_android\SpyFall\app\src\main\res\layout\activity_main.xml:32: Error: The resource R.id.helper_navigation_view appears to be unused [UnusedIds]
         android:id="@+id/helper_navigation_view"
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+D:\ilya\android\ilya_selivanov_android\SpyFall\app\src\main\res\layout\dotted_progress_bar_view.xml:4: Error: The resource R.id.dottedHorizontalProgressBar appears to be unused [UnusedIds]
+    android:id="@+id/dottedHorizontalProgressBar"
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 D:\ilya\android\ilya_selivanov_android\SpyFall\app\src\main\res\layout\fragment_about.xml:19: Error: The resource R.id.back appears to be unused [UnusedIds]
                 android:id="@+id/back"
                 ~~~~~~~~~~~~~~~~~~~~~~
@@ -332,16 +216,16 @@ D:\ilya\android\ilya_selivanov_android\SpyFall\app\src\main\res\layout\fragment_
 D:\ilya\android\ilya_selivanov_android\SpyFall\app\src\main\res\layout\fragment_quite_dialog.xml:67: Error: The resource R.id.textView3 appears to be unused [UnusedIds]
             android:id="@+id/textView3"
             ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-D:\ilya\android\ilya_selivanov_android\SpyFall\app\src\main\res\layout\fragment_result.xml:28: Error: The resource R.id.menuImageView appears to be unused [UnusedIds]
+D:\ilya\android\ilya_selivanov_android\SpyFall\app\src\main\res\layout\fragment_result.xml:27: Error: The resource R.id.menuImageView appears to be unused [UnusedIds]
         android:id="@+id/menuImageView"
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-D:\ilya\android\ilya_selivanov_android\SpyFall\app\src\main\res\layout\fragment_result.xml:60: Error: The resource R.id.controlGameImageView appears to be unused [UnusedIds]
+D:\ilya\android\ilya_selivanov_android\SpyFall\app\src\main\res\layout\fragment_result.xml:59: Error: The resource R.id.controlGameImageView appears to be unused [UnusedIds]
             android:id="@+id/controlGameImageView"
             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-D:\ilya\android\ilya_selivanov_android\SpyFall\app\src\main\res\layout\fragment_result.xml:66: Error: The resource R.id.controlGameTextView appears to be unused [UnusedIds]
+D:\ilya\android\ilya_selivanov_android\SpyFall\app\src\main\res\layout\fragment_result.xml:65: Error: The resource R.id.controlGameTextView appears to be unused [UnusedIds]
             android:id="@+id/controlGameTextView"
             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-D:\ilya\android\ilya_selivanov_android\SpyFall\app\src\main\res\layout\fragment_result.xml:115: Error: The resource R.id.locationButton appears to be unused [UnusedIds]
+D:\ilya\android\ilya_selivanov_android\SpyFall\app\src\main\res\layout\fragment_result.xml:114: Error: The resource R.id.locationButton appears to be unused [UnusedIds]
         android:id="@+id/locationButton"
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 D:\ilya\android\ilya_selivanov_android\SpyFall\app\src\main\res\layout\fragment_splash.xml:16: Error: The resource R.id.spyTextView appears to be unused [UnusedIds]
@@ -547,9 +431,6 @@ D:\ilya\android\ilya_selivanov_android\SpyFall\app\src\main\res\layout\fragment_
 D:\ilya\android\ilya_selivanov_android\SpyFall\app\src\main\res\layout\fragment_create_link.xml:26: Error: Hardcoded string "Your id", should use @string resource [HardcodedText]
         android:text="Your id"
         ~~~~~~~~~~~~~~~~~~~~~~
-D:\ilya\android\ilya_selivanov_android\SpyFall\app\src\main\res\layout\fragment_result.xml:21: Error: Hardcoded string "10:15", should use @string resource [HardcodedText]
-        android:text="10:15"
-        ~~~~~~~~~~~~~~~~~~~~
 D:\ilya\android\ilya_selivanov_android\SpyFall\app\src\main\res\layout\item_checkable_recyclerview.xml:17: Error: Hardcoded string "Player", should use @string resource [HardcodedText]
         android:text="Player"
         ~~~~~~~~~~~~~~~~~~~~~
@@ -669,4 +550,4 @@ D:\ilya\android\ilya_selivanov_android\SpyFall\app\src\main\res\layout\fragment_
    the left bitmask. Therefore, you can use gravity="start" rather than
    gravity="left|start".)
 
-138 errors, 0 warnings
+113 errors, 0 warnings

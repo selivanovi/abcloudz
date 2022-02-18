@@ -25,7 +25,7 @@ class LocationWonFragment :
         super.setupListeners()
         with(binding) {
             nextCardButton.setOnClickListener {
-                viewModel.setStatusForCurrentPlayerInGame(gameId, PlayerStatus.Continue)
+                viewModel.setStatusForCurrentPlayerInGame(gameId, PlayerStatus.CONTINUE)
             }
             mainMenuButton.setOnClickListener {
                 viewModel.setStatusForCurrentPlayerInGame(gameId, PlayerStatus.EXIT)

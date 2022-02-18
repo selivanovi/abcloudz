@@ -38,15 +38,21 @@ abstract class BaseViewModel : ViewModel(), CoroutineScope {
         viewModelScope.coroutineContext.cancelChildren()
     }
 
-    fun navigateTo(navDirections: NavDirections) = launch {
-        navigationMutableChannel.send(NavEvent.To(navDirections))
+    fun navigateTo(navDirections: NavDirections) {
+        launch {
+            navigationMutableChannel.send(NavEvent.To(navDirections))
+        }
     }
 
-    fun navigateUp() = launch {
-        navigationMutableChannel.send(NavEvent.Up)
+    fun navigateUp() {
+        launch {
+            navigationMutableChannel.send(NavEvent.Up)
+        }
     }
 
-    fun navigateBack() = launch {
-        navigationMutableChannel.send(NavEvent.Back)
+    fun navigateBack() {
+        launch {
+            navigationMutableChannel.send(NavEvent.Back)
+        }
     }
 }

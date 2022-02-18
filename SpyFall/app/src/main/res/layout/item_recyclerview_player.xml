@@ -13,6 +13,5 @@
         android:layout_height="match_parent"
         android:layout_marginStart="20dp"
         android:textAppearance="@style/Text.Item"
-        android:text="Player"
         android:gravity="center_vertical" />
 </FrameLayout>

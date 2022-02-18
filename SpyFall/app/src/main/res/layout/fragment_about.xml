@@ -6,10 +6,11 @@
     <include layout="@layout/background_info_view" />
 
     <LinearLayout
-        style="@style/Layout"
+        style="@style/PaddingView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:clipToPadding="false">
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -17,16 +18,18 @@
 
             <ImageView
                 android:id="@+id/back"
+                android:contentDescription="@string/descriptionBack"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="left"
+                android:layout_gravity="start"
                 android:src="@drawable/back" />
 
             <ImageView
                 android:id="@+id/menu"
+                android:contentDescription="@string/descriptionMenu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
+                android:layout_gravity="end"
                 android:src="@drawable/menu" />
 
         </FrameLayout>
@@ -60,8 +63,6 @@
             android:layout_width="match_parent"
             android:layout_marginTop="28dp"
             android:text="@string/buttonCool" />
-
-
     </LinearLayout>
 
 </FrameLayout>

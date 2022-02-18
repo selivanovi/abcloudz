@@ -1,6 +1,5 @@
 package com.example.spyfall.ui.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.example.spyfall.data.entity.GameStatus
 import com.example.spyfall.data.entity.PlayerStatus
@@ -78,7 +77,6 @@ class RoleViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-
     fun observeRoleOfCurrentPlayer(gameId: String) {
         gameRepository.observePlayerFromGame(gameId, currentUser.userId).onEach { player ->
 
@@ -130,7 +128,6 @@ class RoleViewModel @Inject constructor(
 
     private fun startTimer(gameId: String) {
         launch {
-
             gameRepository.getDurationForGames(gameId)
                 .onSuccess { duration ->
 

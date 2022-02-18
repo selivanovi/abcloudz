@@ -23,38 +23,43 @@ class UserRepositoryImpl @Inject constructor(
     private val sharedPreferences: SharedPreferences
 ) : UserRepository {
 
-    override suspend fun addUser(userDomain: UserDomain) = callbackFlow<Result<Unit?>> {
-        val valueEventListener = object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val users = snapshot.children.map { it.getValue(String::class.java) }
-                if (!users.contains(userDomain.name)) {
-                    sharedPreferences.edit {
-                        putString(KEY_USER_ID, userDomain.userId)
-                        putString(KEY_USER_NAME, userDomain.name)
+    @OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
+    override suspend fun addUser(userDomain: UserDomain) =
+        callbackFlow<Result<Unit?>> {
+            val valueEventListener = object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val users = snapshot.children.map { it.getValue(String::class.java) }
+                    if (!users.contains(userDomain.name)) {
+                        sharedPreferences.edit {
+                            putString(KEY_USER_ID, userDomain.userId)
+                            putString(KEY_USER_NAME, userDomain.name)
+                        }
+                        firebaseDatabase.reference.child(USER_REFERENCES)
+                            .child(userDomain.userId).setValue(userDomain.name)
+                        trySendBlocking(Result.success(Unit))
+                    } else {
+                        trySendBlocking(
+                            Result.failure(InvalidNameException(Constants.INVALID_NAME_EXCEPTION))
+                        )
                     }
-                    firebaseDatabase.reference.child(USER_REFERENCES)
-                        .child(userDomain.userId).setValue(userDomain.name)
-                    this@callbackFlow.trySendBlocking(Result.success(Unit))
-                } else {
-                    this@callbackFlow.trySendBlocking(
-                        Result.failure(InvalidNameException(Constants.INVALID_NAME_EXCEPTION))
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    trySendBlocking(
+                        Result.failure(DatabaseNotResponding(Constants.DATABASE_NOT_RESPONDING))
                     )
                 }
             }
 
-            override fun onCancelled(error: DatabaseError) {
-                this@callbackFlow.trySendBlocking(Result.failure(DatabaseNotResponding(Constants.GET_DATA_EXCEPTION)))
+            firebaseDatabase.reference.child(USER_REFERENCES).addListenerForSingleValueEvent(
+                valueEventListener
+            )
+
+            awaitClose {
+                firebaseDatabase.getReference(USER_REFERENCES)
+                    .removeEventListener(valueEventListener)
             }
         }
-
-        firebaseDatabase.reference.child(USER_REFERENCES).addListenerForSingleValueEvent(
-            valueEventListener
-        )
-
-        awaitClose {
-            firebaseDatabase.getReference(USER_REFERENCES).removeEventListener(valueEventListener)
-        }
-    }
 
     override fun getUser(): UserDomain? {
         val userID = sharedPreferences.getString(KEY_USER_ID, null)

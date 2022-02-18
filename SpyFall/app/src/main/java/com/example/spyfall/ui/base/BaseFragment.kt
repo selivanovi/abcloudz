@@ -71,7 +71,7 @@ abstract class BaseFragment<VB : ViewBinding, VM : BaseViewModel>(
 
     private fun observeError() {
         viewModel.errorChannel.onEach { throwable ->
-            Toast.makeText(requireContext(), throwable.message, Toast.LENGTH_LONG).show()
+            Toast.makeText(requireContext(), throwable.message, Toast.LENGTH_SHORT).show()
         }.launchIn(lifecycleScope)
     }
 

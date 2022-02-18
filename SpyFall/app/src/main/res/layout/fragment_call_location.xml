@@ -6,7 +6,7 @@
     <include layout="@layout/background_vote_view" />
 
     <LinearLayout
-        style="@style/Layout"
+        style="@style/PaddingView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -15,7 +15,8 @@
             android:id="@+id/menu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
+            android:layout_gravity="end"
+            android:contentDescription="@string/descriptionMenu"
             android:src="@drawable/menu" />
 
         <com.example.spyfall.ui.customview.OutlineTextView
@@ -30,8 +31,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/titleLocation" />
-
-
 
         <TextView
             style="@style/Text"

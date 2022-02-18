@@ -61,7 +61,6 @@ class DottedHorizontalProgressBar(context: Context, attributeSet: AttributeSet) 
     private fun getScaleAnimator(view: View): Animator {
         val minScale = 1F
         val maxScale = maxDotRadius / minDotRadius
-        Log.d("Scale", "scale: ${maxDotRadius / minDotRadius}")
         return ValueAnimator.ofFloat(minScale, maxScale).apply {
             addUpdateListener {
                 view.scaleX = it.animatedValue as Float
