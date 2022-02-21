@@ -1,6 +1,5 @@
 package com.example.spyfall.ui.viewmodel
 
-import android.util.Log
 import com.example.spyfall.domain.entity.UserDomain
 import com.example.spyfall.domain.repository.UserRepository
 import com.example.spyfall.ui.base.BaseViewModel
@@ -39,7 +38,6 @@ class LogInViewModel @Inject constructor(
 
     fun getUser(): UserDomain? =
         userRepository.getUser()
-
 
     fun navigateToStartFragment() =
         navigateTo(logInDirections.toStart())

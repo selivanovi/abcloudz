@@ -6,7 +6,6 @@ import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.View
 import android.view.animation.LinearInterpolator
 import android.widget.LinearLayout
@@ -46,16 +45,17 @@ class DottedHorizontalProgressBar(context: Context, attributeSet: AttributeSet) 
             animators.add(getScaleAnimator(dot))
             this.addView(dot)
         }
-        primaryValueAnimator = ValueAnimator.ofInt(0, dotCount)
-        primaryValueAnimator?.addUpdateListener {
-            if (it.animatedValue != dotCount) {
-                animators[it.animatedValue as Int].start()
+        primaryValueAnimator = ValueAnimator.ofInt(0, dotCount).apply {
+            addUpdateListener {
+                if (it.animatedValue != dotCount) {
+                    animators[it.animatedValue as Int].start()
+                }
             }
+            repeatMode = ValueAnimator.RESTART
+            repeatCount = ValueAnimator.INFINITE
+            duration = (timeOut * dotCount).toLong()
+            interpolator = LinearInterpolator()
         }
-        primaryValueAnimator?.repeatMode = ValueAnimator.RESTART
-        primaryValueAnimator?.repeatCount = ValueAnimator.INFINITE
-        primaryValueAnimator?.duration = (timeOut * dotCount).toLong()
-        primaryValueAnimator?.interpolator = LinearInterpolator()
     }
 
     private fun getScaleAnimator(view: View): Animator {

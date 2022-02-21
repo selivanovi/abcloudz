@@ -12,19 +12,40 @@ fun generateRandomId(): String =
     UUID.randomUUID().toString().takeLast(5)
 
 fun PlayerDomain.toPlayer(): Player =
-    Player(name = this.name, status = this.status, role = this.role, null)
+    Player(
+        name = this.name,
+        status = this.status,
+        role = this.role,
+        vote = null
+    )
 
 fun GameDomain.toGame(): Game =
-    Game(this.host, this.status, this.duration)
+    Game(
+        host = this.host,
+        status = this.status,
+        duration = this.duration
+    )
 
 fun UserDomain.toPlayerDomain(): PlayerDomain =
-    PlayerDomain(this.userId, this.name, null, null, null)
+    PlayerDomain(
+        playerId = this.userId,
+        name = this.name,
+        status = null,
+        role = null,
+        vote = null
+    )
 
 fun DataSnapshot.toPlayerDomain(): PlayerDomain? {
     val key = this.key
     val player = this.getValue(Player::class.java)
     return if (key != null && player != null) {
-        PlayerDomain(key, player.name, player.status, player.role, player.vote)
+        PlayerDomain(
+            playerId = key,
+            name = player.name,
+            status = player.status,
+            role = player.role,
+            vote = player.vote
+        )
     } else null
 }
 
@@ -32,7 +53,11 @@ fun DataSnapshot.toGameDomain(): GameDomain? {
     val key = this.key
     val game = this.getValue(Game::class.java)
     return if (key != null && game != null) {
-        GameDomain(key, game.host, game.status, game.duration)
+        GameDomain(
+            gameId = key,
+            host = game.host,
+            status = game.status,
+            duration = game.duration)
     } else null
 }
 
