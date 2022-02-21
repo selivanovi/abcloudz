@@ -19,6 +19,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.channels.trySendBlocking
 import kotlinx.coroutines.flow.Flow
@@ -44,6 +45,15 @@ class GameRepositoryImpl @Inject constructor(
 
     override suspend fun addGame(gameDomain: GameDomain) {
         getGameReference(gameDomain.gameId).setValue(gameDomain.toGame()).await()
+    }
+
+    override suspend fun addPlayerToGame(
+        gameId: String,
+        playerDomain: PlayerDomain
+    ) {
+        val player = playerDomain.toPlayer()
+
+        getPlayerReference(gameId, playerDomain.playerId).setValue(player).await()
     }
 
     override suspend fun getGame(gameId: String): GameDomain =
@@ -80,7 +90,8 @@ class GameRepositoryImpl @Inject constructor(
             db.addListenerForSingleValueEvent(listener)
         }
 
-    @OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
+    @Suppress("BlockingMethodInNonBlockingContext")
+    @OptIn(ExperimentalCoroutinesApi::class)
     override fun observeGame(gameId: String): Flow<GameDomain?> =
         callbackFlow {
             val valueEventListener = object : ValueEventListener {
@@ -105,15 +116,6 @@ class GameRepositoryImpl @Inject constructor(
             }
         }
 
-    override suspend fun addPlayerToGame(
-        gameId: String,
-        playerDomain: PlayerDomain
-    ) {
-        val player = playerDomain.toPlayer()
-
-        getPlayerReference(gameId, playerDomain.playerId).setValue(player).await()
-    }
-
     override suspend fun deletePlayerInGame(gameId: String, playerId: String) {
         getPlayerReference(gameId, playerId).setValue(null).await()
     }
@@ -122,7 +124,8 @@ class GameRepositoryImpl @Inject constructor(
         getGameReference(gameId).removeValue().await()
     }
 
-    @OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
+    @Suppress("BlockingMethodInNonBlockingContext")
+    @OptIn(ExperimentalCoroutinesApi::class)
     override fun observePlayersFromGame(gameId: String): Flow<List<PlayerDomain>> =
         callbackFlow {
             val valueEventListener = object : ValueEventListener {
@@ -157,7 +160,8 @@ class GameRepositoryImpl @Inject constructor(
             }
         }
 
-    @OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
+    @Suppress("BlockingMethodInNonBlockingContext")
+    @OptIn(ExperimentalCoroutinesApi::class)
     override fun observePlayerFromGame(
         gameId: String,
         playerId: String
