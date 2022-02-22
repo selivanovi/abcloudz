@@ -33,33 +33,29 @@ class StartFragment :
     }
 
     private fun createButtons() {
-        val joinButton =
-            requireView().findViewById<AppCompatButton>(R.id.buttonJoinGame)
+        with(binding) {
+            buttonJoinGame.isActivated = true
 
-        val createGameButton =
-            requireView().findViewById<AppCompatButton>(R.id.buttonCreateGame)
-
-        joinButton.isActivated = true
-
-        joinButton.setOnClickListener {
-            if (!joinButton.isActivated) {
-                childFragmentManager.commit {
-                    setReorderingAllowed(true)
-                    replace(R.id.startGameContainerView, JoinGameFragment())
+            buttonJoinGame.setOnClickListener {
+                if (!buttonJoinGame.isActivated) {
+                    childFragmentManager.commit {
+                        setReorderingAllowed(true)
+                        replace(R.id.startGameContainerView, JoinGameFragment())
+                    }
+                    buttonJoinGame.isActivated = true
+                    buttonCreateGame.isActivated = false
                 }
-                joinButton.isActivated = true
-                createGameButton.isActivated = false
             }
-        }
 
-        createGameButton.setOnClickListener {
-            if (!createGameButton.isActivated) {
-                childFragmentManager.commit {
-                    setReorderingAllowed(true)
-                    replace(R.id.startGameContainerView, LinkFragment())
+            buttonCreateGame.setOnClickListener {
+                if (!buttonCreateGame.isActivated) {
+                    childFragmentManager.commit {
+                        setReorderingAllowed(true)
+                        replace(R.id.startGameContainerView, LinkFragment())
+                    }
+                    buttonCreateGame.isActivated = true
+                    buttonJoinGame.isActivated = false
                 }
-                createGameButton.isActivated = true
-                joinButton.isActivated = false
             }
         }
     }

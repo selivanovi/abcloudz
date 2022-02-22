@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 
 abstract class VoteViewModel(
     private val gameRepository: GameRepository,
-    private val userRepository: UserRepository,
+    userRepository: UserRepository,
 ) : GameViewModel(gameRepository, userRepository) {
 
     private val voteStateMutableChannel = Channel<VoteState>()
@@ -34,10 +34,10 @@ abstract class VoteViewModel(
             } else {
                 if (playersWithoutSpy.all { it.vote != null }) {
                     if (playersWithoutSpy.all { player -> player.vote == spy.playerId }) {
-                        navigateToLocationWonWithArgs(gameId)
+                        navigateToLocationWon(gameId)
                     } else {
                         if (gameRepository.getGame(gameId)?.status == GameStatus.GAME_OVER) {
-                            navigateToSpyWonWithArgs(gameId)
+                            navigateToSpyWon(gameId)
                         } else {
                             gameRepository.setStatusForGame(gameId, GameStatus.PLAYING)
                             clearVoteForPlayersInGame(gameId, playersWithoutSpy)
@@ -53,11 +53,11 @@ abstract class VoteViewModel(
 
     private suspend fun clearVoteForPlayersInGame(gameId: String, players: List<PlayerDomain>) {
         players.forEach { player ->
-            gameRepository.setVoteForPlayerInGame(gameId, player.playerId, null)
+            gameRepository.removeVoteForPlayerInGame(gameId, player.playerId)
         }
     }
 
-    abstract fun navigateToLocationWonWithArgs(gameId: String)
+    abstract fun navigateToLocationWon(gameId: String)
 
-    abstract fun navigateToSpyWonWithArgs(gameId: String)
+    abstract fun navigateToSpyWon(gameId: String)
 }

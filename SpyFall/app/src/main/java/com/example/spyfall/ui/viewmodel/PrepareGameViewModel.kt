@@ -7,7 +7,6 @@ import com.example.spyfall.domain.repository.UserRepository
 import com.example.spyfall.ui.navigation.PrepareGameDirections
 import com.example.spyfall.utils.times
 import com.example.spyfall.utils.toPlayerDomain
-import com.example.spyfall.utils.toSeconds
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -32,7 +31,7 @@ class PrepareGameViewModel @Inject constructor(
             gameId = gameId,
             host = currentUser.userId,
             status = GameStatus.CREATE,
-            duration = times.first().toSeconds()
+            duration = times.first().inWholeSeconds
         )
 
         val currentPLayer = currentUser.toPlayerDomain()
@@ -43,7 +42,7 @@ class PrepareGameViewModel @Inject constructor(
 
     private suspend fun resetGame(gameId: String) {
         gameRepository.setStatusForGame(gameId, GameStatus.CREATE)
-        gameRepository.setDurationForGames(gameId, times.first().toSeconds())
+        gameRepository.setDurationForGames(gameId, times.first().inWholeSeconds)
 
         val currentPlayer = currentUser.toPlayerDomain()
         gameRepository.addPlayerToGame(gameId, currentPlayer)

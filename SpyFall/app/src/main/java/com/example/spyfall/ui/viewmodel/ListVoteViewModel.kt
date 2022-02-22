@@ -16,7 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ListVoteViewModel @Inject constructor(
     private val gameRepository: GameRepository,
-    private val userRepository: UserRepository
+    userRepository: UserRepository
 ) : BaseViewModel() {
 
     var playerForVote: PlayerDomain? = null
@@ -37,7 +37,7 @@ class ListVoteViewModel @Inject constructor(
     fun sendVoteForCurrentPLayerInGame(gameId: String) {
         playerForVote?.let { player ->
             launch {
-                gameRepository.setVoteForPlayerInGame(gameId, currentPlayer.userId, player)
+                gameRepository.setVoteForPlayerInGame(gameId, currentPlayer.userId, player.playerId)
             }
         }
     }

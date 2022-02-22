@@ -14,13 +14,16 @@ import com.example.spyfall.ui.listener.LobbyFragmentListener
 import com.example.spyfall.ui.recyclerview.PlayersAdapter
 import com.example.spyfall.ui.state.LobbyState
 import com.example.spyfall.ui.viewmodel.LobbyViewModel
+import com.example.spyfall.utils.FragmentNotAttachedException
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import java.lang.IllegalArgumentException
 
 @AndroidEntryPoint
-class LobbyFragment : BaseFragment<FragmentLobbyBinding, LobbyViewModel>(FragmentLobbyBinding::inflate) {
+class LobbyFragment :
+    BaseFragment<FragmentLobbyBinding, LobbyViewModel>(FragmentLobbyBinding::inflate) {
 
     override val viewModel: LobbyViewModel by viewModels()
 
@@ -28,7 +31,8 @@ class LobbyFragment : BaseFragment<FragmentLobbyBinding, LobbyViewModel>(Fragmen
     private var lobbyFragmentListener: LobbyFragmentListener? = null
 
     private val gameId by lazy {
-        requireArguments().getString(KEY_GAME_ID)!!
+        requireArguments().getString(KEY_GAME_ID)
+            ?: throw IllegalArgumentException("Game id is missing")
     }
 
     override fun onAttach(context: Context) {
@@ -36,12 +40,19 @@ class LobbyFragment : BaseFragment<FragmentLobbyBinding, LobbyViewModel>(Fragmen
         val parent = requireParentFragment()
         if (parent is LobbyFragmentListener) {
             lobbyFragmentListener = parent
+        } else {
+            throw FragmentNotAttachedException("Lobby fragment")
         }
     }
 
     override fun setupView() {
         super.setupView()
-        createRecyclerView(requireView())
+        val linearLayoutManager =
+            LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
+        binding.playersRecyclerView.apply {
+            adapter = adapter
+            layoutManager = linearLayoutManager
+        }
     }
 
     override fun setupListeners() {
@@ -75,14 +86,6 @@ class LobbyFragment : BaseFragment<FragmentLobbyBinding, LobbyViewModel>(Fragmen
     override fun onDetach() {
         super.onDetach()
         lobbyFragmentListener = null
-    }
-
-    private fun createRecyclerView(view: View) {
-        val recyclerView = view.findViewById<RecyclerView>(R.id.playersRecyclerView)
-
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager =
-            LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
     }
 
     companion object {

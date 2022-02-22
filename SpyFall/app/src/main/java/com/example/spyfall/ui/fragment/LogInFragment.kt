@@ -34,12 +34,10 @@ class LogInFragment :
     override fun setupListeners() {
         super.setupListeners()
         with(binding) {
-            nameEditText.apply {
-                addTextChangedListener {
-                    confirmButton.isEnabled = nameEditText.text.isNotEmpty()
-                }
+            nameEditText.addTextChangedListener {
+                confirmButton.isEnabled = nameEditText.text.isNotEmpty()
             }
-
+            
             confirmButton.apply {
                 isEnabled = false
                 setOnClickListener {

@@ -14,6 +14,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import com.example.spyfall.R
 import com.example.spyfall.ui.viewmodel.LogOutViewModel
+import com.example.spyfall.utils.FragmentNotAttachedException
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -26,8 +27,9 @@ class QuiteDialog : DialogFragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (requireActivity() is QuiteDialogListener) {
-            Log.d("QuiteDialog", "Attach to ${requireActivity()}")
             dialogListener = requireActivity() as QuiteDialogListener
+        } else {
+            throw FragmentNotAttachedException("QuiteDialog")
         }
     }
 

@@ -31,7 +31,7 @@ class DottedHorizontalProgressBar(context: Context, attributeSet: AttributeSet) 
         val maxRadius = convertDpToPixel(maxDotRadius, context)
         val margin = maxRadius - minRadius
         repeat(dotCount) {
-            val dot = View(context)
+
             val layoutParams = LayoutParams(minRadius * 2, minRadius * 2)
             layoutParams.setMargins(
                 margin,
@@ -39,9 +39,11 @@ class DottedHorizontalProgressBar(context: Context, attributeSet: AttributeSet) 
                 margin,
                 margin
             )
-            dot.layoutParams = layoutParams
-            dot.setBackgroundColor(dotColor)
-            dot.setBackgroundResource(R.drawable.dot_icon)
+            val dot = View(context).apply {
+                this.layoutParams = layoutParams
+                setBackgroundColor(dotColor)
+                setBackgroundResource(R.drawable.dot_icon)
+            }
             animators.add(getScaleAnimator(dot))
             this.addView(dot)
         }

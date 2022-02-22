@@ -15,16 +15,19 @@ import com.example.spyfall.ui.viewmodel.ListVoteViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import java.lang.IllegalArgumentException
 
 @AndroidEntryPoint
-class ListVoteFragment : BaseFragment<FragmentListVoteBinding, ListVoteViewModel>(FragmentListVoteBinding::inflate) {
+class ListVoteFragment :
+    BaseFragment<FragmentListVoteBinding, ListVoteViewModel>(FragmentListVoteBinding::inflate) {
 
     override val viewModel: ListVoteViewModel by viewModels()
 
     private val adapter = VotesAdapter(::changeItem)
 
     private val gameId by lazy {
-        requireArguments().getString(KEY_GAME_ID)!!
+        requireArguments().getString(KEY_GAME_ID)
+            ?: throw IllegalArgumentException("Game id is missing")
     }
 
     override fun setupView() {

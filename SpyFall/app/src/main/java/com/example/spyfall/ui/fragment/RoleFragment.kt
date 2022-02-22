@@ -9,6 +9,7 @@ import com.example.spyfall.databinding.FragmentRoleBinding
 import com.example.spyfall.ui.base.GameFragment
 import com.example.spyfall.ui.state.RoleState
 import com.example.spyfall.ui.viewmodel.RoleViewModel
+import com.example.spyfall.utils.Constants
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -41,19 +42,24 @@ class RoleFragment :
     override fun setupObserver() {
         super.setupObserver()
         with(binding) {
+
+            viewModel.roleChannel.onEach { role ->
+                locationTextView.setText(role.string)
+                locationImageView.setImageResource(role.drawable)
+            }.launchIn(lifecycleScope)
+
+            viewModel.timeChannel.onEach { duration ->
+
+                binding.timeTextView.text =
+                    resources.getString(
+                        R.string.time,
+                        duration.inWholeMinutes,
+                        duration.inWholeSeconds
+                    )
+            }.launchIn(lifecycleScope)
+
             viewModel.roleStateChannel.onEach { state ->
                 when (state) {
-                    is RoleState.SetRole -> {
-                        locationTextView.setText(state.role.string)
-                        locationImageView.setImageResource(state.role.drawable)
-                    }
-                    is RoleState.SetTime -> {
-                        val minutes = state.time / 60
-                        val seconds = state.time % 60
-
-                        binding.timeTextView.text =
-                            resources.getString(R.string.time, minutes, seconds)
-                    }
                     is RoleState.GameIsPlaying -> {
                         controlGameImageView.setImageResource(R.drawable.pause)
                         controlGameTextView.setText(R.string.textPause)

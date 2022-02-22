@@ -18,6 +18,8 @@ import com.example.spyfall.ui.listener.LobbyFragmentListener
 import com.example.spyfall.ui.recyclerview.PlayersAdapter
 import com.example.spyfall.ui.state.LobbyState
 import com.example.spyfall.ui.viewmodel.LobbyViewModel
+import com.example.spyfall.utils.Constants
+import com.example.spyfall.utils.FragmentNotAttachedException
 import com.google.android.material.button.MaterialButton
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
@@ -34,18 +36,16 @@ class LobbyHostFragment :
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-
-        Log.d("LobbyFragment", "onAttach")
         val parent = requireParentFragment()
         if (parent is LobbyFragmentListener) {
             lobbyFragmentListener = parent
+        } else {
+            throw FragmentNotAttachedException("LobbyHostFragment")
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        Log.d("LobbyFragment", "onViewCreated")
 
         val gameId = requireArguments().getString(KEY_GAME_ID)!!
 
@@ -76,24 +76,25 @@ class LobbyHostFragment :
         val packageName = requireContext().packageName
 
         val intent = Intent(Intent.ACTION_SEND).apply {
-            // The intent does not have a URI, so declare the "text/plain" MIME type
-            type = "text/link"
+            type = Constants.TEXT_TYPE
             putExtra(
                 Intent.EXTRA_TEXT,
-                getString(R.string.invite) + "\n" + "https://spyfall.example.com?id=$gameId"
+                getString(R.string.invite) +
+                        "\n" +
+                        Constants.APP_URL +
+                        "?id=$gameId"
             )
-            type = "image/png"
+            type = Constants.IMAGE_TYPE
             putExtra(
                 Intent.EXTRA_STREAM,
-                Uri.parse("android.resource://$packageName/drawable/image_spy")
+                Uri.parse(Constants.IMAGE_URI)
             )
-            // You can also attach multiple items by passing an ArrayList of Uris
         }
 
         try {
             startActivity(Intent.createChooser(intent, resources.getString(R.string.share)))
         } catch (e: Exception) {
-            // e.toString();
+            Log.e("LobbyHostFragment", e.message.toString())
         }
     }
 
@@ -116,11 +117,10 @@ class LobbyHostFragment :
         private const val KEY_GAME_ID = "key_game_id"
 
         fun newInstance(gameId: String): LobbyHostFragment {
-            val bundle = Bundle().apply {
-                putString(KEY_GAME_ID, gameId)
-            }
             val fragment = LobbyHostFragment().apply {
-                arguments = bundle
+                arguments =  Bundle().apply {
+                    putString(KEY_GAME_ID, gameId)
+                }
             }
             return fragment
         }

@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import com.example.spyfall.R
 import com.example.spyfall.ui.listener.JoinGameFragmentListener
 import com.example.spyfall.utils.Constants
+import com.example.spyfall.utils.FragmentNotAttachedException
 
 class JoinGameFragment : Fragment(R.layout.fragment_join_game) {
 
@@ -21,6 +22,8 @@ class JoinGameFragment : Fragment(R.layout.fragment_join_game) {
         val parent = requireParentFragment()
         if (parent is JoinGameFragmentListener) {
             joinGameFragmentListener = parent
+        } else {
+            throw FragmentNotAttachedException("JoinGameFragment")
         }
     }
 
@@ -32,14 +35,15 @@ class JoinGameFragment : Fragment(R.layout.fragment_join_game) {
         val joinGameEditText = view.findViewById<EditText>(R.id.joinGameEditText)
 
         data?.let {
-            val gameId = it.getQueryParameter("id")
+            val gameId = it.getQueryParameter(Constants.ID_PARAMETER)
             joinGameEditText.setText(gameId)
         }
 
         view.findViewById<Button>(R.id.buttonJoinGame).setOnClickListener {
             val gameId = joinGameEditText.text.toString()
-            if (gameId.length != 5) {
-                Toast.makeText(requireContext(), Constants.NOT_CORRECT_GAME_ID, Toast.LENGTH_LONG).show()
+            if (gameId.length != Constants.LENGTH_ID) {
+                Toast.makeText(requireContext(), Constants.NOT_CORRECT_GAME_ID, Toast.LENGTH_LONG)
+                    .show()
             } else {
                 joinGameFragmentListener?.joinToGame(gameId)
             }
