@@ -5,6 +5,6 @@ import com.example.spyfall.data.entity.GameStatus
 data class GameDomain(
     val gameId: String,
     val host: String,
-    val status: GameStatus? = null,
-    val duration: Long? = null,
+    val status: GameStatus,
+    val duration: Long,
 )

@@ -1,3 +1,3 @@
 package com.example.spyfall.utils
 
-class PLayerNotFoundException(message: String) : Exception(message)
+class PLayerNotFoundException : Exception("Player not found")

@@ -1,3 +1,3 @@
 package com.example.spyfall.utils
 
-class GameIsPlayingException(message: String) : Exception(message)
+class GameIsPlayingException : Exception("Game is playing")

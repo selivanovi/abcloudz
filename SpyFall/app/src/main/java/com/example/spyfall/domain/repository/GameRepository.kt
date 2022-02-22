@@ -34,5 +34,7 @@ interface GameRepository {
 
     suspend fun setStatusForGame(gameId: String, status: GameStatus)
 
-    suspend fun setVoteForPlayerInGame(gameId: String, playerId: String, vote: PlayerDomain?)
+    suspend fun setVoteForPlayerInGame(gameId: String, playerId: String, vote: String)
+
+    suspend fun removeVoteForPlayerInGame(gameId: String, playerId: String)
 }

@@ -1,3 +1,3 @@
 package com.example.spyfall.utils
 
-class GameNotFoundException(message: String) : Exception(message)
+class GameNotFoundException : Exception("Game not found")

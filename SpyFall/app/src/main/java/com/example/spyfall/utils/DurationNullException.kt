@@ -1,3 +1,3 @@
 package com.example.spyfall.utils
 
-class DurationNullException(message: String) : Exception(message)
+class DurationNullException : Exception("Duration was not set")

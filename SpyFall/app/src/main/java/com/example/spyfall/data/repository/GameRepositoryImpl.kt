@@ -5,7 +5,6 @@ import com.example.spyfall.data.entity.PlayerStatus
 import com.example.spyfall.domain.entity.GameDomain
 import com.example.spyfall.domain.entity.PlayerDomain
 import com.example.spyfall.domain.repository.GameRepository
-import com.example.spyfall.utils.Constants
 import com.example.spyfall.utils.DatabaseNotResponding
 import com.example.spyfall.utils.GameNotFoundException
 import com.example.spyfall.utils.PLayerNotFoundException
@@ -63,10 +62,7 @@ class GameRepositoryImpl @Inject constructor(
             val listener = object : ValueEventListener {
 
                 override fun onCancelled(error: DatabaseError) {
-                    continuation
-                        .resumeWithException(
-                            DatabaseNotResponding(Constants.DATABASE_NOT_RESPONDING)
-                        )
+                    continuation.resumeWithException(DatabaseNotResponding())
                 }
 
                 override fun onDataChange(snapshot: DataSnapshot) {
@@ -75,11 +71,7 @@ class GameRepositoryImpl @Inject constructor(
                         if (game != null) {
                             continuation.resume(game)
                         } else {
-                            continuation.resumeWithException(
-                                GameNotFoundException(
-                                    Constants.GAME_NOT_FOUND_EXCEPTION
-                                )
-                            )
+                            continuation.resumeWithException(GameNotFoundException())
                         }
                     } catch (exception: Exception) {
                         continuation.resumeWithException(exception)
@@ -101,14 +93,12 @@ class GameRepositoryImpl @Inject constructor(
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    close(DatabaseNotResponding(Constants.DATABASE_NOT_RESPONDING))
+                    close(DatabaseNotResponding())
                 }
             }
 
             firebaseDatabase.reference.child(GAMES_KEY_REFERENCES).child(gameId)
-                .addValueEventListener(
-                    valueEventListener
-                )
+                .addValueEventListener(valueEventListener)
 
             awaitClose {
                 firebaseDatabase.reference.child(GAMES_KEY_REFERENCES).child(gameId)
@@ -130,33 +120,27 @@ class GameRepositoryImpl @Inject constructor(
         callbackFlow {
             val valueEventListener = object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    val players = snapshot.children.map {
+                    val players = snapshot.children.mapNotNull {
                         it.toPlayerDomain()
                     }
                     if (players.isEmpty()) {
-                        trySendBlocking(players.filterNotNull())
+                        trySendBlocking(players)
                     } else {
-                        close(PLayersNotFoundException(Constants.PLAYERS_NOT_FOUND_EXCEPTION))
+                        close(PLayersNotFoundException())
                     }
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    close(DatabaseNotResponding(Constants.DATABASE_NOT_RESPONDING))
+                    close(DatabaseNotResponding())
                 }
             }
 
             firebaseDatabase.reference.child(GAMES_KEY_REFERENCES).child(gameId)
-                .child(
-                    PLAYERS_KEY_REFERENCES
-                ).addValueEventListener(
-                    valueEventListener
-                )
+                .child(PLAYERS_KEY_REFERENCES).addValueEventListener(valueEventListener)
 
             awaitClose {
                 firebaseDatabase.reference.child(GAMES_KEY_REFERENCES).child(gameId)
-                    .child(
-                        PLAYERS_KEY_REFERENCES
-                    ).removeEventListener(valueEventListener)
+                    .child(PLAYERS_KEY_REFERENCES).removeEventListener(valueEventListener)
             }
         }
 
@@ -173,27 +157,23 @@ class GameRepositoryImpl @Inject constructor(
                     if (player != null) {
                         trySendBlocking(player)
                     } else {
-                        close(PLayerNotFoundException(Constants.PLAYER_NOT_FOUND_EXCEPTION))
+                        close(PLayerNotFoundException())
                     }
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    close(DatabaseNotResponding(Constants.DATABASE_NOT_RESPONDING))
+                    close(DatabaseNotResponding())
                 }
             }
 
             firebaseDatabase.reference.child(GAMES_KEY_REFERENCES).child(gameId)
-                .child(
-                    PLAYERS_KEY_REFERENCES
-                ).child(playerId).addValueEventListener(
-                    valueEventListener
-                )
+                .child(PLAYERS_KEY_REFERENCES)
+                .child(playerId).addValueEventListener(valueEventListener)
 
             awaitClose {
                 firebaseDatabase.reference.child(GAMES_KEY_REFERENCES).child(gameId)
-                    .child(
-                        PLAYERS_KEY_REFERENCES
-                    ).child(playerId).removeEventListener(valueEventListener)
+                    .child(PLAYERS_KEY_REFERENCES)
+                    .child(playerId).removeEventListener(valueEventListener)
             }
         }
 
@@ -220,10 +200,8 @@ class GameRepositoryImpl @Inject constructor(
         playerId: String,
         status: PlayerStatus?
     ) {
-        getPlayerReference(
-            gameId,
-            playerId
-        ).child(STATUS_KEY_REFERENCES).setValue(status).await()
+        getPlayerReference(gameId, playerId)
+            .child(STATUS_KEY_REFERENCES).setValue(status).await()
     }
 
     override suspend fun setStatusForGame(gameId: String, status: GameStatus) {
@@ -233,10 +211,15 @@ class GameRepositoryImpl @Inject constructor(
     override suspend fun setVoteForPlayerInGame(
         gameId: String,
         playerId: String,
-        vote: PlayerDomain?
+        vote: String
     ) {
-        getPlayerReference(gameId, playerId).child(VOTE_KEY_REFERENCES)
-            .setValue(vote?.playerId).await()
+        getPlayerReference(gameId, playerId)
+            .child(VOTE_KEY_REFERENCES).setValue(vote).await()
+    }
+
+    override suspend fun removeVoteForPlayerInGame(gameId: String, playerId: String) {
+        getPlayerReference(gameId, playerId)
+            .child(VOTE_KEY_REFERENCES).removeValue().await()
     }
 
     companion object {

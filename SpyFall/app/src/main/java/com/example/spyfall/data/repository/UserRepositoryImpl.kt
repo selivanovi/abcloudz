@@ -40,21 +40,20 @@ class UserRepositoryImpl @Inject constructor(
                         trySendBlocking(Result.success(Unit))
                     } else {
                         trySendBlocking(
-                            Result.failure(InvalidNameException(Constants.INVALID_NAME_EXCEPTION))
+                            Result.failure(InvalidNameException())
                         )
                     }
                 }
 
                 override fun onCancelled(error: DatabaseError) {
                     trySendBlocking(
-                        Result.failure(DatabaseNotResponding(Constants.DATABASE_NOT_RESPONDING))
+                        Result.failure(DatabaseNotResponding())
                     )
                 }
             }
 
-            firebaseDatabase.reference.child(USER_REFERENCES).addListenerForSingleValueEvent(
-                valueEventListener
-            )
+            firebaseDatabase.reference.child(USER_REFERENCES)
+                .addListenerForSingleValueEvent(valueEventListener)
 
             awaitClose {
                 firebaseDatabase.getReference(USER_REFERENCES)
@@ -73,11 +72,11 @@ class UserRepositoryImpl @Inject constructor(
 
     override suspend fun deleteUser(userDomain: UserDomain) {
         sharedPreferences.edit {
-            putString(KEY_USER_ID, null)
-            putString(KEY_USER_NAME, null)
+            remove(KEY_USER_ID)
+            remove(KEY_USER_NAME)
         }
-        firebaseDatabase.reference.child(USER_REFERENCES).child(userDomain.userId.toString())
-            .setValue(null)
+        firebaseDatabase.reference.child(USER_REFERENCES)
+            .child(userDomain.userId).removeValue()
     }
 
     companion object {
