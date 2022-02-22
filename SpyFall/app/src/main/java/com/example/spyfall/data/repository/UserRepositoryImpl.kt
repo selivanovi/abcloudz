@@ -4,16 +4,9 @@ import android.content.SharedPreferences
 import androidx.core.content.edit
 import com.example.spyfall.domain.entity.UserDomain
 import com.example.spyfall.domain.repository.UserRepository
-import com.example.spyfall.utils.Constants
-import com.example.spyfall.utils.DatabaseNotResponding
-import com.example.spyfall.utils.InvalidNameException
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
+import com.example.spyfall.utils.UserExistException
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
-import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.channels.trySendBlocking
-import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -23,43 +16,26 @@ class UserRepositoryImpl @Inject constructor(
     private val sharedPreferences: SharedPreferences
 ) : UserRepository {
 
+    override suspend fun createUser(name: String): UserDomain {
+        val dataReference = firebaseDatabase.reference.child(USER_REFERENCES)
 
-    @OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
-    override suspend fun addUser(userDomain: UserDomain) =
-        callbackFlow<Result<Unit?>> {
-            val valueEventListener = object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val users = snapshot.children.map { it.getValue(String::class.java) }
-                    if (!users.contains(userDomain.name)) {
-                        sharedPreferences.edit {
-                            putString(KEY_USER_ID, userDomain.userId)
-                            putString(KEY_USER_NAME, userDomain.name)
-                        }
-                        firebaseDatabase.reference.child(USER_REFERENCES)
-                            .child(userDomain.userId).setValue(userDomain.name)
-                        trySendBlocking(Result.success(Unit))
-                    } else {
-                        trySendBlocking(
-                            Result.failure(InvalidNameException())
-                        )
-                    }
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    trySendBlocking(
-                        Result.failure(DatabaseNotResponding())
-                    )
-                }
+        val names = dataReference.get()
+            .await().children.mapNotNull { snapshot ->
+                snapshot.getValue(String::class.java)
             }
 
-            firebaseDatabase.reference.child(USER_REFERENCES)
-                .addListenerForSingleValueEvent(valueEventListener)
-
-            awaitClose {
-                firebaseDatabase.getReference(USER_REFERENCES)
-                    .removeEventListener(valueEventListener)
+        if (names.contains(name)) {
+            throw UserExistException(name)
+        } else {
+            val newUser = UserDomain(name = name)
+            dataReference.setValue(newUser)
+            sharedPreferences.edit{
+                putString(KEY_USER_NAME, newUser.name)
+                putString(KEY_USER_ID, newUser.userId)
             }
+            return newUser
         }
+    }
 
     override fun getUser(): UserDomain? {
         val userID = sharedPreferences.getString(KEY_USER_ID, null)

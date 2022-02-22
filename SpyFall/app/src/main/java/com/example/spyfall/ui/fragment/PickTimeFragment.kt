@@ -10,7 +10,6 @@ import com.example.spyfall.R
 import com.example.spyfall.ui.listener.PickTimeFragmentListener
 import com.example.spyfall.utils.FragmentNotAttachedException
 import com.example.spyfall.utils.times
-import com.example.spyfall.utils.toSeconds
 
 class PickTimeFragment : Fragment(R.layout.fragment_pick_time) {
 

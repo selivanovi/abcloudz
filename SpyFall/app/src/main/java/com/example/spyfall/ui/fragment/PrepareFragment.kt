@@ -71,6 +71,7 @@ class PrepareFragment :
         }.launchIn(lifecycleScope)
 
         viewModel.observeGameExit(gameId)
+
     }
 
     override fun startGame() {

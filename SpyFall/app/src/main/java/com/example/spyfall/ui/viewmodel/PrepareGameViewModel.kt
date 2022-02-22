@@ -1,5 +1,6 @@
 package com.example.spyfall.ui.viewmodel
 
+import android.util.Log
 import com.example.spyfall.data.entity.GameStatus
 import com.example.spyfall.domain.entity.GameDomain
 import com.example.spyfall.domain.repository.GameRepository
@@ -8,21 +9,25 @@ import com.example.spyfall.ui.navigation.PrepareGameDirections
 import com.example.spyfall.utils.times
 import com.example.spyfall.utils.toPlayerDomain
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class PrepareGameViewModel @Inject constructor(
     private val gameRepository: GameRepository,
-    private val userRepository: UserRepository,
+    userRepository: UserRepository,
     private val prepareGameDirections: PrepareGameDirections
 ) : GameViewModel(gameRepository, userRepository) {
 
     fun setupGame(gameId: String) {
         launch {
             val game = gameRepository.getGame(gameId)
-
-            if (game == null) createGame(gameId) else resetGame(gameId)
+            Log.d("GameViewMode", "game: $game")
+            if (game == null)
+                createGame(gameId)
+            else
+                resetGame(gameId)
         }
     }
 
@@ -55,4 +60,6 @@ class PrepareGameViewModel @Inject constructor(
     fun navigateToRoleWithArgs(gameId: String) {
         navigateTo(prepareGameDirections.toRoleWithArgs(gameId))
     }
+
+
 }

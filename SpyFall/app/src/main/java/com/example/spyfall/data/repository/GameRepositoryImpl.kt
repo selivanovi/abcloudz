@@ -1,12 +1,12 @@
 package com.example.spyfall.data.repository
 
+import android.util.Log
 import com.example.spyfall.data.entity.GameStatus
 import com.example.spyfall.data.entity.PlayerStatus
 import com.example.spyfall.domain.entity.GameDomain
 import com.example.spyfall.domain.entity.PlayerDomain
 import com.example.spyfall.domain.repository.GameRepository
 import com.example.spyfall.utils.DatabaseNotResponding
-import com.example.spyfall.utils.GameNotFoundException
 import com.example.spyfall.utils.PLayerNotFoundException
 import com.example.spyfall.utils.PLayersNotFoundException
 import com.example.spyfall.utils.toGame
@@ -23,13 +23,9 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.channels.trySendBlocking
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.tasks.await
-import java.lang.Exception
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
 
 @Singleton
 class GameRepositoryImpl @Inject constructor(
@@ -55,32 +51,8 @@ class GameRepositoryImpl @Inject constructor(
         getPlayerReference(gameId, playerDomain.playerId).setValue(player).await()
     }
 
-    override suspend fun getGame(gameId: String): GameDomain =
-        suspendCancellableCoroutine { continuation ->
-            val db = getGameReference(gameId)
-
-            val listener = object : ValueEventListener {
-
-                override fun onCancelled(error: DatabaseError) {
-                    continuation.resumeWithException(DatabaseNotResponding())
-                }
-
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    try {
-                        val game = snapshot.toGameDomain()
-                        if (game != null) {
-                            continuation.resume(game)
-                        } else {
-                            continuation.resumeWithException(GameNotFoundException())
-                        }
-                    } catch (exception: Exception) {
-                        continuation.resumeWithException(exception)
-                    }
-                }
-            }
-            continuation.invokeOnCancellation { db.removeEventListener(listener) }
-            db.addListenerForSingleValueEvent(listener)
-        }
+    override suspend fun getGame(gameId: String): GameDomain? =
+        getGameReference(gameId).get().await().toGameDomain()
 
     @Suppress("BlockingMethodInNonBlockingContext")
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -120,11 +92,13 @@ class GameRepositoryImpl @Inject constructor(
         callbackFlow {
             val valueEventListener = object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    val players = snapshot.children.mapNotNull {
+                    val players = snapshot.children.map {
                         it.toPlayerDomain()
                     }
-                    if (players.isEmpty()) {
-                        trySendBlocking(players)
+
+                    Log.d("GameRepository", "players: $players")
+                    if (players.isNotEmpty()) {
+                        trySendBlocking(players.filterNotNull())
                     } else {
                         close(PLayersNotFoundException())
                     }

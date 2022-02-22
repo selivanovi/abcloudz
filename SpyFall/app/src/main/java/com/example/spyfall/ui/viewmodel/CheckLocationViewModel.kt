@@ -9,8 +9,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CheckLocationViewModel @Inject constructor(
-    private val gameRepository: GameRepository,
-    private val userRepository: UserRepository,
+    gameRepository: GameRepository,
+    userRepository: UserRepository,
     private val checkLocationDirections: CheckLocationDirections,
 ) : CheckResultViewModel(gameRepository, userRepository) {
 

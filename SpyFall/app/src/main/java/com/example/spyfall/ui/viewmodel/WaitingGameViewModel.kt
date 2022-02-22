@@ -8,8 +8,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class WaitingGameViewModel @Inject constructor(
-    private val gameRepository: GameRepository,
-    private val userRepository: UserRepository,
+    gameRepository: GameRepository,
+    userRepository: UserRepository,
     private val waitingGameDirections: WaitingGameDirections
 ) : GameViewModel(gameRepository, userRepository) {
 

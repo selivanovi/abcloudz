@@ -17,22 +17,13 @@ class LogInViewModel @Inject constructor(
     private val logInDirections: LogInDirections
 ) : BaseViewModel() {
 
-    private val successAuthorizationMutableChannel = Channel<Unit>()
+    private val successAuthorizationMutableChannel = Channel<UserDomain>()
     val successAuthorizationChannel = successAuthorizationMutableChannel.receiveAsFlow()
 
     fun logIn(name: String) {
-        val userDomain = UserDomain(name = name)
         launch {
-            userRepository.addUser(userDomain).collect {
-                when {
-                    it.isSuccess ->
-                        successAuthorizationMutableChannel.send(Unit)
-                    it.isFailure ->
-                        it.exceptionOrNull()?.let { throwable ->
-                            throw throwable
-                        }
-                }
-            }
+            val user = userRepository.createUser(name)
+            successAuthorizationMutableChannel.send(user)
         }
     }
 

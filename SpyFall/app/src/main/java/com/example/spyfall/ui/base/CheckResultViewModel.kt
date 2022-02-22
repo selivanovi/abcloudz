@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.onEach
 
 abstract class CheckResultViewModel(
     private val gameRepository: GameRepository,
-    private val userRepository: UserRepository,
+    userRepository: UserRepository,
 ) : GameViewModel(gameRepository, userRepository) {
 
     fun observeGameStatusForResult(gameId: String) {

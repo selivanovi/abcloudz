@@ -1,10 +1,10 @@
 package com.example.spyfall.ui.base
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
 import com.example.spyfall.ui.navigation.NavEvent
 import com.example.spyfall.utils.Inflate
+import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
@@ -57,6 +58,13 @@ abstract class BaseFragment<VB : ViewBinding, VM : BaseViewModel>(
         setupObserver()
     }
 
+    override fun onStop() {
+        super.onStop()
+        lifecycleScope.coroutineContext.cancelChildren()
+        viewModel.clear()
+    }
+
+
     protected open fun setupView() {
     }
 
@@ -70,8 +78,13 @@ abstract class BaseFragment<VB : ViewBinding, VM : BaseViewModel>(
 
     private fun observeError() {
         viewModel.errorChannel.onEach { throwable ->
-            Toast.makeText(requireContext(), throwable.message, Toast.LENGTH_SHORT).show()
+            Log.e("BaseFragment", throwable.message.toString())
+            handleError(throwable)
         }.launchIn(lifecycleScope)
+    }
+
+    open fun handleError(throwable: Throwable) {
+
     }
 
     private fun observeNavigation() {

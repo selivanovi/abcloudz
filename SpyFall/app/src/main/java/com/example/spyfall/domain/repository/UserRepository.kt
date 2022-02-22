@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface UserRepository {
 
-    suspend fun addUser(userDomain: UserDomain): Flow<Result<Unit?>>
+    suspend fun createUser(name: String): UserDomain
 
     fun getUser(): UserDomain?
 

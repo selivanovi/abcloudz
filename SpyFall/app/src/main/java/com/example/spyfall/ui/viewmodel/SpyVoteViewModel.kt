@@ -9,8 +9,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SpyVoteViewModel @Inject constructor(
-    private val gameRepository: GameRepository,
-    private val userRepository: UserRepository,
+    gameRepository: GameRepository,
+    userRepository: UserRepository,
     private val spyVoteDirections: SpyVoteDirections
 ) : VoteViewModel(gameRepository, userRepository) {
 

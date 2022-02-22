@@ -5,7 +5,7 @@ import com.example.spyfall.data.entity.Role
 
 data class PlayerDomain(
     val playerId: String,
-    val name: String,
+    val name: String?,
     val status: PlayerStatus?,
     var role: Role?,
     val vote: String?

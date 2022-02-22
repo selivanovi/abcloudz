@@ -60,6 +60,3 @@ fun DataSnapshot.toGameDomain(): GameDomain? {
             duration = game.duration)
     } else null
 }
-
-fun Long.toSeconds(): Long =
-    this * 60

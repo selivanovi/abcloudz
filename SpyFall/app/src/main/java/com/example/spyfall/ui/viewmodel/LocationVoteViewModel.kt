@@ -9,8 +9,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LocationVoteViewModel @Inject constructor(
-    private val gameRepository: GameRepository,
-    private val userRepository: UserRepository,
+    gameRepository: GameRepository,
+    userRepository: UserRepository,
     private val locationVoteDirections: LocationVoteDirections
 ) : VoteViewModel(gameRepository, userRepository) {
 

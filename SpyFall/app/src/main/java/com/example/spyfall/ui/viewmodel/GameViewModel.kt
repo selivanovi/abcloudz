@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 
 open class GameViewModel(
     private val gameRepository: GameRepository,
-    private val userRepository: UserRepository
+    val userRepository: UserRepository
 ) : BaseViewModel() {
 
     val currentUser = userRepository.getUser()!!
