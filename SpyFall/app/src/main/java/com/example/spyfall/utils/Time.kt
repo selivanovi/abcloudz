@@ -1,16 +1,18 @@
 package com.example.spyfall.utils
 
-val times = listOf<Long>(
-    5,
-    6,
-    7,
-    8,
-    9,
-    10,
-    11,
-    12,
-    13,
-    14,
-    15,
-    -1
+import kotlin.time.Duration.Companion.minutes
+
+val times = listOf(
+    5.minutes,
+    6.minutes,
+    7.minutes,
+    8.minutes,
+    9.minutes,
+    10.minutes,
+    11.minutes,
+    12.minutes,
+    13.minutes,
+    14.minutes,
+    15.minutes,
+    (-1).minutes
 )

@@ -9,8 +9,7 @@ import com.example.spyfall.domain.repository.GameRepository
 import com.example.spyfall.domain.repository.UserRepository
 import com.example.spyfall.ui.navigation.RoleDirections
 import com.example.spyfall.ui.state.RoleState
-import com.example.spyfall.utils.Constants
-import com.example.spyfall.utils.DurationNullException
+import com.example.spyfall.utils.DurationNotSetException
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.Channel
@@ -20,11 +19,13 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 
 @HiltViewModel
 class RoleViewModel @Inject constructor(
     private val gameRepository: GameRepository,
-    private val userRepository: UserRepository,
+    userRepository: UserRepository,
     private val roleDirections: RoleDirections
 ) : GameViewModel(gameRepository, userRepository) {
 
@@ -37,10 +38,17 @@ class RoleViewModel @Inject constructor(
     private val roleStateMutableChannel = Channel<RoleState>()
     val roleStateChannel = roleStateMutableChannel.receiveAsFlow()
 
+    private var roleMutableChannel = Channel<Role>()
+    val roleChannel = roleMutableChannel.receiveAsFlow()
+
+    private var timeMutableChannel = Channel<Duration>()
+    val timeChannel = timeMutableChannel.receiveAsFlow()
+
+
     fun observeGame(gameId: String) {
         gameRepository.observeGame(gameId).onEach { game ->
             game?.duration?.let {
-                roleStateMutableChannel.send(RoleState.SetTime(it))
+                timeMutableChannel.send(it.seconds)
             }
             if (game?.status == GameStatus.PLAYING) {
                 startTimer(gameId)
@@ -83,7 +91,7 @@ class RoleViewModel @Inject constructor(
             val role = player.role
 
             role?.let {
-                roleStateMutableChannel.send(RoleState.SetRole(it))
+                roleMutableChannel.send(it)
             }
             if (player.role == Role.SPY) {
                 isSpy = true
@@ -142,7 +150,7 @@ class RoleViewModel @Inject constructor(
                             }
                             currentTime = i
 
-                            roleStateMutableChannel.send(RoleState.SetTime(i))
+                            timeMutableChannel.send(i.seconds)
 
                             delay(1_000L)
                         }
@@ -152,7 +160,7 @@ class RoleViewModel @Inject constructor(
                 }
                 .onFailure {
                     errorMutableChannel
-                        .send(DurationNullException(Constants.DURATION_NULL_EXCEPTION))
+                        .send(DurationNotSetException())
                 }
         }
     }

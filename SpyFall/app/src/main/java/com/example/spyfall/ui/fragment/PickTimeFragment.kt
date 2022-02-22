@@ -8,6 +8,7 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.Fragment
 import com.example.spyfall.R
 import com.example.spyfall.ui.listener.PickTimeFragmentListener
+import com.example.spyfall.utils.FragmentNotAttachedException
 import com.example.spyfall.utils.times
 import com.example.spyfall.utils.toSeconds
 
@@ -20,6 +21,8 @@ class PickTimeFragment : Fragment(R.layout.fragment_pick_time) {
         val parent = requireParentFragment()
         if (parent is PickTimeFragmentListener) {
             pickTimeFragmentListener = parent
+        } else {
+            throw FragmentNotAttachedException("PickTimeFragment")
         }
     }
 
@@ -31,12 +34,12 @@ class PickTimeFragment : Fragment(R.layout.fragment_pick_time) {
 
         buttonPlay.setOnClickListener {
             val value = timePicker.value
-            pickTimeFragmentListener?.setTime(times[value].toSeconds())
+            pickTimeFragmentListener?.setTime(times[value].inWholeSeconds)
         }
 
         val timesString = times.map {
-            if (it > 0) {
-                it.toString() + "\t" + resources.getString(R.string.measureOfTime)
+            if (it.inWholeMinutes > 0) {
+                it.inWholeMinutes.toString() + "\t" + resources.getString(R.string.measureOfTime)
             } else {
                 resources.getString(R.string.noLimit)
             }
