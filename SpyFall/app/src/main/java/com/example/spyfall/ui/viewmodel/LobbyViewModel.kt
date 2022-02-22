@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import java.lang.IllegalArgumentException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -24,7 +25,8 @@ class LobbyViewModel @Inject constructor(
 ) : BaseViewModel() {
 
     private var playerStatus: PlayerStatus? = null
-    private val currentPayer = userRepository.getUser()!!
+    private val currentPayer =
+        userRepository.getUser() ?: throw IllegalArgumentException("Current user not found")
 
     private val lobbyStateMutableChannel = Channel<LobbyState>()
     val lobbyState = lobbyStateMutableChannel.receiveAsFlow()

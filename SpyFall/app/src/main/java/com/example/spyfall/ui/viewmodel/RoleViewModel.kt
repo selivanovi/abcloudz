@@ -9,9 +9,9 @@ import com.example.spyfall.domain.repository.GameRepository
 import com.example.spyfall.domain.repository.UserRepository
 import com.example.spyfall.ui.navigation.RoleDirections
 import com.example.spyfall.ui.state.RoleState
+import com.example.spyfall.utils.Constants
 import com.example.spyfall.utils.DurationNotSetException
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
@@ -106,11 +106,8 @@ class RoleViewModel @Inject constructor(
     }
 
     fun setRolesInGame(gameId: String) {
-        val isHostDeferred = async { checkHost(gameId, currentUser.userId) }
-
         launch {
-            val isHost = isHostDeferred.await()
-            if (!isHost) return@launch
+            if (isHost) return@launch
             val players = gameRepository.getPlayersFromGame(gameId)
             setRoleForPLayersInGame(gameId, players)
         }
@@ -152,7 +149,7 @@ class RoleViewModel @Inject constructor(
 
                             timeMutableChannel.send(i.seconds)
 
-                            delay(1_000L)
+                            delay(Constants.TIMER_DELAY)
                         }
 
                         gameRepository.setStatusForGame(gameId, GameStatus.GAME_OVER)

@@ -26,7 +26,6 @@ class ResultViewModel @Inject constructor(
     fun observeStatusOfCurrentPlayer(gameId: String) {
         gameRepository.observePlayerFromGame(gameId, currentUser.userId).onEach { player ->
             if (player.status == PlayerStatus.EXIT) {
-                val isHost = checkHost(gameId, currentUser.userId)
                 if (isHost) {
                     deleteGameById(gameId)
                 } else {
@@ -36,7 +35,6 @@ class ResultViewModel @Inject constructor(
             }
             if (player.status == PlayerStatus.CONTINUE) {
                 resetCurrentPlayer(gameId)
-                val isHost = checkHost(gameId, currentUser.userId)
                 if (isHost) {
                     resultStateMutableChannel.send(ResultState.HostContinue)
                 } else {

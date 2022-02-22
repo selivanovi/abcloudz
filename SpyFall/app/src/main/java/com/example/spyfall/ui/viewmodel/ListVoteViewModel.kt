@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import java.lang.IllegalArgumentException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -21,7 +22,8 @@ class ListVoteViewModel @Inject constructor(
 
     var playerForVote: PlayerDomain? = null
 
-    private val currentPlayer = userRepository.getUser()!!
+    private val currentPlayer =
+        userRepository.getUser() ?: throw IllegalArgumentException("Current user not found")
 
     private val playersMutableChannel = Channel<List<PlayerDomain>>()
     val playersChannel = playersMutableChannel.receiveAsFlow()

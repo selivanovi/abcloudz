@@ -21,12 +21,15 @@ open class GameViewModel(
     val userRepository: UserRepository
 ) : BaseViewModel() {
 
-    val currentUser = userRepository.getUser()!!
+    val currentUser =
+        userRepository.getUser() ?: throw IllegalArgumentException("Current user not found")
 
     private val gameStateMutableChannel = Channel<GameState>()
     val gameStateChannel = gameStateMutableChannel.receiveAsFlow()
 
     private var currentGame: GameDomain? = null
+
+    protected val isHost: Boolean = currentGame?.host == currentUser.userId
 
     fun observeGameExit(gameId: String) {
         gameRepository.observeGame(gameId).onEach { game ->
@@ -43,12 +46,13 @@ open class GameViewModel(
     fun observeNumberOfPlayer(gameId: String) {
         gameRepository.observePlayersFromGame(gameId).onEach { players ->
             if (players.size < Constants.MIN_NUMBER_PLAYERS) {
-                clearStatusForPLayers(gameId, players)
-                val isHost = checkHost(gameId, currentUser.userId)
-                if (isHost) {
-                    gameStateMutableChannel.send(GameState.ExitToLobbyForHost)
-                } else {
-                    gameStateMutableChannel.send(GameState.ExitToLobbyForPlayer)
+                if (currentGame != null) {
+                    clearStatusForPLayers(gameId, players)
+                    if (isHost) {
+                        gameStateMutableChannel.send(GameState.ExitToLobbyForHost)
+                    } else {
+                        gameStateMutableChannel.send(GameState.ExitToLobbyForPlayer)
+                    }
                 }
             }
         }.launchIn(viewModelScope)
@@ -62,8 +66,6 @@ open class GameViewModel(
     }
 
     suspend fun clearGame(gameId: String) {
-        val isHost = checkHost(gameId, currentUser.userId)
-
         if (isHost) {
             deleteGameById(gameId)
         } else {
@@ -82,11 +84,6 @@ open class GameViewModel(
     protected suspend fun deleteGameById(gameId: String) =
         gameRepository.deleteGame(gameId)
 
-    protected suspend fun checkHost(gameId: String, playerId: String): Boolean =
-        getHost(gameId) == playerId
-
-    private suspend fun getHost(gameId: String): String =
-        gameRepository.getGame(gameId)?.host!!
 
     fun setStatusForCurrentPlayerInGame(gameId: String, status: PlayerStatus) {
         launch {

@@ -2,6 +2,7 @@ package com.example.spyfall.ui.viewmodel
 
 import com.example.spyfall.ui.base.BaseViewModel
 import com.example.spyfall.ui.navigation.SplashDirections
+import com.example.spyfall.utils.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -14,7 +15,7 @@ class SplashViewModel @Inject constructor(
 
     fun navigateToLogIn() {
         launch {
-            delay(1_000L)
+            delay(Constants.SPLASH_DELAY)
             navigateTo(fragmentDirections.toLogIn())
         }
     }
