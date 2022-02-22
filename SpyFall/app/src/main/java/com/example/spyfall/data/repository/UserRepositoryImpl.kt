@@ -28,7 +28,7 @@ class UserRepositoryImpl @Inject constructor(
             throw UserExistException(name)
         } else {
             val newUser = UserDomain(name = name)
-            dataReference.setValue(newUser)
+            dataReference.child(newUser.userId).setValue(name)
             sharedPreferences.edit{
                 putString(KEY_USER_NAME, newUser.name)
                 putString(KEY_USER_ID, newUser.userId)

@@ -1,6 +1,5 @@
 package com.example.spyfall.data.repository
 
-import android.util.Log
 import com.example.spyfall.data.entity.GameStatus
 import com.example.spyfall.data.entity.PlayerStatus
 import com.example.spyfall.domain.entity.GameDomain
@@ -19,6 +18,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.channels.trySendBlocking
 import kotlinx.coroutines.flow.Flow
@@ -91,21 +91,22 @@ class GameRepositoryImpl @Inject constructor(
     override fun observePlayersFromGame(gameId: String): Flow<List<PlayerDomain>> =
         callbackFlow {
             val valueEventListener = object : ValueEventListener {
+
+
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val players = snapshot.children.map {
                         it.toPlayerDomain()
                     }
 
-                    Log.d("GameRepository", "players: $players")
                     if (players.isNotEmpty()) {
                         trySendBlocking(players.filterNotNull())
                     } else {
-                        close(PLayersNotFoundException())
+                        cancel("PLayers is null", PLayersNotFoundException())
                     }
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    close(DatabaseNotResponding())
+                    cancel("Was canceled", DatabaseNotResponding())
                 }
             }
 
@@ -131,12 +132,12 @@ class GameRepositoryImpl @Inject constructor(
                     if (player != null) {
                         trySendBlocking(player)
                     } else {
-                        close(PLayerNotFoundException())
+                        cancel("PLayer is null", PLayerNotFoundException())
                     }
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    close(DatabaseNotResponding())
+                    cancel("Was canceled", DatabaseNotResponding())
                 }
             }
 

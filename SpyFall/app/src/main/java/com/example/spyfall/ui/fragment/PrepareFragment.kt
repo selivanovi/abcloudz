@@ -12,6 +12,7 @@ import com.example.spyfall.ui.base.GameFragment
 import com.example.spyfall.ui.listener.LobbyFragmentListener
 import com.example.spyfall.ui.listener.PickTimeFragmentListener
 import com.example.spyfall.ui.state.GameState
+import com.example.spyfall.ui.state.PrepareState
 import com.example.spyfall.ui.viewmodel.PrepareGameViewModel
 import com.google.android.material.button.MaterialButton
 import dagger.hilt.android.AndroidEntryPoint
@@ -36,7 +37,7 @@ class PrepareFragment :
         super.setupView()
 
         childFragmentManager.commit {
-            add(R.id.createGameContainerView, LobbyHostFragment.newInstance(gameId))
+            add(R.id.createGameContainerView, WaitingFragment())
         }
 
         with(binding) {
@@ -60,6 +61,15 @@ class PrepareFragment :
     }
 
     override fun setupObserver() {
+
+        viewModel.prepareStateChannel.onEach { state ->
+            if (state is PrepareState.GameIsReady){
+                childFragmentManager.commit {
+                    replace(R.id.createGameContainerView, LobbyHostFragment.newInstance(gameId))
+                }
+            }
+        }.launchIn(lifecycleScope)
+
         viewModel.errorChannel.onEach { throwable ->
             Toast.makeText(requireContext(), throwable.message, Toast.LENGTH_LONG).show()
         }.launchIn(lifecycleScope)
@@ -71,7 +81,6 @@ class PrepareFragment :
         }.launchIn(lifecycleScope)
 
         viewModel.observeGameExit(gameId)
-
     }
 
     override fun startGame() {
