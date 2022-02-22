@@ -11,10 +11,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
 import com.example.spyfall.ui.navigation.NavEvent
+import com.example.spyfall.utils.Inflate
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-
-typealias Inflate<T> = (LayoutInflater, ViewGroup?, Boolean) -> T
 
 abstract class BaseFragment<VB : ViewBinding, VM : BaseViewModel>(
     val inflate: Inflate<VB>
