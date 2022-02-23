@@ -15,7 +15,7 @@ import com.example.spyfall.ui.viewmodel.ResultViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
+
 
 @AndroidEntryPoint
 class SpyWonFragment :
@@ -72,12 +72,6 @@ class SpyWonFragment :
         viewModel.observeGameExit(gameId)
         viewModel.observeStatusOfCurrentPlayer(gameId)
         viewModel.observeStatusOfPlayers(gameId)
-    }
-
-    override fun onBackPressed() {
-        lifecycleScope.launch {
-            viewModel.clearGame(gameId)
-        }
     }
 
     override fun setButtonDrawer(): View = binding.menu

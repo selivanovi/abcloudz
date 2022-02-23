@@ -87,12 +87,6 @@ class PrepareFragment :
         viewModel.navigateToRole(gameId)
     }
 
-    override fun onBackPressed() {
-        lifecycleScope.launch {
-            viewModel.clearGame(gameId)
-        }
-    }
-
     private fun createButtons() {
         with(binding) {
             buttonPlayers.isActivated = true

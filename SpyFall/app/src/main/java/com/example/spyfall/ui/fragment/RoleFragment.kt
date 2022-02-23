@@ -13,7 +13,6 @@ import com.example.spyfall.ui.viewmodel.RoleViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class RoleFragment :
@@ -79,12 +78,6 @@ class RoleFragment :
             setRolesInGame(gameId)
             observeRoleOfCurrentPlayer(gameId)
             observeGame(gameId)
-        }
-    }
-
-    override fun onBackPressed() {
-        lifecycleScope.launch {
-            viewModel.clearGame(gameId)
         }
     }
 

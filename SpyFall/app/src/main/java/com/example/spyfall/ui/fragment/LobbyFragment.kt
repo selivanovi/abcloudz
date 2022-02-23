@@ -2,12 +2,9 @@ package com.example.spyfall.ui.fragment
 
 import android.content.Context
 import android.os.Bundle
-import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.spyfall.R
 import com.example.spyfall.databinding.FragmentLobbyBinding
 import com.example.spyfall.ui.base.BaseFragment
 import com.example.spyfall.ui.listener.LobbyFragmentListener
@@ -16,7 +13,6 @@ import com.example.spyfall.ui.state.LobbyState
 import com.example.spyfall.ui.viewmodel.LobbyViewModel
 import com.example.spyfall.utils.FragmentNotAttachedException
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import java.lang.IllegalArgumentException

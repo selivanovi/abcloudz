@@ -20,16 +20,9 @@ class SpyVoteFragment :
 
     override fun setupView() {
         super.setupView()
-
         childFragmentManager.commit {
             add<WaitingFragment>(R.id.voteContainerView)
         }
-    }
-
-    override fun setupObserver() {
-        super.setupObserver()
-
-        viewModel.observeVotePlayersInGame(gameId)
     }
 
     override fun onBackPressed() {

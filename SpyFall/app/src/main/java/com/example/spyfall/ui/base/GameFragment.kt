@@ -10,6 +10,7 @@ import com.example.spyfall.ui.viewmodel.GameViewModel
 import com.example.spyfall.utils.Inflate
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import java.lang.IllegalArgumentException
 
 abstract class GameFragment<VB : ViewBinding, VM : GameViewModel>(
@@ -36,6 +37,13 @@ abstract class GameFragment<VB : ViewBinding, VM : GameViewModel>(
 
         viewModel.observeGameExit(gameId)
         viewModel.observeNumberOfPlayer(gameId)
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        lifecycleScope.launch {
+            viewModel.clearGame(gameId)
+        }
     }
 
     companion object {

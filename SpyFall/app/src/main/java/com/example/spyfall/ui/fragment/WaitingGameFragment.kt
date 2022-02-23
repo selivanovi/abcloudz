@@ -62,12 +62,6 @@ class WaitingGameFragment :
         viewModel.observeGameExit(gameId)
     }
 
-    override fun onBackPressed() {
-        lifecycleScope.launch {
-            viewModel.clearGame(gameId)
-        }
-    }
-
     override fun startGame() {
         viewModel.navigateToRole(gameId)
     }

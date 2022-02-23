@@ -1,6 +1,5 @@
 package com.example.spyfall.ui.fragment
 
-import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import com.example.spyfall.databinding.FragmentAboutBinding
