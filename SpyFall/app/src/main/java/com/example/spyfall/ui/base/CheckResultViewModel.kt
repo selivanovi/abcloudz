@@ -15,13 +15,11 @@ abstract class CheckResultViewModel(
 
     fun observeGameStatusForResult(gameId: String) {
         gameRepository.observeGame(gameId).onEach { game ->
-            if (game?.status != null) {
-                if (game.status == GameStatus.SPY_WON) {
-                    navigateToSpyWonWithArgs(gameId)
-                }
-                if (game.status == GameStatus.LOCATION_WON) {
-                    navigateToLocationWonWithArgs(gameId)
-                }
+            if (game?.status == GameStatus.SPY_WON) {
+                navigateToSpyWonWithArgs(gameId)
+            }
+            if (game?.status == GameStatus.LOCATION_WON) {
+                navigateToLocationWonWithArgs(gameId)
             }
         }.launchIn(viewModelScope)
     }

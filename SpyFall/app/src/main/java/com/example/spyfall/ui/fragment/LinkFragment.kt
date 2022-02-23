@@ -8,14 +8,17 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.spyfall.R
+import com.example.spyfall.databinding.FragmentCreateLinkBinding
+import com.example.spyfall.ui.base.BaseFragment
 import com.example.spyfall.ui.listener.LinkFragmentListener
 import com.example.spyfall.ui.viewmodel.LinkViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class LinkFragment : Fragment(R.layout.fragment_create_link) {
+class LinkFragment :
+    BaseFragment<FragmentCreateLinkBinding, LinkViewModel>(FragmentCreateLinkBinding::inflate) {
 
-    private val viewModel: LinkViewModel by viewModels()
+    override val viewModel: LinkViewModel by viewModels()
     private var linkFragmentListener: LinkFragmentListener? = null
 
     override fun onAttach(context: Context) {
@@ -31,10 +34,12 @@ class LinkFragment : Fragment(R.layout.fragment_create_link) {
 
         val gameId = viewModel.generateGameId()
 
-        view.findViewById<TextView>(R.id.textViewGameId).text = gameId
+        with(binding) {
+            textViewGameId.text = gameId
 
-        view.findViewById<Button>(R.id.buttonCool).setOnClickListener {
-            linkFragmentListener?.createGame(gameId)
+            buttonCool.setOnClickListener {
+                linkFragmentListener?.createGame(gameId)
+            }
         }
     }
 

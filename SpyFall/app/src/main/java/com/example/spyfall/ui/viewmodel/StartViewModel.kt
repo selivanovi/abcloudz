@@ -10,6 +10,7 @@ import com.example.spyfall.utils.GameNotFoundException
 import com.example.spyfall.utils.toPlayerDomain
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import java.lang.IllegalArgumentException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -19,7 +20,7 @@ class StartViewModel @Inject constructor(
     private val startDirections: StartDirections
 ) : BaseViewModel() {
 
-    val currentPLayer = userRepository.getUser()!!
+    val currentPLayer = userRepository.getUser() ?: throw IllegalArgumentException("User not found")
 
     fun joinToGame(gameId: String) = launch {
         val game = gameRepository.getGame(gameId)

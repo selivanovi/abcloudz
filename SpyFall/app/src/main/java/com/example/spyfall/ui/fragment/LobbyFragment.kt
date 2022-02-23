@@ -78,11 +78,6 @@ class LobbyFragment :
         viewModel.observePlayersFromGame(gameId)
     }
 
-    override fun onStop() {
-        super.onStop()
-        lifecycleScope.cancel()
-    }
-
     override fun onDetach() {
         super.onDetach()
         lobbyFragmentListener = null

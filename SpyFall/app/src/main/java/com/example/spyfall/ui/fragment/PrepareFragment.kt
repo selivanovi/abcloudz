@@ -123,6 +123,6 @@ class PrepareFragment :
 
     override fun setTime(time: Long) {
         viewModel.setDuration(gameId, time)
-        requireView().findViewById<MaterialButton>(R.id.buttonPlayers).callOnClick()
+        binding.buttonPlayers.callOnClick()
     }
 }

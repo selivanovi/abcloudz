@@ -1,5 +1,6 @@
 package com.example.spyfall.ui.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.example.spyfall.data.entity.GameStatus
 import com.example.spyfall.data.entity.PlayerStatus
@@ -50,38 +51,44 @@ class RoleViewModel @Inject constructor(
             game?.duration?.let {
                 timeMutableChannel.send(it.seconds)
             }
-            if (game?.status == GameStatus.PLAYING) {
-                startTimer(gameId)
-                roleStateMutableChannel.send(RoleState.GameIsPlaying)
-            }
-            if (game?.status == GameStatus.PAUSE) {
-                stopTimer(gameId)
-                roleStateMutableChannel.send(RoleState.GameIsPause)
-            }
-            if (game?.status == GameStatus.VOTE) {
-                stopTimer(gameId)
-                if (isSpy) {
-                    navigateToSpyVoteWithArgs(gameId)
-                } else {
-                    navigateToLocationVoteWithArgs(gameId)
+            when (game?.status) {
+                GameStatus.PLAYING -> {
+                    startTimer(gameId)
+                    roleStateMutableChannel.send(RoleState.GameIsPlaying)
                 }
-            }
-            if (game?.status == GameStatus.GAME_OVER) {
-                stopTimer(gameId)
-                if (isSpy) {
-                    navigateToSpyVoteWithArgs(gameId)
-                } else {
-                    navigateToLocationVoteWithArgs(gameId)
+                GameStatus.PAUSE -> {
+                    stopTimer(gameId)
+                    roleStateMutableChannel.send(RoleState.GameIsPause)
                 }
-            }
-            if (game?.status == GameStatus.LOCATION) {
-                stopTimer(gameId)
-                if (isSpy) {
-                    navigateToCallLocationWithArgs(gameId)
-                } else {
-                    navigateToCheckLocationWithArgs(gameId)
+                GameStatus.VOTE -> {
+                    stopTimer(gameId)
+                    if (isSpy) {
+                        navigateToSpyVoteWithArgs(gameId)
+                    } else {
+                        navigateToLocationVoteWithArgs(gameId)
+                    }
                 }
+                GameStatus.GAME_OVER -> {
+                    stopTimer(gameId)
+                    if (isSpy) {
+                        navigateToSpyVoteWithArgs(gameId)
+                    } else {
+                        navigateToLocationVoteWithArgs(gameId)
+                    }
+                }
+                GameStatus.LOCATION -> {
+                    stopTimer(gameId)
+                    if (isSpy) {
+                        navigateToCallLocationWithArgs(gameId)
+                    } else {
+                        navigateToCheckLocationWithArgs(gameId)
+                    }
+                }
+                else ->
+                    Log.d("RoleViewModel", "Current state is: ${game?.status}")
+
             }
+
         }.launchIn(viewModelScope)
     }
 

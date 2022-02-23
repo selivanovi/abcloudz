@@ -1,5 +1,6 @@
 package com.example.spyfall.ui.recyclerview
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,7 @@ class PlayersAdapter : RecyclerView.Adapter<PlayersAdapter.PlayerViewHolder>() {
 
     private val players = mutableListOf<PlayerDomain>()
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setData(newPlayers: List<PlayerDomain>) {
         players.clear()
 
