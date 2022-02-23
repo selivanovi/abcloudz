@@ -35,6 +35,8 @@ class LocationWonFragment :
     }
 
     override fun setupObserver() {
+        super.setupObserver()
+
         viewModel.resultStateChannel.onEach { state ->
             when (state) {
                 is ResultState.SetRole ->

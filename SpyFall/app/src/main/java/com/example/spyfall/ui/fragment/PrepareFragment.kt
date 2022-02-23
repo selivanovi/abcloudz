@@ -70,10 +70,6 @@ class PrepareFragment :
             }
         }.launchIn(lifecycleScope)
 
-        viewModel.errorChannel.onEach { throwable ->
-            Toast.makeText(requireContext(), throwable.message, Toast.LENGTH_LONG).show()
-        }.launchIn(lifecycleScope)
-
         viewModel.gameStateChannel.onEach { state ->
             if (state is GameState.ExitToMenu) {
                 findNavController().navigateUp()

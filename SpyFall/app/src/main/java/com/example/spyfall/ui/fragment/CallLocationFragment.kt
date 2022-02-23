@@ -13,6 +13,5 @@ class CallLocationFragment :
 
     override val viewModel: CallLocationViewModel by viewModels()
 
-
     override fun setButtonDrawer(): View = binding.menu
 }
