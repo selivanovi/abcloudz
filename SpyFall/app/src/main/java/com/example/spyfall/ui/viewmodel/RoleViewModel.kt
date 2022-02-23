@@ -173,7 +173,6 @@ class RoleViewModel @Inject constructor(
                 }
             }
         }.start()
-
     }
 
     private suspend fun setRoleForPLayersInGame(gameId: String, players: List<PlayerDomain>) {

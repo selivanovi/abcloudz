@@ -6,12 +6,20 @@ import android.view.View
 import android.widget.NumberPicker
 import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.example.spyfall.R
+import com.example.spyfall.databinding.FragmentPickTimeBinding
+import com.example.spyfall.ui.base.BaseFragment
+import com.example.spyfall.ui.base.BaseViewModel
 import com.example.spyfall.ui.listener.PickTimeFragmentListener
+import com.example.spyfall.ui.viewmodel.PickTimeViewModel
 import com.example.spyfall.utils.FragmentNotAttachedException
 import com.example.spyfall.utils.times
 
-class PickTimeFragment : Fragment(R.layout.fragment_pick_time) {
+class PickTimeFragment :
+    BaseFragment<FragmentPickTimeBinding, BaseViewModel>(FragmentPickTimeBinding::inflate) {
+
+    override val viewModel: PickTimeViewModel by viewModels()
 
     private var pickTimeFragmentListener: PickTimeFragmentListener? = null
 
@@ -25,31 +33,29 @@ class PickTimeFragment : Fragment(R.layout.fragment_pick_time) {
         }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        val timePicker = view.findViewById<NumberPicker>(R.id.timePicker)
-        val buttonPlay = view.findViewById<AppCompatButton>(R.id.buttonPlay)
-
-        buttonPlay.setOnClickListener {
-            val value = timePicker.value
-            pickTimeFragmentListener?.setTime(times[value].inWholeSeconds)
-        }
-
-        val timesString = times.map {
-            if (it.inWholeMinutes > 0) {
-                it.inWholeMinutes.toString() + "\t" + resources.getString(R.string.measureOfTime)
-            } else {
-                resources.getString(R.string.noLimit)
+    override fun setupView() {
+        super.setupView()
+        with(binding) {
+            buttonPlay.setOnClickListener {
+                val value = timePicker.value
+                pickTimeFragmentListener?.setTime(times[value].inWholeSeconds)
             }
-        }
 
-        with(timePicker) {
-            minValue = 0
-            maxValue = timesString.size - 1
-            wrapSelectorWheel = true
-            displayedValues = timesString.toTypedArray()
-            descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
+            val timesString = times.map {
+                if (it.inWholeMinutes > 0) {
+                    it.inWholeMinutes.toString() + "\t" + resources.getString(R.string.measureOfTime)
+                } else {
+                    resources.getString(R.string.noLimit)
+                }
+            }
+
+            with(timePicker) {
+                minValue = 0
+                maxValue = timesString.size - 1
+                wrapSelectorWheel = true
+                displayedValues = timesString.toTypedArray()
+                descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
+            }
         }
     }
 
@@ -57,4 +63,5 @@ class PickTimeFragment : Fragment(R.layout.fragment_pick_time) {
         super.onDetach()
         pickTimeFragmentListener = null
     }
+
 }

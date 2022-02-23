@@ -2,18 +2,20 @@ package com.example.spyfall.ui.fragment
 
 import android.content.Context
 import android.net.Uri
-import android.os.Bundle
-import android.view.View
-import android.widget.Button
-import android.widget.EditText
 import android.widget.Toast
-import androidx.fragment.app.Fragment
-import com.example.spyfall.R
+import androidx.fragment.app.viewModels
+import com.example.spyfall.databinding.FragmentJoinGameBinding
+import com.example.spyfall.ui.base.BaseFragment
+import com.example.spyfall.ui.base.BaseViewModel
 import com.example.spyfall.ui.listener.JoinGameFragmentListener
+import com.example.spyfall.ui.viewmodel.JoinGameViewModel
 import com.example.spyfall.utils.Constants
 import com.example.spyfall.utils.FragmentNotAttachedException
 
-class JoinGameFragment : Fragment(R.layout.fragment_join_game) {
+class JoinGameFragment :
+    BaseFragment<FragmentJoinGameBinding, BaseViewModel>(FragmentJoinGameBinding::inflate) {
+
+    override val viewModel: JoinGameViewModel by viewModels()
 
     private var joinGameFragmentListener: JoinGameFragmentListener? = null
 
@@ -27,25 +29,25 @@ class JoinGameFragment : Fragment(R.layout.fragment_join_game) {
         }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun setupView() {
+        super.setupView()
 
         val data: Uri? = requireActivity().intent.data
 
-        val joinGameEditText = view.findViewById<EditText>(R.id.joinGameEditText)
+        with(binding) {
+            data?.let {
+                val gameId = it.getQueryParameter(Constants.ID_PARAMETER)
+                joinGameEditText.setText(gameId)
+            }
 
-        data?.let {
-            val gameId = it.getQueryParameter(Constants.ID_PARAMETER)
-            joinGameEditText.setText(gameId)
-        }
-
-        view.findViewById<Button>(R.id.buttonJoinGame).setOnClickListener {
-            val gameId = joinGameEditText.text.toString()
-            if (gameId.length != Constants.LENGTH_ID) {
-                Toast.makeText(requireContext(), Constants.NOT_CORRECT_GAME_ID, Toast.LENGTH_LONG)
-                    .show()
-            } else {
-                joinGameFragmentListener?.joinToGame(gameId)
+            buttonJoinGame.setOnClickListener {
+                val gameId = joinGameEditText.text.toString()
+                if (gameId.length != Constants.LENGTH_ID) {
+                    Toast.makeText(requireContext(), Constants.NOT_CORRECT_GAME_ID, Toast.LENGTH_LONG)
+                        .show()
+                } else {
+                    joinGameFragmentListener?.joinToGame(gameId)
+                }
             }
         }
     }
