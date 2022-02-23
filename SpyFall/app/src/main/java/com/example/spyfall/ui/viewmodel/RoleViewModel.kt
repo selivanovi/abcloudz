@@ -1,5 +1,6 @@
 package com.example.spyfall.ui.viewmodel
 
+import android.os.CountDownTimer
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.example.spyfall.data.entity.GameStatus
@@ -21,6 +22,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.time.Duration
+import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 
 @HiltViewModel
@@ -44,6 +46,7 @@ class RoleViewModel @Inject constructor(
     private var timeMutableChannel = Channel<Duration>()
     val timeChannel = timeMutableChannel.receiveAsFlow()
 
+    private var timer: CountDownTimer? = null
 
     fun observeGame(gameId: String) {
         gameRepository.observeGame(gameId).onEach { game ->
@@ -131,6 +134,7 @@ class RoleViewModel @Inject constructor(
     private fun stopTimer(gameId: String) {
         launch {
             stopTimer = true
+            timer?.cancel()
             currentTime?.let {
                 gameRepository.setDurationForGames(gameId, it)
             }
@@ -147,18 +151,7 @@ class RoleViewModel @Inject constructor(
                     if (duration < 0) {
                         currentTime = duration
                     } else {
-                        for (i in duration downTo 0) {
-                            if (stopTimer) {
-                                return@launch
-                            }
-                            currentTime = i
-
-                            timeMutableChannel.send(i.seconds)
-
-                            delay(Constants.TIMER_DELAY)
-                        }
-
-                        gameRepository.setStatusForGame(gameId, GameStatus.GAME_OVER)
+                        startCountDownTimer(gameId, duration.seconds.inWholeMilliseconds)
                     }
                 }
                 .onFailure {
@@ -166,6 +159,26 @@ class RoleViewModel @Inject constructor(
                         .send(DurationNotSetException())
                 }
         }
+    }
+
+
+
+    private fun startCountDownTimer(gameId: String, timeMillis: Long) {
+        timer = object : CountDownTimer(timeMillis, Constants.TIMER_DELAY) {
+
+            override fun onTick(time: Long) {
+                launch {
+                    timeMutableChannel.send(time.milliseconds)
+                }
+            }
+
+            override fun onFinish() {
+                launch {
+                    gameRepository.setStatusForGame(gameId, GameStatus.GAME_OVER)
+                }
+            }
+        }.start()
+
     }
 
     private suspend fun setRoleForPLayersInGame(gameId: String, players: List<PlayerDomain>) {

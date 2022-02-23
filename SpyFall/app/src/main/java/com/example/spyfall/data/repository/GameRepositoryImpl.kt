@@ -1,5 +1,6 @@
 package com.example.spyfall.data.repository
 
+import android.util.Log
 import com.example.spyfall.data.entity.GameStatus
 import com.example.spyfall.data.entity.PlayerStatus
 import com.example.spyfall.domain.entity.GameDomain
@@ -26,6 +27,7 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.math.log
 
 @Singleton
 class GameRepositoryImpl @Inject constructor(
@@ -92,12 +94,12 @@ class GameRepositoryImpl @Inject constructor(
         callbackFlow {
             val valueEventListener = object : ValueEventListener {
 
-
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val players = snapshot.children.map {
                         it.toPlayerDomain()
                     }
 
+                    Log.d("GameRepository", players.toString())
                     if (players.isNotEmpty()) {
                         trySendBlocking(players.filterNotNull())
                     } else {

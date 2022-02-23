@@ -2,7 +2,6 @@ package com.example.spyfall.ui.fragment
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -61,6 +60,7 @@ class PrepareFragment :
     }
 
     override fun setupObserver() {
+        super.setupObserver()
 
         viewModel.prepareStateChannel.onEach { state ->
             if (state is PrepareState.GameIsReady){
@@ -69,14 +69,12 @@ class PrepareFragment :
                 }
             }
         }.launchIn(lifecycleScope)
+    }
 
-        viewModel.gameStateChannel.onEach { state ->
-            if (state is GameState.ExitToMenu) {
-                findNavController().navigateUp()
-            }
-        }.launchIn(lifecycleScope)
-
-        viewModel.observeGameExit(gameId)
+    override fun handleGameExit(state: GameState) {
+        if (state is GameState.ExitToMenu) {
+            viewModel.navigateUp()
+        }
     }
 
     override fun startGame() {

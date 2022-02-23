@@ -26,17 +26,21 @@ abstract class GameFragment<VB : ViewBinding, VM : GameViewModel>(
         super.setupObserver()
 
         viewModel.gameStateChannel.onEach { state ->
-            when (state) {
-                GameState.ExitToMenu -> findNavController().navigateUp()
-                GameState.ExitToLobbyForHost ->
-                    findNavController().navigate(R.id.prepareFragment, getBundle(gameId))
-                GameState.ExitToLobbyForPlayer ->
-                    findNavController().navigate(R.id.waitingGameFragment, getBundle(gameId))
-            }
+            handleGameExit(state)
         }.launchIn(lifecycleScope)
 
         viewModel.observeGameExit(gameId)
         viewModel.observeNumberOfPlayer(gameId)
+    }
+
+    open fun handleGameExit(state: GameState) {
+        when (state) {
+            GameState.ExitToMenu -> findNavController().navigateUp()
+            GameState.ExitToLobbyForHost ->
+                findNavController().navigate(R.id.prepareFragment, getBundle(gameId))
+            GameState.ExitToLobbyForPlayer ->
+                findNavController().navigate(R.id.waitingGameFragment, getBundle(gameId))
+        }
     }
 
     override fun onBackPressed() {

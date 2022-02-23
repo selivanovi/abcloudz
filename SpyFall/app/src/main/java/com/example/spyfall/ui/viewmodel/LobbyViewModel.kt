@@ -1,5 +1,6 @@
 package com.example.spyfall.ui.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.example.spyfall.data.entity.GameStatus
 import com.example.spyfall.data.entity.PlayerStatus
@@ -21,7 +22,7 @@ import javax.inject.Inject
 @HiltViewModel
 class LobbyViewModel @Inject constructor(
     private val gameRepository: GameRepository,
-    private val userRepository: UserRepository
+    userRepository: UserRepository
 ) : BaseViewModel() {
 
     private var playerStatus: PlayerStatus? = null
@@ -37,9 +38,10 @@ class LobbyViewModel @Inject constructor(
     fun observePlayersFromGame(gameId: String) {
         gameRepository.observePlayersFromGame(gameId).onEach { players ->
             playersMutableChannel.send(players)
-
+            Log.d("LobbyViewModel", "$players")
             if (players.all { player -> player.status == PlayerStatus.PLAY }) {
                 if (players.size >= Constants.MIN_NUMBER_PLAYERS) {
+                    Log.d("LobbyViewModel", "PLAY")
                     lobbyStateMutableChannel.send(LobbyState.Play)
                     gameRepository.setStatusForGame(gameId, GameStatus.PLAYING)
                 } else lobbyStateMutableChannel.send(LobbyState.Wait)

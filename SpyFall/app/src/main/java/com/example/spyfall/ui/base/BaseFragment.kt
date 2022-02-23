@@ -66,12 +66,15 @@ abstract class BaseFragment<VB : ViewBinding, VM : BaseViewModel>(
     }
 
 
+    @CallSuper
     protected open fun setupView() {
     }
 
+    @CallSuper
     protected open fun setupListeners() {
     }
 
+    @CallSuper
     protected open fun setupObserver() {
         observeError()
         observeNavigation()

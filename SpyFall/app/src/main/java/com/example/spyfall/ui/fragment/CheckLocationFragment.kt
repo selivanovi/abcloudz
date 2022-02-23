@@ -4,13 +4,13 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import com.example.spyfall.data.entity.GameStatus
 import com.example.spyfall.databinding.FragmentCheckLocationBinding
-import com.example.spyfall.ui.base.ResultFragment
+import com.example.spyfall.ui.base.CheckFragment
 import com.example.spyfall.ui.viewmodel.CheckLocationViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class CheckLocationFragment :
-    ResultFragment<FragmentCheckLocationBinding, CheckLocationViewModel>(FragmentCheckLocationBinding::inflate) {
+    CheckFragment<FragmentCheckLocationBinding, CheckLocationViewModel>(FragmentCheckLocationBinding::inflate) {
 
     override val viewModel: CheckLocationViewModel by viewModels()
 

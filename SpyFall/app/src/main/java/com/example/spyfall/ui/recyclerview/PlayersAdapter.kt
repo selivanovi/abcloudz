@@ -35,6 +35,8 @@ class PlayersAdapter : RecyclerView.Adapter<PlayersAdapter.PlayerViewHolder>() {
 
     override fun onBindViewHolder(holder: PlayerViewHolder, position: Int) {
         with(holder.binding) {
+            itemPlayer.text = players[position].name
+
             if (players[position].status == PlayerStatus.PLAY) {
                 frameLayout.background =
                     AppCompatResources.getDrawable(

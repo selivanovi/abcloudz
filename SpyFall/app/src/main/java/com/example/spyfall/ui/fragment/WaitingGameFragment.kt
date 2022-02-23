@@ -48,18 +48,10 @@ class WaitingGameFragment :
         }
     }
 
-    override fun setupObserver() {
-        viewModel.errorChannel.onEach { throwable ->
-            Toast.makeText(requireContext(), throwable.message, Toast.LENGTH_LONG).show()
-        }.launchIn(lifecycleScope)
-
-        viewModel.gameStateChannel.onEach { state ->
-            if (state is GameState.ExitToMenu) {
-                findNavController().popBackStack(R.id.startFragment, false)
-            }
-        }.launchIn(lifecycleScope)
-
-        viewModel.observeGameExit(gameId)
+    override fun handleGameExit(state: GameState) {
+        if (state is GameState.ExitToMenu) {
+            viewModel.navigateUp()
+        }
     }
 
     override fun startGame() {

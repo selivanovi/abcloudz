@@ -9,6 +9,7 @@ import com.example.spyfall.data.entity.PlayerStatus
 import com.example.spyfall.data.entity.Role
 import com.example.spyfall.databinding.FragmentSpyWonBinding
 import com.example.spyfall.ui.base.GameFragment
+import com.example.spyfall.ui.base.ResultFragment
 import com.example.spyfall.ui.state.GameState
 import com.example.spyfall.ui.state.ResultState
 import com.example.spyfall.ui.viewmodel.ResultViewModel
@@ -19,7 +20,7 @@ import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
 class SpyWonFragment :
-    GameFragment<FragmentSpyWonBinding, ResultViewModel>(FragmentSpyWonBinding::inflate) {
+    ResultFragment<FragmentSpyWonBinding>(FragmentSpyWonBinding::inflate) {
 
     override val viewModel: ResultViewModel by viewModels()
 
@@ -40,38 +41,6 @@ class SpyWonFragment :
                 viewModel.setStatusForCurrentPlayerInGame(gameId, PlayerStatus.EXIT)
             }
         }
-    }
-
-    override fun setupObserver() {
-        viewModel.resultStateChannel.onEach { state ->
-            when (state) {
-                is ResultState.Exit ->
-                    findNavController().popBackStack(
-                        destinationId = R.id.startFragment,
-                        inclusive = false
-                    )
-                is ResultState.HostContinue ->
-                    findNavController().popBackStack(
-                        destinationId = R.id.prepareFragment,
-                        inclusive = false
-                    )
-                is ResultState.PlayerContinue ->
-                    findNavController().popBackStack(
-                        destinationId = R.id.waitingGameFragment,
-                        inclusive = false
-                    )
-            }
-        }.launchIn(lifecycleScope)
-
-        viewModel.gameStateChannel.onEach { state ->
-            if (state is GameState.ExitToMenu) {
-                findNavController().popBackStack(R.id.startFragment, false)
-            }
-        }.launchIn(lifecycleScope)
-
-        viewModel.observeGameExit(gameId)
-        viewModel.observeStatusOfCurrentPlayer(gameId)
-        viewModel.observeStatusOfPlayers(gameId)
     }
 
     override fun setButtonDrawer(): View = binding.menu

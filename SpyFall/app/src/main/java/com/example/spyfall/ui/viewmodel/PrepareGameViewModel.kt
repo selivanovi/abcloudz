@@ -67,6 +67,4 @@ class PrepareGameViewModel @Inject constructor(
     fun navigateToRole(gameId: String) {
         navigateTo(PrepareGameDirections.toRoleWithArgs(gameId))
     }
-
-
 }
