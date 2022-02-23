@@ -5,7 +5,7 @@ import androidx.navigation.NavDirections
 import com.example.spyfall.R
 import javax.inject.Inject
 
-class SplashDirections @Inject constructor() {
+object SplashDirections {
 
     fun toLogIn(): NavDirections = object : NavDirections {
         override val actionId: Int = R.id.action_splashFragment_to_logInFragment

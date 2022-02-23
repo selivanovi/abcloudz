@@ -14,7 +14,6 @@ import javax.inject.Inject
 @HiltViewModel
 class LogInViewModel @Inject constructor(
     private val userRepository: UserRepository,
-    private val logInDirections: LogInDirections
 ) : BaseViewModel() {
 
     private val successAuthorizationMutableChannel = Channel<UserDomain>()
@@ -31,5 +30,5 @@ class LogInViewModel @Inject constructor(
         userRepository.getUser()
 
     fun navigateToStartFragment() =
-        navigateTo(logInDirections.toStart())
+        navigateTo(LogInDirections.toStart())
 }

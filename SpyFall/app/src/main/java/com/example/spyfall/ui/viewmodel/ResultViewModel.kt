@@ -17,7 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ResultViewModel @Inject constructor(
     private val gameRepository: GameRepository,
-   userRepository: UserRepository
+    userRepository: UserRepository
 ) : GameViewModel(gameRepository, userRepository) {
 
     private val resultStateMutableChannel = Channel<ResultState>()

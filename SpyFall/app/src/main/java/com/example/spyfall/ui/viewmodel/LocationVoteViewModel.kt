@@ -11,14 +11,13 @@ import javax.inject.Inject
 class LocationVoteViewModel @Inject constructor(
     gameRepository: GameRepository,
     userRepository: UserRepository,
-    private val locationVoteDirections: LocationVoteDirections
 ) : VoteViewModel(gameRepository, userRepository) {
 
     override fun navigateToLocationWon(gameId: String) {
-        navigateTo(locationVoteDirections.toLocationWonWithArgs(gameId))
+        navigateTo(LocationVoteDirections.toLocationWonWithArgs(gameId))
     }
 
     override fun navigateToSpyWon(gameId: String) {
-        navigateTo(locationVoteDirections.toSpyWonWonWithArgs(gameId))
+        navigateTo(LocationVoteDirections.toSpyWonWonWithArgs(gameId))
     }
 }

@@ -5,7 +5,7 @@ import androidx.navigation.NavDirections
 import com.example.spyfall.R
 import javax.inject.Inject
 
-class LogInDirections @Inject constructor() {
+object LogInDirections {
 
     fun toStart(): NavDirections = object : NavDirections {
 

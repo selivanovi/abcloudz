@@ -20,7 +20,6 @@ import javax.inject.Inject
 class PrepareGameViewModel @Inject constructor(
     private val gameRepository: GameRepository,
     userRepository: UserRepository,
-    private val prepareGameDirections: PrepareGameDirections
 ) : GameViewModel(gameRepository, userRepository) {
 
     private val prepareMutableStateChannel = Channel<PrepareState>()
@@ -66,7 +65,7 @@ class PrepareGameViewModel @Inject constructor(
     }
 
     fun navigateToRoleWithArgs(gameId: String) {
-        navigateTo(prepareGameDirections.toRoleWithArgs(gameId))
+        navigateTo(PrepareGameDirections.toRoleWithArgs(gameId))
     }
 
 

@@ -17,7 +17,6 @@ import javax.inject.Inject
 class StartViewModel @Inject constructor(
     private val gameRepository: GameRepository,
     userRepository: UserRepository,
-    private val startDirections: StartDirections
 ) : BaseViewModel() {
 
     val currentPLayer = userRepository.getUser() ?: throw IllegalArgumentException("User not found")
@@ -37,10 +36,10 @@ class StartViewModel @Inject constructor(
     }
 
     fun navigateToPrepareFragmentWithArgs(gameId: String) {
-        navigateTo(startDirections.toPrepareWithArgs(gameId))
+        navigateTo(StartDirections.toPrepareWithArgs(gameId))
     }
 
     fun navigateToWaitingGameFragment(gameId: String) {
-        navigateTo(startDirections.toWaitingGameWithArgs(gameId))
+        navigateTo(StartDirections.toWaitingGameWithArgs(gameId))
     }
 }

@@ -27,7 +27,6 @@ import kotlin.time.Duration.Companion.seconds
 class RoleViewModel @Inject constructor(
     private val gameRepository: GameRepository,
     userRepository: UserRepository,
-    private val roleDirections: RoleDirections
 ) : GameViewModel(gameRepository, userRepository) {
 
     private var isSpy: Boolean = false
@@ -184,19 +183,19 @@ class RoleViewModel @Inject constructor(
         }
     }
 
-    fun navigateToCheckLocationWithArgs(gameId: String) {
-        navigateTo(roleDirections.toCheckLocationWithArgs(gameId))
+    private fun navigateToCheckLocationWithArgs(gameId: String) {
+        navigateTo(RoleDirections.toCheckLocationWithArgs(gameId))
     }
 
-    fun navigateToCallLocationWithArgs(gameId: String) {
-        navigateTo(roleDirections.toCallLocationWithArgs(gameId))
+    private fun navigateToCallLocationWithArgs(gameId: String) {
+        navigateTo(RoleDirections.toCallLocationWithArgs(gameId))
     }
 
-    fun navigateToLocationVoteWithArgs(gameId: String) {
-        navigateTo(roleDirections.toLocationVoteWithArgs(gameId))
+    private fun navigateToLocationVoteWithArgs(gameId: String) {
+        navigateTo(RoleDirections.toLocationVoteWithArgs(gameId))
     }
 
-    fun navigateToSpyVoteWithArgs(gameId: String) {
-        navigateTo(roleDirections.toSpyVoteWithArgs(gameId))
+    private fun navigateToSpyVoteWithArgs(gameId: String) {
+        navigateTo(RoleDirections.toSpyVoteWithArgs(gameId))
     }
 }

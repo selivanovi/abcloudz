@@ -10,13 +10,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SplashViewModel @Inject constructor(
-    private val fragmentDirections: SplashDirections
 ) : BaseViewModel() {
 
     fun navigateToLogIn() {
         launch {
             delay(Constants.SPLASH_DELAY)
-            navigateTo(fragmentDirections.toLogIn())
+            navigateTo(SplashDirections.toLogIn())
         }
     }
 }

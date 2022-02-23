@@ -6,7 +6,7 @@ import com.example.spyfall.R
 import com.example.spyfall.ui.base.GameFragment
 import javax.inject.Inject
 
-class RoleDirections @Inject constructor() {
+object RoleDirections {
 
     fun toLocationVoteWithArgs(gameId: String) = object : NavDirections {
         override val actionId: Int = R.id.action_roleFragment_to_locationVoteFragment

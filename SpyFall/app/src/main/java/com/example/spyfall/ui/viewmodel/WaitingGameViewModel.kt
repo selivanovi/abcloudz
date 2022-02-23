@@ -10,10 +10,9 @@ import javax.inject.Inject
 class WaitingGameViewModel @Inject constructor(
     gameRepository: GameRepository,
     userRepository: UserRepository,
-    private val waitingGameDirections: WaitingGameDirections
 ) : GameViewModel(gameRepository, userRepository) {
 
     fun navigateToRoleWithArgs(gameId: String) {
-        navigateTo(waitingGameDirections.toRoleWithArgs(gameId))
+        navigateTo(WaitingGameDirections.toRoleWithArgs(gameId))
     }
 }

@@ -11,14 +11,13 @@ import javax.inject.Inject
 class CallLocationViewModel @Inject constructor(
     gameRepository: GameRepository,
     userRepository: UserRepository,
-    private val callLocationDirections: CallLocationDirections
 ) : CheckResultViewModel(gameRepository, userRepository) {
 
     override fun navigateToSpyWonWithArgs(gameId: String) {
-        navigateTo(callLocationDirections.toSpyWonWithArgs(gameId))
+        navigateTo(CallLocationDirections.toSpyWonWithArgs(gameId))
     }
 
     override fun navigateToLocationWonWithArgs(gameId: String) {
-        navigateTo(callLocationDirections.toLocationWonWithArgs(gameId))
+        navigateTo(CallLocationDirections.toLocationWonWithArgs(gameId))
     }
 }

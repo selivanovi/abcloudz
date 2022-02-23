@@ -6,7 +6,7 @@ import com.example.spyfall.R
 import com.example.spyfall.ui.base.GameFragment
 import javax.inject.Inject
 
-class PrepareGameDirections @Inject constructor() {
+object PrepareGameDirections {
 
     fun toRoleWithArgs(gameId: String) = object : NavDirections {
         override val actionId: Int = R.id.action_prepareFragment_to_roleFragment
