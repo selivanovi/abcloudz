@@ -13,9 +13,8 @@ class AboutFragment :
 
     override val viewModel: AboutViewModel by viewModels()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
+    override fun setupListeners() {
+        super.setupListeners()
         with(binding) {
             back.setOnClickListener {
                 viewModel.navigateUp()
@@ -25,4 +24,6 @@ class AboutFragment :
             }
         }
     }
+
+    override fun setButtonDrawer(): View = binding.menu
 }

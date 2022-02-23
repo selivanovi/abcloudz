@@ -1,5 +1,6 @@
 package com.example.spyfall.ui.fragment
 
+import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -72,4 +73,6 @@ class LocationWonFragment :
             viewModel.clearGame(gameId)
         }
     }
+
+    override fun setButtonDrawer(): View = binding.menu
 }

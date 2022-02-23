@@ -1,5 +1,6 @@
 package com.example.spyfall.ui.fragment
 
+import android.view.View
 import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
 import com.example.spyfall.R
@@ -67,4 +68,6 @@ class StartFragment :
         viewModel.joinToGame(gameId)
         viewModel.navigateToWaitingGameFragment(gameId)
     }
+
+    override fun setButtonDrawer(): View = binding.menu
 }

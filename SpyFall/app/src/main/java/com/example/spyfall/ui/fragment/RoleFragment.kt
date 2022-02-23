@@ -1,5 +1,6 @@
 package com.example.spyfall.ui.fragment
 
+import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.spyfall.R
@@ -9,7 +10,6 @@ import com.example.spyfall.databinding.FragmentRoleBinding
 import com.example.spyfall.ui.base.GameFragment
 import com.example.spyfall.ui.state.RoleState
 import com.example.spyfall.ui.viewmodel.RoleViewModel
-import com.example.spyfall.utils.Constants
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -87,4 +87,6 @@ class RoleFragment :
             viewModel.clearGame(gameId)
         }
     }
+
+    override fun setButtonDrawer(): View = binding.menu
 }

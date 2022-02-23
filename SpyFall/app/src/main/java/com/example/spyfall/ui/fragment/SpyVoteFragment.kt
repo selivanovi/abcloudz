@@ -1,5 +1,6 @@
 package com.example.spyfall.ui.fragment
 
+import android.view.View
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
@@ -36,4 +37,6 @@ class SpyVoteFragment :
             viewModel.clearGame(gameId)
         }
     }
+
+    override fun setButtonDrawer(): View = binding.menu
 }

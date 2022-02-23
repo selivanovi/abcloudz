@@ -1,11 +1,9 @@
 package com.example.spyfall.ui.fragment
 
-import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.spyfall.databinding.FragmentCallLocationBinding
-import com.example.spyfall.ui.base.GameFragment
 import com.example.spyfall.ui.base.ResultFragment
 import com.example.spyfall.ui.viewmodel.CallLocationViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -22,4 +20,6 @@ class CallLocationFragment :
             viewModel.clearGame(gameId)
         }
     }
+
+    override fun setButtonDrawer(): View = binding.menu
 }

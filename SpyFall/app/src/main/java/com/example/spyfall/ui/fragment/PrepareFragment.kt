@@ -1,6 +1,7 @@
 package com.example.spyfall.ui.fragment
 
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
@@ -124,4 +125,6 @@ class PrepareFragment :
         viewModel.setDuration(gameId, time)
         binding.buttonPlayers.callOnClick()
     }
+
+    override fun setButtonDrawer(): View = binding.menu
 }

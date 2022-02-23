@@ -1,5 +1,6 @@
 package com.example.spyfall.ui.fragment
 
+import android.view.View
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -46,4 +47,6 @@ class LogInFragment :
             }
         }
     }
+
+    override fun setButtonDrawer(): View = binding.menu
 }

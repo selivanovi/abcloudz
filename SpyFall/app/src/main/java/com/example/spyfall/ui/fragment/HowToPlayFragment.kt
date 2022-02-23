@@ -26,4 +26,6 @@ class HowToPlayFragment :
             }
         }
     }
+
+    override fun setButtonDrawer(): View = binding.menu
 }

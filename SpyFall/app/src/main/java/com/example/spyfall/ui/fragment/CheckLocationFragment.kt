@@ -1,5 +1,6 @@
 package com.example.spyfall.ui.fragment
 
+import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.spyfall.data.entity.GameStatus
@@ -33,4 +34,6 @@ class CheckLocationFragment :
             viewModel.clearGame(gameId)
         }
     }
+
+    override fun setButtonDrawer(): View = binding.menu
 }
