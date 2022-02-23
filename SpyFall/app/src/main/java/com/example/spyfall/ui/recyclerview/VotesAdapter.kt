@@ -9,13 +9,15 @@ import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.RecyclerView
 import com.example.spyfall.R
+import com.example.spyfall.databinding.ItemCheckableRecyclerviewBinding
 import com.example.spyfall.domain.entity.PlayerDomain
 
 class VotesAdapter(
     private val changeItemListener: (playerDomain: PlayerDomain) -> Unit
 ) : RecyclerView.Adapter<VotesAdapter.VoteViewHolder>() {
 
-    private var currentCheckBox: CheckBox? = null
+
+    private var selectedPosition: Int = -1
 
     private val players = mutableListOf<PlayerDomain>()
 
@@ -28,28 +30,41 @@ class VotesAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VoteViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_checkable_recyclerview, parent, false)
+        val binding = ItemCheckableRecyclerviewBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
 
-        return VoteViewHolder(view)
+        return VoteViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: VoteViewHolder, position: Int) {
-        holder.playerTextView.text = players[position].name
-        holder.voteCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked) {
-                currentCheckBox?.let {
-                    if (it.isChecked) it.isChecked = false
+
+        with(holder.binding) {
+            itemPlayer.text = players[position].name
+
+            holder.binding.voteCheckBox.isChecked = holder.adapterPosition == selectedPosition
+
+            voteCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
+                if (isChecked) {
+
+                    frameLayout.background =
+                        AppCompatResources.getDrawable(
+                            holder.itemView.context,
+                            R.drawable.rounded_fill_item_view
+                        )
+
+                    selectedPosition = holder.adapterPosition
+                    changeItemListener(players[position])
+                    notifyDataSetChanged()
+                } else {
+                    frameLayout.background =
+                        AppCompatResources.getDrawable(
+                            holder.itemView.context,
+                            R.drawable.rounded_item_view
+                        )
                 }
-
-                changeItemListener(players[position])
-
-                currentCheckBox = holder.voteCheckBox
-                holder.frameLayout.background =
-                    AppCompatResources.getDrawable(holder.itemView.context, R.drawable.rounded_fill_item_view)
-            } else {
-                holder.frameLayout.background =
-                    AppCompatResources.getDrawable(holder.itemView.context, R.drawable.rounded_item_view)
             }
         }
     }
@@ -57,9 +72,6 @@ class VotesAdapter(
     override fun getItemCount(): Int =
         players.size
 
-    class VoteViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
-        val frameLayout = view.findViewById<FrameLayout>(R.id.frameLayout)
-        val playerTextView = view.findViewById<TextView>(R.id.itemPlayer)
-        val voteCheckBox = view.findViewById<CheckBox>(R.id.voteCheckBox)
-    }
+    class VoteViewHolder(val binding: ItemCheckableRecyclerviewBinding) :
+        RecyclerView.ViewHolder(binding.root)
 }

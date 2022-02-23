@@ -2,14 +2,12 @@ package com.example.spyfall.ui.recyclerview
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
-import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.RecyclerView
 import com.example.spyfall.R
 import com.example.spyfall.data.entity.PlayerStatus
+import com.example.spyfall.databinding.ItemRecyclerviewPlayerBinding
 import com.example.spyfall.domain.entity.PlayerDomain
 
 class PlayersAdapter : RecyclerView.Adapter<PlayersAdapter.PlayerViewHolder>() {
@@ -26,28 +24,36 @@ class PlayersAdapter : RecyclerView.Adapter<PlayersAdapter.PlayerViewHolder>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlayerViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_recyclerview_player, parent, false)
+        val binding = ItemRecyclerviewPlayerBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
 
-        return PlayerViewHolder(view)
+        return PlayerViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: PlayerViewHolder, position: Int) {
-        holder.playerTextView.text = players[position].name
-        if (players[position].status == PlayerStatus.PLAY) {
-            holder.frameLayout.background =
-                AppCompatResources.getDrawable(holder.itemView.context, R.drawable.rounded_green_item_view)
-        } else {
-            holder.frameLayout.background =
-                AppCompatResources.getDrawable(holder.itemView.context, R.drawable.rounded_item_view)
+        with(holder.binding) {
+            if (players[position].status == PlayerStatus.PLAY) {
+                frameLayout.background =
+                    AppCompatResources.getDrawable(
+                        holder.itemView.context,
+                        R.drawable.rounded_green_item_view
+                    )
+            } else {
+                frameLayout.background =
+                    AppCompatResources.getDrawable(
+                        holder.itemView.context,
+                        R.drawable.rounded_item_view
+                    )
+            }
         }
     }
 
     override fun getItemCount(): Int =
         players.size
 
-    class PlayerViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val frameLayout = view.findViewById<FrameLayout>(R.id.frameLayout)
-        val playerTextView = view.findViewById<TextView>(R.id.itemPlayer)
-    }
+    class PlayerViewHolder(val binding: ItemRecyclerviewPlayerBinding) :
+        RecyclerView.ViewHolder(binding.root)
 }
