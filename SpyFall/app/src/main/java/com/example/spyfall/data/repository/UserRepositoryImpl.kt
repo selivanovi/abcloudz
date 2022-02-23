@@ -52,7 +52,7 @@ class UserRepositoryImpl @Inject constructor(
             remove(KEY_USER_NAME)
         }
         firebaseDatabase.reference.child(USER_REFERENCES)
-            .child(userDomain.userId).removeValue()
+            .child(userDomain.userId).removeValue().await()
     }
 
     companion object {

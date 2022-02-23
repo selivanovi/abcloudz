@@ -35,7 +35,7 @@ class StartViewModel @Inject constructor(
         gameRepository.addPlayerToGame(gameId, player)
     }
 
-    fun navigateToPrepareFragmentWithArgs(gameId: String) {
+    fun navigateToPrepareFragment(gameId: String) {
         navigateTo(StartDirections.toPrepareWithArgs(gameId))
     }
 

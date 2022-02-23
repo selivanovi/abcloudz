@@ -13,11 +13,11 @@ class CallLocationViewModel @Inject constructor(
     userRepository: UserRepository,
 ) : CheckResultViewModel(gameRepository, userRepository) {
 
-    override fun navigateToSpyWonWithArgs(gameId: String) {
+    override fun navigateToSpyWon(gameId: String) {
         navigateTo(CallLocationDirections.toSpyWonWithArgs(gameId))
     }
 
-    override fun navigateToLocationWonWithArgs(gameId: String) {
+    override fun navigateToLocationWon(gameId: String) {
         navigateTo(CallLocationDirections.toLocationWonWithArgs(gameId))
     }
 }

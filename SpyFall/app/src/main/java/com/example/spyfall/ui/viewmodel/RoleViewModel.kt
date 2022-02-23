@@ -62,25 +62,25 @@ class RoleViewModel @Inject constructor(
                 GameStatus.VOTE -> {
                     stopTimer(gameId)
                     if (isSpy) {
-                        navigateToSpyVoteWithArgs(gameId)
+                        navigateToSpyVote(gameId)
                     } else {
-                        navigateToLocationVoteWithArgs(gameId)
+                        navigateToLocationVote(gameId)
                     }
                 }
                 GameStatus.GAME_OVER -> {
                     stopTimer(gameId)
                     if (isSpy) {
-                        navigateToSpyVoteWithArgs(gameId)
+                        navigateToSpyVote(gameId)
                     } else {
-                        navigateToLocationVoteWithArgs(gameId)
+                        navigateToLocationVote(gameId)
                     }
                 }
                 GameStatus.LOCATION -> {
                     stopTimer(gameId)
                     if (isSpy) {
-                        navigateToCallLocationWithArgs(gameId)
+                        navigateToCallLocation(gameId)
                     } else {
-                        navigateToCheckLocationWithArgs(gameId)
+                        navigateToCheckLocation(gameId)
                     }
                 }
                 else ->
@@ -183,19 +183,19 @@ class RoleViewModel @Inject constructor(
         }
     }
 
-    private fun navigateToCheckLocationWithArgs(gameId: String) {
+    private fun navigateToCheckLocation(gameId: String) {
         navigateTo(RoleDirections.toCheckLocationWithArgs(gameId))
     }
 
-    private fun navigateToCallLocationWithArgs(gameId: String) {
+    private fun navigateToCallLocation(gameId: String) {
         navigateTo(RoleDirections.toCallLocationWithArgs(gameId))
     }
 
-    private fun navigateToLocationVoteWithArgs(gameId: String) {
+    private fun navigateToLocationVote(gameId: String) {
         navigateTo(RoleDirections.toLocationVoteWithArgs(gameId))
     }
 
-    private fun navigateToSpyVoteWithArgs(gameId: String) {
+    private fun navigateToSpyVote(gameId: String) {
         navigateTo(RoleDirections.toSpyVoteWithArgs(gameId))
     }
 }

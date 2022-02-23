@@ -12,7 +12,7 @@ class WaitingGameViewModel @Inject constructor(
     userRepository: UserRepository,
 ) : GameViewModel(gameRepository, userRepository) {
 
-    fun navigateToRoleWithArgs(gameId: String) {
+    fun navigateToRole(gameId: String) {
         navigateTo(WaitingGameDirections.toRoleWithArgs(gameId))
     }
 }

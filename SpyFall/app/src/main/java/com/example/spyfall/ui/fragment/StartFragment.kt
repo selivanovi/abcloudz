@@ -1,6 +1,5 @@
 package com.example.spyfall.ui.fragment
 
-import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
 import com.example.spyfall.R
@@ -61,7 +60,7 @@ class StartFragment :
     }
 
     override fun createGame(gameId: String) {
-        viewModel.navigateToPrepareFragmentWithArgs(gameId)
+        viewModel.navigateToPrepareFragment(gameId)
     }
 
     override fun joinToGame(gameId: String) {

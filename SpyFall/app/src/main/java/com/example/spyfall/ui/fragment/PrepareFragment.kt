@@ -14,7 +14,6 @@ import com.example.spyfall.ui.listener.PickTimeFragmentListener
 import com.example.spyfall.ui.state.GameState
 import com.example.spyfall.ui.state.PrepareState
 import com.example.spyfall.ui.viewmodel.PrepareGameViewModel
-import com.google.android.material.button.MaterialButton
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -84,7 +83,7 @@ class PrepareFragment :
     }
 
     override fun startGame() {
-        viewModel.navigateToRoleWithArgs(gameId)
+        viewModel.navigateToRole(gameId)
     }
 
     override fun onBackPressed() {

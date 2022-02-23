@@ -16,15 +16,15 @@ abstract class CheckResultViewModel(
     fun observeGameStatusForResult(gameId: String) {
         gameRepository.observeGame(gameId).onEach { game ->
             if (game?.status == GameStatus.SPY_WON) {
-                navigateToSpyWonWithArgs(gameId)
+                navigateToSpyWon(gameId)
             }
             if (game?.status == GameStatus.LOCATION_WON) {
-                navigateToLocationWonWithArgs(gameId)
+                navigateToLocationWon(gameId)
             }
         }.launchIn(viewModelScope)
     }
 
-    abstract fun navigateToSpyWonWithArgs(gameId: String)
+    abstract fun navigateToSpyWon(gameId: String)
 
-    abstract fun navigateToLocationWonWithArgs(gameId: String)
+    abstract fun navigateToLocationWon(gameId: String)
 }

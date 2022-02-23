@@ -68,6 +68,6 @@ class WaitingGameFragment :
     }
 
     override fun startGame() {
-        viewModel.navigateToRoleWithArgs(gameId)
+        viewModel.navigateToRole(gameId)
     }
 }

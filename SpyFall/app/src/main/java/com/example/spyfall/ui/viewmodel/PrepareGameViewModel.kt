@@ -64,7 +64,7 @@ class PrepareGameViewModel @Inject constructor(
         setDurationForGame(gameId, time)
     }
 
-    fun navigateToRoleWithArgs(gameId: String) {
+    fun navigateToRole(gameId: String) {
         navigateTo(PrepareGameDirections.toRoleWithArgs(gameId))
     }
 

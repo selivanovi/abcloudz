@@ -13,11 +13,11 @@ class CheckLocationViewModel @Inject constructor(
     userRepository: UserRepository,
 ) : CheckResultViewModel(gameRepository, userRepository) {
 
-    override fun navigateToSpyWonWithArgs(gameId: String) {
+    override fun navigateToSpyWon(gameId: String) {
         navigateTo(CheckLocationDirections.toSpyWonWithArgs(gameId))
     }
 
-    override fun navigateToLocationWonWithArgs(gameId: String) {
+    override fun navigateToLocationWon(gameId: String) {
         navigateTo(CheckLocationDirections.toLocationWonWithArgs(gameId))
     }
 }
