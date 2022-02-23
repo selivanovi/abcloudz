@@ -14,12 +14,13 @@ import com.example.spyfall.ui.state.RoleState
 import com.example.spyfall.utils.Constants
 import com.example.spyfall.utils.DurationNotSetException
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
@@ -34,8 +35,6 @@ class RoleViewModel @Inject constructor(
     private var isSpy: Boolean = false
 
     private var currentTime: Long? = null
-
-    private var stopTimer: Boolean = false
 
     private val roleStateMutableChannel = Channel<RoleState>()
     val roleStateChannel = roleStateMutableChannel.receiveAsFlow()
@@ -58,12 +57,9 @@ class RoleViewModel @Inject constructor(
                     startTimer(gameId)
                     roleStateMutableChannel.send(RoleState.GameIsPlaying)
                 }
-                GameStatus.PAUSE -> {
-                    stopTimer(gameId)
+                GameStatus.PAUSE ->
                     roleStateMutableChannel.send(RoleState.GameIsPause)
-                }
                 GameStatus.VOTE -> {
-                    stopTimer(gameId)
                     if (isSpy) {
                         navigateToSpyVote(gameId)
                     } else {
@@ -71,7 +67,6 @@ class RoleViewModel @Inject constructor(
                     }
                 }
                 GameStatus.GAME_OVER -> {
-                    stopTimer(gameId)
                     if (isSpy) {
                         navigateToSpyVote(gameId)
                     } else {
@@ -79,7 +74,6 @@ class RoleViewModel @Inject constructor(
                     }
                 }
                 GameStatus.LOCATION -> {
-                    stopTimer(gameId)
                     if (isSpy) {
                         navigateToCallLocation(gameId)
                     } else {
@@ -131,27 +125,28 @@ class RoleViewModel @Inject constructor(
         }
     }
 
-    private fun stopTimer(gameId: String) {
+    fun stopTimer(gameId: String) {
+
+        timer?.cancel()
         launch {
-            stopTimer = true
-            timer?.cancel()
             currentTime?.let {
-                gameRepository.setDurationForGames(gameId, it)
+                gameRepository.setDurationForGames(gameId, it.milliseconds.inWholeSeconds)
             }
         }
     }
 
     private fun startTimer(gameId: String) {
+
         launch {
             gameRepository.getDurationForGames(gameId)
                 .onSuccess { duration ->
 
-                    stopTimer = false
-
                     if (duration < 0) {
                         currentTime = duration
                     } else {
-                        startCountDownTimer(gameId, duration.seconds.inWholeMilliseconds)
+                        withContext(Dispatchers.Main) {
+                            startCountDownTimer(gameId, duration.seconds.inWholeMilliseconds)
+                        }
                     }
                 }
                 .onFailure {
@@ -161,12 +156,12 @@ class RoleViewModel @Inject constructor(
         }
     }
 
-
-
     private fun startCountDownTimer(gameId: String, timeMillis: Long) {
+        timer?.cancel()
         timer = object : CountDownTimer(timeMillis, Constants.TIMER_DELAY) {
 
             override fun onTick(time: Long) {
+                currentTime = time
                 launch {
                     timeMutableChannel.send(time.milliseconds)
                 }

@@ -10,6 +10,7 @@ import com.example.spyfall.databinding.FragmentRoleBinding
 import com.example.spyfall.ui.base.GameFragment
 import com.example.spyfall.ui.state.RoleState
 import com.example.spyfall.ui.viewmodel.RoleViewModel
+import com.example.spyfall.utils.Constants
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -53,7 +54,7 @@ class RoleFragment :
                     resources.getString(
                         R.string.time,
                         duration.inWholeMinutes,
-                        duration.inWholeSeconds
+                        duration.inWholeSeconds%Constants.SECONDS_IN_MINUTE
                     )
             }.launchIn(lifecycleScope)
 
@@ -79,6 +80,11 @@ class RoleFragment :
             observeRoleOfCurrentPlayer(gameId)
             observeGame(gameId)
         }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        viewModel.stopTimer(gameId)
     }
 
     override fun setButtonDrawer(): View = binding.menu

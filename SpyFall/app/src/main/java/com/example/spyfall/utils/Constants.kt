@@ -12,6 +12,7 @@ object Constants {
     const val MIN_NUMBER_PLAYERS = 3
     const val SPLASH_DELAY = 1_000L
     const val TIMER_DELAY = 1_000L
+    const val SECONDS_IN_MINUTE = 60
 
 
     const val NOT_CORRECT_GAME_ID = "Not correct game id"
